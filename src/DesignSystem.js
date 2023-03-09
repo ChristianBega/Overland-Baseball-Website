@@ -4,7 +4,9 @@ export const mainTheme = createTheme({
   breakpoints: {
     values: {},
   },
-  components: {},
+  components: {
+    // https://mui.com/material-ui/customization/theme-components/
+  },
   palette: {
     primary: {
       main: "#091F40",
