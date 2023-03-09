@@ -6,6 +6,50 @@ export const mainTheme = createTheme({
   },
   components: {
     // https://mui.com/material-ui/customization/theme-components/
+    // name of component
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: "#FAF9F6",
+          background: "#009A4E",
+          ":hover": {
+            background: "#091F40",
+            cursor: "pointer",
+          },
+          ":focus-visible": "",
+          transition: "all .3s ease-In-Out",
+        },
+        sizeSmall: {
+          lineHeight: "22px",
+          fontSize: "18px",
+          padding: "10px 12px",
+          width: "165px",
+        },
+        sizeMedium: {
+          lineHeight: "24px",
+          fontSize: "22px",
+          padding: "10px 16px",
+        },
+        sizeLarge: {
+          lineHeight: "26px",
+          fontSize: "22px",
+          padding: "10px 12px",
+        },
+        sizeBox: {
+          borderRadius: "none",
+          height: "85px",
+          width: "85px",
+        },
+        sizeCircle: {
+          borderRadius: "50%",
+          height: "85px",
+          width: "85px",
+        },
+        fullWidth: {
+          maxWidth: "200px",
+        },
+      },
+    },
   },
   palette: {
     primary: {
@@ -58,4 +102,10 @@ export const mainTheme = createTheme({
       lineHeight: "18px",
     },
   },
+  spacing: {},
+  // props: {
+  //   MuiButton: {
+  //     disableRipple: true,
+  //   },
+  // },
 });
