@@ -1,7 +1,7 @@
-import { IconButton, Link, List, ListItem, styled } from "@mui/material";
+import { IconButton, List, ListItem, styled } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Navigation menu item data
 const menuItemData = [
@@ -28,15 +28,22 @@ const StyledList = styled(List)(({ theme }) => ({
 }));
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   width: "80%",
-  border: "1px solid red",
+  color: theme.palette.primary.main,
+  fontSize: "25px",
+
+  [theme.breakpoints.up("md")]: {
+    fontSize: "18px",
+  },
 }));
 
 // Get menu items
 const getMenuItems = (handleClose) => (
   <StyledList>
     {menuItemData.map((menuItem, index) => (
-      <StyledListItem component={Link} href={`${menuItem.urlPath}`} key={menuItem.linkName} onClick={handleClose}>
-        {menuItem.linkName}
+      <StyledListItem onClick={handleClose}>
+        <Link to={menuItem.urlPath} key={menuItem.linkName}>
+          {menuItem.linkName}
+        </Link>
       </StyledListItem>
     ))}
   </StyledList>

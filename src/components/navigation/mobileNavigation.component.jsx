@@ -50,7 +50,6 @@ export default function MobileNavigation() {
           <StyledDrawerMenu open={openMenu} anchor={"left"} onClose={handleClose}>
             <NavigationListItems setOpenMenu={setOpenMenu} openMenu={openMenu} handleClose={handleClose} />
           </StyledDrawerMenu>
-
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Overland Baseball
           </Typography>
