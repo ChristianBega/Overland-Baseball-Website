@@ -1,4 +1,4 @@
-import { IconButton, List, ListItem, styled } from "@mui/material";
+import { IconButton, Link, List, ListItem, styled } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 // import { Link } from "react-router-dom";
@@ -32,10 +32,12 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 }));
 
 // Get menu items
-const getMenuItems = () => (
+const getMenuItems = (handleClose) => (
   <StyledList>
     {menuItemData.map((menuItem, index) => (
-      <StyledListItem key={menuItem.linkName}>{menuItem.linkName}</StyledListItem>
+      <StyledListItem component={Link} href={`${menuItem.urlPath}`} key={menuItem.linkName} onClick={handleClose}>
+        {menuItem.linkName}
+      </StyledListItem>
     ))}
   </StyledList>
 );
@@ -47,7 +49,7 @@ export default function NavigationListItems({ handleClose }) {
       <IconButton onClick={handleClose} color="primary.main" aria-label="exit menu">
         <CloseIcon />
       </IconButton>
-      {getMenuItems()}
+      {getMenuItems(handleClose)}
     </>
   );
 }
