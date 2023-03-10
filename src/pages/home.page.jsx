@@ -1,22 +1,11 @@
-import { Button } from "@mui/material";
 import React from "react";
+import { Box, Button, styled } from "@mui/material";
 
+const StyledBox = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.secondary.main,
+}));
 export default function HomePage() {
-  return (
-    <div>
-      <Button fullWidth size="small">
-        Sign up now
-      </Button>
-      <Button>Sign up now</Button>
-      <Button fullWidth size="large">
-        Sign up now
-      </Button>
-      <Button fullWidth size="box">
-        Sign up now
-      </Button>
-      <Button fullWidth size="circle">
-        Sign up now
-      </Button>
-    </div>
-  );
+  // const theme = useTheme();
+  return <div>Home Page</div>;
 }
