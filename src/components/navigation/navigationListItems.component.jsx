@@ -1,5 +1,4 @@
-import { IconButton, List, ListItem, styled, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { List, ListItem, styled, Typography } from "@mui/material";
 
 import { Link } from "react-router-dom";
 
@@ -30,25 +29,24 @@ const StyledList = styled(List)(({ theme }) => ({
   },
   [theme.breakpoints.up("lg")]: {
     flexDirection: "row",
+    justifyContent: "center",
   },
 }));
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   textAlign: "center",
-  minWidth: "55px",
-  // [theme.breakpoints.up("lg")]: {},
 }));
 
 // Get menu items
 const getMenuItems = (handleClose) => (
   <StyledList>
     {menuItemData.map((menuItem, index) => (
-      <StyledListItem onClick={handleClose}>
+      <StyledListItem key={index} onClick={handleClose}>
         <Link to={menuItem.urlPath} key={menuItem.linkName}>
           <Typography typography={"linkTextDesktop"} sx={{ display: { sm: "none", lg: "flex" } }}>
             {menuItem.linkName}
           </Typography>
 
-          <Typography typography={"linkTextMobile"} sx={{ display: { sm: "flex", lg: "none" } }}>
+          <Typography typography={"linkTextMobile"} sx={{ display: { sm: "flex", lg: "none" }, width: "80%" }}>
             {menuItem.linkName}
           </Typography>
         </Link>
@@ -58,6 +56,5 @@ const getMenuItems = (handleClose) => (
 );
 
 export default function NavigationListItems({ handleClose }) {
-  // const [menuData, setMenuData] = useState(menuItemData);
   return <>{getMenuItems(handleClose)}</>;
 }
