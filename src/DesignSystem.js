@@ -2,10 +2,56 @@ import { createTheme } from "@mui/material";
 
 export const mainTheme = createTheme({
   breakpoints: {
-    values: {},
+    values: {
+      md: 900,
+      lg: 1200,
+    },
   },
   components: {
     // https://mui.com/material-ui/customization/theme-components/
+    // name of component
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: "#FAF9F6",
+          background: "#009A4E",
+          ":hover": {
+            background: "#283F76",
+            cursor: "pointer",
+          },
+          ":focus-visible": "",
+          transition: "all .3s ease-In-Out",
+        },
+        sizeSmall: {
+          lineHeight: "22px",
+          fontSize: "18px",
+          padding: "10px 12px",
+          width: "165px",
+        },
+        sizeMedium: {
+          lineHeight: "24px",
+          fontSize: "22px",
+          padding: "10px 16px",
+        },
+        sizeLarge: {
+          lineHeight: "26px",
+          fontSize: "22px",
+          padding: "10px 12px",
+        },
+        sizeBox: {
+          borderRadius: "",
+          padding: "6px 12px",
+        },
+        sizeCircle: {
+          borderRadius: "50%",
+          height: "18px",
+          width: "18px",
+        },
+        fullWidth: {
+          maxWidth: "200px",
+        },
+      },
+    },
   },
   palette: {
     primary: {
@@ -21,10 +67,10 @@ export const mainTheme = createTheme({
       contrastText: "",
     },
     text: {
-      primary: "#201F40",
+      primary: "#F3F4F6",
     },
   },
-  shadows: {},
+  // shadows: {},
   typography: {
     fontFamily: "Work Sans",
     h1: {
@@ -57,5 +103,20 @@ export const mainTheme = createTheme({
       fontSize: "16px",
       lineHeight: "18px",
     },
+    linkTextDesktop: {
+      color: "#fff",
+      fontFamily: "Work Sans",
+      lineHeight: "18px",
+      fontSize: "20px",
+      width: "100%",
+    },
+    linkTextMobile: {
+      color: "red",
+      fontFamily: "Work Sans",
+      lineHeight: "22px",
+      fontSize: "22px",
+      width: "100%",
+    },
   },
+  spacing: (factor) => `${0.25 * factor}rem`,
 });
