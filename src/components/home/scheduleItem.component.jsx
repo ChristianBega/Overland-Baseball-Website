@@ -4,7 +4,7 @@ import React from "react";
 
 export default function ScheduleItem() {
   return (
-    <Grid item xs={12} lg={5}>
+    <Grid item xs={12} lg={8}>
       <Box sx={{ bgcolor: "green" }}>Schedule</Box>
     </Grid>
   );

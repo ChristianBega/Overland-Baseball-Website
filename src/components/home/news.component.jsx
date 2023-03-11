@@ -4,7 +4,7 @@ import React from "react";
 
 export default function News() {
   return (
-    <Grid item xs={12} md={8} lg={6}>
+    <Grid item xs={12} md={8} lg={7}>
       <Typography textAlign="center" typography={{ xs: "h3", md: "h2" }}>
         Trail Blazer News
       </Typography>
