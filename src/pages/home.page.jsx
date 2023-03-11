@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       <HeroBackground />
-      <Grid container maxWidth="lg" marginX={{ lg: "auto" }}>
+      <Grid container maxWidth="xl" marginX={{ lg: "auto" }} spacing={{ xs: 2, md: 4 }}>
         <News />
         <Test />
         <ScheduleItem />

@@ -4,7 +4,7 @@ export default function Sponsors() {
   return (
     <>
       <Grid item xs={12}>
-        <Box>Sponsors</Box>
+        <Box sx={{ bgcolor: "lightblue" }}>Sponsors</Box>
       </Grid>
     </>
   );

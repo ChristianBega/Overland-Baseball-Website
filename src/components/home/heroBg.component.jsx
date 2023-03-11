@@ -18,6 +18,7 @@ export default function HeroBackground() {
     <Box component="section" style={{ minHeight: "92vh" }} id="hero-background">
       <Box
         component="img"
+        alt="A picture taken from home plate, looking out into a baseball field. "
         src={HeroImage}
         sx={{ width: "100vw", height: "96vh", objectFit: "cover", position: "absolute", top: 0, bottom: 0, zIndex: -1, mt: 15 }}
       ></Box>
