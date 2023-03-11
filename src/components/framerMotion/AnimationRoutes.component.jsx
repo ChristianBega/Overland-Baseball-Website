@@ -2,6 +2,8 @@ import React from "react";
 
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { Grid, Container } from "@mui/material";
+// Components
 import HomePage from "../../pages/home.page";
 import BoostersPage from "../../pages/boosters.page";
 import EventsPage from "../../pages/events.page";

@@ -3,6 +3,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 
 import HeroImage from "../../assets/heroImg.jpg";
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
   // display: "flex",
   // justifyContent: "space-between",
@@ -14,11 +15,11 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 export default function HeroBackground() {
   return (
-    <section id="hero-background">
+    <Box component="section" style={{ minHeight: "92vh" }} id="hero-background">
       <Box
         component="img"
         src={HeroImage}
-        sx={{ width: "100vw", height: "100vh", objectFit: "cover", position: "absolute", top: 0, bottom: 0, zIndex: -1, mt: 15 }}
+        sx={{ width: "100vw", height: "96vh", objectFit: "cover", position: "absolute", top: 0, bottom: 0, zIndex: -1, mt: 15 }}
       ></Box>
       <StyledPaper>
         <Typography typography="h1">Overland Baseball</Typography>
@@ -27,7 +28,7 @@ export default function HeroBackground() {
           cumque et voluptatem facilis!
         </Typography>
       </StyledPaper>
-    </section>
+    </Box>
   );
 }
 

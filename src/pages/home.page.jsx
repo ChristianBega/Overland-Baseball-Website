@@ -1,14 +1,24 @@
-import React from "react";
+import { Grid } from "@mui/material";
+
+// Components
+import News from "../components/home/news.component";
 import HeroBackground from "../components/home/heroBg.component";
-import { Container, Grid, styled, Typography } from "@mui/material";
-import { Paper } from "@mui/material";
+import ScheduleItem from "../components/home/scheduleItem.component";
+import Sponsors from "../components/sponsors/sponsors.component";
+import TeamStore from "../components/home/teamStore.component";
+import Test from "../components/home/test.components";
 
 export default function HomePage() {
-  // const theme = useTheme();
   return (
     <>
       <HeroBackground />
-      <Grid container id="h" component="section" maxWidth="lg"></Grid>
+      <Grid container maxWidth="lg" marginX={{ lg: "auto" }}>
+        <News />
+        <Test />
+        <ScheduleItem />
+        <TeamStore />
+        <Sponsors />
+      </Grid>
     </>
   );
 }
