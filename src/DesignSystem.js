@@ -66,6 +66,10 @@ export const mainTheme = createTheme({
       dark: "#007f3b",
       contrastText: "",
     },
+    accent: {
+      accentOne: "rgba(9,31,64,.8)",
+      accentTwo: "rgba(0,154,78,.5)",
+    },
     text: {
       primary: "#F3F4F6",
     },

@@ -53,7 +53,7 @@ export default function MobileNavigation() {
           <NavigationListItems setOpenMenu={setOpenMenu} openMenu={openMenu} handleClose={handleClose} />
         </StyledDrawerMenu>
         <Typography typography="h3" sx={{ flexGrow: 1 }}>
-          Overland Baseball
+          Logo
         </Typography>
         <Button size="box">Login</Button>
       </StyledToolbar>
