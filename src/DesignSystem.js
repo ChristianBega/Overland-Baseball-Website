@@ -54,6 +54,11 @@ export const mainTheme = createTheme({
         },
       },
     },
+    // MuiListItemText: {
+    //   styleOverrides: {
+    //     root: {},
+    //   },
+    // },
   },
   palette: {
     primary: {
