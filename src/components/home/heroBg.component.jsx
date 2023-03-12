@@ -5,8 +5,6 @@ import React from "react";
 import HeroImage from "../../assets/heroImg.jpg";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  // display: "flex",
-  // justifyContent: "space-between",
   margin: theme.spacing(8),
   textAlign: "center",
   padding: theme.spacing(6), // 14px

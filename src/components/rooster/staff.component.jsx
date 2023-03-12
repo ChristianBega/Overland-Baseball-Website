@@ -9,7 +9,7 @@ const staffData = [
     teamManager: "Varsity Coach name",
   },
   {
-    team: "junior-varsity",
+    team: "juniorVarsity",
     coach: "Jv head coach",
     assistantCoach: "Jv coach name",
     teamManager: "Jv coach name",
@@ -22,7 +22,6 @@ const staffData = [
   },
 ];
 
-// const getCurrentTeam = () => {};
 export default function Staff({ currentTeam }) {
   const [currentRooster, setCurrentRooster] = useState([]);
   useEffect(() => {

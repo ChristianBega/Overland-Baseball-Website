@@ -4,15 +4,17 @@ import { Grid } from "@mui/material";
 // Components
 import Staff from "../components/rooster/staff.component";
 import Toggles from "../components/rooster/toggles.component";
+import TeamRooster from "../components/rooster/teamRooster.component";
 
 export default function RoosterPage() {
   const [currentTeam, setCurrentTeam] = useState("varsity");
   return (
     <>
-      <section id="home-section" style={{ display: "flex", justifyContent: " center" }}>
-        <Grid container maxWidth="xl" spacing={{ xs: 2, md: 4 }}>
+      <section id="rooster-section" style={{ display: "flex", justifyContent: " center" }}>
+        <Grid container maxWidth="lg" spacing={{ xs: 2, md: 4 }}>
           <Staff currentTeam={currentTeam} />
           <Toggles setCurrentTeam={setCurrentTeam} />
+          <TeamRooster currentTeam={currentTeam} />
         </Grid>
       </section>
     </>
