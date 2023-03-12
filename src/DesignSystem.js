@@ -32,13 +32,19 @@ export const mainTheme = createTheme({
         },
         sizeMedium: {
           lineHeight: "24px",
-          fontSize: "22px",
+          fontSize: "18px",
           padding: "10px 16px",
         },
+        // sizeLarge: {
+        //   lineHeight: "26px",
+        //   fontSize: "22px",
+        //   padding: "10px 12px",
+        // },
         sizeLarge: {
           lineHeight: "26px",
-          fontSize: "22px",
-          padding: "10px 12px",
+          fontSize: "18px",
+          padding: "10px 16px",
+          minWidth: "125px",
         },
         sizeBox: {
           borderRadius: "",
