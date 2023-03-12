@@ -7,7 +7,7 @@ export default function ScheduleItem({ gameData }) {
   // time - key on gameData object
   const { date, location, homeTeam, awayTeam } = gameData;
   return (
-    <ListItem sx={{ bgcolor: "green", textAlign: "left" }}>
+    <ListItem sx={{ bgcolor: "green", textAlign: "left", paddingY: { sm: 2, md: 5 } }}>
       <ListItemText primary={date} sx={{ flex: 0.7 }} />
       <ListItemText sx={{ display: "flex", flex: 1 }} primary={<AlternateEmailIcon sx={{ height: "1rem" }} />} secondary={location} />
 

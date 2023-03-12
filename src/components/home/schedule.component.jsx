@@ -43,8 +43,8 @@ const scheduleData = [
 
 export default function schedule() {
   return (
-    <Grid item xs={12} lg={8}>
-      <List>
+    <Grid item xs={12} lg={7}>
+      <List disablePadding>
         {scheduleData.map((gameData, index) => (
           <ScheduleItem gameData={gameData} key={index} />
         ))}
