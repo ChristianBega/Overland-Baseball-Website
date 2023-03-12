@@ -5,7 +5,7 @@ import News from "../components/home/news.component";
 import HeroBackground from "../components/home/heroBg.component";
 import Schedule from "../components/home/schedule.component";
 import Sponsors from "../components/sponsors/sponsors.component";
-import TeamStore from "../components/home/teamStore.component";
+import TeamStore from "../components/home/callToActions.component";
 import ImageSlider from "../components/home/imageSlider.component";
 
 export default function HomePage() {
