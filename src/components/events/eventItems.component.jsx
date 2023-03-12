@@ -6,7 +6,7 @@ export default function EventItems({ event }) {
   const { eventName, location, date, time } = event;
 
   return (
-    <ListItem sx={{ maxWidth: "1000px", margin: "auto" }}>
+    <ListItem>
       <ListItemText sx={{ flex: 2 }} primary={eventName} />
       <ListItemText sx={{ flex: 2 }} primary={location} />
       <ListItemText
