@@ -9,8 +9,8 @@ const menuItemData = [
   { linkName: "Events", urlPath: "/events" },
   { linkName: "Boosters", urlPath: "/boosters" },
   { linkName: "Documents", urlPath: "/documents" },
-  { linkName: "Alumni", urlPath: "/" },
-  { linkName: "Sponsors", urlPath: "/" },
+  { linkName: "Alumni", urlPath: "/alumni" },
+  { linkName: "Sponsors", urlPath: "/sponsors" },
 ];
 
 // Styled Components
