@@ -1,14 +1,17 @@
 // Mui components
-import { Typography, Toolbar } from "@mui/material";
+import { Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
+
+// Components
 import NavigationListItems from "./navigationListItems.component";
+import OverlandLogo from "./logo.component";
+import Account from "./account.component";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "none",
   justifyContent: "space-between",
   textAlign: "center",
-  // spacing: theme.spacing(19),
-  padding: theme.spacing(4, 6), // 16px 24px
+  padding: theme.spacing(4),
   color: theme.palette.text.primary,
   background: theme.palette.primary.main,
   [theme.breakpoints.up("lg")]: {
@@ -19,8 +22,10 @@ export default function DesktopNavigation() {
   return (
     <>
       <StyledToolbar>
-        <Typography typography="h2">Overland Baseball</Typography>
+        <OverlandLogo />
+        {/* <Typography typography="h2">Overland Baseball</Typography> */}
         <NavigationListItems />
+        <Account />
       </StyledToolbar>
     </>
   );

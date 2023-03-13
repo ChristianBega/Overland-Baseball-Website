@@ -1,8 +1,11 @@
 import { createTheme } from "@mui/material";
 
 export const mainTheme = createTheme({
+  spacing: (factor) => `${0.25 * factor}rem`,
   breakpoints: {
     values: {
+      xs: 0,
+      sm: 600,
       md: 900,
       lg: 1200,
     },
@@ -30,13 +33,20 @@ export const mainTheme = createTheme({
         },
         sizeMedium: {
           lineHeight: "24px",
-          fontSize: "22px",
+          fontSize: "18px",
           padding: "10px 16px",
         },
+        // sizeLarge: {
+        //   lineHeight: "26px",
+        //   fontSize: "22px",
+        //   padding: "10px 12px",
+        // },
         sizeLarge: {
           lineHeight: "26px",
-          fontSize: "22px",
-          padding: "10px 12px",
+          fontSize: "18px",
+          padding: "18px 28px",
+          width: "80%",
+          minHeight: "40px",
         },
         sizeBox: {
           borderRadius: "",
@@ -52,6 +62,11 @@ export const mainTheme = createTheme({
         },
       },
     },
+    // MuiListItemText: {
+    //   styleOverrides: {
+    //     root: {},
+    //   },
+    // },
   },
   palette: {
     primary: {
@@ -66,6 +81,10 @@ export const mainTheme = createTheme({
       dark: "#007f3b",
       contrastText: "",
     },
+    accent: {
+      accentOne: "rgba(9,31,64,.8)",
+      accentTwo: "rgba(0,154,78,.5)",
+    },
     text: {
       primary: "#F3F4F6",
     },
@@ -77,21 +96,25 @@ export const mainTheme = createTheme({
       fontFamily: "Figtree",
       fontSize: "58px",
       lineHeight: "62px",
+      fontWeight: "800",
     },
     h2: {
       fontFamily: "Figtree",
       fontSize: "48px",
       lineHeight: "52px",
+      fontWeight: "700",
     },
     h3: {
       fontFamily: "Figtree",
       fontSize: "38px",
       lineHeight: "42px",
+      fontWeight: "700",
     },
     h4: {
       fontFamily: "Figtree",
       fontSize: "28px",
       lineHeight: "32px",
+      fontWeight: "600",
     },
     bodyTextLg: {
       fontFamily: "Work Sans",
@@ -111,12 +134,10 @@ export const mainTheme = createTheme({
       width: "100%",
     },
     linkTextMobile: {
-      color: "red",
       fontFamily: "Work Sans",
       lineHeight: "22px",
       fontSize: "22px",
       width: "100%",
     },
   },
-  spacing: (factor) => `${0.25 * factor}rem`,
 });
