@@ -134,7 +134,6 @@ export const mainTheme = createTheme({
       width: "100%",
     },
     linkTextMobile: {
-      color: "red",
       fontFamily: "Work Sans",
       lineHeight: "22px",
       fontSize: "22px",

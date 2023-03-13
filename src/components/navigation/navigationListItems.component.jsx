@@ -33,7 +33,11 @@ const StyledList = styled(List)(({ theme }) => ({
   },
 }));
 const StyledListItem = styled(ListItem)(({ theme }) => ({
-  textAlign: "center",
+  [theme.breakpoints.up("lg")]: {
+    display: "flex",
+    justifyContent: "center",
+    maxWidth: "180px",
+  },
 }));
 
 // Get menu items
