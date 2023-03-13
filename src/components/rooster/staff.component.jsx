@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import StaffItem from "./staffItem.component";
 const staffData = [
   {
@@ -9,7 +9,7 @@ const staffData = [
     teamManager: "Varsity Coach name",
   },
   {
-    team: "juniorVarsity",
+    team: "jv",
     coach: "Jv head coach",
     assistantCoach: "Jv coach name",
     teamManager: "Jv coach name",
@@ -29,7 +29,10 @@ export default function Staff({ currentTeam }) {
   }, [currentTeam]);
   return (
     <>
-      <Grid item xs={12}>
+      <Grid item xs={12} md={6} sx={{ minHeight: { xs: "200px", sm: "250px", md: "300px" } }}>
+        <Typography typography={{ xs: "h3", md: "h2" }} sx={{ px: 4, mt: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase" }} variant="h2">
+          {currentTeam}
+        </Typography>
         <StaffItem currentRooster={currentRooster} />
       </Grid>
     </>

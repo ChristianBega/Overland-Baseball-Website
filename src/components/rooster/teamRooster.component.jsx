@@ -189,7 +189,7 @@ export default function TeamRooster({ currentTeam }) {
     }
   }, [currentTeam]);
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} sx={{ mt : 4 }}>
       <TeamRoosterItem currentRooster={currentRooster} />
     </Grid>
   );

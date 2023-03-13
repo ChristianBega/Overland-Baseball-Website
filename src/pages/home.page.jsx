@@ -13,7 +13,7 @@ export default function HomePage() {
     <>
       <HeroBackground />
       <section id="home-section" style={{ display: "flex", justifyContent: " center" }}>
-        <Grid container maxWidth="xl" spacing={{ xs: 2, md: 4 }}>
+        <Grid container maxWidth="xl" spacing={{ xs: 4, md: 6 }}>
           <News />
           <ImageSlider />
           <Schedule />

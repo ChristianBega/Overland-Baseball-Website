@@ -11,7 +11,7 @@ export default function RoosterPage() {
   return (
     <>
       <section id="rooster-section" style={{ display: "flex", justifyContent: " center" }}>
-        <Grid container maxWidth="lg" spacing={{ xs: 2, md: 4 }}>
+        <Grid container maxWidth="lg" >
           <Staff currentTeam={currentTeam} />
           <Toggles setCurrentTeam={setCurrentTeam} />
           <TeamRooster currentTeam={currentTeam} />

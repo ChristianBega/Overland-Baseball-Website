@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material";
 
 export const mainTheme = createTheme({
+  spacing: (factor) => `${0.25 * factor}rem`,
   breakpoints: {
     values: {
       xs: 0,
@@ -43,8 +44,9 @@ export const mainTheme = createTheme({
         sizeLarge: {
           lineHeight: "26px",
           fontSize: "18px",
-          padding: "10px 16px",
-          minWidth: "125px",
+          padding: "18px 28px",
+          width: "80%",
+          minHeight: "40px",
         },
         sizeBox: {
           borderRadius: "",
@@ -94,21 +96,25 @@ export const mainTheme = createTheme({
       fontFamily: "Figtree",
       fontSize: "58px",
       lineHeight: "62px",
+      fontWeight: "800",
     },
     h2: {
       fontFamily: "Figtree",
       fontSize: "48px",
       lineHeight: "52px",
+      fontWeight: "700",
     },
     h3: {
       fontFamily: "Figtree",
       fontSize: "38px",
       lineHeight: "42px",
+      fontWeight: "700",
     },
     h4: {
       fontFamily: "Figtree",
       fontSize: "28px",
       lineHeight: "32px",
+      fontWeight: "600",
     },
     bodyTextLg: {
       fontFamily: "Work Sans",
@@ -135,5 +141,4 @@ export const mainTheme = createTheme({
       width: "100%",
     },
   },
-  spacing: (factor) => `${0.25 * factor}rem`,
 });
