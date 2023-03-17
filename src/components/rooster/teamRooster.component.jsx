@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
+import { Grid, List } from "@mui/material";
 // Components
 import TeamRoosterItem from "./teamRoosterItem.component";
 
@@ -189,8 +189,12 @@ export default function TeamRooster({ currentTeam }) {
     }
   }, [currentTeam]);
   return (
-    <Grid item xs={12} sx={{ mt: 4,  }}>
-      <TeamRoosterItem currentRooster={currentRooster} />
-    </Grid>
+    <section id="team-rooster-section" style={{ display: "flex", justifyContent: " center", width: "100%" }}>
+      <Grid item xs={12} md={10} sx={{ mt: 4 }}>
+        <List sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+          <TeamRoosterItem currentRooster={currentRooster} />
+        </List>
+      </Grid>
+    </section>
   );
 }
