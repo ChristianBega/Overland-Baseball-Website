@@ -31,16 +31,23 @@ export const mainTheme = createTheme({
           padding: "10px 12px",
           width: "165px",
         },
-        sizeMedium: {
-          lineHeight: "24px",
-          fontSize: "18px",
-          padding: "10px 16px",
-        },
+        // sizeMedium: {
+        //   lineHeight: "24px",
+        //   fontSize: "18px",
+        //   padding: "10px 16px",
+        // },
         // sizeLarge: {
         //   lineHeight: "26px",
         //   fontSize: "22px",
         //   padding: "10px 12px",
         // },
+        sizeMedium: {
+          lineHeight: "22px",
+          fontSize: "18px",
+          padding: "12px 24px",
+          width: "60%",
+          minHeight: "30px",
+        },
         sizeLarge: {
           lineHeight: "26px",
           fontSize: "18px",

@@ -2,7 +2,6 @@ import { ListItem, ListItemText } from "@mui/material";
 // Icons
 import TagIcon from "@mui/icons-material/Tag";
 
-
 export default function TeamRoosterItem({ currentRooster }) {
   return (
     <>
@@ -15,7 +14,7 @@ export default function TeamRoosterItem({ currentRooster }) {
             secondary={playerData.number}
           />
           <ListItemText primary={playerData.position} sx={{ flex: 2, textAlign: "center" }} />
-          <ListItemText primary={playerData.year} sx={{ flex: 2, textAlign: "center" }} />
+          <ListItemText primary={playerData.year} sx={{ flex: 2, textAlign: "end" }} />
         </ListItem>
       ))}
     </>
