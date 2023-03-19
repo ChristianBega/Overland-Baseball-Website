@@ -11,8 +11,8 @@ export default function TextComponent({ boosterData, eventsData, location }) {
       )}
       {location === "events" && (
         <Typography typography="smallBodyText">
+          {/* Data is being passed into textComponent, but data isn't being displayed... do i need context for state???? */}
           {eventsData.content}
-          testing
         </Typography>
       )}
     </>

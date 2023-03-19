@@ -22,9 +22,7 @@ const summerEventData = [
     content: "Event information about the upcoming event, links, forms, etc...",
   },
 ];
-// { setCurrentSeason, currentSeason }
-export default function EventInfo() {
-  const [currentSeason, setCurrentSeason] = useState("spring");
+export default function EventInfo({ setCurrentSeason, currentSeason }) {
   const [currentEventData, setCurrentEventData] = useState([]);
 
   useEffect(() => {
@@ -35,7 +33,7 @@ export default function EventInfo() {
     } else {
       setCurrentEventData(fallEventData);
     }
-  }, [currentSeason]);
+  }, [currentSeason, currentEventData]);
 
   return (
     <Grid item xs={12} md={6}>
