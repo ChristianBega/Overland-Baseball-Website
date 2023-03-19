@@ -1,10 +1,10 @@
 import { Grid } from "@mui/material";
 import React from "react";
 
-export default function Workouts() {
+export default function Tryouts() {
   return (
     <Grid item xs={12} md={6} sx={{ height: "250px" }}>
-      <p>Workouts Grid Item</p>
+      <p>Tryouts Grid Item</p>
     </Grid>
   );
 }

@@ -6,17 +6,18 @@ export default function EventItems({ event }) {
   const { eventName, location, date, time } = event;
 
   return (
-    <ListItem minWidth="250px" alignItems="flex-start">
-      <ListItemText sx={{ flex: 2 }} primary={eventName} />
-      <ListItemText sx={{ flex: 2 }} primary={location} />
+    <ListItem alignItems="flex-start">
+      <ListItemText sx={{ flex: 1.5 }} primary={eventName} />
+      <ListItemText sx={{ flex: 1.5 }} primary={location} />
       <ListItemText
         sx={{
-          flex: 1,
+          flex: 0.8,
+          textAlign: "center",
           display: "flex",
           alignItems: "center",
-          justifyContent: "flex-start",
+          justifyContent: "flex-end",
           columnGap: 2,
-          flexDirection: { xs: "column", md: "row" },
+          flexDirection: { xs: "column", sm: "row" },
         }}
         primary={date}
         secondary={time}
