@@ -42,8 +42,8 @@ export default function Events() {
   return (
     <Grid item xs={12}>
       <List>
-        {eventData.map((event) => (
-          <EventItems key={event.eventName} event={event} />
+        {eventData.map((event, index) => (
+          <EventItems key={index} event={event} />
         ))}
       </List>
     </Grid>

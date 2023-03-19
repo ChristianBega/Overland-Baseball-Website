@@ -29,7 +29,7 @@ export default function Staff({ currentTeam }) {
   }, [currentTeam]);
   return (
     <>
-      <Grid item xs={12} md={6} sx={{ minHeight: { xs: "200px", sm: "250px", md: "300px", textAlign: "center" } }}>
+      <Grid item xs={12} md={6} sx={{ minHeight: { xs: "200px", md: "300px", textAlign: "center" } }}>
         <Typography typography={{ xs: "h3", md: "h2" }} sx={{ px: 4, mt: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase" }} variant="h2">
           {currentTeam}
         </Typography>

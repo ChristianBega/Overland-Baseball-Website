@@ -188,6 +188,7 @@ export default function TeamRooster({ currentTeam }) {
       setCurrentRooster(freshmanRooster);
     }
   }, [currentTeam]);
+  
   return (
     <section id="team-rooster-section" style={{ display: "flex", justifyContent: " center", width: "100%" }}>
       <Grid item xs={12} md={10} sx={{ mt: 4 }}>

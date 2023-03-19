@@ -9,12 +9,13 @@ export default function Toggles({ setCurrentTeam }) {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
+          // justifyContent: "center",
           alignItems: "end",
           flexDirection: { md: "column " },
           width: "100%",
           gap: 4,
-          padding: 4,
+          px: 4,
+          mt : 6,
           minHeight: { xs: "60px", sm: "80px", md: "120px" },
         }}
       >

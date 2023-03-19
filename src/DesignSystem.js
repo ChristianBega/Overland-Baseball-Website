@@ -41,6 +41,8 @@ export const mainTheme = createTheme({
         //   fontSize: "22px",
         //   padding: "10px 12px",
         // },
+
+        // Medium toggle buttons 
         sizeMedium: {
           lineHeight: "22px",
           fontSize: "18px",
@@ -48,6 +50,7 @@ export const mainTheme = createTheme({
           width: "60%",
           minHeight: "30px",
         },
+        // Large toggle buttons
         sizeLarge: {
           lineHeight: "26px",
           fontSize: "18px",

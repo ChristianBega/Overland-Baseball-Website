@@ -1,19 +1,20 @@
 import { Grid } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import EventInfo from "../components/events/eventInfo.component";
 import Events from "../components/events/events.component";
 import Fundraisers from "../components/events/fundraisers.component";
-import Tryouts from "../components/events/tryouts.component";
-import Workouts from "../components/events/workouts.component";
 
 export default function EventsPage() {
+  // console.log("events main page ",currentSeason);
+
   return (
     <section id="events-section" style={{ display: "flex", justifyContent: " center" }}>
-      <Grid container maxWidth="lg" spacing={{ xs: 2, md: 4 }}>
+      <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }}>
         <Events />
-        <Tryouts />
-        <Workouts />
+        <EventInfo  />
         <Fundraisers />
       </Grid>
     </section>
   );
 }
+// setCurrentSeason={setCurrentSeason} currentSeason={currentSeason}
