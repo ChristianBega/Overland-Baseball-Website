@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 
 export default function TextComponent({ boosterData, eventsData, location }) {
@@ -6,15 +6,16 @@ export default function TextComponent({ boosterData, eventsData, location }) {
     <>
       {location === "boosters" && (
         <Grid xs={12} item>
-          <Typography typography="smallBodyText">{boosterData.content}</Typography>
+          <Typography sx={{ backgroundColor: "lightcyan", height: "275px" }} typography="smallBodyText">{boosterData.content}</Typography>
         </Grid>
-      )}
-      {location === "events" && (
-        <Typography typography="smallBodyText">
-          {/* Data is being passed into textComponent, but data isn't being displayed... do i need context for state???? */}
-          {eventsData.content}
-        </Typography>
       )}
     </>
   );
 }
+
+// {location === "events" && (
+//   <Typography typography="smallBodyText">
+//     {/* Data is being passed into textComponent, but data isn't being displayed... do i need context for state???? */}
+//     {eventsData.content}
+//   </Typography>
+// )}

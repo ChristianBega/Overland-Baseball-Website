@@ -1,4 +1,5 @@
 // import React from "react";
+import { Box, Grid } from "@mui/material";
 import TextComponent from "../reusableComponents/textComponent.component";
 
 const boostersData = [
@@ -20,7 +21,8 @@ export default function BoostersTextComponents() {
   return (
     <>
       {boostersData.map((boosterData) => (
-        <TextComponent location="boosters" boosterData={boosterData} key={boosterData.id} />
+       
+          <TextComponent location="boosters" boosterData={boosterData} key={boosterData.id} />
       ))}
     </>
   );

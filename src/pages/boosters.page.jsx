@@ -16,6 +16,7 @@ export default function BoostersPage() {
         <CashAppQRcode />
         <Wishlist />
       </Grid>
-    </section>
+    </section>        
   );
 }
+      

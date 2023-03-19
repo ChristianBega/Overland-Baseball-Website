@@ -18,17 +18,17 @@ const ctaData = [
     ctaImage: "Image",
   },
   {
-    ctaName: "Team store",
+    ctaName: "Overland HS",
     urlLink: "Link",
     ctaImage: "Image",
   },
   {
-    ctaName: "Team store",
+    ctaName: "Max Preps",
     urlLink: "Link",
     ctaImage: "Image",
   },
   {
-    ctaName: "Team store",
+    ctaName: "Something else...",
     urlLink: "Link",
     ctaImage: "Image",
   },
@@ -37,7 +37,7 @@ export default function TeamStore() {
   return (
     <Grid item xs={12} lg={5}>
       <Grid container spacing={{ xs: 2, md: 4 }} sx={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
-        {ctaData.map((cta) => (
+        {ctaData.map((cta, index) => (
           <Grid key={cta.ctaName} item xs={6} md={3} lg={6}>
             <Link>
               <StyledPaper sx={{ bgcolor: "blue", minHeight: { xs: "160px", md: "180px", lg: "220x" } }}>{cta.ctaName}</StyledPaper>
