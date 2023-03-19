@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 
 // Components
 import Events from "../components/events/events.component";

@@ -6,7 +6,7 @@ export default function TeamRoosterItem({ currentRooster }) {
   return (
     <>
       {currentRooster.map((playerData, index) => (
-        <ListItem  key={index}>
+        <ListItem key={index}>
           <ListItemText primary={playerData.name} sx={{ flex: 2 }} />
           <ListItemText
             sx={{ display: "flex", flex: 1 }}
