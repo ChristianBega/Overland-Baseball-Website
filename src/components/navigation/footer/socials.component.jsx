@@ -32,19 +32,14 @@ const socialData = [
 ];
 export default function Socials() {
   return (
-    <Grid item>
+    <Grid item xs={6} md={5} sx={{ display: "flex", flexDirection: "column", flexGrow: 1, alignItems: "center" }}>
       <Typography typography="h5">Follow us</Typography>
-      <Stack direction="row">
+      <Stack direction="row" spacing={2} mt={4}>
         {socialData.map((social) => (
-          <Link key={social.linkName} href={`https://${social.linkUrl}`} target="_blank" rel="noopener noreferrer">
+          <Link sx={{ color: "#fff" }} key={social.linkName} href={`https://${social.linkUrl}`} target="_blank" rel="noopener noreferrer">
             {social.socialIcon}
           </Link>
         ))}
-        {/* <a href="https://" target="_blank" rel="noopener noreferrer"></a> */}
-        {/* <TwitterIcon />
-        <FacebookIcon />
-        <InstagramIcon />
-        <YouTubeIcon /> */}
       </Stack>
     </Grid>
   );

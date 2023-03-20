@@ -15,6 +15,9 @@ export default function OverlandLogo() {
           columnGap: 4,
           color: "#fff",
           borderRadius: "50%",
+          cursor : "pointer"
+          // filter: "brightness(0) invert(1)",
+          // filter : "grayscale(100%)"
         }}
       >
         <Box component="img" sx={{ height: "75px", width: "auto" }} src={Logo}></Box>

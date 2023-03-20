@@ -7,19 +7,34 @@ import OverlandLogo from "../logo.component";
 import ContactUs from "./contactUs.component";
 import Socials from "./socials.component";
 import Copyright from "./copyright.component";
-import LocationMap from "./location.component";
+import LocationMap from "./locationMap.component";
+import styled from "@emotion/styled";
+const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
+  // display: "flex",
+  // justifyContent: "space-between",
+  padding: theme.spacing(6), // 7px 14px
+  color: theme.palette.text.primary,
+  background: theme.palette.primary.main,
+  height: "100%",
+  // [theme.breakpoints.up("lg")]: {
+  //   display: "none",
+  // },
+}));
+
 export default function FooterNavigation() {
   return (
     <Box component="footer" id="footer" sx={{ flexGrow: 1 }}>
-      <BottomNavigation component="nav">
-        <Grid container>
-          <OverlandLogo />
+      <StyledBottomNavigation component="nav">
+        <Grid container spacing={2}>
+          <Grid xs={12} md={2} sx={{ display : "flex", justifyContent: "center" }} item>
+            <OverlandLogo />
+          </Grid>
           <ContactUs />
           <Socials />
-          <LocationMap />
+          {/* <LocationMap /> */}
           <Copyright />
         </Grid>
-      </BottomNavigation>
+      </StyledBottomNavigation>
     </Box>
   );
 }
