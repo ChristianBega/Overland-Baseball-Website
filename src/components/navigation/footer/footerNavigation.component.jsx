@@ -1,5 +1,5 @@
 import React from "react";
-import { BottomNavigation } from "@mui/material";
+import { BottomNavigation, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 
 // Components
@@ -12,11 +12,13 @@ export default function FooterNavigation() {
   return (
     <Box component="footer" id="footer" sx={{ flexGrow: 1 }}>
       <BottomNavigation component="nav">
-        <OverlandLogo />
-        <ContactUs />
-        <Socials />
-        <Copyright />
-        <LocationMap />
+        <Grid container>
+          <OverlandLogo />
+          <ContactUs />
+          <Socials />
+          <LocationMap />
+          <Copyright />
+        </Grid>
       </BottomNavigation>
     </Box>
   );
