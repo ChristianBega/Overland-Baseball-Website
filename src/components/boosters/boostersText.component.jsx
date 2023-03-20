@@ -20,7 +20,7 @@ export default function BoostersTextComponents() {
   return (
     <>
       {boostersData.map((boosterData) => (
-        <TextComponent data={boosterData} key={boosterData.id} />
+        <TextComponent location="boosters" boosterData={boosterData} key={boosterData.id} />
       ))}
     </>
   );

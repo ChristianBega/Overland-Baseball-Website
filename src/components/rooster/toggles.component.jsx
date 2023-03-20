@@ -9,21 +9,23 @@ export default function Toggles({ setCurrentTeam }) {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          // justifyContent: "center",
+          alignItems: "end",
           flexDirection: { md: "column " },
           width: "100%",
           gap: 4,
+          px: 4,
+          mt : 6,
           minHeight: { xs: "60px", sm: "80px", md: "120px" },
         }}
       >
-        <Button onClick={handleClick} id="varsity" size="Large">
+        <Button onClick={handleClick} id="varsity" size={"Large"}>
           Varsity
         </Button>
-        <Button onClick={handleClick} id="jv" size="Large">
+        <Button onClick={handleClick} id="jv" size={"Large"}>
           Jv
         </Button>
-        <Button onClick={handleClick} id="freshman" size="Large">
+        <Button onClick={handleClick} id="freshman" size={"Large"}>
           Freshman
         </Button>
       </Box>
