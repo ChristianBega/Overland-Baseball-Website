@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import React from "react";
 
 export default function TextComponent({ boosterData, eventsData, location }) {
@@ -6,7 +6,9 @@ export default function TextComponent({ boosterData, eventsData, location }) {
     <>
       {location === "boosters" && (
         <Grid xs={12} item>
-          <Typography sx={{ backgroundColor: "lightcyan", height: "275px" }} typography="smallBodyText">{boosterData.content}</Typography>
+          <Typography sx={{ backgroundColor: "lightcyan", height: "275px" }} typography="smallBodyText">
+            {boosterData.content}
+          </Typography>
         </Grid>
       )}
     </>
