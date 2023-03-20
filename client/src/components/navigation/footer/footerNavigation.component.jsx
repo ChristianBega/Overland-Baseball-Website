@@ -31,7 +31,7 @@ export default function FooterNavigation() {
           </Grid>
           <ContactUs />
           <Socials />
-          {/* <LocationMap /> */}
+          <LocationMap />
           <Copyright />
         </Grid>
       </StyledBottomNavigation>
