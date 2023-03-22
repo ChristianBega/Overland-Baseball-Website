@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, List } from "@mui/material";
+import { Grid, TableContainer } from "@mui/material";
 // Components
 import TeamRosterItem from "./teamRosterItem.component";
 
@@ -188,13 +188,13 @@ export default function TeamRoster({ currentTeam }) {
       setCurrentRoster(freshmanRoster);
     }
   }, [currentTeam]);
-  
+
   return (
     <section id="team-rooster-section" style={{ display: "flex", justifyContent: " center", width: "100%" }}>
       <Grid item xs={12} md={10} sx={{ mt: 4 }}>
-        <List sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
-          <TeamRosterItem currentRoster={currentRoster} />
-        </List>
+      <TableContainer sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+        <TeamRosterItem currentRoster={currentRoster} />
+      </TableContainer>
       </Grid>
     </section>
   );

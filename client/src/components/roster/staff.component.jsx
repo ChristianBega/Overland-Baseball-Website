@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, TableContainer, Table, Typography } from "@mui/material";
 import StaffItem from "./staffItem.component";
 const staffData = [
   {
@@ -28,13 +28,15 @@ export default function Staff({ currentTeam }) {
     setCurrentRooster(staffData.filter((team) => team.team === currentTeam));
   }, [currentTeam]);
   return (
-    <>
-      <Grid item xs={12} md={6} sx={{ minHeight: { xs: "200px", md: "300px", textAlign: "center" } }}>
+    <Grid item xs={12} md={6} sx={{ minHeight: { xs: "200px", md: "300px", textAlign: "center" } }}>
+      <TableContainer>
         <Typography typography={{ xs: "h3", md: "h2" }} sx={{ px: 4, mt: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase" }} variant="h2">
           {currentTeam}
         </Typography>
-        <StaffItem currentRooster={currentRooster} />
-      </Grid>
-    </>
-  );
+        <Table>
+            <StaffItem currentRooster={currentRooster} />
+        </Table>
+      </TableContainer>
+    </Grid>
+  )
 }
