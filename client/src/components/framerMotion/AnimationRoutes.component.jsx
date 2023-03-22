@@ -7,7 +7,7 @@ import HomePage from "../../pages/home.page";
 import BoostersPage from "../../pages/boosters.page";
 import EventsPage from "../../pages/events.page";
 import DocumentsPage from "../../pages/documents.page";
-import RoosterPage from "../../pages/rooster.page";
+import RosterPage from "../../pages/roster.page";
 import AlumniPage from "../../pages/alumni.page";
 import SponsorsPage from "../../pages/sponsors.page";
 
@@ -19,7 +19,7 @@ export default function AnimationRoutes() {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/boosters" element={<BoostersPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
-        <Route path="/rooster" element={<RoosterPage />}></Route>
+        <Route path="/roster" element={<RosterPage />}></Route>
         <Route path="/documents" element={<DocumentsPage />}></Route>
         <Route path="/alumni" element={<AlumniPage />}></Route>
         <Route path="/sponsors" element={<SponsorsPage />}></Route>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // Navigation menu item data
 const menuItemData = [
   { linkName: "Home", urlPath: "/" },
-  { linkName: "Rooster", urlPath: "/rooster" },
+  { linkName: "Roster", urlPath: "/roster" },
   { linkName: "Events", urlPath: "/events" },
   { linkName: "Boosters", urlPath: "/boosters" },
   { linkName: "Documents", urlPath: "/documents" },
