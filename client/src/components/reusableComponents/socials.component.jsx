@@ -1,6 +1,6 @@
 import React from "react";
 // MUI components
-import { Grid, Link, Typography } from "@mui/material";
+import { Grid, Link, Typography, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 // Icons
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -31,16 +31,17 @@ const socialData = [
   },
 ];
 export default function Socials() {
+  const theme = useTheme()
   return (
-    <Grid item xs={6} md={5} sx={{ display: "flex", flexDirection: "column", flexGrow: 1, alignItems: "center" }}>
+    <>
       <Typography typography="h5">Follow us</Typography>
       <Stack direction="row" spacing={2} mt={4}>
         {socialData.map((social) => (
-          <Link sx={{ color: "#fff" }} key={social.linkName} href={`https://${social.linkUrl}`} target="_blank" rel="noopener noreferrer">
+          <Link sx={{ color: theme.palette.secondary.main}} key={social.linkName} href={`https://${social.linkUrl}`} target="_blank" rel="noopener noreferrer">
             {social.socialIcon}
           </Link>
         ))}
       </Stack>
-    </Grid>
+    </>
   );
 }

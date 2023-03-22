@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 // Components
 import OverlandLogo from "../logo.component";
 import ContactUs from "./contactUs.component";
-import Socials from "./socials.component";
+import Socials from "../../reusableComponents/socials.component";
 import Copyright from "./copyright.component";
 import LocationMap from "./locationMap.component";
 import styled from "@emotion/styled";
@@ -26,12 +26,18 @@ export default function FooterNavigation() {
     <Box component="footer" id="footer" sx={{ flexGrow: 1 }}>
       <StyledBottomNavigation component="nav">
         <Grid container spacing={2}>
-          <Grid xs={12} md={2} sx={{ display : "flex", justifyContent: "center" }} item>
+          <Grid xs={12} md={2} sx={{ display: "flex", justifyContent: "center" }} item>
             <OverlandLogo />
           </Grid>
           <ContactUs />
+<<<<<<< HEAD
           <Socials />
           <LocationMap />
+=======
+          <Grid item xs={6} md={5} sx={{ display: "flex", flexDirection: "column", flexGrow: 1, alignItems: "center" }}><Socials /></Grid>
+          
+          {/* <LocationMap /> */}
+>>>>>>> main
           <Copyright />
         </Grid>
       </StyledBottomNavigation>
