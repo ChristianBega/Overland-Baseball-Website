@@ -1,4 +1,4 @@
-import { Grid, List, Paper, Table, TableContainer } from "@mui/material";
+import { Grid, Paper, Table, TableContainer } from "@mui/material";
 import React from "react";
 import EventItems from "./eventItems.component";
 const eventData = [

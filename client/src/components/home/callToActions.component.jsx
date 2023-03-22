@@ -37,7 +37,6 @@ const ctaData = [
   },
 ];
 export default function CTAGrid() {
-  const theme = useTheme()
   return (
     <Grid item xs={12} lg={2} >
       <Grid container spacing={{ xs: 4, md: 4 }} sx={{ display: "flex", justifyContent: "center", alignContent: "center" }}>

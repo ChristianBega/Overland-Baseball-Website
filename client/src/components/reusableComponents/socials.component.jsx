@@ -1,6 +1,6 @@
 import React from "react";
 // MUI components
-import { Grid, Link, Typography, useTheme } from "@mui/material";
+import {  Link, Typography, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 // Icons
 import TwitterIcon from "@mui/icons-material/Twitter";
