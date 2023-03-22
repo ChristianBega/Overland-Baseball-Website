@@ -1,4 +1,4 @@
-import { Grid, Paper, styled, Link, Box } from "@mui/material";
+import { Grid, Paper, styled, Link, Box, useTheme } from "@mui/material";
 
 // Images
 import MaxPreps from "../../assets/maxPrepLogo.png";
@@ -37,8 +37,9 @@ const ctaData = [
   },
 ];
 export default function CTAGrid() {
+  const theme = useTheme()
   return (
-    <Grid item xs={12} lg={2}>
+    <Grid item xs={12} lg={2} >
       <Grid container spacing={{ xs: 4, md: 4 }} sx={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
         {ctaData.map((cta) => (
           <Grid key={cta.ctaName} item xs={6} md={3} lg={12} minHeight={{ xs: "260px", lg: "140px" }}>
