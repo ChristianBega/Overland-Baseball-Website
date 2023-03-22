@@ -6,7 +6,7 @@ import ScheduleItem from "./scheduleItem.component";
 const scheduleData = [
   {
     date: "Fri 27th",
-    time: "2",
+    time: "2:00",
     location: "Overland",
     homeTeam: "Overland",
     awayTeam: "Opponent",
@@ -58,4 +58,4 @@ export default function schedule() {
       </TableContainer>
     </Grid>
   );
-}
+} 
