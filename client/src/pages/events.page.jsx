@@ -8,8 +8,6 @@ import Tryouts from "../components/events/tryouts.component";
 import Workouts from "../components/events/workouts.component";
 
 export default function EventsPage() {
-  // const [currentSeason, setCurrentSeason] = useState("spring");
-
   return (
     <section id="events-section" style={{ display: "flex", justifyContent: " center" }}>
       <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }}>

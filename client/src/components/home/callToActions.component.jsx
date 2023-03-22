@@ -1,5 +1,8 @@
-import { Grid, Paper, styled } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Grid, Paper, styled, Link, Box, useTheme } from "@mui/material";
+
+// Images
+import MaxPreps from "../../assets/maxPrepLogo.png";
+import CherryCreek from "../../assets/cherryCreek.png";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   // flex: 1,
@@ -19,13 +22,13 @@ const ctaData = [
   },
   {
     ctaName: "Overland HS",
-    urlLink: "Link",
-    ctaImage: "Image",
+    urlLink: "https://www.cherrycreekschools.org/Page/127",
+    ctaImage: CherryCreek,
   },
   {
     ctaName: "Max Preps",
-    urlLink: "Link",
-    ctaImage: "Image",
+    urlLink: "https://www.maxpreps.com/co/aurora/overland-trailblazers/baseball/",
+    ctaImage: MaxPreps,
   },
   {
     ctaName: "Something else...",
@@ -33,27 +36,24 @@ const ctaData = [
     ctaImage: "Image",
   },
 ];
-export default function TeamStore() {
+export default function CTAGrid() {
+  const theme = useTheme()
   return (
-    <Grid item xs={12} lg={5}>
-      <Grid container spacing={{ xs: 2, md: 4 }} sx={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
-        {ctaData.map((cta, index) => (
-          <Grid key={cta.ctaName} item xs={6} md={3} lg={6}>
-            <Link>
-              <StyledPaper sx={{ bgcolor: "blue", minHeight: { xs: "160px", md: "180px", lg: "220x" } }}>{cta.ctaName}</StyledPaper>
+    <Grid item xs={12} lg={2} >
+      <Grid container spacing={{ xs: 4, md: 4 }} sx={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
+        {ctaData.map((cta) => (
+          <Grid key={cta.ctaName} item xs={6} md={3} lg={12} minHeight={{ xs: "260px", lg: "140px" }}>
+            <Link href={cta.urlLink} target="_blank" rel="noopener noreferrer">
+              <StyledPaper sx={{ height: "100%", background : "transparent" }}>
+                <Box
+                  component="img"
+                  src={cta.ctaImage}
+                  sx={{ objectFit: "cover", width: "100%", height: "100%", maxHeight: { xs: "260px", lg: "140px" } }}
+                ></Box>
+              </StyledPaper>
             </Link>
           </Grid>
         ))}
-        {/* 
-        <Grid item xs={6} md={3} lg={6}>
-          <StyledPaper sx={{ bgcolor: "red", minHeight: "50%" }}>Documents</StyledPaper>
-        </Grid>
-        <Grid item xs={6} md={3} lg={6}>
-          <StyledPaper sx={{ bgcolor: "orange", minHeight: "50%" }}>CashApp QR code</StyledPaper>
-        </Grid>
-        <Grid item xs={6} md={3} lg={6}>
-          <StyledPaper sx={{ bgcolor: "green", minHeight: "50%" }}>Events</StyledPaper>
-        </Grid> */}
       </Grid>
     </Grid>
   );

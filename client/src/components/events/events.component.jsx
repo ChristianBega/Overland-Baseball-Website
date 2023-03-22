@@ -1,4 +1,4 @@
-import { Grid, List } from "@mui/material";
+import { Grid, List, Paper, Table, TableContainer } from "@mui/material";
 import React from "react";
 import EventItems from "./eventItems.component";
 const eventData = [
@@ -41,11 +41,13 @@ const eventData = [
 export default function Events() {
   return (
     <Grid item xs={12}>
-      <List>
-        {eventData.map((event, index) => (
-          <EventItems key={index} event={event} />
-        ))}
-      </List>
+      <TableContainer component={Paper} sx={{ color: "#000" }}>
+        <Table aria-label="simple table">
+          {eventData.map((event, index) => (
+            <EventItems key={index} event={event} />
+          ))}
+        </Table>
+      </TableContainer>
     </Grid>
   );
 }
