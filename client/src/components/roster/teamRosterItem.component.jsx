@@ -2,10 +2,10 @@ import { ListItem, ListItemText } from "@mui/material";
 // Icons
 import TagIcon from "@mui/icons-material/Tag";
 
-export default function TeamRoosterItem({ currentRooster }) {
+export default function TeamRoosterItem({ currentRoster }) {
   return (
     <>
-      {currentRooster.map((playerData, index) => (
+      {currentRoster.map((playerData, index) => (
         <ListItem key={index}>
           <ListItemText primary={playerData.name} sx={{ flex: 2 }} />
           <ListItemText
