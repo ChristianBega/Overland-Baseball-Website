@@ -1,13 +1,13 @@
 import React from "react";
-import { List, Grid } from "@mui/material";
+import { Paper, Grid, TableContainer, Table } from "@mui/material";
 
 import ScheduleItem from "./scheduleItem.component";
 
 const scheduleData = [
   {
-    date: "12-12-12",
+    date: "Fri 27th",
+    time: "2",
     location: "Overland",
-    time: "12:12",
     homeTeam: "Overland",
     awayTeam: "Opponent",
   },
@@ -44,11 +44,18 @@ const scheduleData = [
 export default function schedule() {
   return (
     <Grid item xs={12} lg={7}>
-      <List disablePadding>
+      {/* <List disablePadding>
         {scheduleData.map((gameData, index) => (
           <ScheduleItem gameData={gameData} key={index} />
         ))}
-      </List>
+      </List> */}
+      <TableContainer component={Paper} sx={{ color: "#000", maxWidth: "1000px", margin: "auto" }}>
+        <Table sx={{ maxWidth: "1000px" }} aria-label="simple table">
+          {scheduleData.map((gameData, index) => (
+            <ScheduleItem gameData={gameData} key={index} />
+          ))}
+        </Table>
+      </TableContainer>
     </Grid>
   );
 }

@@ -7,7 +7,7 @@ export default function PlayerEvents({ currentInfo }) {
     <>
       {currentInfo.map((info, index) => (
         <Box key={index}>
-          <Typography typography="bodyTextSm" sx={{ height: "150px" }}>
+          <Typography typography="bodyTextSm" sx={{ height: "150px", textAlign : 'center' }}>
             {info.content}
           </Typography>
           <Box sx={{ display: "flex", columnGap : 5 }}>

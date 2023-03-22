@@ -42,7 +42,7 @@ export const mainTheme = createTheme({
         //   padding: "10px 12px",
         // },
 
-        // Medium toggle buttons 
+        // Medium toggle buttons
         sizeMedium: {
           lineHeight: "22px",
           fontSize: "18px",
@@ -69,6 +69,14 @@ export const mainTheme = createTheme({
         },
         fullWidth: {
           maxWidth: "200px",
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          // minHeight: "100px"
+          padding : "2rem",
         },
       },
     },

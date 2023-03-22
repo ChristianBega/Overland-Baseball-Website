@@ -4,7 +4,7 @@ import React from "react";
 export default function Toggles({ setCurrentSeason }) {
   const handleClick = (event) => setCurrentSeason(event.currentTarget.id);
   return (
-    <Box sx={{ display: "flex", gap: 4, my : 5}}> 
+    <Box sx={{ display: "flex", justifyContent: "center", gap: 4, my: 5 }}>
       <Button id="spring" onClick={handleClick} size="small">
         Spring
       </Button>
