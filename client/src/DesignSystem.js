@@ -29,7 +29,7 @@ export const mainTheme = createTheme({
           lineHeight: "22px",
           fontSize: "18px",
           padding: "10px 12px",
-          width: "165px",
+          width: "90px",
         },
         // sizeMedium: {
         //   lineHeight: "24px",
