@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Grid, List } from "@mui/material";
+import { Grid, TableContainer } from "@mui/material";
 // Components
-import TeamRoosterItem from "./teamRoosterItem.component";
+import TeamRosterItem from "./teamRosterItem.component";
 
 // const roosterData = [];
 
-const varsityRooster = [
+const varsityRoster = [
   {
     name: "Player 1",
     number: "11",
@@ -62,7 +62,7 @@ const varsityRooster = [
     year: "Sophomore",
   },
 ];
-const juniorVarsityRooster = [
+const juniorVarsityRoster = [
   {
     name: "Player 1",
     number: "99",
@@ -119,7 +119,7 @@ const juniorVarsityRooster = [
     year: "Sophomore",
   },
 ];
-const freshmanRooster = [
+const freshmanRoster = [
   {
     name: "Player 1",
     number: "11",
@@ -176,25 +176,25 @@ const freshmanRooster = [
     year: "Sophomore",
   },
 ];
-export default function TeamRooster({ currentTeam }) {
-  const [currentRooster, setCurrentRooster] = useState([]);
+export default function TeamRoster({ currentTeam }) {
+  const [currentRoster, setCurrentRoster] = useState([]);
 
   useEffect(() => {
     if (currentTeam === "varsity") {
-      setCurrentRooster(varsityRooster);
+      setCurrentRoster(varsityRoster);
     } else if (currentTeam === "juniorVarsity") {
-      setCurrentRooster(juniorVarsityRooster);
+      setCurrentRoster(juniorVarsityRoster);
     } else {
-      setCurrentRooster(freshmanRooster);
+      setCurrentRoster(freshmanRoster);
     }
   }, [currentTeam]);
-  
+
   return (
     <section id="team-rooster-section" style={{ display: "flex", justifyContent: " center", width: "100%" }}>
       <Grid item xs={12} md={10} sx={{ mt: 4 }}>
-        <List sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
-          <TeamRoosterItem currentRooster={currentRooster} />
-        </List>
+      <TableContainer sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+        <TeamRosterItem currentRoster={currentRoster} />
+      </TableContainer>
       </Grid>
     </section>
   );
