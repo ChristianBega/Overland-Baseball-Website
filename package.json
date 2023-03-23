@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ChristianBega/Overland-Baseball-Website/issues"
   },
-  "homepage": "https://github.com/ChristianBega/Overland-Baseball-Website#readme"
+  "homepage": "https://github.com/ChristianBega/Overland-Baseball-Website#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
 }
