@@ -102,6 +102,7 @@ export const mainTheme = createTheme({
     accent: {
       accentOne: "rgba(9,31,64,.8)",
       accentTwo: "rgba(0,154,78,.5)",
+      accentThree: "#D0D1D3",
     },
     text: {
       primary: "#F3F4F6",

@@ -6,7 +6,7 @@ const eventData = [
     eventName: "Fundraiser",
     location: "123 Abc St.",
     time: "11:00",
-    date: "March 12th",
+    date: "Mar 12th",
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
   },
@@ -14,7 +14,7 @@ const eventData = [
     eventName: "Broncho's Game",
     location: "303 Apple St.",
     time: "12:00",
-    date: "April 16th",
+    date: "Apr 16th",
 
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
@@ -23,7 +23,7 @@ const eventData = [
     eventName: "Tournament ",
     location: "123 Broadway Ave.",
     time: "10:00",
-    date: "June 1st",
+    date: "Jun 1st",
 
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
@@ -32,7 +32,7 @@ const eventData = [
     eventName: "Fundraiser",
     location: "312 Abc St.",
     time: "2:00",
-    date: "July 29th",
+    date: "Jul 29th",
 
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
