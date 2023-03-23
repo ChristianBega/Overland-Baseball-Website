@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Grid } from "@mui/material";
 
 // Components
-import Staff from "../components/rooster/staff.component";
-import Toggles from "../components/rooster/toggles.component";
-import TeamRooster from "../components/rooster/teamRooster.component";
+import Staff from "../components/roster/staff.component";
+import Toggles from "../components/roster/toggles.component";
+import TeamRoster from "../components/roster/teamRoster.component";
 
-export default function RoosterPage() {
+export default function RosterPage() {
   const [currentTeam, setCurrentTeam] = useState("varsity");
   return (
     <>
@@ -14,7 +14,7 @@ export default function RoosterPage() {
         <Grid container maxWidth="lg">
           <Staff currentTeam={currentTeam} />
           <Toggles setCurrentTeam={setCurrentTeam} />
-          <TeamRooster currentTeam={currentTeam} />
+          <TeamRoster currentTeam={currentTeam} />
         </Grid>
       </section>
     </>
