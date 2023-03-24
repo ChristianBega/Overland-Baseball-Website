@@ -9,8 +9,8 @@ import Workouts from "../components/events/workouts.component";
 
 export default function EventsPage() {
   return (
-    <Container component="section" id="events-section" sx={{ display: "flex", justifyContent: " center", paddingInline: { xs: 4, md: 8 } }}>
-      <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }}>
+    <Container component="section" id="events-section" sx={{ display: "flex", justifyContent: " center" }}>
+      <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }} my={10}>
         <Events />
         {/* <EventInfo setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} /> */}
         <Workouts />

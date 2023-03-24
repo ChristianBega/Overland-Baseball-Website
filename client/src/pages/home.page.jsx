@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 
 // Components
 import News from "../components/home/news.component";
@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       <HeroBackground />
-      <section id="home-section" style={{ display: "flex", justifyContent: " center" }}>
+      <Container component="section" id="home-section" style={{ display: "flex", justifyContent: " center", }}>
         <Grid container maxWidth="xl" spacing={{ xs: 4, md: 6 }} my={10}>
           <News />
           <ImageSlider />
@@ -20,7 +20,7 @@ export default function HomePage() {
           <CTAGrid />
           <Sponsors />
         </Grid>
-      </section>
+      </Container>
     </>
   );
 }

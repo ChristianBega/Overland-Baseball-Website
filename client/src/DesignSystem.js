@@ -39,16 +39,6 @@ export const mainTheme = createTheme(
             padding: "10px 12px",
             width: "90px",
           },
-          // sizeMedium: {
-          //   lineHeight: "24px",
-          //   fontSize: "18px",
-          //   padding: "10px 16px",
-          // },
-          // sizeLarge: {
-          //   lineHeight: "26px",
-          //   fontSize: "22px",
-          //   padding: "10px 12px",
-          // },
 
           // Medium toggle buttons
           sizeMedium: {
@@ -80,14 +70,14 @@ export const mainTheme = createTheme(
           },
         },
       },
-      // MuiTableCell: {
-      //   styleOverrides: {
-      //     root: {
-      //       // minHeight: "100px"
-      //       padding: "2rem",
-      //     },
-      //   },
-      // },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            // minHeight: "100px"
+            padding: "2rem",
+          },
+        },
+      },
       // MuiListItemText: {
       //   styleOverrides: {
       //     root: {},
