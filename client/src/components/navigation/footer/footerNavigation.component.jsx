@@ -4,6 +4,7 @@ import { Box } from "@mui/system";
 
 // Components
 import OverlandLogo from "./logofooter.component";
+import LocationMap from "./locationMap.component";
 import ContactUs from "./contactUs.component";
 import Socials from "../../reusableComponents/socials.component";
 import Copyright from "./copyright.component";
