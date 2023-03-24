@@ -31,7 +31,7 @@ export default function TeamRoosterItem({ currentRoster }) {
   return (
     <>
       {currentRoster.map((playerData, index) => (
-        <TableRow className="rosterContainer" key={index} style={style.rosterContainer}>
+        <TableRow sx={{ maxHeight : "150px"}} className="rosterContainer" key={index} style={style.rosterContainer}>
           <Grid style={style.container1}>
           <Grid style={style.infoContainer}>
             <ListItemText primary={playerData.position} />
