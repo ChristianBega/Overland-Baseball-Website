@@ -76,72 +76,46 @@ export const eventsData = [
   {
     eventName: "Broncos Game",
     location: "1801 Mile High Stadium Cir Denver CO 80204",
-    time: "2:00 PM",
-    date: "Nov 23rd",
+    time: "9:30 AM",
+    date: "Nov 20th",
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
   },
   {
     eventName: "Broncos Game",
     location: "1801 Mile High Stadium Cir Denver CO 80204",
-    time: "2:00 PM",
-    date: "July 23rd",
+    time: "10:00 AM",
+    date: "Dec 3rd",
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
   },
   {
     eventName: "Broncos Game",
     location: "1801 Mile High Stadium Cir Denver CO 80204",
-    time: "2:00 PM",
-    date: "July 23rd",
+    time: "1:50 PM",
+    date: "Dec 11th",
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
   },
   {
     eventName: "Broncos Game",
     location: "1801 Mile High Stadium Cir Denver CO 80204",
-    time: "2:00 PM",
-    date: "July 23rd",
+    time: "9:30 AM",
+    date: "Dec 18th",
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
   },
   {
     eventName: "Broncos Game",
     location: "1801 Mile High Stadium Cir Denver CO 80204",
-    time: "2:00 PM",
-    date: "July 23rd",
+    time: "TBD",
+    date: "Jan 7th",
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
   },
-  {
-    eventName: "Broncos Game",
-    location: "1801 Mile High Stadium Cir Denver CO 80204",
-    time: "2:00 PM",
-    date: "July 23rd",
-    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    extraInformation: "Dolor in reprehenderit in voluptate...",
-  },
+ 
 ];
 
-// Broncos, apple bees, tournaments, field clean ups, overland youth, workouts, tryouts,
+// apple bees, tournaments, field clean ups, overland youth, workouts, tryouts,
 
 
-// Sunday, November 20: Vs Las Vegas
-// Club Check in @ 8:30AM | Regular Check in @ 9:30AM
-// Kickoff @ 2:05PM
-
-// Saturday, December 3: High School Football
-// Check in @ 8:30AM
-// Doors @ 10:00AM
-
-// Sunday, December 11: Vs Kansas City
-// Club Check in @ 12:50PM | Regular Check in @ 1:50PM
-// Kickoff @ 6:20PM
-
-// Sunday, December 18: Vs Arizona
-// Club Check in @ 8:30AM | Regular Check in @ 9:30AM
-// Kickoff @ 2:05PM
-
-// Sat/Sun, January 7/8: Vs L.A. Chargers
-// Club Check in @ TBD | Regular Check in @ TBD
-// Kickoff @ TBD
