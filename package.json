@@ -4,8 +4,9 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && npm run build",
+    "start": "cd client && npm run start"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/ChristianBega/Overland-Baseball-Website/issues"
   },
-  "homepage": "https://github.com/ChristianBega/Overland-Baseball-Website#readme"
+  "homepage": "https://github.com/ChristianBega/Overland-Baseball-Website#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
 }

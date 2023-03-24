@@ -7,7 +7,6 @@ import OverlandLogo from "./logofooter.component";
 import ContactUs from "./contactUs.component";
 import Socials from "../../reusableComponents/socials.component";
 import Copyright from "./copyright.component";
-import LocationMap from "./locationMap.component";
 import styled from "@emotion/styled";
 const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
   // display: "flex",

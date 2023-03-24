@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 // Image assets
-import Logo from "../../assets/overlandLogo.jpg";
+import Logo from "../../assets/logoNoBackground.png";
 
 import { Box } from "@mui/material";
 
@@ -9,7 +9,8 @@ export default function OverlandLogo() {
     <Link to="/">
       <Box
         sx={{
-          mixBlendMode: "multiply",
+          // mixBlendMode: "multiply",
+          background: "white",
           display: "flex",
           alignItems: "center",
           columnGap: 4,
@@ -20,6 +21,7 @@ export default function OverlandLogo() {
           // filter : "grayscale(100%)"
         }}
       >
+        {/* <img src={Logo}/> */}
         <Box component="img" sx={{ height: "75px", width: "auto" }} src={Logo}></Box>
       </Box>
     </Link>

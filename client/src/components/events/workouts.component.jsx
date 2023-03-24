@@ -9,6 +9,9 @@ import Toggles from "./toggles.component";
 const springData = [
   {
     infoType: "spring",
+    date: "April 7th",
+    location: "Overland Baseball Field",
+    time: "3:45 – 6:00",
     content:
       "Spring ... ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     documents: ["1", "2", "3", "4"],
@@ -18,6 +21,9 @@ const springData = [
 const summerData = [
   {
     infoType: "summer",
+    date: "TBD",
+    location: "Overland Baseball Field",
+    time: "3:45 – 6:00",
     content:
       "Summer ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
     documents: ["1", "2", "3", "4"],
@@ -27,6 +33,9 @@ const summerData = [
 const fallData = [
   {
     infoType: "fall",
+    date: "TBD",
+    location: "Overland Baseball Field",
+    time: "3:45 – 6:00",
     content:
       "Fall ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
     documents: ["1", "2", "3", "4"],
@@ -34,7 +43,7 @@ const fallData = [
   },
 ];
 const StyledInfoBox = styled(Box)(({ theme }) => ({
-  minWidth: "400px",
+  minWidth: "350px",
   maxWidth: "600px",
   minHeight: "100%",
   margin: "auto",
@@ -60,7 +69,7 @@ export default function Workouts() {
   }, [currentSeason]);
 
   return (
-    <Grid item xs={12} md={6} sx={{ height: "400px" }}>
+    <Grid item xs={12} md={6} sx={{ minHeight: "375px", maxHeight: "450px", mt : 5 }}>
       <StyledInfoBox>
         <Typography typography="h3" textAlign="center">
           Workouts

@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import Grid from "@mui/material/Grid/Grid";
 import { Box } from "@mui/system";
 import React from "react";
@@ -32,6 +33,9 @@ const fundraisersData = [
 export default function Fundraisers() {
   return (
     <Grid item xs={12}>
+      <Typography typography="h2" sx={{ textAlign: "center", my: 5 }}>
+        Upcoming fundraisers!
+      </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={12} md={6}>
