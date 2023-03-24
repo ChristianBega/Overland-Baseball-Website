@@ -2,7 +2,7 @@ import { Container, Grid } from "@mui/material";
 import React from "react";
 
 // Components
-import Events from "../components/events/events.component";
+import Events from "../components/events/eventsDataGrid.component";
 import Fundraisers from "../components/events/fundraisers.component";
 import Tryouts from "../components/events/tryouts.component";
 import Workouts from "../components/events/workouts.component";
