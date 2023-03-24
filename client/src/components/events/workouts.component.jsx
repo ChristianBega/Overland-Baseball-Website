@@ -43,7 +43,7 @@ const fallData = [
   },
 ];
 const StyledInfoBox = styled(Box)(({ theme }) => ({
-  minWidth: "400px",
+  minWidth: "350px",
   maxWidth: "600px",
   minHeight: "100%",
   margin: "auto",

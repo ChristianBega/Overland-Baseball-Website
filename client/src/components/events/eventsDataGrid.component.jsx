@@ -23,7 +23,7 @@ export default function Events() {
       <Typography typography="h2" sx={{ textAlign: "center", mt: 5 }}>
         Upcoming Events!
       </Typography>
-      <TableContainer maxHeight={450} component={Paper} sx={{ color: "#000", my: 6, maxHeight: 440 }}>
+      <TableContainer component={Paper} sx={{ color: "#000", my: 6, maxHeight: 440 }}>
         <Table aria-label="simple table">
           {eventsData.map((event, index) => (
             <EventItems key={index} event={event} />
