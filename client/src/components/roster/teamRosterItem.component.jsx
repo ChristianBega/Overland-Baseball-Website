@@ -34,7 +34,7 @@ export default function TeamRoosterItem({ currentRoster }) {
         <TableRow className="rosterContainer" key={index} style={style.rosterContainer}>
           <Grid style={style.container1}>
           <Grid style={style.infoContainer}>
-            <ListItemText sx={{ fontWeight: "700" }} primary={playerData.position} />
+            <ListItemText primary={playerData.position} />
             <ListItemText>/</ListItemText>
             <ListItemText primary={playerData.height} />
             <ListItemText>/</ListItemText>

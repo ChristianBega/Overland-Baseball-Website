@@ -18,7 +18,7 @@ const varsityRoster = [
   {
     name: "Niko Gonzales",
     number: "2",
-    position: "CF,2B",
+    position: "CF, 2B",
     height: "5`8''",
     weight: "145lbs",
     handed: "R/R",
