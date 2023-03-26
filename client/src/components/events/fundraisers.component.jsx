@@ -9,29 +9,33 @@ import { styled } from "@mui/system";
 
 // Styled components
 const StyledImageBox = styled(Box)(({ theme }) => ({
-  // display: "none",
-  // justifyContent: "space-between",
-  // textAlign: "center",
-  // padding: theme.spacing(4),
-  // color: theme.palette.text.primary,
-  // background: theme.palette.primary.main,
-  // [theme.breakpoints.up("lg")]: {
-  //   display: "flex",
-  // },
+  zIndex: 1,
+  position: "relative",
   objectFit: "cover",
   height: "100%",
   width: "100%",
   maxHeight: "350px",
-  // boxShadow: 10,
-  // alignItems: "stretch",
+  border: `2px solid transparent`,
+
   "&:hover": {
-    // backgroundColor: "#f00",
     cursor: "pointer",
     border: `2px solid ${theme.palette.secondary.main}`,
     scale: "1.05",
-    // height : "50px"
   },
-  
+  "&:hover:after": {
+    content: '"Testing"',
+    position: "absolute",
+    // display : "inlineBlock",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    // width: "100%",
+    // height: "100%",
+    // backgroundImage: "linear-gradient(120deg, #eaee44 #33d0ff)",
+    color: "red",
+    zIndex: 100,
+  },
 }));
 
 const fundraisersData = [
