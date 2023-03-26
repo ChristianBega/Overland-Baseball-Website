@@ -11,8 +11,9 @@ const springData = [
     date: "Feb 27-28th",
     location: "Overland Baseball Field",
     time: "4:00–6:00 pm",
-    content: "Requirements to Tryout Must Be registered for Baseball, pay Athletic Fees, have a current physical.",
+    content: "Overland Baseball will hold Baseball tryouts on Feb 27th, 28th ",
     content2: "Player Equipment for Tryouts Uniform: Baseball pants, cleats, glove, and water.",
+    content3: "Requirements to Tryout Must Be registered for Baseball, pay Athletic Fees, have a current physical.",
     documents: ["1", "2", "3", "4"],
     faqs: ["1", "2", "3", "4"],
   },
@@ -68,7 +69,7 @@ export default function Workouts() {
   }, [currentSeason]);
 
   return (
-    <Grid item xs={12} md={6} sx={{ minHeight: "375px", maxHeight : "450px", mt :5 }}>
+    <Grid item xs={12} md={6} sx={{ minHeight: "375px", maxHeight : "450px", mt : 5 }}>
       <StyledInfoBox>
         <Typography typography="h3" textAlign="center">
           Tryouts

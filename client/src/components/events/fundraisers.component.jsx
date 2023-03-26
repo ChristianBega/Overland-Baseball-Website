@@ -33,13 +33,13 @@ const fundraisersData = [
 export default function Fundraisers() {
   return (
     <Grid item xs={12}>
-      <Typography typography="h2" sx={{ textAlign: "center", my: 5 }}>
+      <Typography typography="h2" sx={{ textAlign: "center", my: 8 }}>
         Upcoming fundraisers!
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={12} md={6}>
-            <Box sx={{ minHeight: { xs: "200px", lg: "250px", maxHeight: "250px" }, backgroundColor: "red" }}>{fundraiser.content}</Box>
+            <Box sx={{ minHeight: { xs: "200px", lg: "250px" }, backgroundColor: "red" }}>{fundraiser.content}</Box>
           </Grid>
         ))}
       </Grid>

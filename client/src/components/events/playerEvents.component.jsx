@@ -1,5 +1,4 @@
 import { Stack, Table, TableCell, TableContainer, TableRow, Typography, useTheme } from "@mui/material";
-import { Box } from "@mui/system";
 import React from "react";
 // import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
 export default function PlayerEvents({ currentInfo }) {
@@ -7,8 +6,8 @@ export default function PlayerEvents({ currentInfo }) {
   return (
     <>
       {currentInfo.map((info, index) => (
-        <Box key={index}>
-          <TableContainer sx={{ mb: 3, maxWidth : "90%", margin : "auto", border : `2px solid ${theme.palette.primary.main}` }}>
+        <>
+          <TableContainer sx={{ mb: 3, maxWidth: "90%", margin: "auto", border: `2px solid ${theme.palette.primary.main}` }}>
             <Table>
               <TableRow>
                 <TableCell
@@ -47,16 +46,18 @@ export default function PlayerEvents({ currentInfo }) {
               </TableRow>
             </Table>
           </TableContainer>
-          <Stack direction="column" spacing={3} sx={{ height: "150px", p: 5, textAlign : "center" }}>
+          <Stack direction="column" spacing={3} sx={{ minHeight: "150px", p: 5 }}>
             <Typography typography="bodyTextSm">{info.content}</Typography>
             <Typography typography="bodyTextSm">{info.content2}</Typography>
+            <Typography typography="bodyTextSm">{info.content3}</Typography>
+            {info.content4 ? <Typography typography="bodyTextSm">{info.content4}</Typography> : null}
           </Stack>
 
           {/* <Box sx={{ display: "flex", columnGap: 5 }}>
             <Box sx={{ width: "50%", height: "65px", backgroundColor: "blue" }}>Documents</Box>
             <Box sx={{ width: "50%", height: "65px", backgroundColor: "red" }}>Faqs</Box>
           </Box> */}
-        </Box>
+        </>
       ))}
     </>
   );
