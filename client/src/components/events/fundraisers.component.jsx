@@ -2,12 +2,11 @@ import React from "react";
 import Grid from "@mui/material/Grid/Grid";
 import { Typography, Box, styled } from "@mui/material";
 
-
 // Fundraiser Images
 import TournamentsImage from "../../assets/AmericanLegionTournament.jpeg";
 import BroncosImage from "../../assets/broncosVolunteer.png";
 import FieldCleanUpImage from "../../assets/fieldCleanUp.jpg";
-import AppleJacksImage from "../../assets/appleJacks.jpeg"
+import AppleJacksImage from "../../assets/appleJacks.jpeg";
 // Styled components
 const StyledImageBox = styled(Box)(({ theme }) => ({
   zIndex: 1,
@@ -67,7 +66,6 @@ const fundraisersData = [
     id: "Name 4",
     content: "box 4",
     image: AppleJacksImage,
-
     date: "8-22-23",
     time: "8 pm",
   },
@@ -76,14 +74,13 @@ const fundraisersData = [
 export default function Fundraisers() {
   return (
     <Grid item xs={12}>
-      <Typography typography="h2" sx={{ textAlign: "center", my: 10}}>
+      <Typography typography="h2" sx={{ textAlign: "center", my: 10 }}>
         Upcoming fundraisers!
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={6} md={3}>
-            <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}>
-            </StyledImageBox>
+            <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}></StyledImageBox>
           </Grid>
         ))}
       </Grid>

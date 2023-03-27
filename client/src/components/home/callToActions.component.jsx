@@ -40,7 +40,7 @@ const ctaData = [
 export default function CTAGrid() {
   return (
     <Grid item xs={12} lg={2}>
-      <Grid container sx={{ height: "100%" }} rowSpacing={2}>
+      <Grid container sx={{ height: "100%" }} spacing={2}>
         {ctaData.map((cta) => (
           <Grid key={cta.ctaName} item xs={6} md={3} lg={12} sx={{ height: {xs : "220px", lg : "25%"}, }}>
             <Link href={cta.urlLink} target="_blank" rel="noopener noreferrer">
