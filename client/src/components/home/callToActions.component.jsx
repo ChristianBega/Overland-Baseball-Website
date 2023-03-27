@@ -6,11 +6,7 @@ import CherryCreek from "../../assets/cherryCreek.png";
 import VenmoQrCode from "../../assets/venmoQRCode.jpg";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  // flex: 1,
-  // margin: theme.spacing(8),
   textAlign: "center",
-  // minHeight: "50%",
-  // padding: theme.spacing(15), // 14px
   color: theme.palette.text.primary,
   background: theme.palette.accent.accentOne,
 }));
