@@ -44,13 +44,8 @@ const scheduleData = [
 export default function schedule() {
   return (
     <Grid item xs={12} lg={10}>
-      {/* <List disablePadding>
-        {scheduleData.map((gameData, index) => (
-          <ScheduleItem gameData={gameData} key={index} />
-        ))}
-      </List> */}
-      <TableContainer component={Paper} sx={{ color: "#000",  }}>
-        <Table  aria-label="simple table">
+      <TableContainer component={Paper} sx={{ color: "#000" }}>
+        <Table aria-label="simple table">
           {scheduleData.map((gameData, index) => (
             <ScheduleItem gameData={gameData} key={index} />
           ))}
@@ -58,4 +53,4 @@ export default function schedule() {
       </TableContainer>
     </Grid>
   );
-} 
+}
