@@ -1,12 +1,13 @@
 import React from "react";
 import Grid from "@mui/material/Grid/Grid";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, styled } from "@mui/material";
 
+
+// Fundraiser Images
 import TournamentsImage from "../../assets/AmericanLegionTournament.jpeg";
 import BroncosImage from "../../assets/broncosVolunteer.png";
 import FieldCleanUpImage from "../../assets/fieldCleanUp.jpg";
-import { styled } from "@mui/system";
-
+import AppleJacksImage from "../../assets/appleJacks.jpeg"
 // Styled components
 const StyledImageBox = styled(Box)(({ theme }) => ({
   zIndex: 1,
@@ -22,20 +23,20 @@ const StyledImageBox = styled(Box)(({ theme }) => ({
     border: `2px solid ${theme.palette.secondary.main}`,
     scale: "1.05",
   },
-  "&:hover:after": {
-    content: '"Testing"',
-    position: "absolute",
-    // display : "inlineBlock",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    // width: "100%",
-    // height: "100%",
-    // backgroundImage: "linear-gradient(120deg, #eaee44 #33d0ff)",
-    color: "red",
-    zIndex: 100,
-  },
+  // "&:hover:after": {
+  //   content: '"Testing"',
+  //   position: "absolute",
+  //   // display : "inlineBlock",
+  //   top: 0,
+  //   left: 0,
+  //   bottom: 0,
+  //   right: 0,
+  //   // width: "100%",
+  //   // height: "100%",
+  //   // backgroundImage: "linear-gradient(120deg, #eaee44 #33d0ff)",
+  //   color: "red",
+  //   zIndex: 100,
+  // },
 }));
 
 const fundraisersData = [
@@ -65,7 +66,7 @@ const fundraisersData = [
   {
     id: "Name 4",
     content: "box 4",
-    image: TournamentsImage,
+    image: AppleJacksImage,
 
     date: "8-22-23",
     time: "8 pm",
@@ -75,14 +76,13 @@ const fundraisersData = [
 export default function Fundraisers() {
   return (
     <Grid item xs={12}>
-      <Typography typography="h2" sx={{ textAlign: "center", my: 8 }}>
+      <Typography typography="h2" sx={{ textAlign: "center", my: 10}}>
         Upcoming fundraisers!
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={6} md={3}>
             <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}>
-              {/* {fundraiser.content} */}
             </StyledImageBox>
           </Grid>
         ))}

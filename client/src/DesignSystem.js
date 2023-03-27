@@ -15,7 +15,7 @@ export const mainTheme = createTheme(
       MuiTypography: {
         styleOverrides: {
           root: {
-            fontWeight: "bold",
+            // fontWeight: "bold",
           },
         },
       },

@@ -15,9 +15,6 @@ const youthProgramData = [
     content2: "Eligible players: 7th & 8th grade",
     content3: "Cost: $50 per player",
     content4: "**Players will receive a Blazers shirt and hat **",
-
-    documents: ["1", "2", "3", "4"],
-    faqs: ["1", "2", "3", "4"],
   },
 ];
 
@@ -29,7 +26,7 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flex: "1",
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent: "center",
 }));
 
 export default function YouthProgram() {

@@ -8,7 +8,7 @@ import Toggles from "./toggles.component";
 const springData = [
   {
     infoType: "spring",
-    date: "Feb 27-28th",
+    date: "Feb 27-28th, 2023",
     location: "Overland Baseball Field",
     time: "4:00–6:00 pm",
     content: "Overland Baseball will hold Baseball tryouts on Feb 27th, 28th ",
