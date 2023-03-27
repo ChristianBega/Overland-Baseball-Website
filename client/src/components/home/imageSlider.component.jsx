@@ -9,11 +9,7 @@ import medley1 from "../../assets/imageSlider/Medleyhitting.jpg"
 import medley2 from "../../assets/imageSlider/Medleywatching.jpg"
 
 
-// const responsive = {
-//     0: { items: 1 },
-//     568: { items: 2 },
-//     1024: { items: 3 },
-// };
+
 
 const items = [
     <img src={aleman} alt="batting" className="item" data-value="1" style={{width:"100%"}}/>,
@@ -27,12 +23,14 @@ export default function ImageSlider() {
   return (
     <Grid item xs={12} md={4} lg={5}>
       <Box sx={{ height: "100%", minHeight: "300px" }}>
+        <Typography sx={{textAlign:"center",color:"#009A4E", fontSize:"25px"}}>
+      GO BLAZERS!
+    </Typography>
         <AliceCarousel
           autoPlay
           disableDotsControls
         mouseTracking
         items={items}
-        // responsive={responsive}
         controlsStrategy="alternate"
         infinite
         animationType="fadeout"
@@ -40,11 +38,7 @@ export default function ImageSlider() {
         autoPlayInterval={1000}
         animationDuration={2000}
     />
-    <Typography sx={{textAlign:"center",color:"#009A4E"}}>
-      BLAZER GREAT. BLAZER PROUD.
-      <br /> 
-      BLAZER EXCELLENT.
-    </Typography>
+    
       </Box>
     </Grid>
   );
