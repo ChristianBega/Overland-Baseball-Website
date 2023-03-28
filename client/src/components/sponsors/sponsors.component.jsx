@@ -26,7 +26,7 @@ const items = [
 export default function Sponsors() {
   return (
     <>
-      <Grid item xs={12}>
+      <Grid item xs={12} mt={10}>
         <Box sx={{ minHeight: { xs: "200px", md: "260px", lg: "300x" } }}>
            <AliceCarousel
           autoPlay
