@@ -14,7 +14,8 @@ const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
   height: "100%",
   width: "100%",
-  maxHeight: "350px",
+  minHeight: "240px",
+  maxHeight: "250px",
   border: `2px solid transparent`,
 
   "&:hover": {
@@ -74,13 +75,16 @@ const fundraisersData = [
 export default function Fundraisers() {
   return (
     <Grid item xs={12}>
-      <Typography typography="h2" sx={{ textAlign: "center", my: 10 }}>
+      <Typography typography="h3" sx={{ textAlign: "center", my: 10 }}>
         Upcoming fundraisers!
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={6} md={3}>
-            <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}></StyledImageBox>
+            <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}>
+              {/* When the image is hovered on, then transition text and overlay */}
+              {/* When the user clicks on the card then a modal opens with all information about that event */}
+            </StyledImageBox>
           </Grid>
         ))}
       </Grid>

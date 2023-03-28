@@ -52,6 +52,6 @@ export default function ImageSlider() {
     />
     </Box>
       </Box>
-    </Grid>
+
   );
 }
