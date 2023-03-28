@@ -43,7 +43,7 @@ const scheduleData = [
 
 export default function schedule() {
   return (
-    <Grid item xs={12} lg={10}>
+    <Grid item xs={12} lg={10} mt={10}>
       <TableContainer component={Paper} sx={{ color: "#000" }}>
         <Table aria-label="simple table">
           {scheduleData.map((gameData, index) => (
