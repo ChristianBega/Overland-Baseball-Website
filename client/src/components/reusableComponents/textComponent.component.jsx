@@ -6,7 +6,7 @@ export default function TextComponent({ boosterData, eventsData, location }) {
     <>
       {location === "boosters" && (
         <Grid xs={12} item>
-          <Typography sx={{ backgroundColor: "lightcyan", height: "275px" }} typography="smallBodyText">
+          <Typography sx={{ backgroundColor: "lightcyan", height: "275px", p : 4 }} typography={{ xs: "smallBodyText", md : "largeBodyText" }}>
             {boosterData.content}
           </Typography>
         </Grid>
