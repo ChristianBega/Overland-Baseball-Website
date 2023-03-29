@@ -74,7 +74,7 @@ export const mainTheme = createTheme(
         styleOverrides: {
           root: {
             // minHeight: "100px"
-            padding: "2rem",
+            // padding: "2rem",
           },
         },
       },
