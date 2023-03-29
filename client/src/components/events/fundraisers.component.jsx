@@ -1,93 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid/Grid";
-import { Typography, Box, styled } from "@mui/material";
+import { Typography, Box, styled, Button } from "@mui/material";
 
-// Fundraiser Images
-import TournamentsImage from "../../assets/AmericanLegionTournament.jpeg";
-import BroncosImage from "../../assets/broncosVolunteer.png";
-import FieldCleanUpImage from "../../assets/fieldCleanUp.jpg";
-import AppleJacksImage from "../../assets/appleJacks.jpeg";
+// Fundraiser data
+import {fundraisersCardData} from "../../websiteData/events.data";
+// Components
+import FundraiserModal from "./fundraiserModal.component";
 // Styled components
 const StyledImageBox = styled(Box)(({ theme }) => ({
-  zIndex: 1,
-  position: "relative",
   objectFit: "cover",
   height: "100%",
   width: "100%",
-  minHeight: "240px",
-  maxHeight: "250px",
-  border: `2px solid transparent`,
-
+  minHeight: "250px",
+  maxHeight: "275px",
   "&:hover": {
+    display: "block",
     cursor: "pointer",
-    border: `2px solid ${theme.palette.secondary.main}`,
     scale: "1.05",
+    transition: ".5s all ease-in-out",
   },
-  // "&:hover:after": {
-  //   content: '"Testing"',
-  //   position: "absolute",
-  //   // display : "inlineBlock",
-  //   top: 0,
-  //   left: 0,
-  //   bottom: 0,
-  //   right: 0,
-  //   // width: "100%",
-  //   // height: "100%",
-  //   // backgroundImage: "linear-gradient(120deg, #eaee44 #33d0ff)",
-  //   color: "red",
-  //   zIndex: 100,
-  // },
 }));
+const StyledButton = styled(Button)(({ theme }) => ({
+  height: "100%",
+  width: "100%",
+  padding: 0,
+  backgroundColor: "transparent",
+  "&:hover": {
+    backgroundColor: "transparent",
+  },
+}));
+// const StyledOverlay = styled(Box)(({ theme }) => ({
+//   position: "absolute",
+//   top: 0,
+//   bottom: 0,
+//   right: 0,
+//   display: "none",
+//   // left: "-10px",
 
-const fundraisersData = [
-  {
-    id: "Name 1",
-    content: "Broncos Games ",
-    image: BroncosImage,
-
-    date: "1-12-23",
-    time: "11 am",
-  },
-  {
-    id: "Name 2",
-    content: "Overland tournaments",
-    image: TournamentsImage,
-    date: "2-12-23",
-    time: "11 am",
-  },
-  {
-    id: "Name 3",
-    content: "Fall Clean Up",
-    image: FieldCleanUpImage,
-
-    date: "9-12-23",
-    time: "1 pm",
-  },
-  {
-    id: "Name 4",
-    content: "box 4",
-    image: AppleJacksImage,
-    date: "8-22-23",
-    time: "8 pm",
-  },
-];
+//   backgroundColor: "rgba(0, 0, 0, 0.54)",
+//   height: "100%",
+//   width: "100%",
+//   minHeight: "240px",
+//   maxHeight: "250px",
+// }));
 
 export default function Fundraisers() {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <Grid item xs={12}>
       <Typography typography="h3" sx={{ textAlign: "center", my: 10 }}>
         Upcoming fundraisers!
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
-        {fundraisersData.map((fundraiser) => (
+        {fundraisersCardData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={6} md={3}>
-            <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}>
-              {/* When the image is hovered on, then transition text and overlay */}
-              {/* When the user clicks on the card then a modal opens with all information about that event */}
-            </StyledImageBox>
+            {/* <StyledOverlay>
+              <Typography>Hello world</Typography>
+            </StyledOverlay> */}
+            <StyledButton onClick={handleOpen} open={open} setOpen={setOpen}>
+              <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}>
+                {/* When the image is hovered on, then transition text and overlay */}
+              </StyledImageBox>
+              <FundraiserModal open={open} handleClose={handleClose} />
+            </StyledButton>
           </Grid>
         ))}
       </Grid>
     </Grid>
   );
 }
+//

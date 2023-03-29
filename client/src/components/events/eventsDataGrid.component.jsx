@@ -1,7 +1,7 @@
 import { Grid, Paper, Table, TableContainer, Typography } from "@mui/material";
 import React from "react";
 import EventItems from "./eventItems.component";
-import { eventsData } from "../../websiteData/events.data";
+import { broncoData } from "../../websiteData/events.data";
 
 export default function Events() {
   return (
@@ -11,7 +11,7 @@ export default function Events() {
       </Typography>
       <TableContainer component={Paper} sx={{ color: "#000", my: 6, maxHeight: 440 }}>
         <Table aria-label="simple table">
-          {eventsData.map((event, index) => (
+          {broncoData.map((event, index) => (
             <EventItems key={index} event={event} />
           ))}
         </Table>
