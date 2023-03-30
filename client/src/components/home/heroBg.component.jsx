@@ -21,8 +21,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     top: "35%",
   },
+
   minWidth: "95%",
-  maxWidth: "800px",
 }));
 export default function HeroBackground() {
   const theme = useTheme();
@@ -36,6 +36,7 @@ export default function HeroBackground() {
       ></Box>
       <StyledBox>
         <Typography
+          typography="h1"
           sx={{
             backgroundColor: theme.palette.primary.light,
             backgroundImage: `linear-gradient(180deg, ${theme.palette.secondary.main}, ${theme.palette.primary.light})`,
@@ -45,15 +46,14 @@ export default function HeroBackground() {
             WebkitTextFillColor: "transparent",
             mozTextFillColor: "transparent",
             fontSize: "65px",
-            fontWeight: 800,
-            lineHeight: "55px",
-            // outline: "red
+            maxWidth: "500px",
+            margin: "auto",
           }}
           md={5}
         >
           Overland Trail Blazers
         </Typography>
-        <Typography typography="bodyTextLg" mt={4}>
+        <Typography typography="bodyTextLg" sx={{ maxWidth: "500px", mt: 4, mx: "auto" }}>
           Dignissimos et possimus autem in aspernatur possimus id expedita atque. Ut galisum nostrum in galisum omnis sit voluptatem ipsa sit enim
           cumque et voluptatem facilis!
         </Typography>

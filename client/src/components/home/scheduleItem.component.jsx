@@ -30,7 +30,7 @@ export default function ScheduleItem({ gameData }) {
         {location !== "Overland High" ? "@" : "Vs"}
       </TableCell>
       <TableCell sx={{ flex: "2 0 25%" }}>
-        <Box component="img" src={opponentLogo} sx={{ maxWidth: "55px", display: "flex", margin: "auto" }}></Box>
+        <Box component="img" src={opponentLogo} sx={{ maxWidth: "55px", display: "flex", margin: "auto", borderRadius: "50%" }}></Box>
       </TableCell>
 
       <TableCell
