@@ -1,32 +1,66 @@
 import styled from "@emotion/styled";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
 
+// Assets
 import HeroImage from "../../assets/heroImg.jpg";
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  margin: theme.spacing(8),
+// Icons
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { useTheme } from "@emotion/react";
+
+const StyledBox = styled(Box)(({ theme }) => ({
   textAlign: "center",
   padding: theme.spacing(6), // 14px
   color: theme.palette.text.primary,
-  background: theme.palette.accent.accentOne,
+  background: "none",
+  position: "absolute",
+  top: "35%",
+  right: "50%",
+  transform: "translate(50%,-50%)",
+  [theme.breakpoints.up("lg")]: {
+    top: "35%",
+  },
+  minWidth: "95%",
+  maxWidth: "800px",
 }));
 export default function HeroBackground() {
+  const theme = useTheme();
   return (
-    <Box component="section" style={{ minHeight: "92vh" }} id="hero-background">
+    <Box component="section" style={{ minHeight: "96vh", position: "relative", overflow: "hidden" }} id="hero-background">
       <Box
         component="img"
-        alt="A picture taken from home plate, looking out into a baseball field. "
+        alt="A picture taken from home plate, looking out onto a baseball field. "
         src={HeroImage}
-        sx={{ width: "100vw", height: "96vh", objectFit: "cover", position: "absolute", top: 0, bottom: 0, zIndex: -1, mt: 15 }}
+        sx={{ width: "100vw", minHeight: "96vh", objectFit: "cover", position: "absolute", top: 0, bottom: 0, zIndex: -1 }}
       ></Box>
-      <StyledPaper>
-        <Typography typography="h1">Overland Baseball</Typography>
+      <StyledBox>
+        <Typography
+          sx={{
+            backgroundColor: theme.palette.primary.light,
+            backgroundImage: `linear-gradient(180deg, ${theme.palette.secondary.main}, ${theme.palette.primary.light})`,
+            backgroundSize: "100%",
+            WebkitBackgroundClip: "text",
+            mozBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            mozTextFillColor: "transparent",
+            fontSize: "65px",
+            fontWeight: 800,
+            lineHeight: "55px",
+            // outline: "red
+          }}
+          md={5}
+        >
+          Overland Trail Blazers
+        </Typography>
         <Typography typography="bodyTextLg" mt={4}>
           Dignissimos et possimus autem in aspernatur possimus id expedita atque. Ut galisum nostrum in galisum omnis sit voluptatem ipsa sit enim
           cumque et voluptatem facilis!
         </Typography>
-      </StyledPaper>
+      </StyledBox>
+      <IconButton href="#home-section" sx={{ position: "absolute", bottom: 45, right: "50%", transform: "translate(50%,-50%)" }}>
+        <ArrowDownwardIcon sx={{ color: "#fff", fontSize: "2.5rem" }} />
+      </IconButton>
     </Box>
   );
 }
