@@ -41,14 +41,15 @@ export default function FooterNavigation() {
             <Socials />
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <LocationMap />
-          </Grid>
+          
           {!isMobile && (
-            <Grid item xs={6} md={3}>
+            <Grid item xs={6} md={4}>
               <ContactUs />
             </Grid>
           )}
+          <Grid item xs={12} md={3}>
+            <LocationMap />
+          </Grid>
 
           {/* <Grid item xs={6} md={5} sx={{ display: "flex", flexDirection: "column", flexGrow: 1, alignItems: "center" }}>
           </Grid> */}

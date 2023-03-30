@@ -1,5 +1,5 @@
-import { useTheme } from "@emotion/react";
-import { Box, Grid, Typography } from "@mui/material";
+// import { useTheme } from "@emotion/react";
+import { Box, Grid} from "@mui/material";
 import React from "react";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
@@ -25,13 +25,13 @@ const items = [
 ];
 
 export default function ImageSlider() {
-  const theme = useTheme();
+  // const theme = useTheme();
   return (
-    <Grid item xs={12} md={6} lg={6} mt={{ md: 8 }}>
+    <Grid item xs={12} md={6} lg={6} mt={{ md:12 }}>
       <Box sx={{ height: "100%", minHeight: "300px" }}>
-        <Typography typography="h3" sx={{ textAlign: "center", color: theme.palette.secondary.main, mb: 5 }}>
+        {/* <Typography typography="h3" sx={{ textAlign: "center", color: theme.palette.secondary.main, mb: 5}}>
           GO BLAZERS!
-        </Typography>
+        </Typography> */}
 
         <Box sx={{ boxShadow: 15 }}>
           <AliceCarousel

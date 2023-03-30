@@ -30,7 +30,7 @@ export default function Sponsors() {
   return (
     <>
       <Grid item xs={12} mt={10}>
-        <Box sx={{ minHeight: { xs: "200px", md: "260px", lg: "300x" } }}>
+        <Box sx={{ minHeight: { xs: "200px", md: "260px", lg: "300x" }, display:"flex", justifyItems:"center" }}>
            <AliceCarousel
           autoPlay
           disableDotsControls
