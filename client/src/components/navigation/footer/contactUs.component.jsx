@@ -10,12 +10,12 @@ import EmailIcon from "@mui/icons-material/Email";
 export default function ContactUs() {
   const theme = useTheme()
   return (
-    <Grid id="contact-us-grid-item"  sx={{ display: "flex", flexDirection: "column" }}>
-      <Typography typography={{xs:"bodyTextSm", md:"bodyTextLg"}} >Contact us</Typography>
+    <Grid item  xs={4} md={3} lg={4} id="contact-us-grid-item"  sx={{display: "flex", flexDirection: "column" }}>
+      <Typography typography="h6">Contact us</Typography>
       <Stack spacing={3} mt={4} sx={{color:theme.palette.secondary.main}}>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ display: "flex",flexDirection: "row" }}>
           <PhoneIcon />
-          <Typography ml={2} >000-111-2222</Typography>
+          <Typography ml={2} sx={{minWidth:"100%"}}>000-111-2222</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           <EmailIcon />

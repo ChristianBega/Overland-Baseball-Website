@@ -25,19 +25,13 @@ export default function FooterNavigation() {
   return (
     <Box component="footer" id="footer" sx={{ flexGrow: 1 }}>
       <StyledBottomNavigation component="nav">
-        <Grid container spacing={2} sx={{display:"flex",justifyContent:"space-around",alignItems:"center"}}>
+        <Grid container sx={{display:"flex", justifyContent:"space-between"}} >
           <OverlandLogo />
-          <Grid item xs={6} md={2}>
           <ContactUs />
-          </Grid>
-          <Grid item xs={6} md={2}>
+          <Grid item xs={4} md={3} lg={4} >
           <Socials />
           </Grid>
-          <Grid item xs={12} md={2}>
           <LocationMap />
-          </Grid>
-          {/* <Grid item xs={6} md={5} sx={{ display: "flex", flexDirection: "column", flexGrow: 1, alignItems: "center" }}>
-          </Grid> */}
           <Copyright />
         </Grid>
       </StyledBottomNavigation>

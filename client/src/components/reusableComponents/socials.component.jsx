@@ -34,7 +34,7 @@ export default function Socials() {
   const theme = useTheme()
   return (
     <>
-      <Typography typography="h5">Follow us</Typography>
+      <Typography typography="h6">Follow us</Typography>
       <Stack direction="row" spacing={2} mt={4}>
         {socialData.map((social) => (
           <Link sx={{ color: theme.palette.secondary.main}} key={social.linkName} href={`https://${social.linkUrl}`} target="_blank" rel="noopener noreferrer">
