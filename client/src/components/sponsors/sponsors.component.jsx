@@ -17,10 +17,10 @@ const responsive = {
 };
 
 const items = [
-    <img src={casa} alt="casa" className="item" data-value="1" style={{width:"300px", paddingTop:"50px"}}/>,
-    <img src={ken} alt="ken" className="item" data-value="2" style={{width:"300px"}}/>,
-    <img src={maddios} alt="maddios" className="item" data-value="3" style={{width:"300px"}}/>,
-    <img src={security} alt="security" className="item" data-value="4" style={{width:"300px"}}/>,
+    <img src={casa} alt="casa gutierrez" className="item" data-value="1" style={{width:"300px", paddingTop:"50px"}}/>,
+    <img src={ken} alt="kens auto service" className="item" data-value="2" style={{width:"300px"}}/>,
+    <img src={maddios} alt="uncle maddios pizza" className="item" data-value="3" style={{width:"300px"}}/>,
+    <img src={security} alt="security credit union" className="item" data-value="4" style={{width:"300px"}}/>,
     <img src={usbank} alt="usbank" className="item" data-value="5" style={{width:"300px"}}/>,
     <img src={zynex} alt="zynex" className="item" data-value="6" style={{width:"300px"}}/>,
 ];
@@ -40,7 +40,7 @@ export default function Sponsors() {
         controlsStrategy="alternate"
         infinite
         autoPlayStrategy="none"
-        autoPlayInterval={2000}
+        autoPlayInterval={1000}
         animationDuration={3000}
     />
         </Box>
