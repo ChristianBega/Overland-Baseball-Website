@@ -28,7 +28,7 @@ export default function EventItems({ event, isMobile }) {
     <StyledTableRow>
       <TableCell
         sx={{
-          width: "30%",
+          width: { xs: "30%", md: "20%" },
           fontWeight: "bold",
           textAlign: "center",
           backgroundColor: theme.palette.secondary.main,
@@ -36,21 +36,21 @@ export default function EventItems({ event, isMobile }) {
         }}
       >
         {date}
-        <Typography component="span" sx={{ display: "block" }}>
+        <Typography component="span" sx={{ display: { xs: "block", md: "inline" }, pl: { md: 2 } }}>
           {time}
         </Typography>
       </TableCell>
 
-      <TableCell sx={{ width: "60%" }}>{location}</TableCell>
+      <TableCell sx={{ width: { xs: "55%", md: "65%" } }}>{location}</TableCell>
 
       {!isMobile && (
         <TableCell
           sx={{
+            width: { xs: "25%" },
             textAlign: "center",
             fontWeight: "bold",
             backgroundColor: theme.palette.primary.light,
             color: theme.palette.text.primary,
-            width: "10%",
           }}
         >
           {eventName}

@@ -11,8 +11,8 @@ const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
   height: "100%",
   width: "100%",
-  minHeight: "250px",
-  maxHeight: "275px",
+  minHeight: "300px",
+  maxHeight: "325px",
   "&:hover": {
     display: "block",
     cursor: "pointer",
@@ -55,7 +55,7 @@ export default function Fundraisers() {
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersCardData.map((fundraiser) => (
-          <Grid item key={fundraiser.id} xs={6} md={3}>
+          <Grid item key={fundraiser.id} xs={12} sm={6} md={3}>
             {/* <StyledOverlay>
               <Typography>Hello world</Typography>
             </StyledOverlay> */}
