@@ -1,11 +1,13 @@
+import { useTheme } from "@emotion/react";
 import { TableRow, ListItemText, Typography, Grid } from "@mui/material";
 import "./teamRosterItem.css";
 
 export default function TeamRoosterItem({ currentRoster }) {
+  const theme = useTheme();
   return (
     <>
       {currentRoster.map((playerData, index) => (
-        <TableRow sx={{ maxHeight: "150px" }} className="rosterContainer" key={index} style={style.rosterContainer}>
+        <TableRow sx={{ maxHeight: "125px" }} className="rosterContainer" key={index} style={style.rosterContainer}>
           <Grid style={style.container1}>
             <Grid style={style.infoContainer}>
               <ListItemText primary={playerData.position} />
@@ -24,7 +26,16 @@ export default function TeamRoosterItem({ currentRoster }) {
             </Grid>
           </Grid>
           <Grid style={style.container2}>
-            <ListItemText primary={playerData.year} sx={{ flex: 2, textAlign: "end" }} />
+            <ListItemText
+              primary={playerData.year}
+              sx={{
+                flex: 2,
+                textAlign: "end",
+                [theme.breakpoints.up("sm")]: {
+                  paddingRight: "25%",
+                },
+              }}
+            />
           </Grid>
         </TableRow>
       ))}
@@ -74,7 +85,7 @@ const style = {
   },
   container2: {
     display: "flex",
-    width: "100%",
-    paddingRight: "25%",
+    width: "30%",
+    // paddingRight: "",
   },
 };
