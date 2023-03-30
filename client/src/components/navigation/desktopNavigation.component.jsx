@@ -11,11 +11,11 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "none",
   justifyContent: "space-between",
   textAlign: "center",
-  padding: theme.spacing(4),
   color: theme.palette.text.primary,
   background: theme.palette.primary.main,
   [theme.breakpoints.up("lg")]: {
     display: "flex",
+    padding: theme.spacing(5, 10),
   },
 }));
 export default function DesktopNavigation() {

@@ -1,52 +1,23 @@
 import React from "react";
-import { Paper, Grid, TableContainer, Table } from "@mui/material";
+import { Paper, Grid, TableContainer, Table, Typography } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
+// Schedule Data
+import { scheduleRowData } from "../../websiteData/home.data";
+
+// Components
 import ScheduleItem from "./scheduleItem.component";
 
-const scheduleData = [
-  {
-    date: "Fri 27th",
-    time: "2:00",
-    location: "Overland",
-    homeTeam: "Overland",
-    awayTeam: "Opponent",
-  },
-  {
-    date: "14-14-14",
-    location: "Vista",
-    time: "14:14",
-    homeTeam: "Overland",
-    awayTeam: "Opponent",
-  },
-  {
-    date: "16-16-16",
-    location: "Creek",
-    time: "16:16",
-    homeTeam: "Overland",
-    awayTeam: "Opponent",
-  },
-  {
-    date: "12-12-12",
-    location: "Central",
-    time: "12:12",
-    homeTeam: "Overland",
-    awayTeam: "Opponent",
-  },
-  {
-    date: "18-18-18",
-    location: "Overland",
-    time: "18:18",
-    homeTeam: "Overland",
-    awayTeam: "Opponent",
-  },
-];
-
-export default function schedule() {
+export default function Schedule() {
+  const theme = useTheme();
   return (
     <Grid item xs={12} lg={10} mt={10}>
-      <TableContainer component={Paper} sx={{ color: "#000" }}>
+      <Typography typography="h3" sx={{ textAlign: "center", color: theme.palette.secondary.main, mb: 10 }}>
+        Spring 2023 Schedule
+      </Typography>
+      <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
         <Table aria-label="simple table">
-          {scheduleData.map((gameData, index) => (
+          {scheduleRowData.map((gameData, index) => (
             <ScheduleItem gameData={gameData} key={index} />
           ))}
         </Table>

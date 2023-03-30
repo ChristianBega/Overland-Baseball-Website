@@ -1,6 +1,7 @@
 import { Grid, Paper, styled, Link, Box } from "@mui/material";
 
 // Images
+import GameChanger from "../../assets/gameChanger.jpeg";
 import MaxPreps from "../../assets/maxPrepLogo.png";
 import CherryCreek from "../../assets/cherryCreek.png";
 import VenmoQrCode from "../../assets/venmoQRCode.jpg";
@@ -13,13 +14,13 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const ctaData = [
   {
-    ctaName: "Team store",
+    ctaName: "Game Changer",
     urlLink: "Link",
-    ctaImage: "Image",
+    ctaImage: GameChanger,
   },
   {
     ctaName: "Overland HS",
-    urlLink: "https://www.cherrycreekschools.org/Page/127",
+    urlLink: "https://www.cherrycreekschools.org/Page/5987",
     ctaImage: CherryCreek,
   },
   {
@@ -38,7 +39,7 @@ export default function CTAGrid() {
     <Grid item xs={12} lg={2} mt={10}>
       <Grid container sx={{ height: "100%" }} spacing={2}>
         {ctaData.map((cta) => (
-          <Grid key={cta.ctaName} item xs={6} md={3} lg={12} sx={{ height: { xs: "220px", lg: "25%" } }}>
+          <Grid key={cta.ctaName} item xs={6} md={3} lg={12} sx={{ height: { xs: "240px", lg: "25%" } }}>
             <Link href={cta.urlLink} target="_blank" rel="noopener noreferrer">
               <StyledPaper sx={{ height: "100%", background: "transparent" }}>
                 <Box component="img" src={cta.ctaImage} sx={{ objectFit: "cover", width: "100%", height: "100%" }}></Box>

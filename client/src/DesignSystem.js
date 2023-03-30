@@ -73,16 +73,11 @@ export const mainTheme = createTheme(
       MuiTableCell: {
         styleOverrides: {
           root: {
-            // minHeight: "100px"
-            padding: "2rem",
+            // padding: "2rem",
+            color: "#091F40",
           },
         },
       },
-      // MuiListItemText: {
-      //   styleOverrides: {
-      //     root: {},
-      //   },
-      // },
     },
     palette: {
       primary: {
