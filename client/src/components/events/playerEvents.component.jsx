@@ -1,13 +1,14 @@
-import { Stack, Table, TableCell, TableContainer, TableRow, Typography, useTheme } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+// Table, TableCell, TableContainer, TableRow, useTheme;
 import React from "react";
 // import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
 export default function PlayerEvents({ currentInfo }) {
-  const theme = useTheme();
+  // const theme = useTheme();
   return (
     <>
       {currentInfo.map((info, index) => (
         <>
-          <TableContainer sx={{ mb: 3, maxWidth: "90%", margin: "auto" }}>
+          {/* <TableContainer sx={{ mb: 3, maxWidth: "90%", margin: "auto" }}>
             <Table>
               <TableRow>
                 <TableCell
@@ -45,12 +46,12 @@ export default function PlayerEvents({ currentInfo }) {
                 </TableCell>
               </TableRow>
             </Table>
-          </TableContainer>
-          <Stack direction="column" spacing={3} sx={{ minHeight: "150px", p: 5 }}>
+          </TableContainer> */}
+          <Stack direction="column" spacing={3} sx={{ minHeight: "150px", p: 5, textAlign: "center" }}>
             <Typography typography="bodyTextSm">{info.content}</Typography>
             <Typography typography="bodyTextSm">{info.content2}</Typography>
             <Typography typography="bodyTextSm">{info.content3}</Typography>
-            {info.content4 ? <Typography  component="small">{info.content4}</Typography> : null}
+            {info.content4 ? <Typography component="small">{info.content4}</Typography> : null}
           </Stack>
         </>
       ))}

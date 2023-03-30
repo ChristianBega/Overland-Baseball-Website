@@ -5,8 +5,10 @@ import React from "react";
 import Events from "../components/events/eventsDataGrid.component";
 import Fundraisers from "../components/events/fundraisers.component";
 import Tryouts from "../components/events/tryouts.component";
+import TryoutsSlider from "../components/events/tryoutsSlider.component";
 // import Workouts from "../components/events/workouts.component";
 import YouthProgram from "../components/events/youthProgram.component";
+import YouthProgramSlider from "../components/events/youthProgramSlider.component";
 
 export default function EventsPage() {
   return (
@@ -15,6 +17,9 @@ export default function EventsPage() {
         <Events />
         {/* <Workouts /> */}
         <YouthProgram />
+        <YouthProgramSlider />
+        <TryoutsSlider />
+
         <Tryouts />
         <Fundraisers />
       </Grid>
