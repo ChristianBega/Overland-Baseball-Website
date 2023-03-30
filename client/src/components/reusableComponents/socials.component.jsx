@@ -40,7 +40,7 @@ export default function Socials() {
       <Stack sx={{ justifyContent: "center" }} direction="row" spacing={2} mt={4}>
         {socialData.map((social) => (
           <Link
-            sx={{ color: theme.palette.primary.light }}
+            sx={{ color: theme.palette.secondary.main }}
             key={social.linkName}
             href={`https://${social.linkUrl}`}
             target="_blank"
