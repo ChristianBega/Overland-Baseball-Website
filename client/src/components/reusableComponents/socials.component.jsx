@@ -1,6 +1,6 @@
 import React from "react";
 // MUI components
-import { Link, Typography, useTheme } from "@mui/material";
+import { Box, Link, Typography, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 // Icons
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -33,9 +33,11 @@ const socialData = [
 export default function Socials() {
   const theme = useTheme();
   return (
-    <>
-      <Typography typography="h5">Follow us</Typography>
-      <Stack direction="row" spacing={2} mt={4}>
+    <Box sx={{ mb: 5 }}>
+      <Typography typography="h5" textAlign="center">
+        Follow us
+      </Typography>
+      <Stack sx={{ justifyContent: "center" }} direction="row" spacing={2} mt={4}>
         {socialData.map((social) => (
           <Link
             sx={{ color: theme.palette.primary.light }}
@@ -48,6 +50,6 @@ export default function Socials() {
           </Link>
         ))}
       </Stack>
-    </>
+    </Box>
   );
 }
