@@ -11,12 +11,16 @@ import Account from "./account.component";
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
-  padding: theme.spacing(2, 6), // 7px 14px
+  // padding: theme.spacing(2, 8), // 7px 14px
   color: theme.palette.text.primary,
   background: theme.palette.primary.main,
   [theme.breakpoints.up("lg")]: {
     display: "none",
   },
+  [theme.breakpoints.down("lg")]: {
+    padding: theme.spacing(4, 8),
+  },
+
 }));
 const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
   background: "rgba(0, 0, 0, 0.7)",

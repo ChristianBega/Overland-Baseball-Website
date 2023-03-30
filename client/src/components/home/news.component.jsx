@@ -15,7 +15,7 @@ const newsData = {
 export default function News() {
   // const theme = useTheme();
   return (
-    <Grid item xs={12} md={8} lg={7} sx={{ mt: { lg: 10 } }}>
+    <Grid item xs={12} md={6} lg={6} sx={{ mt: { lg: 10 } }}>
       <Box sx={{ minHeight: { xs: "300px", md: "400px", textAlign: "center" }, p: 4 }}>
         <Typography sx={{ my: 5 }} typography={{ xs: "h3", md: "h2" }}>
           Trail Blazer News
