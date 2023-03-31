@@ -1,3 +1,4 @@
+import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
@@ -30,6 +31,7 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function YouthProgram() {
+  const theme = useTheme();
   const [currentInfo, setCurrentInfo] = useState([]);
 
   useEffect(() => {
@@ -37,9 +39,9 @@ export default function YouthProgram() {
   }, [currentInfo]);
 
   return (
-    <Grid item xs={12} md={8} sx={{ minHeight: "375px", maxHeight: "450px", my: 10 }}>
+    <Grid item xs={12} md={8} sx={{ maxHeight: "425px", my: { xs: 10, md: 15 } }}>
       <StyledInfoBox>
-        <Typography typography="h3" textAlign="center" mb={5}>
+        <Typography typography="h2" sx={{ textAlign: "center", mb: 5, color: theme.palette.secondary.main }} textAlign="center" mb={5}>
           Youth Baseball Program
         </Typography>
         {/* <Toggles setCurrentSeason={setCurrentSeason} /> */}

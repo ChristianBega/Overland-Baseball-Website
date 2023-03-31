@@ -10,7 +10,7 @@ export default function Events() {
 
   return (
     <Grid item xs={12}>
-      <Typography typography="h2" sx={{ textAlign: "center", my: 10 }}>
+      <Typography typography="h1" sx={{ textAlign: "center", my: 10, color: theme.palette.secondary.main }}>
         Upcoming Events!
       </Typography>
       <TableContainer component={Paper} sx={{ color: "#000", my: 6, maxHeight: 440 }}>
@@ -23,26 +23,26 @@ export default function Events() {
                   fontWeight: "bold",
                   backgroundColor: theme.palette.primary.main,
                   color: theme.palette.text.primary,
-                  width: "15%",
+                  width: "20%",
                 }}
               >
-                <Typography typography="h5">Date</Typography>
+                <Typography typography="h6">Date</Typography>
               </TableCell>
 
-              <TableCell sx={{ width: "70%", backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, textAlign: "center" }}>
-                <Typography typography="h5">Location</Typography>
+              <TableCell sx={{ width: "60%", backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, textAlign: "center" }}>
+                <Typography typography="h6">Location</Typography>
               </TableCell>
               {!isMobile && (
                 <TableCell
                   sx={{
-                    width: "15%",
+                    width: "20%",
                     fontWeight: "bold",
                     textAlign: "center",
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.text.primary,
                   }}
                 >
-                  <Typography typography="h5">Event</Typography>
+                  <Typography typography="h6">Event</Typography>
                 </TableCell>
               )}
             </TableRow>

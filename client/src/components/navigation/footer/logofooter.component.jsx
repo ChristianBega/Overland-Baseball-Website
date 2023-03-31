@@ -9,12 +9,10 @@ export default function LogoFooter() {
     <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mb: 10, textAlign : "center" }}>
       <Box
         sx={{
-          // mixBlendMode: "multiply",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           columnGap: 4,
-          // color: "#fff",
           borderRadius: "50%",
           cursor: "pointer",
           // filter: "brightness(0) invert(1)",

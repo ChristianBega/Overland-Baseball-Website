@@ -36,13 +36,13 @@ const ctaData = [
 ];
 export default function CTAGrid() {
   return (
-    <Grid item xs={12} lg={2} mt={10}>
+    <Grid item xs={12}  mt={10}>
       <Grid container sx={{ height: "100%" }} spacing={2}>
         {ctaData.map((cta) => (
-          <Grid key={cta.ctaName} item xs={6} md={3} lg={12} sx={{ height: { xs: "240px", lg: "25%" } }}>
+          <Grid key={cta.ctaName} item xs={6} md={3} lg={3} sx={{ maxHeight: { xs: "240px"} }}>
             <Link href={cta.urlLink} target="_blank" rel="noopener noreferrer">
-              <StyledPaper sx={{ height: "100%", background: "transparent" }}>
-                <Box component="img" src={cta.ctaImage} sx={{ objectFit: "cover", width: "100%", height: "100%" }}></Box>
+              <StyledPaper sx={{ height: "75%", background: "transparent" }}>
+                <Box component="img" src={cta.ctaImage} sx={{ objectFit: "contain", width: "100%", height: "100%" }}></Box>
               </StyledPaper>
             </Link>
           </Grid>
