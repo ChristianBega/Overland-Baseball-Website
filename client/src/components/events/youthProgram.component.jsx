@@ -37,7 +37,7 @@ export default function YouthProgram() {
   }, [currentInfo]);
 
   return (
-    <Grid item xs={12} md={8} sx={{ minHeight: "375px", maxHeight: "450px", mt: 5 }}>
+    <Grid item xs={12} md={8} sx={{ minHeight: "375px", maxHeight: "450px", my: 10 }}>
       <StyledInfoBox>
         <Typography typography="h3" textAlign="center" mb={5}>
           Youth Baseball Program

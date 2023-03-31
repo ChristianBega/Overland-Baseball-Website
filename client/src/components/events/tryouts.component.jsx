@@ -69,7 +69,7 @@ export default function Workouts() {
   }, [currentSeason]);
 
   return (
-    <Grid item xs={12} md={8} sx={{ minHeight: "375px", maxHeight : "450px", mt : 5 }}>
+    <Grid item xs={12} md={7} sx={{ minHeight: "375px", maxHeight : "450px", mt : 5 }}>
       <StyledInfoBox>
         <Typography typography="h3" textAlign="center">
           Tryouts
