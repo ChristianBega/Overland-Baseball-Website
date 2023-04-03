@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid/Grid";
 import { Typography, Box, styled, Button } from "@mui/material";
 
 // Fundraiser data
-import {fundraisersCardData} from "../../websiteData/events.data";
+import { fundraisersCardData } from "../../websiteData/events.data";
 // Components
 import FundraiserModal from "./fundraiserModal.component";
 // Styled components
@@ -49,7 +49,7 @@ export default function Fundraisers() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} mt={10}>
       <Typography typography="h3" sx={{ textAlign: "center", my: 10 }}>
         Upcoming fundraisers!
       </Typography>

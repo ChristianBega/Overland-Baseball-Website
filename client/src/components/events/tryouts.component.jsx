@@ -1,3 +1,4 @@
+import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
@@ -10,7 +11,8 @@ const springData = [
     infoType: "spring",
     date: "Feb 27-28th, 2023",
     location: "Overland Baseball Field",
-    time: "4:00–6:00 pm",
+    time: "4:00-6:00 PM",
+
     content: "Overland Baseball will hold Baseball tryouts on Feb 27th, 28th ",
     content2: "Player Equipment for Tryouts Uniform: Baseball pants, cleats, glove, and water.",
     content3: "Requirements to Tryout Must Be registered for Baseball, pay Athletic Fees, have a current physical.",
@@ -23,7 +25,7 @@ const summerData = [
     infoType: "summer",
     date: "TBD",
     location: "Overland Baseball Field",
-    time: "4:00–6:00 pm",
+    time: "4:00-6 PM",
     content:
       "Summer ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
     documents: ["1", "2", "3", "4"],
@@ -35,7 +37,7 @@ const fallData = [
     infoType: "fall",
     date: "TBD",
     location: "Overland Baseball Field",
-    time: "4:00–6:00 pm",
+    time: "4:00–6 PM",
     content:
       "Fall ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
     documents: ["1", "2", "3", "4"],
@@ -54,7 +56,7 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function Workouts() {
-  // when the state changes
+  const theme = useTheme()
   const [currentSeason, setCurrentSeason] = useState("spring");
   const [currentInfo, setCurrentInfo] = useState([]);
 
@@ -69,9 +71,9 @@ export default function Workouts() {
   }, [currentSeason]);
 
   return (
-    <Grid item xs={12} md={8} sx={{ minHeight: "375px", maxHeight : "450px", mt : 5 }}>
+    <Grid item xs={12} md={8} sx={{ minHeight: "375px", maxHeight: "450px", mt: 5 }}>
       <StyledInfoBox>
-        <Typography typography="h3" textAlign="center">
+        <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center" }}>
           Tryouts
         </Typography>
         <Toggles setCurrentSeason={setCurrentSeason} />

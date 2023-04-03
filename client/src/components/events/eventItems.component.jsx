@@ -14,15 +14,7 @@ export default function EventItems({ event, isMobile }) {
   // extra data from event object : description, extraInformation
   const { eventName, location, date, time } = event;
   const theme = useTheme();
-  // const [isMobile, setIsMobile] = useState();
-
-  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  // const checkIsMobile = () => {
-  //   if () {
-  //     alert("yes");
-  //   }
-  // };
+ 
 
   return (
     <StyledTableRow>
