@@ -1,4 +1,4 @@
-const codeOfConductDoc = "./Code_Of_Conduct.pdf";
+const codeOfConductDoc = "./code_Of_Conduct.pdf";
 
 export const playerDocuments = [
   {

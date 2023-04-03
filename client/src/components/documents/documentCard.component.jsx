@@ -19,7 +19,7 @@ export default function DocumentCard({ data }) {
             </Typography>
           </Link>
           {/* <Button sx={{ maxWidth: "50%", margin: "auto", p: 0 }}>
-            <a id="download" href={data.documentLink} download={data.documentLink}>
+            <a id="download" href={data.download} download={data.download}>
               Download Resume
             </a>
           </Button> */}
