@@ -11,17 +11,17 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 const socialData = [
   {
     linkName: "twitter",
-    linkUrl: "twitter.com",
+    linkUrl: "twitter.com/overlandbb",
     socialIcon: <TwitterIcon />,
   },
   {
     linkName: "facebook",
-    linkUrl: "facebook.com",
+    linkUrl: "facebook.com/overlandathletics",
     socialIcon: <FacebookIcon />,
   },
   {
     linkName: "instagram",
-    linkUrl: "instagram.com",
+    linkUrl: "www.instagram.com/overland.baseball/",
     socialIcon: <InstagramIcon />,
   },
   {

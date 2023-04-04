@@ -60,7 +60,6 @@ const varsityRoster = [
     handed: "R/L",
     year: "Senior",
   },
-
   {
     name: "Tai'Shaun Charleston",
     number: "18",
@@ -106,121 +105,188 @@ const varsityRoster = [
     handed: "R/R",
     year: "Junior",
   },
-];
-const juniorVarsityRoster = [
+
   {
-    name: "Player 1",
-    number: "99",
-    position: "Catcher",
-    year: "Freshman",
-  },
-  {
-    name: "Player 2",
-    number: "55",
-    position: "Pitcher",
-    year: "Junior",
-  },
-  {
-    name: "Player 3",
-    number: "21",
-    position: "1st",
-    year: "Junior",
-  },
-  {
-    name: "Player 4",
-    number: "8",
-    position: "2nd",
-    year: "Freshman",
-  },
-  {
-    name: "Player 5",
-    number: "11",
-    position: "3d",
-    year: "Junior",
-  },
-  {
-    name: "Player 6",
-    number: "18",
-    position: "SS",
-    year: "Junior",
+    name: "Preston Lampley",
+    number: "n/a",
+    position: "2B",
+    height: "5`10''",
+    weight: "160lbs",
+    handed: "R/R",
+    year: "Sophomore",
   },
 
   {
-    name: "Player 7",
+    name: "Scotty Dewey",
     number: "3",
-    position: "LF",
-    year: "Junior",
-  },
-  {
-    name: "Player 8",
-    number: "31",
-    position: "CF",
-    year: "Junior",
-  },
-  {
-    name: "Player 1",
-    number: "1",
-    position: "RF",
+    position: "SS/P",
+    height: "6`",
+    weight: "215lbs",
+    handed: "R/R",
     year: "Sophomore",
   },
-];
-const freshmanRoster = [
   {
-    name: "Player 1",
-    number: "11",
-    position: "Catcher",
-    year: "Freshman",
+    name: "Thompson Antonio",
+    number: "n/a",
+    position: "OF",
+    height: "5`11''",
+    weight: "185lbs",
+    handed: "R/R",
+    year: "Sophomore",
   },
   {
-    name: "Player 2",
+    name: "Weber Jason",
+    number: "7",
+    position: "OF",
+    height: "6`",
+    weight: "153lbs",
+    handed: "R/R",
+    year: "Sophomore",
+  },
+  {
+    name: "Uriel Hernandez",
     number: "13",
-    position: "Pitcher",
-    year: "Freshman",
+    position: "C",
+    height: "5`9''",
+    weight: "190lbs",
+    handed: "R/R",
+    year: "Sophomore",
   },
+
   {
-    name: "Player 3",
+    name: "Matthew Jimenez",
     number: "10",
-    position: "1st",
-    year: "Freshman",
-  },
-  {
-    name: "Player 4",
-    number: "4",
-    position: "2nd",
-    year: "Sophomore",
-  },
-  {
-    name: "Player 5",
-    number: "16",
-    position: "3d",
-    year: "Sophomore",
-  },
-  {
-    name: "Player 6",
-    number: "16",
-    position: "SS",
+    position: "2B",
+    height: "5`9''",
+    weight: "115lbs",
+    handed: "R/R",
     year: "Freshman",
   },
 
   {
-    name: "Player 7",
-    number: "19",
-    position: "LF",
+    name: "Spencer Brill",
+    number: "1",
+    position: "Utility",
+    height: "5`7''",
+    weight: "115lbs",
+    handed: "R/R",
     year: "Freshman",
-  },
-  {
-    name: "Player 8",
-    number: "11",
-    position: "CF",
-    year: "Freshman",
-  },
-  {
-    name: "Player 1",
-    number: "33",
-    position: "RF",
-    year: "Sophomore",
   },
 ];
+// const juniorVarsityRoster = [
+//   {
+//     name: "Player 1",
+//     number: "99",
+//     position: "Catcher",
+//     year: "Freshman",
+//   },
+//   {
+//     name: "Player 2",
+//     number: "55",
+//     position: "Pitcher",
+//     year: "Junior",
+//   },
+//   {
+//     name: "Player 3",
+//     number: "21",
+//     position: "1st",
+//     year: "Junior",
+//   },
+//   {
+//     name: "Player 4",
+//     number: "8",
+//     position: "2nd",
+//     year: "Freshman",
+//   },
+//   {
+//     name: "Player 5",
+//     number: "11",
+//     position: "3d",
+//     year: "Junior",
+//   },
+//   {
+//     name: "Player 6",
+//     number: "18",
+//     position: "SS",
+//     year: "Junior",
+//   },
+
+//   {
+//     name: "Player 7",
+//     number: "3",
+//     position: "LF",
+//     year: "Junior",
+//   },
+//   {
+//     name: "Player 8",
+//     number: "31",
+//     position: "CF",
+//     year: "Junior",
+//   },
+//   {
+//     name: "Player 1",
+//     number: "1",
+//     position: "RF",
+//     year: "Sophomore",
+//   },
+// ];
+// const freshmanRoster = [
+//   {
+//     name: "Player 1",
+//     number: "11",
+//     position: "Catcher",
+//     year: "Freshman",
+//   },
+//   {
+//     name: "Player 2",
+//     number: "13",
+//     position: "Pitcher",
+//     year: "Freshman",
+//   },
+//   {
+//     name: "Player 3",
+//     number: "10",
+//     position: "1st",
+//     year: "Freshman",
+//   },
+//   {
+//     name: "Player 4",
+//     number: "4",
+//     position: "2nd",
+//     year: "Sophomore",
+//   },
+//   {
+//     name: "Player 5",
+//     number: "16",
+//     position: "3d",
+//     year: "Sophomore",
+//   },
+//   {
+//     name: "Player 6",
+//     number: "16",
+//     position: "SS",
+//     year: "Freshman",
+//   },
+
+//   {
+//     name: "Player 7",
+//     number: "19",
+//     position: "LF",
+//     year: "Freshman",
+//   },
+//   {
+//     name: "Player 8",
+//     number: "11",
+//     position: "CF",
+//     year: "Freshman",
+//   },
+//   {
+//     name: "Player 1",
+//     number: "33",
+//     position: "RF",
+//     year: "Sophomore",
+//   },
+// ];
 export default function TeamRoster({ currentTeam }) {
   const [currentRoster, setCurrentRoster] = useState([]);
 
@@ -228,18 +294,18 @@ export default function TeamRoster({ currentTeam }) {
     if (currentTeam === "varsity") {
       setCurrentRoster(varsityRoster);
     } else if (currentTeam === "juniorVarsity") {
-      setCurrentRoster(juniorVarsityRoster);
+      // setCurrentRoster(juniorVarsityRoster);
     } else {
-      setCurrentRoster(freshmanRoster);
+      // setCurrentRoster(freshmanRoster);
     }
   }, [currentTeam]);
 
   return (
     <section id="team-rooster-section" style={{ width: "100%", borderBottom: ".5px solid grey", borderTop: ".5px solid grey", margin: "3% 0 3% 0" }}>
       <Grid item xs={12} md={12} sx={{ mt: 4 }}>
-      <TableContainer sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
-        <TeamRosterItem currentRoster={currentRoster} />
-      </TableContainer>
+        <TableContainer sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+          <TeamRosterItem currentRoster={currentRoster} />
+        </TableContainer>
       </Grid>
     </section>
   );

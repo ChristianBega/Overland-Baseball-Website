@@ -6,6 +6,7 @@ import { Typography, Box, styled, Button } from "@mui/material";
 import { fundraisersCardData } from "../../websiteData/events.data";
 // Components
 import FundraiserModal from "./fundraiserModal.component";
+import { useTheme } from "@emotion/react";
 // Styled components
 const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
@@ -49,11 +50,13 @@ export default function Fundraisers() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const theme = useTheme()
   return (
     <Grid item xs={12} mt={10}>
-      <Typography typography="h3" sx={{ textAlign: "center", my: 10 }}>
+      <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center" }}>
         Upcoming fundraisers!
       </Typography>
+      <Typography typography="h3" sx={{ textAlign: "center", my: 10 }}></Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersCardData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={12} sm={6} md={3}>
