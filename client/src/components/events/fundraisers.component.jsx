@@ -16,8 +16,9 @@ const StyledImageBox = styled(Box)(({ theme }) => ({
   "&:hover": {
     display: "block",
     cursor: "pointer",
-    scale: "1.05",
-    transition: ".5s all ease-in-out",
+    scale: "1.03",
+    transition: ".2s all ease-in-out",
+    boxShadow: `0px 0px 12px 1px ${theme.palette.secondary.light}`,
   },
 }));
 const StyledButton = styled(Button)(({ theme }) => ({
