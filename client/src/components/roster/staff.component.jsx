@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Grid, TableContainer, Table, Typography } from "@mui/material";
+import { Grid, TableContainer, Typography } from "@mui/material";
 import StaffItem from "./staffItem.component";
+import { useTheme } from "@emotion/react";
 const staffData = [
   {
     team: "varsity",
-    coach: "Varsity head coach",
-    assistantCoach: "Varsity Coach name",
-    teamManager: "Varsity Coach name",
+    coach: "Mike Bega",
+    assistantCoach: "Steve Gonzalez ",
+    teamManager: "N/A",
   },
   {
     team: "jv",
@@ -23,6 +24,7 @@ const staffData = [
 ];
 
 export default function Staff({ currentTeam }) {
+  const theme = useTheme();
   const [currentRooster, setCurrentRooster] = useState([]);
   useEffect(() => {
     setCurrentRooster(staffData.filter((team) => team.team === currentTeam));
@@ -30,12 +32,14 @@ export default function Staff({ currentTeam }) {
   return (
     <Grid item xs={12} sx={{ minHeight: { xs: "275px", md: "250px", textAlign: "center" } }}>
       <TableContainer mb={5}>
-        <Typography typography="h1" sx={{ px: 4, my: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase" }} variant="h2">
+        <Typography
+          typography="h1"
+          sx={{ px: 4, my: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase", color: theme.palette.secondary.main }}
+          variant="h2"
+        >
           {currentTeam} &nbsp;Roster
         </Typography>
-        <Table>
-          <StaffItem currentRooster={currentRooster} />
-        </Table>
+        <StaffItem currentRooster={currentRooster} />
       </TableContainer>
     </Grid>
   );

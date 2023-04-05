@@ -1,4 +1,4 @@
-import { TableRow, Typography, Stack, Box, TableCell } from "@mui/material";
+import { TableRow, Typography, Stack, Box, TableCell, Tab, Avatar } from "@mui/material";
 import "./teamRosterItem.css";
 import styled from "@emotion/styled";
 
@@ -45,6 +45,9 @@ export default function TeamRoosterItem({ currentRoster }) {
                 {playerData.name}
               </Typography>
             </Grid> */}
+          <TableCell sx={{ p: 2 }} component="th" scope="row">
+            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+          </TableCell>
           <TableCell sx={{ border: "none", px: 4, minWidth: "100%" }} component="th" scope="row">
             <Stack direction="row" gap={1}>
               <StyledTypography>{playerData.position} |</StyledTypography>
@@ -52,7 +55,14 @@ export default function TeamRoosterItem({ currentRoster }) {
               <StyledTypography>{playerData.weight} |</StyledTypography>
               <StyledTypography>{playerData.handed}</StyledTypography>
             </Stack>
-            <Box sx={{ minWidth: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Box
+              sx={{
+                minWidth: { xs: "75vw", md: "80vw" },
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Stack direction="row" gap={2} sx={{ display: "flex", alignItems: "center", mt: 4 }}>
                 <StyledNumberTypography>{playerData.number}</StyledNumberTypography>
                 <Typography
@@ -90,48 +100,48 @@ export default function TeamRoosterItem({ currentRoster }) {
 }
 
 // const style = {
-  // rosterContainer: {
-  //   // padding: "0 2% 0 2%",
-  //   // height: "20vh",
-  //   // display: "flex",
-  //   justifyContent: "space-between",
-  //   alignItems: "center",
-  // },
-  // container1: {
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   alignItems: "flex-start",
-  //   width: "100%",
-  // },
-  // infoContainer: {
-  //   display: "flex",
-  //   flexDirection: "row",
-  // },
-  // nameContainer: {
-  //   display: "flex",
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   width: "100%",
-  // },
-  // playerContainer: {
-  //   fontSize: "24px",
-  //   color: "#666666",
-  //   paddingLeft: "3%",
-  // },
-  // numberContainer: {
-  // fontSize: "1rem",
-  // fontWeight: "700",
-  // color: "#fff",
-  // background: "#091F40",
-  // width: "2rem",
-  // height: "1.5rem",
-  // display: "flex",
-  // justifyContent: "center",
-  // alignItems: "center",
-  // },
-  // container2: {
-  //   display: "flex",
-  //   width: "30%",
-  //   // paddingRight: "",
-  // },
+// rosterContainer: {
+//   // padding: "0 2% 0 2%",
+//   // height: "20vh",
+//   // display: "flex",
+//   justifyContent: "space-between",
+//   alignItems: "center",
+// },
+// container1: {
+//   display: "flex",
+//   flexDirection: "column",
+//   alignItems: "flex-start",
+//   width: "100%",
+// },
+// infoContainer: {
+//   display: "flex",
+//   flexDirection: "row",
+// },
+// nameContainer: {
+//   display: "flex",
+//   flexDirection: "row",
+//   alignItems: "center",
+//   width: "100%",
+// },
+// playerContainer: {
+//   fontSize: "24px",
+//   color: "#666666",
+//   paddingLeft: "3%",
+// },
+// numberContainer: {
+// fontSize: "1rem",
+// fontWeight: "700",
+// color: "#fff",
+// background: "#091F40",
+// width: "2rem",
+// height: "1.5rem",
+// display: "flex",
+// justifyContent: "center",
+// alignItems: "center",
+// },
+// container2: {
+//   display: "flex",
+//   width: "30%",
+//   // paddingRight: "",
+// },
 // };
