@@ -25,7 +25,7 @@ const StyledImageBox = styled(Box)(({ theme }) => ({
 const StyledButton = styled(Button)(({ theme }) => ({
   height: "100%",
   width: "100%",
-  padding: 0,
+  padding: 4,
   backgroundColor: "transparent",
   "&:hover": {
     backgroundColor: "transparent",
@@ -50,7 +50,7 @@ export default function Fundraisers() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const theme = useTheme()
+  const theme = useTheme();
   return (
     <Grid item xs={12} mt={10}>
       <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center" }}>
