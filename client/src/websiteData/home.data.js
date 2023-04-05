@@ -11,7 +11,6 @@ import standleyLake from "../assets/teamLogos/standleyLake.webp";
 import thornton from "../assets/teamLogos/thornton.webp";
 import westminster from "../assets/teamLogos/westminster.webp";
 import vistaRidge from "../assets/teamLogos/vistaRidge.webp";
-
 import cherryCreek from "../assets/teamLogos/cherryCreek.webp";
 import grandView from "../assets/teamLogos/grandView.webp";
 import smokyHill from "../assets/teamLogos/smokyHill.webp";
@@ -47,3 +46,6 @@ export const scheduleRowData = [
   createData("5/11/23", "4:00 PM", "Range View", "Overland High", rangeView),
   // createData("5/13/23", "4:00 PM", "Aurora Central", "Overland High", vistaPeak),
 ];
+
+
+// Call to action data 
