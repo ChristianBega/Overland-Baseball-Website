@@ -138,16 +138,17 @@ export const mainTheme = createTheme(
         lineHeight: "18px",
       },
       linkTextDesktop: {
-        color: "#fff",
+        color: "#283F76",
         fontFamily: "Work Sans",
         lineHeight: "18px",
         fontSize: "20px",
         width: "100%",
       },
       linkTextMobile: {
+        color: "#283F76",
         fontFamily: "Work Sans",
         lineHeight: "22px",
-        fontSize: "22px",
+        fontSize: "28px",
         width: "100%",
       },
       // MuiTypography: {
