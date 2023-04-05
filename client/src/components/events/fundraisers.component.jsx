@@ -6,6 +6,7 @@ import { Typography, Box, styled, Button } from "@mui/material";
 import { fundraisersCardData } from "../../websiteData/events.data";
 // Components
 import FundraiserModal from "./fundraiserModal.component";
+import { useTheme } from "@emotion/react";
 // Styled components
 const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
@@ -16,14 +17,15 @@ const StyledImageBox = styled(Box)(({ theme }) => ({
   "&:hover": {
     display: "block",
     cursor: "pointer",
-    scale: "1.05",
-    transition: ".5s all ease-in-out",
+    scale: "1.03",
+    transition: ".2s all ease-in-out",
+    boxShadow: `0px 0px 12px 1px ${theme.palette.secondary.light}`,
   },
 }));
 const StyledButton = styled(Button)(({ theme }) => ({
   height: "100%",
   width: "100%",
-  padding: 0,
+  padding: 4,
   backgroundColor: "transparent",
   "&:hover": {
     backgroundColor: "transparent",
@@ -48,11 +50,13 @@ export default function Fundraisers() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const theme = useTheme();
   return (
     <Grid item xs={12} mt={10}>
-      <Typography typography="h3" sx={{ textAlign: "center", my: 10 }}>
+      <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center" }}>
         Upcoming fundraisers!
       </Typography>
+      <Typography typography="h3" sx={{ textAlign: "center", my: 10 }}></Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersCardData.map((fundraiser) => (
           <Grid item key={fundraiser.id} xs={12} sm={6} md={3}>

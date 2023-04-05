@@ -15,11 +15,11 @@ export default function ContactUs() {
       <Stack spacing={3} mt={4} sx={{ color: theme.palette.secondary.main }}>
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
           <PhoneIcon />
-          <Typography ml={2}>000-111-2222</Typography>
+          <Typography ml={2}>720-505-3962</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
           <EmailIcon />
-          <Typography ml={2}>baseball@gmail.com</Typography>
+          <Typography ml={2}>mbega@cherrycreekschools.org</Typography>
         </Box>
       </Stack>
     </Grid>
