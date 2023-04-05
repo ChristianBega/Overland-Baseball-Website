@@ -2,11 +2,14 @@ import { useState } from "react";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+
 // Mui components
-import { IconButton, Drawer, Toolbar, styled } from "@mui/material";
+import { IconButton, Drawer, Toolbar, styled, Box } from "@mui/material";
 import NavigationListItems from "./navigationListItems.component";
+
+//Logo
 import OverlandLogo from "./logo.component";
-import Account from "./account.component";
+// import Account from "./account.component";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -20,13 +23,12 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   [theme.breakpoints.down("lg")]: {
     padding: theme.spacing(4, 8),
   },
-
 }));
 const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
   background: "rgba(0, 0, 0, 0.7)",
   width: "100%",
   [theme.breakpoints.up("md")]: {
-    width: "50%",
+    width: "30%",
   },
 }));
 
@@ -47,14 +49,16 @@ export default function MobileNavigation() {
           <MenuIcon fontSize="large" />
         </IconButton>
         <StyledDrawerMenu open={openMenu} anchor={"left"} onClose={handleClose}>
-          <IconButton onClick={handleClose} color="primary.main" aria-label="exit menu">
-            <CloseIcon />
+          <IconButton sx={{ justifyContent: "flex-end", p: 4 }} onClick={handleClose} color="primary.main" aria-label="exit menu">
+            <CloseIcon fontSize="large" />
           </IconButton>
           <NavigationListItems setOpenMenu={setOpenMenu} openMenu={openMenu} handleClose={handleClose} />
         </StyledDrawerMenu>
 
         <OverlandLogo sx={{ flexGrow: 1 }} />
-        <Account />
+        {/* <Account /> */}
+        {/* Placeholder box for account log - remove box & uncomment account when auth is set up */}
+        <Box sx={{ width: "35px", height: "35px" }}></Box>
       </StyledToolbar>
     </>
   );
