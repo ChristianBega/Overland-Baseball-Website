@@ -1,4 +1,4 @@
-import { TableRow, Typography, Stack, Box, TableCell, Tab, Avatar } from "@mui/material";
+import { TableRow, Typography, Stack, Box, TableCell, Avatar } from "@mui/material";
 import "./teamRosterItem.css";
 import styled from "@emotion/styled";
 
@@ -45,7 +45,7 @@ export default function TeamRoosterItem({ currentRoster }) {
                 {playerData.name}
               </Typography>
             </Grid> */}
-          <TableCell sx={{ p: 2 }} component="th" scope="row">
+          <TableCell sx={{ p: 2, border: "none" }} component="th" scope="row">
             <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
           </TableCell>
           <TableCell sx={{ border: "none", px: 4, minWidth: "100%" }} component="th" scope="row">

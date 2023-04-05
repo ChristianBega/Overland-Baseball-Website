@@ -138,7 +138,7 @@ export const mainTheme = createTheme(
         lineHeight: "18px",
       },
       linkTextDesktop: {
-        color: "#283F76",
+        color: "#21c067",
         fontFamily: "Work Sans",
         lineHeight: "18px",
         fontSize: "20px",

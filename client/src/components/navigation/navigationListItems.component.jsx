@@ -46,15 +46,22 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     display: "flex",
     justifyContent: "center",
+    minWidth: "135px",
     maxWidth: "180px",
   },
   paddingInline: 2,
   paddingBottom: 0,
   paddingTop: theme.spacing(5),
   borderTop: `1px solid ${theme.palette.accent.accentOne}`,
-  "&:last-child": {
-    borderBottom: `1px solid ${theme.palette.accent.accentOne}`,
-    paddingBottom: theme.spacing(5),
+  "&:hover": {
+    textDecoration: "underline",
+    listStyle: "none",
+  },
+  [theme.breakpoints.down("lg")]: {
+    "&:last-child": {
+      borderBottom: `1px solid ${theme.palette.accent.accentOne}`,
+      paddingBottom: theme.spacing(5),
+    },
   },
 }));
 
@@ -64,12 +71,12 @@ const getMenuItems = (handleClose, theme) => (
     {menuItemData.map((menuItem, index) => (
       <StyledListItem key={index} onClick={handleClose}>
         <Link to={menuItem.urlPath} key={menuItem.linkName}>
-          <Typography typography={"linkTextDesktop"} sx={{ display: { xs: "none", lg: "flex" } }}>
+          <Typography typography={"linkTextDesktop"} sx={{ display: { xs: "none", lg: "flex", justifyContent: "center" } }}>
             {menuItem.linkName}
           </Typography>
           <Typography sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
             <Box sx={{ display: "flex", alignItems: "center", color: theme.palette.primary.light }}>
-              {menuItem.icon} &nbsp;
+              {menuItem.icon}
               <Typography ml={2} typography={"linkTextMobile"}>
                 {menuItem.linkName}
               </Typography>
