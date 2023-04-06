@@ -1,5 +1,10 @@
 import React from "react";
+import TimeLine from "../components/alumni/TimeLine";
 
 export default function AlumniPage() {
-  return <div>alumni.page</div>;
+  return (
+    <>
+    <TimeLine/>
+    </>
+  );
 }

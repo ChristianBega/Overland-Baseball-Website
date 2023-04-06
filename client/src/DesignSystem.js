@@ -110,10 +110,10 @@ export const mainTheme = createTheme(
         fontWeight: "800",
       },
       h2: {
-        fontFamily: "Figtree",
-        fontSize: "48px",
-        lineHeight: "52px",
-        fontWeight: "700",
+        fontFamily: "Figtree !important",
+        fontSize: "48px !important",
+        lineHeight: "52px !important",
+        fontWeight: "700 !important",
       },
       h3: {
         fontFamily: "Figtree",
