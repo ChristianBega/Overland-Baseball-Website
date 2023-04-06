@@ -93,7 +93,7 @@ export default function TeamRoosterItem({ currentRoster }) {
           >
             <Typography typography={{ xs: "bodyTextLg" }} sx={{ display: "inline-block", mb: 4 }}>
               {!isMobile_XS && playerData.year}
-              {isMobile_XS && playerData.yearAbbr}.
+              {isMobile_XS && playerData.yearAbbr}
             </Typography>
           </TableCell>
 

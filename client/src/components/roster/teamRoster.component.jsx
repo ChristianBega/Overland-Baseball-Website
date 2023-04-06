@@ -14,7 +14,7 @@ const varsityRoster = [
     weight: "160lbs",
     handed: "R/R",
     year: "Senior",
-    yearAbbr: "Sr",
+    yearAbbr: "Sr.",
   },
   {
     name: "Niko Gonzales",
@@ -24,7 +24,7 @@ const varsityRoster = [
     weight: "145lbs",
     handed: "R/R",
     year: "Senior",
-    yearAbbr: "Sr",
+    yearAbbr: "Sr.",
   },
   {
     name: "Haiden Ortega",
@@ -34,7 +34,7 @@ const varsityRoster = [
     weight: "115lbs",
     handed: "R/R",
     year: "Junior",
-    yearAbbr: "Jr",
+    yearAbbr: "Jr.",
   },
   {
     name: "Liam Childs",
@@ -44,7 +44,7 @@ const varsityRoster = [
     weight: "170lbs",
     handed: "R/R",
     year: "Junior",
-    yearAbbr: "Jr",
+    yearAbbr: "Jr.",
   },
   {
     name: "Orlando Hurtado-Delgado",
@@ -54,7 +54,7 @@ const varsityRoster = [
     weight: "150lbs",
     handed: "R/R",
     year: "Junior",
-    yearAbbr: "Jr",
+    yearAbbr: "Jr.",
   },
   {
     name: "Connor Geiss",
@@ -64,7 +64,7 @@ const varsityRoster = [
     weight: "135lbs",
     handed: "R/L",
     year: "Senior",
-    yearAbbr: "Sr",
+    yearAbbr: "Sr.",
   },
   {
     name: "Tai'Shaun Charleston",
@@ -74,7 +74,7 @@ const varsityRoster = [
     weight: "210lbs",
     handed: "R/R",
     year: "Junior",
-    yearAbbr: "Jr",
+    yearAbbr: "Jr.",
   },
   {
     name: "Aiden Wynter",
@@ -84,7 +84,7 @@ const varsityRoster = [
     weight: "225lbs",
     handed: "R/R",
     year: "Senior",
-    yearAbbr: "Sr",
+    yearAbbr: "Sr.",
   },
   {
     name: "Pablo Vielma",
@@ -94,7 +94,7 @@ const varsityRoster = [
     weight: "145lbs",
     handed: "R/R",
     year: "Junior",
-    yearAbbr: "Jr",
+    yearAbbr: "Jr.",
   },
   {
     name: "Connor Bass",
@@ -104,7 +104,7 @@ const varsityRoster = [
     weight: "160lbs",
     handed: "L/R",
     year: "Senior",
-    yearAbbr: "Sr",
+    yearAbbr: "Sr.",
   },
   {
     name: "Nathaniel Butler",
@@ -114,7 +114,7 @@ const varsityRoster = [
     weight: "235lbs",
     handed: "R/R",
     year: "Junior",
-    yearAbbr: "Jr",
+    yearAbbr: "Jr.",
   },
 
   {
@@ -125,7 +125,7 @@ const varsityRoster = [
     weight: "160lbs",
     handed: "R/R",
     year: "Sophomore",
-    yearAbbr: "Soph",
+    yearAbbr: "Soph.",
   },
 
   {
@@ -136,7 +136,7 @@ const varsityRoster = [
     weight: "215lbs",
     handed: "R/R",
     year: "Sophomore",
-    yearAbbr: "Soph",
+    yearAbbr: "Soph.",
   },
   {
     name: "Thompson Antonio",
@@ -146,7 +146,7 @@ const varsityRoster = [
     weight: "185lbs",
     handed: "R/R",
     year: "Sophomore",
-    yearAbbr: "Soph",
+    yearAbbr: "Soph.",
   },
   {
     name: "Weber Jason",
@@ -156,7 +156,7 @@ const varsityRoster = [
     weight: "153lbs",
     handed: "R/R",
     year: "Sophomore",
-    yearAbbr: "Soph",
+    yearAbbr: "Soph.",
   },
   {
     name: "Uriel Hernandez",
@@ -166,7 +166,7 @@ const varsityRoster = [
     weight: "190lbs",
     handed: "R/R",
     year: "Sophomore",
-    yearAbbr: "Soph",
+    yearAbbr: "Soph.",
   },
 
   {
@@ -177,7 +177,7 @@ const varsityRoster = [
     weight: "115lbs",
     handed: "R/R",
     year: "Freshman",
-    yearAbbr: "Fr",
+    yearAbbr: "Fr.",
   },
 
   {
@@ -188,7 +188,7 @@ const varsityRoster = [
     weight: "115lbs",
     handed: "R/R",
     year: "Freshman",
-    yearAbbr: "Fr",
+    yearAbbr: "Fr.",
   },
 ];
 export default function TeamRoster({ currentTeam }) {
