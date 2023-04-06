@@ -27,7 +27,7 @@ const StyledList = styled(List)(({ theme }) => ({
   color: theme.palette.primary.main,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  // justifyContent: "space-evenly",
   rowGap: theme.spacing(4), // 16px
   minWidth: "60vw",
   paddingInline: theme.spacing(6),
@@ -39,15 +39,21 @@ const StyledList = styled(List)(({ theme }) => ({
   },
   [theme.breakpoints.up("lg")]: {
     flexDirection: "row",
-    justifyContent: "center",
+    width: "900px",
+    // justifyContent: "center",
+    justifyContent: "space-evenly",
   },
 }));
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
+    // width: "100%",
+    // border: "1px solid red",
     display: "flex",
-    justifyContent: "center",
-    minWidth: "135px",
-    maxWidth: "180px",
+    justifyContent: "space-evenly",
+    width: "130px",
+    // minWidth: "135px",
+    // maxWidth: "180px",
+    paddingTop: theme.spacing(0),
   },
   paddingInline: 2,
   paddingBottom: 0,
