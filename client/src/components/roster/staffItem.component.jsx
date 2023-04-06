@@ -5,27 +5,29 @@ export default function StaffItem({ currentRooster }) {
     <>
       {currentRooster.map((teamData) => (
         <Box key={teamData.team} sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: { xs: 5, md: 15 } }}>
-          <Stack direction="column" spacing={4} sx={{ display: "flex", alignItems: "center" }}>
-            <Typography component="h2" variant="h4" fontWeight={500}>
-              Head Coach
-            </Typography>
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2, minWidth: "210px" }}>
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+          <Stack direction="row" spacing={4} sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ width: "80px", height: "110px", backgroundColor: "Red" }}></Box>
+            <Stack direction="column" gap={3} sx={{ textAlign: "left", minWidth: "180px" }}>
+              <Typography component="h2" variant="h6" fontWeight={500}>
+                Head Coach
+              </Typography>
               <Typography typography="bodyTextLg" sx={{ fontWeight: 700, fontSize: { md: "24px" } }}>
                 {teamData.coach}
               </Typography>
-            </Box>
+              <Typography>Contact</Typography>
+            </Stack>
           </Stack>
-          <Stack direction="column" spacing={4} sx={{ display: "flex", alignItems: "center" }}>
-            <Typography component="h2" variant="h4" fontWeight={500}>
-              Assistant Coach
-            </Typography>
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2, minWidth: "210px" }}>
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+          <Stack direction="row" spacing={4} sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ width: "80px", height: "110px", backgroundColor: "Red" }}></Box>
+            <Stack direction="column" gap={3} sx={{ textAlign: "left", minWidth: "180px" }}>
+              <Typography component="h2" variant="h6" fontWeight={500}>
+                Assistant Coach
+              </Typography>
               <Typography typography="bodyTextLg" sx={{ fontWeight: 700, fontSize: { md: "24px" } }}>
                 {teamData.assistantCoach}
               </Typography>
-            </Box>
+              <Typography>Contact</Typography>
+            </Stack>
           </Stack>
 
           {/* <Typography typography="bodyTextLg">{`Assistant Coach ${teamData.assistantCoach}`}</Typography>

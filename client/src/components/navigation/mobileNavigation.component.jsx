@@ -14,7 +14,6 @@ import OverlandLogo from "./logo.component";
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
-  // padding: theme.spacing(2, 8), // 7px 14px
   color: theme.palette.text.primary,
   background: theme.palette.primary.main,
   [theme.breakpoints.up("lg")]: {
@@ -32,6 +31,7 @@ const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
   },
 }));
 
+
 export default function MobileNavigation() {
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -44,8 +44,8 @@ export default function MobileNavigation() {
 
   return (
     <>
-      <StyledToolbar>
-        <IconButton onClick={handleOpen} size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+      <StyledToolbar >
+        <IconButton onClick={handleOpen} size="large" edge="start" color="inherit" aria-label="menu">
           <MenuIcon fontSize="large" />
         </IconButton>
         <StyledDrawerMenu open={openMenu} anchor={"left"} onClose={handleClose}>

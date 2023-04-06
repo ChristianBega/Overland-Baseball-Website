@@ -17,6 +17,9 @@ const style = {
 };
 
 export default function FundraiserModal({ open, handleClose }) {
+  // bring in data
+  // filter data based on box id passed as prop
+  // return eventsItem filtered accordingly 
   return (
     <div>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
@@ -24,9 +27,10 @@ export default function FundraiserModal({ open, handleClose }) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Text in a modal
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          
+          {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          </Typography> */}
         </Box>
       </Modal>
     </div>
