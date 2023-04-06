@@ -11,21 +11,21 @@ function createData(eventName, location, time, date) {
 // Fundraiser card data
 export const fundraisersCardData = [
   {
-    id: "Name 1",
+    eventName: "Broncos",
     content: "Broncos Games ",
     image: BroncosImage,
     date: "1-12-23",
     time: "11 am",
   },
   {
-    id: "Name 2",
+    eventName: "tournaments",
     content: "Overland tournaments",
     image: TournamentsImage,
     date: "2-12-23",
     time: "11 am",
   },
   {
-    id: "Name 3",
+    eventName: "Felid Clean Up",
     content: "Fall Clean Up",
     image: FieldCleanUpImage,
 
@@ -33,7 +33,7 @@ export const fundraisersCardData = [
     time: "1 pm",
   },
   {
-    id: "Name 4",
+    eventName: "Apple Bees",
     content: "box 4",
     image: AppleBeesImage,
     date: "8-22-23",
@@ -159,7 +159,7 @@ export const eventData = [
   createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Mar TBD"),
   createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "June TBD"),
   createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Sept TBD"),
-  
+
   // Tournament data
   createData("Tournament", "1300 W Swallow Rd. Fort Collins CO", "TBD", "July 27th-30th"),
   createData("Tournament", "10300 W South Boulder Rd. Lafayette CO", "TBD", "July 28th-30th"),
@@ -170,6 +170,4 @@ export const eventData = [
   createData("Apple Bees", "TBD", "TBD", "TBD"),
   createData("Apple Bees", "TBD", "TBD", "TBD"),
   createData("Apple Bees", "TBD", "TBD", "TBD"),
-
-
 ];
