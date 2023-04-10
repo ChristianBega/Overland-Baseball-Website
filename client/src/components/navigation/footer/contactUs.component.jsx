@@ -15,11 +15,15 @@ export default function ContactUs() {
       <Stack spacing={3} mt={4} sx={{ color: theme.palette.secondary.main }}>
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
           <PhoneIcon />
+          <a href="tel:+17205053962" style={{color: theme.palette.secondary.main}}>
           <Typography ml={2}>720-505-3962</Typography>
+          </a>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
           <EmailIcon />
+          <a href="mailto:mbega@cherrycreekschools.org" style={{color: theme.palette.secondary.main}}>
           <Typography ml={2}>mbega@cherrycreekschools.org</Typography>
+          </a>
         </Box>
       </Stack>
     </Grid>
