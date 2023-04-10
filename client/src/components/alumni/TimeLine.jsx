@@ -6,8 +6,6 @@ import homeIcon from "../../assets/iconsHome.png"
 import batIcon from "../../assets/batIcon.png"
 import "../alumni/alumni.css"
 import { useTheme } from "@emotion/react";
-// import placeHolderImg from "../assets/placeholder-image.png";
-// import BrainGivensImg from "../assets/brainGivens.alumni.jpeg";
 
 const BaseballIcon = () => <img width="100%" height="100%" src={baseballIcon} alt="baseball icon" />;
 const HomeIcon = () => <img width="100%" height="100%" src={homeIcon} alt="home icon" />;

@@ -12,15 +12,10 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 
 const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
-  // display: "flex",
-  // justifyContent: "space-between",
-  padding: theme.spacing(6), // 7px 14px
+  padding: theme.spacing(6), 
   color: theme.palette.text.primary,
   background: theme.palette.primary.main,
   height: "100%",
-  // [theme.breakpoints.up("lg")]: {
-  //   display: "none",
-  // },
 }));
 
 export default function FooterNavigation() {
@@ -37,22 +32,17 @@ export default function FooterNavigation() {
               <ContactUs />
             </Grid>
           )} 
-          <Grid item xs={12} sm={4} md={3}>
+          <Grid item xs={12} sm={4} md={4}>
             <Socials />
           </Grid>
-
-          
+          <Grid item xs={12} md={4}>
+            <LocationMap />
+          </Grid>
           {!isMobile && (
             <Grid item xs={6} md={4}>
               <ContactUs />
             </Grid>
           )}
-          <Grid item xs={12} md={3}>
-            <LocationMap />
-          </Grid>
-
-          {/* <Grid item xs={6} md={5} sx={{ display: "flex", flexDirection: "column", flexGrow: 1, alignItems: "center" }}>
-          </Grid> */}
           <Copyright />
         </Grid>
       </StyledBottomNavigation>
