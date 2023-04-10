@@ -6,8 +6,6 @@ import homeIcon from "../../assets/iconsHome.png"
 import batIcon from "../../assets/batIcon.png"
 import "../alumni/alumni.css"
 import { useTheme } from "@emotion/react";
-// import placeHolderImg from "../assets/placeholder-image.png";
-// import BrainGivensImg from "../assets/brainGivens.alumni.jpeg";
 
 const BaseballIcon = () => <img width="100%" height="100%" src={baseballIcon} alt="baseball icon" />;
 const HomeIcon = () => <img width="100%" height="100%" src={homeIcon} alt="home icon" />;
@@ -178,7 +176,7 @@ const theme = useTheme();
                 <Box component="img" sx={{ width: "285px", height: "285px" }} ></Box>
               </Grid>
             </Grid>
-            <Grid item xs={12} sx={{display:"flex", justifyContent:"center", mt:4, mb:4, borderStyle:"double"}}>
+            <Grid item xs={12} sx={{display:"flex", justifyContent:"center", mt:4, mb:4, borderStyle:"double", borderRadius:"8px"}}>
                 <Stack direction={{xs:"column",sm:"row"}} spacing={{xs:3,sm:20}} >
                     <Typography component="h4">Pos: {timelineEl.position}</Typography>
                 <Typography component="h4">League: {timelineEl.higherLevel}</Typography>

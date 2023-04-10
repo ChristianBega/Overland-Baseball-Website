@@ -1,4 +1,4 @@
-import { TableRow, Typography, Stack, Box, TableCell, Avatar, useMediaQuery } from "@mui/material";
+import { TableRow, Typography, Stack, Box, TableCell, useMediaQuery } from "@mui/material";
 import "./teamRosterItem.css";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
