@@ -14,6 +14,7 @@ const varsityRoster = [
     weight: "160lbs",
     handed: "R/R",
     year: "Senior",
+    yearAbbr: "Sr.",
   },
   {
     name: "Niko Gonzales",
@@ -23,6 +24,7 @@ const varsityRoster = [
     weight: "145lbs",
     handed: "R/R",
     year: "Senior",
+    yearAbbr: "Sr.",
   },
   {
     name: "Haiden Ortega",
@@ -32,6 +34,7 @@ const varsityRoster = [
     weight: "115lbs",
     handed: "R/R",
     year: "Junior",
+    yearAbbr: "Jr.",
   },
   {
     name: "Liam Childs",
@@ -41,6 +44,7 @@ const varsityRoster = [
     weight: "170lbs",
     handed: "R/R",
     year: "Junior",
+    yearAbbr: "Jr.",
   },
   {
     name: "Orlando Hurtado-Delgado",
@@ -50,6 +54,7 @@ const varsityRoster = [
     weight: "150lbs",
     handed: "R/R",
     year: "Junior",
+    yearAbbr: "Jr.",
   },
   {
     name: "Connor Geiss",
@@ -59,6 +64,7 @@ const varsityRoster = [
     weight: "135lbs",
     handed: "R/L",
     year: "Senior",
+    yearAbbr: "Sr.",
   },
   {
     name: "Tai'Shaun Charleston",
@@ -68,6 +74,7 @@ const varsityRoster = [
     weight: "210lbs",
     handed: "R/R",
     year: "Junior",
+    yearAbbr: "Jr.",
   },
   {
     name: "Aiden Wynter",
@@ -77,6 +84,7 @@ const varsityRoster = [
     weight: "225lbs",
     handed: "R/R",
     year: "Senior",
+    yearAbbr: "Sr.",
   },
   {
     name: "Pablo Vielma",
@@ -86,15 +94,17 @@ const varsityRoster = [
     weight: "145lbs",
     handed: "R/R",
     year: "Junior",
+    yearAbbr: "Jr.",
   },
   {
     name: "Connor Bass",
     number: "27",
     position: "3B, SS, P",
-    height: "6`0''",
+    height: "6`",
     weight: "160lbs",
     handed: "L/R",
     year: "Senior",
+    yearAbbr: "Sr.",
   },
   {
     name: "Nathaniel Butler",
@@ -104,6 +114,7 @@ const varsityRoster = [
     weight: "235lbs",
     handed: "R/R",
     year: "Junior",
+    yearAbbr: "Jr.",
   },
 
   {
@@ -114,6 +125,7 @@ const varsityRoster = [
     weight: "160lbs",
     handed: "R/R",
     year: "Sophomore",
+    yearAbbr: "Soph.",
   },
 
   {
@@ -124,6 +136,7 @@ const varsityRoster = [
     weight: "215lbs",
     handed: "R/R",
     year: "Sophomore",
+    yearAbbr: "Soph.",
   },
   {
     name: "Thompson Antonio",
@@ -133,6 +146,7 @@ const varsityRoster = [
     weight: "185lbs",
     handed: "R/R",
     year: "Sophomore",
+    yearAbbr: "Soph.",
   },
   {
     name: "Weber Jason",
@@ -142,6 +156,7 @@ const varsityRoster = [
     weight: "153lbs",
     handed: "R/R",
     year: "Sophomore",
+    yearAbbr: "Soph.",
   },
   {
     name: "Uriel Hernandez",
@@ -151,6 +166,7 @@ const varsityRoster = [
     weight: "190lbs",
     handed: "R/R",
     year: "Sophomore",
+    yearAbbr: "Soph.",
   },
 
   {
@@ -161,6 +177,7 @@ const varsityRoster = [
     weight: "115lbs",
     handed: "R/R",
     year: "Freshman",
+    yearAbbr: "Fr.",
   },
 
   {
@@ -171,122 +188,9 @@ const varsityRoster = [
     weight: "115lbs",
     handed: "R/R",
     year: "Freshman",
+    yearAbbr: "Fr.",
   },
 ];
-// const juniorVarsityRoster = [
-//   {
-//     name: "Player 1",
-//     number: "99",
-//     position: "Catcher",
-//     year: "Freshman",
-//   },
-//   {
-//     name: "Player 2",
-//     number: "55",
-//     position: "Pitcher",
-//     year: "Junior",
-//   },
-//   {
-//     name: "Player 3",
-//     number: "21",
-//     position: "1st",
-//     year: "Junior",
-//   },
-//   {
-//     name: "Player 4",
-//     number: "8",
-//     position: "2nd",
-//     year: "Freshman",
-//   },
-//   {
-//     name: "Player 5",
-//     number: "11",
-//     position: "3d",
-//     year: "Junior",
-//   },
-//   {
-//     name: "Player 6",
-//     number: "18",
-//     position: "SS",
-//     year: "Junior",
-//   },
-
-//   {
-//     name: "Player 7",
-//     number: "3",
-//     position: "LF",
-//     year: "Junior",
-//   },
-//   {
-//     name: "Player 8",
-//     number: "31",
-//     position: "CF",
-//     year: "Junior",
-//   },
-//   {
-//     name: "Player 1",
-//     number: "1",
-//     position: "RF",
-//     year: "Sophomore",
-//   },
-// ];
-// const freshmanRoster = [
-//   {
-//     name: "Player 1",
-//     number: "11",
-//     position: "Catcher",
-//     year: "Freshman",
-//   },
-//   {
-//     name: "Player 2",
-//     number: "13",
-//     position: "Pitcher",
-//     year: "Freshman",
-//   },
-//   {
-//     name: "Player 3",
-//     number: "10",
-//     position: "1st",
-//     year: "Freshman",
-//   },
-//   {
-//     name: "Player 4",
-//     number: "4",
-//     position: "2nd",
-//     year: "Sophomore",
-//   },
-//   {
-//     name: "Player 5",
-//     number: "16",
-//     position: "3d",
-//     year: "Sophomore",
-//   },
-//   {
-//     name: "Player 6",
-//     number: "16",
-//     position: "SS",
-//     year: "Freshman",
-//   },
-
-//   {
-//     name: "Player 7",
-//     number: "19",
-//     position: "LF",
-//     year: "Freshman",
-//   },
-//   {
-//     name: "Player 8",
-//     number: "11",
-//     position: "CF",
-//     year: "Freshman",
-//   },
-//   {
-//     name: "Player 1",
-//     number: "33",
-//     position: "RF",
-//     year: "Sophomore",
-//   },
-// ];
 export default function TeamRoster({ currentTeam }) {
   const [currentRoster, setCurrentRoster] = useState([]);
 

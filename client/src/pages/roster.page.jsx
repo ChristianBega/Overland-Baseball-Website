@@ -12,7 +12,7 @@ export default function RosterPage() {
   return (
     <>
       <Container component="section" id="rooster-section" style={{ display: "flex", justifyContent: " center" }}>
-        <Grid container maxWidth="lg" mt={10}>
+        <Grid container maxWidth="lg" my={10}>
           <Staff currentTeam={currentTeam} />
           {/* <Toggles setCurrentTeam={setCurrentTeam} /> */}
           <TeamRoster currentTeam={currentTeam} />

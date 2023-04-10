@@ -1,12 +1,18 @@
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import EventItems from "./eventItems.component";
-import { broncoData } from "../../websiteData/events.data";
+import { eventData } from "../../websiteData/events.data";
 import { useTheme } from "@emotion/react";
 
 export default function Events() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // const [eventData, setEventData] = useState();
+
+  // useEffect(() => {
+  //   setEventData([...broncoData, ...fieldCleanUpData]);
+  // });
 
   return (
     <Grid item xs={12}>
@@ -48,7 +54,7 @@ export default function Events() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {broncoData.map((event, index) => (
+            {eventData.map((event, index) => (
               <EventItems isMobile={isMobile} key={index} event={event} />
             ))}
           </TableBody>

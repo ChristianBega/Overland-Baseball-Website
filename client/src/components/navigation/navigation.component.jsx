@@ -1,16 +1,29 @@
 // Mui components
-import { AppBar, Box } from "@mui/material";
+import { AppBar, Slide, useScrollTrigger } from "@mui/material";
 // Custom Components
 import DesktopNavigation from "./desktopNavigation.component";
 import MobileNavigation from "./mobileNavigation.component";
 
-export default function Navigation() {
+function HideOnScroll(props) {
+  const { children, window } = props;
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+  });
+
   return (
-    <Box component="header" className="main-header" sx={{ flexGrow: 1 }}>
-      <AppBar component="nav" position="static">
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
+
+export default function Navigation(props) {
+  return (
+    <HideOnScroll {...props}>
+      <AppBar id="navigation" position="sticky" component="nav">
         <MobileNavigation />
         <DesktopNavigation />
       </AppBar>
-    </Box>
+    </HideOnScroll>
   );
 }

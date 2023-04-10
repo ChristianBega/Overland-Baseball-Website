@@ -30,7 +30,7 @@ export default function Staff({ currentTeam }) {
     setCurrentRooster(staffData.filter((team) => team.team === currentTeam));
   }, [currentTeam]);
   return (
-    <Grid item xs={12} sx={{ minHeight: { xs: "275px", md: "250px", textAlign: "center" } }}>
+    <Grid item xs={12} sx={{ minHeight: { xs: "275px", md: "250px" }, textAlign: "center" }}>
       <TableContainer mb={5}>
         <Typography
           typography="h1"

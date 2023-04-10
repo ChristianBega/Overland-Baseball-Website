@@ -3,24 +3,29 @@ import TournamentsImage from "../assets/coloradoClassics.png";
 import BroncosImage from "../assets/broncosVolunteer.png";
 import FieldCleanUpImage from "../assets/fieldCleanUp.jpg";
 import AppleBeesImage from "../assets/appleBees.png";
+
+function createData(eventName, location, time, date) {
+  return { eventName, location, time, date };
+}
+
 // Fundraiser card data
 export const fundraisersCardData = [
   {
-    id: "Name 1",
+    eventName: "Broncos",
     content: "Broncos Games ",
     image: BroncosImage,
     date: "1-12-23",
     time: "11 am",
   },
   {
-    id: "Name 2",
+    eventName: "tournaments",
     content: "Overland tournaments",
     image: TournamentsImage,
     date: "2-12-23",
     time: "11 am",
   },
   {
-    id: "Name 3",
+    eventName: "Felid Clean Up",
     content: "Fall Clean Up",
     image: FieldCleanUpImage,
 
@@ -28,15 +33,15 @@ export const fundraisersCardData = [
     time: "1 pm",
   },
   {
-    id: "Name 4",
+    eventName: "Apple Bees",
     content: "box 4",
     image: AppleBeesImage,
     date: "8-22-23",
     time: "8 pm",
   },
 ];
-// Bronco volunteer game data
-export const broncoData = [
+// All event data
+export const eventData = [
   {
     eventName: "Broncos Game",
     location: "1801 Mile High Stadium Cir Denver CO 80204",
@@ -149,53 +154,20 @@ export const broncoData = [
     description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     extraInformation: "Dolor in reprehenderit in voluptate...",
   },
-];
-// Field clean up data
-export const fieldCleanUpData = [
-  {
-    eventName: "",
-    location: "",
-    time: "",
-    date: "",
-    description: "",
-    extraInformation: [
-      "Pick up trash on field/ dugouts/ throw out trash ",
-      "Clean out dugouts ",
-      "Remove any weeds from both bullpens ",
-      "Remove weeds from behind batting cage area ",
-      "Tarp home, visitors’ bullpens ",
-      "Remove weeds from home, visitors rock section in front of dugouts ",
-      "Remove weeds from both batting cages ",
-      "Edge batting cage rock area ",
-      "Edge rock area on home and visitor side ",
-      "Lay out white infield tarp ",
-    ],
-  },
-];
-// Colorado classic tournaments data
-export const tournamentsData = [];
 
-// Apples Bee data
-export const appleBeesData = [
-  {
-    eventName: "",
-    location: "",
-    time: "",
-    date: "",
-    description: "",
-    extraInformation: [
-      "Pick up trash on field/ dugouts/ throw out trash ",
-      "Clean out dugouts ",
-      "Remove any weeds from both bullpens ",
-      "Remove weeds from behind batting cage area ",
-      "Tarp home, visitors’ bullpens ",
-      "Remove weeds from home, visitors rock section in front of dugouts ",
-      "Remove weeds from both batting cages ",
-      "Edge batting cage rock area ",
-      "Edge rock area on home and visitor side ",
-      "Lay out white infield tarp ",
-    ],
-  },
-];
+  // Field Clean Up
+  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Mar TBD"),
+  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "June TBD"),
+  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Sept TBD"),
 
-// apple bees, tournaments, field clean ups, overland youth, workouts, tryouts,
+  // Tournament data
+  createData("Tournament", "1300 W Swallow Rd. Fort Collins CO", "TBD", "July 27th-30th"),
+  createData("Tournament", "10300 W South Boulder Rd. Lafayette CO", "TBD", "July 28th-30th"),
+  createData("Tournament", "TBD", "TBD", "TBD"),
+
+  // Apple Bees
+  createData("Apple Bees", "TBD", "TBD", "TBD"),
+  createData("Apple Bees", "TBD", "TBD", "TBD"),
+  createData("Apple Bees", "TBD", "TBD", "TBD"),
+  createData("Apple Bees", "TBD", "TBD", "TBD"),
+];
