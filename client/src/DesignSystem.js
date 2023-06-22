@@ -12,6 +12,14 @@ export const mainTheme = createTheme(
       },
     },
     components: {
+      MuiFormHelperText: {
+        styleOverrides: {
+          root: {
+            color: "#b05633",
+            marginTop: 3,
+          },
+        },
+      },
       MuiTypography: {
         styleOverrides: {
           root: {
