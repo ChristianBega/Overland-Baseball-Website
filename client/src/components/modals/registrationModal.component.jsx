@@ -1,8 +1,9 @@
-import { Box, Modal, Button } from "@mui/material";
+import { Modal, Button } from "@mui/material";
 import React, { useState } from "react";
-import YouthProgramForm from "../forms/youthProgramForm.component";
+import RegistrationForm from "../forms/RegistrationForm.component";
+import styled from "@emotion/styled";
 
-const style = {
+const StyledModalContainer = styled("Box")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
@@ -12,13 +13,12 @@ const style = {
   overFlow: "hidden",
   minWidth: "300px",
   maxWidth: 400,
-  bgcolor: "#d8d8d8",
+  backgroundColor: "#d8d8d8",
   border: "1px solid #000",
-
   boxShadow: 24,
-  p: 4,
+  padding: 20,
   borderRadius: 4,
-};
+}));
 
 export default function YouthProgramModal() {
   const [open, setOpen] = useState();
@@ -31,9 +31,9 @@ export default function YouthProgramModal() {
         Register here
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <YouthProgramForm />
-        </Box>
+        <StyledModalContainer>
+          <RegistrationForm />
+        </StyledModalContainer>
       </Modal>
     </>
   );

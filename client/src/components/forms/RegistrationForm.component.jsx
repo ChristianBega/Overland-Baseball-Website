@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
 import React from "react";
 
-export default function YouthProgramForm() {
+export default function RegistrationForm() {
   const theme = useTheme();
   // React hook form useForm for registering, handling, and reset forms
 

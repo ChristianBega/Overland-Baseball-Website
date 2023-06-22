@@ -1,8 +1,5 @@
 import emailjs from "@emailjs/browser";
-// const templateParams = {
-//   name: "James",
-//   notes: "Check this out!",
-// };
+
 
 const EmailService = {
   sendEmail: (data) => {

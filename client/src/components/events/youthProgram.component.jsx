@@ -4,7 +4,7 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import PlayerEvents from "./playerEvents.component";
-import YouthProgramModal from "../modals/youthProgramModal.component";
+import RegistrationModal from "../modals/registrationModal.component";
 
 const youthProgramData = [
   {
@@ -47,7 +47,7 @@ export default function YouthProgram() {
         </Typography>
         {/* <Toggles setCurrentSeason={setCurrentSeason} /> */}
         <PlayerEvents currentInfo={currentInfo} />
-        <YouthProgramModal />
+        <RegistrationModal />
       </StyledInfoBox>
     </Grid>
   );

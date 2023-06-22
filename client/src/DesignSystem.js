@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+// https://mui.com/material-ui/customization/theme-components/
 
 export const mainTheme = createTheme(
   {
@@ -20,6 +21,15 @@ export const mainTheme = createTheme(
           },
         },
       },
+      MuiModal: {
+        styleOverrides: {
+          root: {
+            // background: "rgb(9,31,64)",
+            background: "linear-gradient(153deg, rgba(9,31,64,0.6487119437939111) 51%, rgba(0,154,78,0.6510538641686183) 98%)",
+          },
+        },
+      },
+
       MuiTypography: {
         styleOverrides: {
           root: {
@@ -27,8 +37,6 @@ export const mainTheme = createTheme(
           },
         },
       },
-      // https://mui.com/material-ui/customization/theme-components/
-      // name of component
       MuiButton: {
         styleOverrides: {
           root: {
@@ -108,7 +116,6 @@ export const mainTheme = createTheme(
         primary: "#F3F4F6",
       },
     },
-    // shadows: {},
     typography: {
       fontFamily: "Work Sans",
       h1: {
