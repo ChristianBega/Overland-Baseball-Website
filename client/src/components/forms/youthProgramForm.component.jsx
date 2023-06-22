@@ -1,6 +1,7 @@
 import { Stack, TextField, Typography, Button, Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { useForm } from "react-hook-form";
+import EmailService from "../../services/emailService";
 import React from "react";
 
 export default function YouthProgramForm() {
@@ -15,7 +16,7 @@ export default function YouthProgramForm() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    EmailService.sendEmail(data);
     reset();
   };
 
@@ -30,7 +31,6 @@ export default function YouthProgramForm() {
         Overland's youth baseball program
       </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        {/* Error handling */}
         <Stack id="modal-form" spacing={4}>
           <Typography variant="h6" component="h3">
             Player Information:
@@ -47,7 +47,6 @@ export default function YouthProgramForm() {
             })}
           />
           {/* Player email */}
-          {/* Will need validation */}
           <TextField
             id="playerEmail"
             label="Player Email"
@@ -59,7 +58,6 @@ export default function YouthProgramForm() {
             })}
           />
           {/* Player phone */}
-
           <TextField
             id="playerPhone"
             label="Player Phone Number"
@@ -67,7 +65,15 @@ export default function YouthProgramForm() {
             helperText={errors.player_phone?.message}
             {...register("player_phone", {
               required: "Phone is required *",
-              pattern: { value: /([1-9][0-9]*)|0/i, message: "Invalid phone number *" },
+              pattern: { value: /^[0-9]*$/, message: "Invalid phone number *" },
+              minLength: {
+                value: 7,
+                message: "Must be a minimum of 7 numbers *",
+              },
+              maxLength: {
+                value: 11,
+                message: "Can not exceed 11 numbers *",
+              },
             })}
           />
           <Typography variant="h6" component="h3">
@@ -103,7 +109,18 @@ export default function YouthProgramForm() {
             helperText={errors.guardian_phone?.message}
             {...register("guardian_phone", {
               required: "Phone is required *",
-              pattern: { value: /([1-9][0-9]*)|0/i, message: "Invalid phone number *" },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: "Invalid phone number *",
+              },
+              minLength: {
+                value: 7,
+                message: "Must be a minimum of 7 numbers *",
+              },
+              maxLength: {
+                value: 11,
+                message: "Can not exceed 11 numbers *",
+              },
             })}
           />
           <Button onSubmit={onSubmit} type="submit" sx={{ mt: 6, alignSelf: "center" }} id="submit" size="medium">
