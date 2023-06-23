@@ -4,10 +4,9 @@ import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
 import React from "react";
 
-export default function RegistrationForm() {
+export default function RegistrationForm({ datatypeRegistration }) {
   const theme = useTheme();
   // React hook form useForm for registering, handling, and reset forms
-
   const {
     register,
     handleSubmit,
@@ -16,19 +15,25 @@ export default function RegistrationForm() {
   } = useForm();
 
   const onSubmit = (data) => {
-    EmailService.sendEmailRegistration(data);
+    EmailService.sendEmailRegistration(data, datatypeRegistration);
     reset();
   };
 
   return (
     <>
       <Typography
-        sx={{ textTransform: "uppercase", textAlign: "center", my: 5, color: theme.palette.secondary.main }}
+        sx={{
+          textTransform: "uppercase",
+          textAlign: "center",
+          my: 5,
+          color: theme.palette.secondary.main,
+          fontSize: { xs: "1.3rem", md: "1.8rem", lg: "2rem" },
+        }}
         id="modal-title"
         variant="h4"
         component="h2"
       >
-        Overland's youth baseball program
+        Overland's <br /> {datatypeRegistration} <br /> Registration Forum
       </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Stack id="modal-form" spacing={4}>

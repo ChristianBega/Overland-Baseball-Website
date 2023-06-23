@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid/Grid";
 import { Typography, Box, styled, Button } from "@mui/material";
-
-// Fundraiser data
-import { fundraisersCardData } from "../../websiteData/events.data";
-// Components
-import FundraiserModal from "./fundraiserModal.component";
 import { useTheme } from "@emotion/react";
+
+// Site data
+import { fundraisersCardData } from "../../websiteData/events.data";
+import { eventData } from "../../websiteData/events.data";
+
+import FundraiserModal from "../modals/fundraiserModal.component";
+// Components
 // Styled components
 const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
@@ -47,13 +49,19 @@ const StyledButton = styled(Button)(({ theme }) => ({
 // }));
 
 export default function Fundraisers() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState();
+  const [currentEvent, setCurrentEvent] = useState();
+  const [events, setEvents] = useState();
+  const theme = useTheme();
   const handleOpen = (event) => {
-    console.log(event.target.parentNodes.id);
+    let currentEventId = event.currentTarget.parentElement.id;
+
+    let filterEventsArray = eventData.filter((event) => event.eventName.includes(currentEventId));
+    setCurrentEvent(currentEventId);
+    setEvents(filterEventsArray);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-  const theme = useTheme();
   return (
     <Grid item xs={12} mt={10}>
       <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center", my: 10 }}>
@@ -61,16 +69,16 @@ export default function Fundraisers() {
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersCardData.map((fundraiser, index) => (
-          <Grid id={index} item key={index} xs={12} sm={6} md={3}>
+          <Grid id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
             {/* <StyledOverlay>
               <Typography>Hello world</Typography>
             </StyledOverlay> */}
-            <StyledButton onClick={handleOpen} open={open} setOpen={setOpen}>
+            <StyledButton onClick={handleOpen}>
               <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}>
                 {/* When the image is hovered on, then transition text and overlay */}
               </StyledImageBox>
-              <FundraiserModal open={open} handleClose={handleClose} />
             </StyledButton>
+            <FundraiserModal open={open} handleClose={handleClose} events={events} currentEvent={currentEvent} />
           </Grid>
         ))}
       </Grid>

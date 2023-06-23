@@ -47,7 +47,7 @@ export default function YouthProgram() {
         </Typography>
         {/* <Toggles setCurrentSeason={setCurrentSeason} /> */}
         <PlayerEvents currentInfo={currentInfo} />
-        <RegistrationModal />
+        <RegistrationModal datatypeRegistration="youth program" />
       </StyledInfoBox>
     </Grid>
   );

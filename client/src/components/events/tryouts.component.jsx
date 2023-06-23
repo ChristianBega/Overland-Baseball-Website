@@ -79,7 +79,7 @@ export default function Workouts() {
         </Typography>
         <Toggles setCurrentSeason={setCurrentSeason} />
         <PlayerEvents currentInfo={currentInfo} />
-        <RegistrationModal />
+        <RegistrationModal datatypeRegistration="tryouts" />
       </StyledInfoBox>
     </Grid>
   );

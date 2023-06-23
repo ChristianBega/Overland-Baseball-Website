@@ -20,7 +20,6 @@ export default function EventItems({ event, isMobile }) {
   const [open, setOpen] = useState();
   const theme = useTheme();
   const handleOpen = (event) => {
-    console.log(event.currentTarget.parentElement.parentElement);
     let currentEvent = event.currentTarget.parentElement.parentElement.getAttribute("datatype-event");
     let currentDate = event.currentTarget.parentElement.parentElement.getAttribute("datatype-date");
     let currentTime = event.currentTarget.parentElement.parentElement.getAttribute("datatype-time");

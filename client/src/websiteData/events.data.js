@@ -14,30 +14,21 @@ export const fundraisersCardData = [
     eventName: "Broncos",
     content: "Broncos Games ",
     image: BroncosImage,
-    date: "1-12-23",
-    time: "11 am",
   },
   {
-    eventName: "tournaments",
+    eventName: "Tournaments",
     content: "Overland tournaments",
     image: TournamentsImage,
-    date: "2-12-23",
-    time: "11 am",
   },
   {
-    eventName: "Felid Clean Up",
+    eventName: "Field Clean Up",
     content: "Fall Clean Up",
     image: FieldCleanUpImage,
-
-    date: "9-12-23",
-    time: "1 pm",
   },
   {
     eventName: "Apple Bees",
     content: "box 4",
     image: AppleBeesImage,
-    date: "8-22-23",
-    time: "8 pm",
   },
 ];
 // All event data
@@ -164,9 +155,9 @@ export const eventData = [
   createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "TBD"),
 
   // Tournament data
-  createData("Tournament", "1300 W Swallow Rd. Fort Collins CO", "TBD", "July 27th"),
-  createData("Tournament", "10300 W South Boulder Rd. Lafayette CO", "TBD", "July 28th"),
-  createData("Tournament", "TBD", "TBD", "TBD"),
+  createData("Tournaments", "1300 W Swallow Rd. Fort Collins CO", "TBD", "July 27th"),
+  createData("Tournaments", "10300 W South Boulder Rd. Lafayette CO", "TBD", "July 28th"),
+  createData("Tournaments", "TBD", "TBD", "TBD"),
 
   // Apple Bees
   createData("Apple Bees", "TBD", "TBD", "TBD"),
