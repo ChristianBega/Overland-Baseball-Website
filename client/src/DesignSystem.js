@@ -45,6 +45,7 @@ export const mainTheme = createTheme(
             ":hover": {
               background: "#283F76",
               cursor: "pointer",
+              transform: "scale(.9)",
             },
             ":focus-visible": "",
             transition: "all .3s ease-In-Out",
@@ -89,8 +90,28 @@ export const mainTheme = createTheme(
       MuiTableCell: {
         styleOverrides: {
           root: {
-            padding: "1.5rem",
+            padding: 12,
             color: "#091F40",
+            // minHeight: "170px",
+          },
+        },
+      },
+      // MuiTableRow: {
+      //   styleOverrides: {
+      //     root: {
+      //     },
+      //   },
+      // },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            ":hover": {
+              background: "rgba(255,255,255,.2)",
+              cursor: "pointer",
+              transform: "scale(1.1)",
+            },
+            ":focus-visible": "",
+            transition: "all .3s ease-In-Out",
           },
         },
       },

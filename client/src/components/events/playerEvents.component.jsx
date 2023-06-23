@@ -14,7 +14,7 @@ export default function PlayerEvents({ currentInfo }) {
     <>
       {currentInfo.map((info, index) => (
         <>
-          <TableContainer sx={{ mb: 3, maxWidth: "90%", height: "auto", margin: "auto" }}>
+          <TableContainer key={index} sx={{ mb: 3, maxWidth: "90%", height: "auto", margin: "auto" }}>
             <Table>
               <TableRow>
                 <TableCell

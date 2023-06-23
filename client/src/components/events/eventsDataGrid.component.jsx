@@ -36,7 +36,9 @@ export default function Events() {
               </TableCell>
 
               <TableCell sx={{ width: "60%", backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, textAlign: "center" }}>
-                <Typography typography="h6">Location</Typography>
+                <Typography component={"span"} typography="h6">
+                  Location
+                </Typography>
               </TableCell>
               {!isMobile && (
                 <TableCell
@@ -48,7 +50,9 @@ export default function Events() {
                     color: theme.palette.text.primary,
                   }}
                 >
-                  <Typography typography="h6">Event</Typography>
+                  <Typography component={"span"} typography="h6">
+                    Event
+                  </Typography>
                 </TableCell>
               )}
             </TableRow>

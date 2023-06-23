@@ -16,7 +16,7 @@ export default function RegistrationForm() {
   } = useForm();
 
   const onSubmit = (data) => {
-    EmailService.sendEmail(data);
+    EmailService.sendEmailRegistration(data);
     reset();
   };
 
