@@ -20,6 +20,7 @@ export default function EventItems({ event, isMobile }) {
   const [open, setOpen] = useState();
   const theme = useTheme();
   const handleOpen = (event) => {
+    console.log(event.currentTarget.parentElement.parentElement);
     let currentEvent = event.currentTarget.parentElement.parentElement.getAttribute("datatype-event");
     let currentDate = event.currentTarget.parentElement.parentElement.getAttribute("datatype-date");
     let currentTime = event.currentTarget.parentElement.parentElement.getAttribute("datatype-time");
@@ -43,34 +44,49 @@ export default function EventItems({ event, isMobile }) {
         }}
       >
         {date}
-        <Typography component="span" sx={{ display: { xs: "block", md: "inline" }, pl: { md: 2 } }}>
+        <Typography component="span" sx={{ fontSize: { xs: "12px", md: "1rem" }, display: { xs: "block", md: "inline" }, pl: { md: 2 } }}>
           {time}
         </Typography>
       </TableCell>
 
-      <TableCell sx={{ flex: "3 0 60%" }}>{location}</TableCell>
+      {isMobile && (
+        <TableCell sx={{ flex: "3 0 60%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <Typography>{location}</Typography>
+          <>
+            <IconButton onClick={handleOpen} size="medium" style={{ color: "gray" }}>
+              <AppRegistrationIcon fontSize="small" />
+            </IconButton>
+            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} />
+          </>
+        </TableCell>
+      )}
 
       {!isMobile && (
-        <TableCell
-          sx={{
-            minHeight: { sm: "70px", md: "65px" },
-            display: "flex",
-            gap: ".5rem",
-            alignItems: "center",
-            flex: "1 0 20%",
-            fontWeight: "bold",
-            backgroundColor: theme.palette.primary.light,
-            color: theme.palette.text.primary,
-          }}
-        >
-          <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
-            <AppRegistrationIcon fontSize="small" />
-          </IconButton>
-          <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} />
-          <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
-            {eventName}
-          </Typography>
-        </TableCell>
+        <>
+          <TableCell sx={{ flex: "3 0 60%" }}>
+            <Typography>{location}</Typography>
+          </TableCell>
+          <TableCell
+            sx={{
+              minHeight: { sm: "70px", md: "65px" },
+              display: "flex",
+              gap: ".5rem",
+              alignItems: "center",
+              flex: "1 0 20%",
+              fontWeight: "bold",
+              backgroundColor: theme.palette.primary.light,
+              color: theme.palette.text.primary,
+            }}
+          >
+            <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
+              <AppRegistrationIcon fontSize="small" />
+            </IconButton>
+            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} />
+            <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
+              {eventName}
+            </Typography>
+          </TableCell>
+        </>
       )}
     </StyledTableRow>
   );

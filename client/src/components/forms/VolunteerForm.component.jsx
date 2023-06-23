@@ -12,6 +12,7 @@ import styled from "@emotion/styled";
 const StyledDataBox = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: 3,
+  alignItems: "center",
 }));
 export default function VolunteerForm({ currentEventData }) {
   const theme = useTheme();
@@ -38,18 +39,18 @@ export default function VolunteerForm({ currentEventData }) {
         Overland's volunteer form
       </Typography>
       <Typography>Event Information:</Typography>
-      <Stack spacing={3} direction="row" mt={3} mb={5}>
+      <Stack spacing={{ xs: 2, md: 4 }} direction="row" mt={3} mb={5}>
         <StyledDataBox>
           <PlaceIcon />
-          <Typography>{currentEventData.event}</Typography>
+          <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.event}</Typography>
         </StyledDataBox>
         <StyledDataBox>
           <AccessTimeIcon />
-          <Typography>{currentEventData.time}</Typography>
+          <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.time}</Typography>
         </StyledDataBox>
         <StyledDataBox>
           <CalendarMonthIcon />
-          <Typography>{currentEventData.date}</Typography>
+          <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.date}</Typography>
         </StyledDataBox>
       </Stack>
       <Typography>Volunteer Information: </Typography>
