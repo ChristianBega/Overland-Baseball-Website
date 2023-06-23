@@ -5,6 +5,7 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import PlayerEvents from "./playerEvents.component";
 import Toggles from "./toggles.component";
+import RegistrationModal from "../modals/registrationModal.component";
 
 const springData = [
   {
@@ -56,7 +57,7 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function Workouts() {
-  const theme = useTheme()
+  const theme = useTheme();
   const [currentSeason, setCurrentSeason] = useState("spring");
   const [currentInfo, setCurrentInfo] = useState([]);
 
@@ -71,13 +72,14 @@ export default function Workouts() {
   }, [currentSeason]);
 
   return (
-    <Grid item xs={12} md={8} sx={{ minHeight: "375px", maxHeight: "450px", mt: 5 }}>
+    <Grid item xs={12} md={8} sx={{ minHeight: "400px", maxHeight: "500px", mt: 5 }}>
       <StyledInfoBox>
         <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center" }}>
           Tryouts
         </Typography>
         <Toggles setCurrentSeason={setCurrentSeason} />
         <PlayerEvents currentInfo={currentInfo} />
+        <RegistrationModal datatypeRegistration="tryouts" />
       </StyledInfoBox>
     </Grid>
   );

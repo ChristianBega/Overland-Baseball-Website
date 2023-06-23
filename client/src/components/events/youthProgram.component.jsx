@@ -4,6 +4,7 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import PlayerEvents from "./playerEvents.component";
+import RegistrationModal from "../modals/registrationModal.component";
 
 const youthProgramData = [
   {
@@ -39,13 +40,14 @@ export default function YouthProgram() {
   }, [currentInfo]);
 
   return (
-    <Grid item xs={12} md={8} sx={{ maxHeight: "425px", my: { xs: 10, md: 15 } }}>
+    <Grid item xs={12} md={8} sx={{ maxHeight: "650px", my: { xs: 10, md: 15 } }}>
       <StyledInfoBox>
         <Typography typography="h2" sx={{ textAlign: "center", mb: 5, color: theme.palette.secondary.main }} textAlign="center" mb={5}>
           Youth Baseball Program
         </Typography>
         {/* <Toggles setCurrentSeason={setCurrentSeason} /> */}
         <PlayerEvents currentInfo={currentInfo} />
+        <RegistrationModal datatypeRegistration="youth program" />
       </StyledInfoBox>
     </Grid>
   );

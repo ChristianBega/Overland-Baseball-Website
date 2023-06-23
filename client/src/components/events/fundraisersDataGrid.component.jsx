@@ -1,27 +1,21 @@
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import EventItems from "./eventItems.component";
-import { eventData } from "../../websiteData/events.data";
-import { useTheme } from "@emotion/react";
 
-export default function Events() {
+export default function FundraisersDataGrid({ events, currentEvent }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  // const [eventData, setEventData] = useState();
-
-  // useEffect(() => {
-  //   setEventData([...broncoData, ...fieldCleanUpData]);
-  // });
+  console.log(currentEvent);
 
   return (
-    <Grid item xs={12}>
-      <Typography typography="h1" sx={{ textAlign: "center", my: 10, color: theme.palette.secondary.main }}>
-        Upcoming Events!
+    <>
+      <Typography variant="h3" component="h2" sx={{ textAlign: "center", my: 10, color: theme.palette.secondary.main }}>
+        {currentEvent} Events
       </Typography>
       <TableContainer component={Paper} sx={{ color: "#000", my: 6, maxHeight: 440 }}>
         <Table stickyHeader aria-label="simple table">
-          <TableHead>
+          <TableHead sx={{ border: "2px solid red", color: " Red" }}>
             <TableRow>
               <TableCell
                 sx={{
@@ -48,6 +42,7 @@ export default function Events() {
                     textAlign: "center",
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.text.primary,
+                    overflow: " hidden",
                   }}
                 >
                   <Typography component={"span"} typography="h6">
@@ -58,12 +53,12 @@ export default function Events() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {eventData.map((event, index) => (
+            {events.map((event, index) => (
               <EventItems isMobile={isMobile} key={index} event={event} />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </Grid>
+    </>
   );
 }
