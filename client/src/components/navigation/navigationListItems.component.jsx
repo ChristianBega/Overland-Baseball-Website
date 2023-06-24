@@ -31,7 +31,7 @@ const StyledList = styled(List)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   overflowX: "hidden",
-  overflowY: "hidden",
+  // overflowY: "hidden",
   rowGap: theme.spacing(4), // 16px
   minWidth: "60vw",
   paddingInline: theme.spacing(6),
