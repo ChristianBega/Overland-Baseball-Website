@@ -21,7 +21,7 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
 }));
 
 export default function YouthProgramModal({ datatypeRegistration }) {
-  const [open, setOpen] = useState();
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 

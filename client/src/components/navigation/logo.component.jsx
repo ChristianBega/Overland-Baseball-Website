@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 // Image assets
-import Logo from "../../assets/overlandLogo2.png";
+import Logo from "../../assets/overlandLogo2.webp";
 
 import { Box } from "@mui/material";
-import { useTheme } from "@emotion/react";
 
 export default function OverlandLogo() {
-  const theme = useTheme();
   return (
     <Link to="/">
       <Box
@@ -22,7 +20,6 @@ export default function OverlandLogo() {
           },
         }}
       >
-        {/* <img src={Logo}/> */}
         <Box component="img" sx={{ height: "75px", width: "auto" }} src={Logo}></Box>
       </Box>
     </Link>

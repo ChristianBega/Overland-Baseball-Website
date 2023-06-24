@@ -84,20 +84,20 @@ const getMenuItems = (handleClose, theme, isMobile) => (
           <Typography typography={"linkTextDesktop"} sx={{ display: { xs: "none", lg: "flex", justifyContent: "center" } }}>
             {menuItem.linkName}
           </Typography>
-          <Typography sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
+          <Box component="span" sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
             <Box sx={{ display: "flex", alignItems: "center", color: theme.palette.primary.light }}>
               {menuItem.icon}
-              <Typography ml={2} typography={"linkTextMobile"}>
+              <Typography ml={2} typography="linkTextMobile">
                 {menuItem.linkName}
               </Typography>
             </Box>
-          </Typography>
+          </Box>
         </Link>
       </StyledListItem>
     ))}
     {isMobile && (
       <>
-        <Socials data="mobile" />
+        <Socials dataTypeDevice="mobile" />
         <ContactUs />
       </>
     )}

@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import overland from "../../assets/teamLogos/overland.webp";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-child(even)": {
+  "&:nth-of-type(even)": {
     backgroundColor: "#f2f2f2",
     boxShadow: 10,
   },
@@ -32,7 +32,6 @@ export default function ScheduleItem({ gameData }) {
       <TableCell sx={{ flex: "2 0 25%" }}>
         <Box component="img" src={opponentLogo} sx={{ maxWidth: "55px", display: "flex", margin: "auto", borderRadius: "50%" }}></Box>
       </TableCell>
-
       <TableCell
         sx={{
           flex: "3 0 30%",

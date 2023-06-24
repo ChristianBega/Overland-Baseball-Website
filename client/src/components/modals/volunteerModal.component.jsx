@@ -24,8 +24,6 @@ export default function VolunteerModal({ open, handleClose, currentEventData }) 
     <>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
-          {/* <RegistrationForm /> */}
-
           <VolunteerForm currentEventData={currentEventData} />
         </StyledModalContainer>
       </Modal>

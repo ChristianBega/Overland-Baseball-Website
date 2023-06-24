@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Grid, TableContainer, Table, Typography, Link } from "@mui/material";
+import { Paper, Grid, TableContainer, Table, Typography, Link, TableBody } from "@mui/material";
 import { useTheme } from "@emotion/react";
 
 // Schedule Data
@@ -16,10 +16,12 @@ export default function Schedule() {
         Spring 2023 Schedule
       </Typography>
       <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-        <Table aria-label="simple table">
-          {scheduleRowData.map((gameData, index) => (
-            <ScheduleItem gameData={gameData} key={index} />
-          ))}
+        <Table aria-label="schedule table">
+          <TableBody>
+            {scheduleRowData.map((gameData, index) => (
+              <ScheduleItem gameData={gameData} key={index} />
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
     </Grid>

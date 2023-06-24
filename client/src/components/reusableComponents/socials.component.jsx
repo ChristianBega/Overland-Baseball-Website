@@ -42,11 +42,11 @@ const SocialLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-export default function Socials({ data }) {
+export default function Socials({ dataTypeDevice }) {
   const theme = useTheme();
   return (
     <>
-      {data === "mobile" && (
+      {dataTypeDevice === "mobile" && (
         <Box sx={{ my: 20 }}>
           <Typography sx={{ color: theme.palette.primary.light }} typography="h5" textAlign="center">
             Follow us
@@ -72,7 +72,7 @@ export default function Socials({ data }) {
           </Stack>
         </Box>
       )}
-      {data === "footer" && (
+      {dataTypeDevice === "footer" && (
         <Box sx={{ mt: 0 }}>
           <Typography sx={{ color: theme.palette.text.primary }} typography="h5" textAlign="center">
             Follow us
@@ -98,7 +98,7 @@ export default function Socials({ data }) {
           </Stack>
         </Box>
       )}
-      {!data && (
+      {!dataTypeDevice && (
         <Box sx={{ my: 10 }}>
           <Typography sx={{ color: theme.palette.primary.light }} typography="h5" textAlign="center">
             Follow us

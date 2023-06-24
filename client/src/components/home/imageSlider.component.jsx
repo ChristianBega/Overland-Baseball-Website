@@ -3,14 +3,14 @@ import { Box, Grid } from "@mui/material";
 import React from "react";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import aleman2 from "../../assets/imageSlider/Aleman2.jpg";
-import bega from "../../assets/imageSlider/Bega1.jpg";
-import bega3 from "../../assets/imageSlider/Bega3.jpg";
-import cox from "../../assets/imageSlider/Cox2.jpg";
-import dom from "../../assets/imageSlider/Dom2.jpg";
-import medley1 from "../../assets/imageSlider/Medleyhitting.jpg";
-import medley2 from "../../assets/imageSlider/Medleywatching.jpg";
-import medley3 from "../../assets/imageSlider/Medley3.jpg";
+import aleman2 from "../../assets/imagesSlider/Aleman2.webp";
+import bega from "../../assets/imagesSlider/Bega1.webp";
+import bega3 from "../../assets/imagesSlider/Bega3.webp";
+import cox from "../../assets/imagesSlider/Cox2.webp";
+import dom from "../../assets/imagesSlider/Dom2.webp";
+import medley1 from "../../assets/imagesSlider/Medleyhitting.webp";
+import medley2 from "../../assets/imagesSlider/Medleywatching.webp";
+import medley3 from "../../assets/imagesSlider/Medley3.webp";
 
 const items = [
   <img src={aleman2} alt="hitting" className="item" style={{ width: "100%" }} />,
