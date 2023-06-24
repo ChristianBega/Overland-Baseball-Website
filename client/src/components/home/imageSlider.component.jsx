@@ -27,7 +27,7 @@ const items = [
 export default function ImageSlider() {
   // const theme = useTheme();
   return (
-    <Grid item xs={12} md={6} lg={6} sx={{ marginTop: { xs: 5, md: 15 } }}>
+    <Grid item xs={12} md={12} lg={6} sx={{ marginTop: { xs: 5, md: 15 } }}>
       <Box sx={{ height: "100%", minHeight: 300 }}>
         {/* <Typography typography="h3" sx={{ textAlign: "center", color: theme.palette.secondary.main, mb: 5}}>
           GO BLAZERS!

@@ -3,10 +3,6 @@ import React from "react";
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-// Icons
-// import EmailIcon from "@mui/icons-material/Email";
-import OverlandLogo from "../../assets/overlandLogo_3.png";
-
 // Components
 import Socials from "../reusableComponents/socials.component";
 import { useTheme } from "@emotion/react";
@@ -17,7 +13,7 @@ const newsData = {
 export default function News() {
   const theme = useTheme();
   return (
-    <Grid item xs={12} md={6} lg={6} sx={{ position: "relative", mt: { lg: 10 } }}>
+    <Grid item xs={12} md={8} lg={6} sx={{ position: "relative", mt: { lg: 10 } }}>
       <Box sx={{ minHeight: { xs: "300px", md: "400px", textAlign: "center" }, p: 4 }}>
         <Typography sx={{ my: 5, color: theme.palette.primary.main }} typography="h2Small">
           Trail Blazer News
