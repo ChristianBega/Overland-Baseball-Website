@@ -136,27 +136,41 @@ export const mainTheme = createTheme(
       text: {
         primary: "#F3F4F6",
       },
+      borders: {
+        primary: "#c3c1c1a0",
+      },
     },
     typography: {
       fontFamily: "Work Sans",
 
       h1: {
-        fontFamily: "Figtree",
+        fontFamily: "'Alfa Slab One', cursive",
+        letterSpacing: ".3rem",
         fontSize: "58px",
         lineHeight: "62px",
         fontWeight: "800",
+        textShadow: "0 0 2px #c3c1c1a0",
       },
       h2: {
-        fontFamily: "Figtree !important",
+        fontFamily: "'Alfa Slab One', cursive",
+        letterSpacing: ".3rem",
         fontSize: "48px !important",
         lineHeight: "52px !important",
         fontWeight: "700 !important",
       },
+      h2Small: {
+        fontFamily: "'Alfa Slab One', cursive",
+        letterSpacing: ".3rem",
+        fontSize: "42px !important",
+        lineHeight: "52px !important",
+        fontWeight: "700 !important",
+      },
       h3: {
-        fontFamily: "Figtree",
-        fontSize: "38px",
+        fontFamily: "'Alfa Slab One', cursive",
+        fontSize: "32px",
         lineHeight: "42px",
         fontWeight: "700",
+        letterSpacing: ".3rem",
       },
       h4: {
         fontFamily: "Figtree",
@@ -188,11 +202,7 @@ export const mainTheme = createTheme(
         fontSize: "28px",
         width: "100%",
       },
-      headerText: {
-        fontFamily: "'Alfa Slab One', cursive",
-        width: "100%",
-        textShadow: "0 0 10px #21c067",
-      },
+
       // MuiTypography: {
       //     styleOverrides: {
       //         root: {

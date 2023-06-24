@@ -16,11 +16,14 @@ const StyledBox = styled(Box)(({ theme }) => ({
   right: "50%",
   top: "38%",
   transform: "translate(50%,-50%)",
+  [theme.breakpoints.up("sm")]: {
+    top: "40%",
+  },
   [theme.breakpoints.up("md")]: {
-    top: 145,
+    top: "38%",
   },
   [theme.breakpoints.up("lg")]: {
-    top: 200,
+    top: "35%",
   },
 }));
 
@@ -32,10 +35,11 @@ export default function HeroBackground() {
   return (
     <Box
       component="section"
-      style={{
-        minHeight: "68vh",
+      sx={{
+        minHeight: { xs: "68vh", sm: "70vh", md: "70vh", lg: "89vh" },
         position: "relative",
         overflow: "hidden",
+        marginBottom: { xs: 5, sm: 12, md: 10, lg: 20 },
       }}
       id="hero-background"
     >
@@ -46,7 +50,7 @@ export default function HeroBackground() {
           src={HeroImage}
           sx={{
             width: "100vw",
-            height: "68vh",
+            height: { xs: "68vh", sm: "70vh", md: "70vh", lg: "89vh" },
             objectFit: "cover",
             position: "absolute",
             top: 0,
@@ -56,7 +60,7 @@ export default function HeroBackground() {
         ></Box>
       </StyledOverLay>
       <StyledBox>
-        <Typography sx={{ fontSize: { xs: "52px", sm: "65px", lg: "75px" } }} typography="headerText" component="h1" md={5}>
+        <Typography sx={{ fontSize: { xs: "52px", sm: "65px", md: "85px", lg: "120px" } }} typography="headerText" component="h1" md={5}>
           Overland <br /> Trail Blazers
         </Typography>
       </StyledBox>

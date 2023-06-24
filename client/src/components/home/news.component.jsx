@@ -18,7 +18,7 @@ export default function News() {
   return (
     <Grid item xs={12} md={6} lg={6} sx={{ mt: { lg: 10 } }}>
       <Box sx={{ minHeight: { xs: "300px", md: "400px", textAlign: "center" }, p: 4 }}>
-        <Typography sx={{ my: 5, color: theme.palette.secondary.main }} typography="h2">
+        <Typography sx={{ my: 5, color: theme.palette.primary.main }} typography="h2Small">
           Trail Blazer News
         </Typography>
         <Typography typography={{ xs: "bodyTextSm", md: "bodyTextLg" }}>{newsData.news}</Typography>

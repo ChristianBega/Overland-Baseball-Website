@@ -9,24 +9,19 @@ import Sponsors from "../components/sponsors/sponsors.component";
 import ImageSlider from "../components/home/imageSlider.component";
 import CTAGrid from "../components/home/callToActions.component";
 
-
 export default function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
-      <HeroBackground />
-      <Container component="section" id="home-section" style={{ display: "flex", justifyContent: " center", }}>
-        <Grid container maxWidth="xl" spacing={{ xs: 4, md: 6 }} my={10}>
+      {/* <HeroBackground /> */}
+      <Container component="section" id="home-section" style={{ display: "flex", justifyContent: " center", marginTop: "3rem" }}>
+        <Grid container maxWidth="xl" spacing={{ xs: 4, md: 20 }}>
           <News />
           <ImageSlider />
-           {!isMobile &&(
-            <CTAGrid />
-          )}
+          {!isMobile && <CTAGrid />}
           <Schedule />
-          {isMobile &&(
-            <CTAGrid/>
-          )}
+          {isMobile && <CTAGrid />}
           <Sponsors />
         </Grid>
       </Container>

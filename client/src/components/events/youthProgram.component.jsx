@@ -42,7 +42,7 @@ export default function YouthProgram() {
   return (
     <Grid item xs={12} md={8} sx={{ maxHeight: "650px", my: { xs: 10, md: 15 } }}>
       <StyledInfoBox>
-        <Typography typography="h2" sx={{ textAlign: "center", mb: 5, color: theme.palette.secondary.main }} textAlign="center" mb={5}>
+        <Typography typography="h2" sx={{ textAlign: "center", mb: 5, color: theme.palette.primary.main }} textAlign="center" mb={5}>
           Youth Baseball Program
         </Typography>
         {/* <Toggles setCurrentSeason={setCurrentSeason} /> */}
