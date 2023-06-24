@@ -51,7 +51,7 @@ export default function MobileNavigation() {
           <IconButton sx={{ display: "block" }} onClick={handleClose} color="primary.main" aria-label="exit menu">
             <CloseIcon fontSize="large" />
           </IconButton>
-          <NavigationListItems setOpenMenu={setOpenMenu} openMenu={openMenu} handleClose={handleClose} />
+          <NavigationListItems handleClose={handleClose} />
         </StyledDrawerMenu>
 
         <OverlandLogo sx={{ flexGrow: 1 }} />

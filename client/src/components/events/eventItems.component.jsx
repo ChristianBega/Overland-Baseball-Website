@@ -6,7 +6,7 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import VolunteerModal from "../modals/volunteerModal.component";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-child(even)": {
+  "&:nth-type-of(even)": {
     backgroundColor: "#f2f2f2",
     boxShadow: 10,
     minHeight: "50px",
@@ -17,7 +17,7 @@ export default function EventItems({ event, isMobile }) {
   // extra data from event object : description, extraInformation
   const { eventName, location, date, time } = event;
   const [currentEventData, setCurrentEventData] = useState({ event: "", date: "", time: "" });
-  const [open, setOpen] = useState();
+  const [open, setOpen] = useState(false);
   const theme = useTheme();
   const handleOpen = (event) => {
     let currentEvent = event.currentTarget.parentElement.parentElement.getAttribute("datatype-event");

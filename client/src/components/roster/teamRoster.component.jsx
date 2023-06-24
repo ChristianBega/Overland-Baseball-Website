@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, TableContainer } from "@mui/material";
+import { Grid, Paper, Table, TableBody, TableContainer } from "@mui/material";
 // Components
 import TeamRosterItem from "./teamRosterItem.component";
 
@@ -207,8 +207,12 @@ export default function TeamRoster({ currentTeam }) {
   return (
     <section id="team-rooster-section" style={{ width: "100%", borderBottom: ".5px solid grey", borderTop: ".5px solid grey", margin: "3% 0 3% 0" }}>
       <Grid item xs={12} md={12} sx={{ mt: 4 }}>
-        <TableContainer sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
-          <TeamRosterItem currentRoster={currentRoster} />
+        <TableContainer component={Paper} sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+          <Table aria-label="roster table">
+            <TableBody>
+              <TeamRosterItem currentRoster={currentRoster} />
+            </TableBody>
+          </Table>
         </TableContainer>
       </Grid>
     </section>

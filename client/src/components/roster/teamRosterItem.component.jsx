@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-child(even)": {
+  "&:nth-type-of(even)": {
     backgroundColor: "#f2f2f2",
   },
   boxShadow: 10,
@@ -34,22 +34,6 @@ export default function TeamRoosterItem({ currentRoster }) {
     <>
       {currentRoster.map((playerData, index) => (
         <StyledTableRow key={index}>
-          {/* <Grid style={style.container1}> */}
-          {/* <Grid style={style.infoContainer}>
-              <ListItemText primary={playerData.position} />
-              <ListItemText>/</ListItemText>
-              <ListItemText primary={playerData.height} />
-              <ListItemText>/</ListItemText>
-              <ListItemText primary={playerData.weight} />
-              <ListItemText>/</ListItemText>
-              <ListItemText primary={playerData.handed} />
-            </Grid> */}
-          {/* <Grid style={style.nameContainer}>
-              <Typography style={style.numberContainer}>{playerData.number}</Typography>
-              <Typography style={style.playerContainer} sx={{ flex: 2 }}>
-                {playerData.name}
-              </Typography>
-            </Grid> */}
           <TableCell
             sx={{ pl: 0, pr: 2, border: "none", flex: "1 1 90px", display: "flex", justifyContent: "center", alignItems: "center" }}
             component="th"
@@ -96,70 +80,8 @@ export default function TeamRoosterItem({ currentRoster }) {
               {isMobile_XS && playerData.yearAbbr}
             </Typography>
           </TableCell>
-
-          {/* <TableCell>Testing</TableCell> */}
-          {/* </Grid> */}
-          {/* <Grid style={style.container2}>
-            <ListItemText
-              primary={playerData.year}
-              sx={{
-                flex: 2,
-                textAlign: "end",
-                [theme.breakpoints.up("sm")]: {
-                  paddingRight: "25%",
-                },
-              }}
-            />
-          </Grid> */}
         </StyledTableRow>
       ))}
     </>
   );
 }
-
-// const style = {
-// rosterContainer: {
-//   // padding: "0 2% 0 2%",
-//   // height: "20vh",
-//   // display: "flex",
-//   justifyContent: "space-between",
-//   alignItems: "center",
-// },
-// container1: {
-//   display: "flex",
-//   flexDirection: "column",
-//   alignItems: "flex-start",
-//   width: "100%",
-// },
-// infoContainer: {
-//   display: "flex",
-//   flexDirection: "row",
-// },
-// nameContainer: {
-//   display: "flex",
-//   flexDirection: "row",
-//   alignItems: "center",
-//   width: "100%",
-// },
-// playerContainer: {
-//   fontSize: "24px",
-//   color: "#666666",
-//   paddingLeft: "3%",
-// },
-// numberContainer: {
-// fontSize: "1rem",
-// fontWeight: "700",
-// color: "#fff",
-// background: "#091F40",
-// width: "2rem",
-// height: "1.5rem",
-// display: "flex",
-// justifyContent: "center",
-// alignItems: "center",
-// },
-// container2: {
-//   display: "flex",
-//   width: "30%",
-//   // paddingRight: "",
-// },
-// };

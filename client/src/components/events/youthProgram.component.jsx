@@ -45,7 +45,6 @@ export default function YouthProgram() {
         <Typography typography="h2" sx={{ textAlign: "center", mb: 5, color: theme.palette.primary.main }} textAlign="center" mb={5}>
           Youth Baseball Program
         </Typography>
-        {/* <Toggles setCurrentSeason={setCurrentSeason} /> */}
         <PlayerEvents currentInfo={currentInfo} />
         <RegistrationModal datatypeRegistration="youth program" />
       </StyledInfoBox>

@@ -1,6 +1,5 @@
 import React from "react";
 import { BottomNavigation, Grid, useMediaQuery } from "@mui/material";
-import { Box } from "@mui/system";
 
 // Components
 import OverlandLogo from "./logofooter.component";
@@ -23,29 +22,25 @@ export default function FooterNavigation() {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box component="footer" id="footer" sx={{ flexGrow: 1 }}>
-      <StyledBottomNavigation component="nav">
-        <Grid container spacing={2} sx={{ display: "flex", justifyContent: "center" }}>
-          <OverlandLogo />
-          {isMobile && (
-            <Grid item xs={12} sm={4} md={3}>
-              <ContactUs />
-            </Grid>
-          )}
-          <Grid item xs={12} sm={4} md={4}>
-            <Socials data="footer" />
+    <StyledBottomNavigation>
+      <Grid container spacing={2} sx={{ display: "flex", justifyContent: "center" }}>
+        <OverlandLogo />
+        {isMobile && (
+          <Grid item xs={12} sm={4} md={3}>
+            <ContactUs />
           </Grid>
-          <Grid item xs={12} md={4}>
-            <LocationMap />
-          </Grid>
-          {!isMobile && (
-            <Grid item xs={6} md={4}>
-              <ContactUs />
-            </Grid>
-          )}
-          <Copyright />
+        )}
+        <Grid item xs={12} sm={4} md={4}>
+          <Socials dataTypeDevice="footer" />
         </Grid>
-      </StyledBottomNavigation>
-    </Box>
+        <LocationMap />
+        {!isMobile && (
+          <Grid item xs={6} md={4}>
+            <ContactUs />
+          </Grid>
+        )}
+        <Copyright />
+      </Grid>
+    </StyledBottomNavigation>
   );
 }

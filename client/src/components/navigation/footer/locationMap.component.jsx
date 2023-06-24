@@ -3,7 +3,7 @@ import React from "react";
 
 export default function LocationMap() {
   return (
-    <Grid>
+    <Grid item xs={12} md={4}>
       <Typography typography="h5" textAlign="center" mb={4}>
         Locations
       </Typography>
@@ -14,8 +14,8 @@ export default function LocationMap() {
           title="map"
           loading="lazy"
           style={{ border: "0" }}
-          width="300"
-          height="150"
+          width="300px"
+          height="150px"
         ></iframe>
       </Box>
     </Grid>

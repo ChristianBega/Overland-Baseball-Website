@@ -15,6 +15,7 @@ function App() {
         <Router>
           <Navigation />
           <AnimationRoutes />
+          {/* Error with "react does not recognize show label" - can't find it but somewhere in footer */}
           <FooterNavigation />
         </Router>
       </ThemeProvider>

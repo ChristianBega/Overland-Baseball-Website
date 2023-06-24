@@ -155,6 +155,7 @@ export default function TimeLine() {
         />
         {timelineData.map((timelineEl, index) => (
           <VerticalTimelineElement
+            key={index}
             className="vertical-timeline-element--work"
             contentStyle={{ background: "rgb(19, 53, 118,.86)", color: "#fff" }}
             contentArrowStyle={{ borderRight: "7px solid  rgb(9, 46, 115)" }}

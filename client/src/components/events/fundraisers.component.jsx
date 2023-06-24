@@ -51,7 +51,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 // }));
 
 export default function Fundraisers() {
-  const [open, setOpen] = useState();
+  const [open, setOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState();
   const [events, setEvents] = useState();
   const theme = useTheme();
