@@ -1,8 +1,8 @@
 // Fundraiser Card Images
-import TournamentsImage from "../assets/coloradoClassics.png";
-import BroncosImage from "../assets/broncosVolunteer.png";
-import FieldCleanUpImage from "../assets/fieldCleanUp.jpg";
-import AppleBeesImage from "../assets/appleBees.png";
+import TournamentsImage from "../assets/eventsPage/coloradoClassics.webp";
+import BroncosImage from "../assets/eventsPage/broncosVolunteer.webp";
+import FieldCleanUpImage from "../assets/eventsPage/fieldCleanUp.webp";
+import AppleBeesImage from "../assets/eventsPage/appleBees.webp";
 
 function createData(eventName, location, time, date) {
   return { eventName, location, time, date };

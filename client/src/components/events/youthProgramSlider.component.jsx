@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import YouthProgramImage from "../../assets/youthProgramImage.jpg";
+import YouthProgramImage from "../../assets/eventsPage/youthProgramImage.webp";
 
 export default function YouthProgramSlider() {
   return (
