@@ -45,7 +45,7 @@ export const mainTheme = createTheme(
             ":hover": {
               background: "#283F76",
               cursor: "pointer",
-              transform: "scale(.9)",
+              transform: "scale(1.1)",
             },
             ":focus-visible": "",
             transition: "all .3s ease-In-Out",
@@ -131,6 +131,7 @@ export const mainTheme = createTheme(
       },
       accent: {
         accentOne: "rgba(9,31,64,.8)",
+
         accentTwo: "rgba(0,154,78,.5)",
       },
       text: {
@@ -178,6 +179,12 @@ export const mainTheme = createTheme(
         lineHeight: "32px",
         fontWeight: "600",
       },
+      h5: {
+        fontFamily: "Figtree",
+        fontSize: "26px",
+        lineHeight: "32px",
+        fontWeight: "600",
+      },
       bodyTextLg: {
         fontFamily: "Work Sans",
         fontSize: "18px",
@@ -194,6 +201,13 @@ export const mainTheme = createTheme(
         lineHeight: "18px",
         fontSize: "20px",
         width: "100%",
+        ":hover": {
+          color: "#F3F4F6",
+          cursor: "pointer",
+          transform: "scale(1.1)",
+        },
+        ":focus-visible": "",
+        transition: "all .3s ease-In-Out",
       },
       linkTextMobile: {
         color: "#283F76",
@@ -201,6 +215,13 @@ export const mainTheme = createTheme(
         lineHeight: "22px",
         fontSize: "28px",
         width: "100%",
+        ":hover": {
+          color: "#010B1F",
+          cursor: "pointer",
+          transform: "scale(1.1)",
+        },
+        ":focus-visible": "",
+        transition: "all .3s ease-In-Out",
       },
 
       // MuiTypography: {

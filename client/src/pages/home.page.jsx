@@ -8,10 +8,14 @@ import Schedule from "../components/home/schedule.component";
 import Sponsors from "../components/sponsors/sponsors.component";
 import ImageSlider from "../components/home/imageSlider.component";
 import CTAGrid from "../components/home/callToActions.component";
+import { useEffect } from "react";
 
 export default function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       {/* <HeroBackground /> */}

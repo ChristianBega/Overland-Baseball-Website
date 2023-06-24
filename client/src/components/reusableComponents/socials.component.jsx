@@ -7,7 +7,9 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-
+import styled from "@emotion/styled";
+// Images
+import OverlandLogo from "../../assets/overlandLogo_3.png";
 const socialData = [
   {
     linkName: "twitter",
@@ -30,26 +32,97 @@ const socialData = [
     socialIcon: <YouTubeIcon />,
   },
 ];
-export default function Socials() {
+const SocialLink = styled(Link)(({ theme }) => ({
+  "&:hover": {
+    cursor: "pointer",
+    scale: "1.3",
+    transition: ".3s all ease-in-out",
+    color: theme.palette.secondary.light,
+    boxShadow: 10,
+  },
+}));
+
+export default function Socials({ data }) {
   const theme = useTheme();
   return (
-    <Box sx={{ mb: 5 }}>
-      <Typography typography="h5" textAlign="center">
-        Follow us
-      </Typography>
-      <Stack sx={{ justifyContent: "center" }} direction="row" spacing={2} mt={4}>
-        {socialData.map((social) => (
-          <Link
-            sx={{ color: theme.palette.secondary.main }}
-            key={social.linkName}
-            href={`https://${social.linkUrl}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {social.socialIcon}
-          </Link>
-        ))}
-      </Stack>
-    </Box>
+    <>
+      {data === "mobile" && (
+        <Box sx={{ my: 20 }}>
+          <Typography sx={{ color: theme.palette.primary.light }} typography="h5" textAlign="center">
+            Follow us
+          </Typography>
+          <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>
+            {socialData.map((social) => (
+              <SocialLink
+                sx={{ color: theme.palette.accent.accentOne }}
+                key={social.linkName}
+                href={`https://${social.linkUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {social.socialIcon}
+              </SocialLink>
+            ))}
+
+            <Box
+              component="img"
+              src={OverlandLogo}
+              sx={{ zIndex: "-100", opacity: ".2", minWidth: "300px", position: "absolute", top: "-95px" }}
+            ></Box>
+          </Stack>
+        </Box>
+      )}
+      {data === "footer" && (
+        <Box sx={{ mt: 0 }}>
+          <Typography sx={{ color: theme.palette.text.primary }} typography="h5" textAlign="center">
+            Follow us
+          </Typography>
+          <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>
+            {socialData.map((social) => (
+              <SocialLink
+                sx={{ color: theme.palette.secondary.main }}
+                key={social.linkName}
+                href={`https://${social.linkUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {social.socialIcon}
+              </SocialLink>
+            ))}
+
+            <Box
+              component="img"
+              src={OverlandLogo}
+              sx={{ zIndex: "-100", opacity: ".2", minWidth: "300px", position: "absolute", top: "-95px" }}
+            ></Box>
+          </Stack>
+        </Box>
+      )}
+      {!data && (
+        <Box sx={{ my: 10 }}>
+          <Typography sx={{ color: theme.palette.primary.light }} typography="h5" textAlign="center">
+            Follow us
+          </Typography>
+          <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>
+            {socialData.map((social) => (
+              <SocialLink
+                sx={{ color: theme.palette.accent.accentOne }}
+                key={social.linkName}
+                href={`https://${social.linkUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {social.socialIcon}
+              </SocialLink>
+            ))}
+            <Box
+              component="img"
+              src={OverlandLogo}
+              sx={{ zIndex: "-100", opacity: ".2", minWidth: "300px", position: "absolute", top: "-95px" }}
+            ></Box>
+          </Stack>
+        </Box>
+      )}
+    </>
   );
 }

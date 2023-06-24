@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
 // Components
 import Events from "../components/events/eventsDataGrid.component";
@@ -14,6 +14,9 @@ import YouthProgramSlider from "../components/events/youthProgramSlider.componen
 export default function EventsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container component="section" id="events-section" sx={{ display: "flex", justifyContent: " center" }}>
       <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }} my={10}>

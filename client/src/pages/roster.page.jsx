@@ -5,10 +5,14 @@ import { Container, Grid } from "@mui/material";
 import Staff from "../components/roster/staff.component";
 // import Toggles from "../components/roster/toggles.component";
 import TeamRoster from "../components/roster/teamRoster.component";
+import { useEffect } from "react";
 
 export default function RosterPage() {
   // setCurrentTeam - prop used to track the currentTeams state when toggles are active.
   const [currentTeam] = useState("varsity");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <Container component="section" id="rooster-section" style={{ display: "flex", justifyContent: " center" }}>

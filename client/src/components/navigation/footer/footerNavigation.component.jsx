@@ -12,7 +12,7 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 
 const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
-  padding: theme.spacing(6), 
+  padding: theme.spacing(6),
   color: theme.palette.text.primary,
   background: theme.palette.primary.main,
   height: "100%",
@@ -31,9 +31,9 @@ export default function FooterNavigation() {
             <Grid item xs={12} sm={4} md={3}>
               <ContactUs />
             </Grid>
-          )} 
+          )}
           <Grid item xs={12} sm={4} md={4}>
-            <Socials />
+            <Socials data="footer" />
           </Grid>
           <Grid item xs={12} md={4}>
             <LocationMap />

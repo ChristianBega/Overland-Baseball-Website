@@ -3,22 +3,23 @@ import { Link } from "react-router-dom";
 import Logo from "../../assets/overlandLogo2.png";
 
 import { Box } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
 export default function OverlandLogo() {
+  const theme = useTheme();
   return (
     <Link to="/">
       <Box
         sx={{
-          // mixBlendMode: "multiply",
-          // background: "white",
           display: "flex",
           alignItems: "center",
           columnGap: 4,
-          // color: "#fff",
-          // borderRadius: "50%",
-          cursor : "pointer"
-          // filter: "brightness(0) invert(1)",
-          // filter : "grayscale(100%)"
+          cursor: "pointer",
+          "&:hover": {
+            cursor: "pointer",
+            scale: "1.1",
+            transition: ".3s all ease-in-out",
+          },
         }}
       >
         {/* <img src={Logo}/> */}

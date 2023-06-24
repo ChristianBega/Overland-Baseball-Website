@@ -8,8 +8,6 @@ import AnimationRoutes from "./components/framerMotion/AnimationRoutes.component
 import Navigation from "./components/navigation/navigation.component";
 import FooterNavigation from "./components/navigation/footer/footerNavigation.component";
 
-
-
 function App() {
   return (
     <>

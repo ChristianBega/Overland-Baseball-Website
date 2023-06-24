@@ -1,5 +1,6 @@
-import { Box, List, ListItem, styled, Typography } from "@mui/material";
+import { Box, List, ListItem, styled, Typography, useMediaQuery } from "@mui/material";
 
+import { useTheme } from "@emotion/react";
 import { Link } from "react-router-dom";
 
 // Icons
@@ -7,9 +8,11 @@ import HomeIcon from "@mui/icons-material/Home";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import EventIcon from "@mui/icons-material/Event";
 import TopicIcon from "@mui/icons-material/Topic";
-// import SportsBaseballIcon from "@mui/icons-material/SportsBaseball";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { useTheme } from "@emotion/react";
+
+// Components
+import Socials from "../reusableComponents/socials.component";
+import ContactUs from "./footer/contactUs.component";
 
 // Navigation menu item data
 const menuItemData = [
@@ -27,21 +30,21 @@ const StyledList = styled(List)(({ theme }) => ({
   color: theme.palette.primary.main,
   display: "flex",
   flexDirection: "column",
-  // justifyContent: "space-evenly",
+  overflowX: "hidden",
+  overflowY: "hidden",
   rowGap: theme.spacing(4), // 16px
   minWidth: "60vw",
   paddingInline: theme.spacing(6),
-  // [theme.breakpoints.up("sm")]: {
-  //   minWidth: "40vw",
-  // },
   [theme.breakpoints.up("sm")]: {
     minWidth: "50vw",
   },
   [theme.breakpoints.up("lg")]: {
     flexDirection: "row",
     width: "900px",
-    // justifyContent: "center",
     justifyContent: "space-evenly",
+  },
+  [theme.breakpoints.down("lg")]: {
+    height: "100vh",
   },
 }));
 const StyledListItem = styled(ListItem)(({ theme }) => ({
@@ -54,25 +57,26 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
     // minWidth: "135px",
     // maxWidth: "180px",
     paddingTop: theme.spacing(0),
+    borderTop: "none",
   },
   paddingInline: 2,
   paddingBottom: 0,
   paddingTop: theme.spacing(5),
-  borderTop: `1px solid ${theme.palette.accent.accentOne}`,
+  borderTop: `1px solid ${theme.palette.borders.primary}`,
   "&:hover": {
-    textDecoration: "underline",
+    // textDecoration: "underline",
     listStyle: "none",
   },
   [theme.breakpoints.down("lg")]: {
     "&:last-child": {
-      borderBottom: `1px solid ${theme.palette.accent.accentOne}`,
+      borderBottom: `1px solid ${theme.palette.borders.primary}`,
       paddingBottom: theme.spacing(5),
     },
   },
 }));
 
 // Get menu items
-const getMenuItems = (handleClose, theme) => (
+const getMenuItems = (handleClose, theme, isMobile) => (
   <StyledList>
     {menuItemData.map((menuItem, index) => (
       <StyledListItem key={index} onClick={handleClose}>
@@ -91,10 +95,17 @@ const getMenuItems = (handleClose, theme) => (
         </Link>
       </StyledListItem>
     ))}
+    {isMobile && (
+      <>
+        <Socials data="mobile" />
+        <ContactUs />
+      </>
+    )}
   </StyledList>
 );
 
 export default function NavigationListItems({ handleClose }) {
   const theme = useTheme();
-  return <>{getMenuItems(handleClose, theme)}</>;
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  return <>{getMenuItems(handleClose, theme, isMobile)}</>;
 }

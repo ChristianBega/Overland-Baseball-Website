@@ -10,7 +10,6 @@ import OverlandLogo from "./logo.component";
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "none",
   justifyContent: "space-between",
-  // textAlign: "center",
   color: theme.palette.text.primary,
   background: theme.palette.primary.main,
   [theme.breakpoints.up("lg")]: {
