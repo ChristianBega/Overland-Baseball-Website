@@ -37,6 +37,7 @@ export const mainTheme = createTheme(
           },
         },
       },
+
       MuiButton: {
         styleOverrides: {
           root: {
@@ -45,7 +46,7 @@ export const mainTheme = createTheme(
             ":hover": {
               background: "#283F76",
               cursor: "pointer",
-              transform: "scale(.9)",
+              transform: "scale(1.1)",
             },
             ":focus-visible": "",
             transition: "all .3s ease-In-Out",
@@ -131,35 +132,57 @@ export const mainTheme = createTheme(
       },
       accent: {
         accentOne: "rgba(9,31,64,.8)",
+
         accentTwo: "rgba(0,154,78,.5)",
       },
       text: {
         primary: "#F3F4F6",
       },
+      borders: {
+        primary: "#c3c1c1a0",
+      },
     },
     typography: {
       fontFamily: "Work Sans",
+
       h1: {
-        fontFamily: "Figtree",
+        fontFamily: "'Alfa Slab One', cursive",
+        letterSpacing: ".3rem",
         fontSize: "58px",
         lineHeight: "62px",
-        fontWeight: "800",
+        fontWeight: "600",
+        textShadow: "0 0 2px #c3c1c1a0",
       },
       h2: {
-        fontFamily: "Figtree !important",
+        fontFamily: "'Alfa Slab One', cursive",
+        letterSpacing: ".3rem",
         fontSize: "48px !important",
         lineHeight: "52px !important",
-        fontWeight: "700 !important",
+        fontWeight: "600 !important",
+      },
+      h2Small: {
+        fontFamily: "'Alfa Slab One', cursive",
+        letterSpacing: ".3rem",
+        fontSize: "42px !important",
+        lineHeight: "52px !important",
+        fontWeight: "600 !important",
       },
       h3: {
-        fontFamily: "Figtree",
-        fontSize: "38px",
+        fontFamily: "'Alfa Slab One', cursive",
+        fontSize: "32px",
         lineHeight: "42px",
-        fontWeight: "700",
+        fontWeight: "600",
+        letterSpacing: ".3rem",
       },
       h4: {
         fontFamily: "Figtree",
         fontSize: "28px",
+        lineHeight: "32px",
+        fontWeight: "600",
+      },
+      h5: {
+        fontFamily: "Figtree",
+        fontSize: "26px",
         lineHeight: "32px",
         fontWeight: "600",
       },
@@ -179,6 +202,13 @@ export const mainTheme = createTheme(
         lineHeight: "18px",
         fontSize: "20px",
         width: "100%",
+        ":hover": {
+          color: "#F3F4F6",
+          cursor: "pointer",
+          transform: "scale(1.1)",
+        },
+        ":focus-visible": "",
+        transition: "all .3s ease-In-Out",
       },
       linkTextMobile: {
         color: "#283F76",
@@ -186,7 +216,15 @@ export const mainTheme = createTheme(
         lineHeight: "22px",
         fontSize: "28px",
         width: "100%",
+        ":hover": {
+          color: "#010B1F",
+          cursor: "pointer",
+          transform: "scale(1.1)",
+        },
+        ":focus-visible": "",
+        transition: "all .3s ease-In-Out",
       },
+
       // MuiTypography: {
       //     styleOverrides: {
       //         root: {

@@ -30,11 +30,11 @@ export default function Staff({ currentTeam }) {
     setCurrentRooster(staffData.filter((team) => team.team === currentTeam));
   }, [currentTeam]);
   return (
-    <Grid item xs={12} sx={{ minHeight: { xs: "275px", md: "250px" }, textAlign: "center" }}>
+    <Grid item xs={12} sx={{ mt: { xs: 5, sm: 10 }, minHeight: { xs: "275px", md: "250px" }, textAlign: "center" }}>
       <TableContainer mb={5}>
         <Typography
           typography="h1"
-          sx={{ px: 4, my: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase", color: theme.palette.secondary.main }}
+          sx={{ px: 4, my: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase", color: theme.palette.primary.main }}
           variant="h2"
         >
           {currentTeam} &nbsp;Roster

@@ -14,7 +14,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   textAlign: "center",
   minHeight: "260px",
   width: "100%",
-  border: `1px solid ${theme.palette.primary.main}`,
+  border: `1px solid ${theme.palette.borders.primary}`,
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
@@ -28,7 +28,6 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 const StyledTypography = styled(Link)(({ theme }) => ({
   textDecoration: "none",
-
   "&:hover": {
     color: theme.palette.primary.light,
     cursor: "pointer",

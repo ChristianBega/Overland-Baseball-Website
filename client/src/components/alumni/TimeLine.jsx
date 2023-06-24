@@ -1,17 +1,21 @@
-import { Box, Grid, Stack, Typography} from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import baseballIcon from "../../assets/baseball-icon.png";
-import homeIcon from "../../assets/iconsHome.png"
-import batIcon from "../../assets/batIcon.png"
-import "../alumni/alumni.css"
+import homeIcon from "../../assets/iconsHome.png";
+import batIcon from "../../assets/batIcon.png";
+import "../alumni/alumni.css";
 import { useTheme } from "@emotion/react";
 
 const BaseballIcon = () => <img width="100%" height="100%" src={baseballIcon} alt="baseball icon" />;
 const HomeIcon = () => <img width="100%" height="100%" src={homeIcon} alt="home icon" />;
 const BatIcon = () => <img width="100%" height="100%" src={batIcon} alt="bats icon" />;
 
-const DateTypography = ({text}) => <Typography component="h2"  variant="h2" sx={{color:{xs:"white !important", lg:"black !important"}}}>{text}</Typography>;
+const DateTypography = ({ text }) => (
+  <Typography component="h2" variant="h2" sx={{ color: { xs: "white !important", lg: "black !important" } }}>
+    {text}
+  </Typography>
+);
 
 const timelineData = [
   {
@@ -38,7 +42,7 @@ const timelineData = [
     college: "Purdue",
     mlb: "Milwaukee Brewers",
   },
-   {
+  {
     playerName: "Chet Justice",
     position: "Pitcher",
     gradYear_Overland: "00-00-00",
@@ -50,7 +54,7 @@ const timelineData = [
     college: "Florida, Santa Fe CC",
     mlb: "Milwaukee Brewers",
   },
-   {
+  {
     playerName: "Tommy Schenbeck",
     position: "Pitcher",
     gradYear_Overland: "00-00-00",
@@ -62,7 +66,7 @@ const timelineData = [
     college: "Palm Beach State",
     mlb: "Milwaukee Brewers",
   },
-   {
+  {
     playerName: "Wilbert Baker",
     position: "3rd-1st Base",
     gradYear_Overland: "00-00-00",
@@ -74,7 +78,7 @@ const timelineData = [
     college: "Mesa State College",
     mlb: "Milwaukee Brewers",
   },
-   {
+  {
     playerName: "Chris Gentner",
     position: "Pitcher",
     gradYear_Overland: "00-00-00",
@@ -137,18 +141,18 @@ const timelineData = [
 ];
 
 export default function TimeLine() {
-const theme = useTheme();
+  const theme = useTheme();
   return (
     <div className="time-line">
-      <Typography typography="h1" sx={{ textAlign: "center", my: 10, color: theme.palette.secondary.main }}>
-       ALUMNI TIMELINE
+      <Typography typography="h2" sx={{ textAlign: "center", my: 15, color: theme.palette.primary.main }}>
+        ALUMNI TIMELINE
       </Typography>
       <VerticalTimeline layout="2-columns" lineColor="black">
         <VerticalTimelineElement
-        iconClassName="icon"
-        iconStyle={{ display: "flex", justifyContent: "center", alignContent: "center" }}
-        icon={<BatIcon />}
-      />
+          iconClassName="icon"
+          iconStyle={{ display: "flex", justifyContent: "center", alignContent: "center" }}
+          icon={<BatIcon />}
+        />
         {timelineData.map((timelineEl, index) => (
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
@@ -162,35 +166,35 @@ const theme = useTheme();
           >
             <Grid container>
               <Grid item xs={12}>
-                <Typography component="h3" variant="h2" sx={{textAlign:"center"}}>
+                <Typography component="h3" variant="h2" sx={{ textAlign: "center" }}>
                   {timelineEl.playerName}
                 </Typography>
               </Grid>
-              <Grid item xs={12} sx={{display:"flex", justifyContent:"center",mb:4}}>
-                <Stack direction="row" spacing={15} >
-                <Typography component="h4">{timelineEl.birthDate}</Typography>
-                <Typography component="h4">Graduated {timelineEl.gradYear_Overland}</Typography>
+              <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
+                <Stack direction="row" spacing={15}>
+                  <Typography component="h4">{timelineEl.birthDate}</Typography>
+                  <Typography component="h4">Graduated {timelineEl.gradYear_Overland}</Typography>
                 </Stack>
               </Grid>
               <Grid item xs={12} display="flex" justifyContent="center">
-                <Box component="img" sx={{ width: "285px", height: "285px" }} ></Box>
+                <Box component="img" sx={{ width: "285px", height: "285px" }}></Box>
               </Grid>
             </Grid>
-            <Grid item xs={12} sx={{display:"flex", justifyContent:"center", mt:4, mb:4, borderStyle:"double", borderRadius:"8px"}}>
-                <Stack direction={{xs:"column",sm:"row"}} spacing={{xs:3,sm:20}} >
-                    <Typography component="h4">Pos: {timelineEl.position}</Typography>
+            <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mt: 4, mb: 4, borderStyle: "double", borderRadius: "8px" }}>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 3, sm: 20 }}>
+                <Typography component="h4">Pos: {timelineEl.position}</Typography>
                 <Typography component="h4">League: {timelineEl.higherLevel}</Typography>
                 <Typography component="h4">Stat Year: {timelineEl.statsYear}</Typography>
                 <Typography component="h4">College: {timelineEl.college}</Typography>
-                </Stack>
-              </Grid>
+              </Stack>
+            </Grid>
           </VerticalTimelineElement>
         ))}
         <VerticalTimelineElement
-        iconClassName="icon"
-        iconStyle={{ display: "flex", justifyContent: "center", alignContent: "center" }}
-        icon={<HomeIcon />}
-      />
+          iconClassName="icon"
+          iconStyle={{ display: "flex", justifyContent: "center", alignContent: "center" }}
+          icon={<HomeIcon />}
+        />
       </VerticalTimeline>
     </div>
   );

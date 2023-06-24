@@ -28,6 +28,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
   height: "100%",
   width: "100%",
   padding: 4,
+  border: `1px solid ${theme.palette.borders.primary}`,
+
   backgroundColor: "transparent",
   "&:hover": {
     backgroundColor: "transparent",
@@ -63,8 +65,8 @@ export default function Fundraisers() {
   };
   const handleClose = () => setOpen(false);
   return (
-    <Grid item xs={12} mt={10}>
-      <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center", my: 10 }}>
+    <Grid item xs={12} mt={{ xs: 5, sm: 10, md: 15 }}>
+      <Typography typography="h2" sx={{ color: theme.palette.primary.main, textAlign: "center", my: 10 }}>
         Upcoming fundraisers!
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
@@ -73,8 +75,8 @@ export default function Fundraisers() {
             {/* <StyledOverlay>
               <Typography>Hello world</Typography>
             </StyledOverlay> */}
-            <StyledButton onClick={handleOpen}>
-              <StyledImageBox component="img" boxShadow={10} src={fundraiser.image}>
+            <StyledButton sx={{ boxShadow: 12 }} onClick={handleOpen}>
+              <StyledImageBox component="img" src={fundraiser.image}>
                 {/* When the image is hovered on, then transition text and overlay */}
               </StyledImageBox>
             </StyledButton>

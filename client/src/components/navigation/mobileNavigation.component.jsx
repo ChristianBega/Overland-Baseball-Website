@@ -31,7 +31,6 @@ const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
   },
 }));
 
-
 export default function MobileNavigation() {
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -44,12 +43,12 @@ export default function MobileNavigation() {
 
   return (
     <>
-      <StyledToolbar >
+      <StyledToolbar>
         <IconButton onClick={handleOpen} size="large" edge="start" color="inherit" aria-label="menu">
           <MenuIcon fontSize="large" />
         </IconButton>
         <StyledDrawerMenu open={openMenu} anchor={"left"} onClose={handleClose}>
-          <IconButton sx={{ justifyContent: "flex-end", p: 4 }} onClick={handleClose} color="primary.main" aria-label="exit menu">
+          <IconButton sx={{ display: "block" }} onClick={handleClose} color="primary.main" aria-label="exit menu">
             <CloseIcon fontSize="large" />
           </IconButton>
           <NavigationListItems setOpenMenu={setOpenMenu} openMenu={openMenu} handleClose={handleClose} />

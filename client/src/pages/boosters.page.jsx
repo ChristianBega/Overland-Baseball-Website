@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
 
 // Components
@@ -8,6 +8,9 @@ import Wishlist from "../components/boosters/wishlist.component";
 import CashAppQRcode from "../components/boosters/cashAppQRcode.component";
 
 export default function BoostersPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <section id="boosters-section" style={{ display: "flex", justifyContent: " center" }}>
       <Grid container maxWidth="lg" spacing={{ xs: 4, md: 6 }}>

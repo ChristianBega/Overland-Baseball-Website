@@ -1,0 +1,38 @@
+.container {
+  position: absolute;
+  /* justify-content: flex-end; */
+  /* align-content: flex-end; */
+  /* justify-content: center;
+  width: 100%;
+  padding-top: 200px; */
+  /* bottom: "0"; */
+  bottom: 5%;
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+.bounce {
+  display: inline-block;
+  color: #fff;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); */
+  opacity: 0.8;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  /* top: 0; */
+  animation: bounce 0.5s ease-out infinite alternate;
+  text-decoration: none;
+}
+.bounce:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0% {
+    top: 0;
+    color: #fff;
+  }
+  100% {
+    top: 8px;
+    color: #e0e0e0;
+  }
+}

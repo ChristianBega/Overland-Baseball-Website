@@ -74,7 +74,7 @@ export default function Workouts() {
   return (
     <Grid item xs={12} md={8} sx={{ minHeight: "400px", maxHeight: "500px", mt: 5 }}>
       <StyledInfoBox>
-        <Typography typography="h2" sx={{ color: theme.palette.secondary.main, textAlign: "center" }}>
+        <Typography typography="h2" sx={{ color: theme.palette.primary.main, textAlign: "center" }}>
           Tryouts
         </Typography>
         <Toggles setCurrentSeason={setCurrentSeason} />

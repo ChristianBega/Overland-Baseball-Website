@@ -6,7 +6,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 export default function LogoFooter() {
   return (
-    <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mb: 10, textAlign : "center" }}>
+    <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", mb: 10, textAlign: "center" }}>
       <Box
         sx={{
           display: "flex",
@@ -15,12 +15,22 @@ export default function LogoFooter() {
           columnGap: 4,
           borderRadius: "50%",
           cursor: "pointer",
-          // filter: "brightness(0) invert(1)",
-          // filter : "grayscale(100%)"
         }}
       >
         <Link to="/">
-          <Box component="img" sx={{ height: "75px", width: "auto" }} src={logo}></Box>
+          <Box
+            component="img"
+            sx={{
+              height: "75px",
+              width: "auto",
+              "&:hover": {
+                cursor: "pointer",
+                scale: "1.1",
+                transition: ".3s all ease-in-out",
+              },
+            }}
+            src={logo}
+          ></Box>
         </Link>
         <Typography component="p">
           THE OFFICIAL SITE OF{" "}

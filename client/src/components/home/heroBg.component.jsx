@@ -4,28 +4,27 @@ import React from "react";
 
 // Assets
 import HeroImage from "../../assets/heroImageTest.jpg";
-
 // Icons
-// import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { useTheme } from "@emotion/react";
+import Downarrow from "../reusableComponents/downarrow/downarrow.component";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   textAlign: "center",
-  padding: theme.spacing(6), // 14px
   color: theme.palette.text.primary,
   background: "none",
   position: "absolute",
-  minWidth: "95%",
+  width: "100%",
   right: "50%",
-  top: 120,
-
+  top: "38%",
+  transform: "translate(50%,-50%)",
+  [theme.breakpoints.up("sm")]: {
+    top: "40%",
+  },
   [theme.breakpoints.up("md")]: {
-    top: 145,
+    top: "38%",
   },
   [theme.breakpoints.up("lg")]: {
-    top: 200,
+    top: "35%",
   },
-  transform: "translate(50%,-50%)",
 }));
 
 const StyledOverLay = styled(Box)(({ theme }) => ({
@@ -33,14 +32,14 @@ const StyledOverLay = styled(Box)(({ theme }) => ({
   zIndex: "100",
 }));
 export default function HeroBackground() {
-  const theme = useTheme();
   return (
     <Box
       component="section"
-      style={{
-        minHeight: "96vh",
+      sx={{
+        minHeight: { xs: "68vh", sm: "70vh", md: "70vh", lg: "89vh" },
         position: "relative",
         overflow: "hidden",
+        marginBottom: { xs: 5, sm: 12, md: 10, lg: 20 },
       }}
       id="hero-background"
     >
@@ -51,7 +50,7 @@ export default function HeroBackground() {
           src={HeroImage}
           sx={{
             width: "100vw",
-            minHeight: "96vh",
+            height: { xs: "68vh", sm: "70vh", md: "70vh", lg: "89vh" },
             objectFit: "cover",
             position: "absolute",
             top: 0,
@@ -61,47 +60,11 @@ export default function HeroBackground() {
         ></Box>
       </StyledOverLay>
       <StyledBox>
-        <Typography
-          // typography="h1"
-          component="h1"
-          variant="h1"
-          sx={{
-            // backgroundColor: theme.palette.primary.light,
-            backgroundImage: `linear-gradient(180deg, ${theme.palette.secondary.main}, ${theme.palette.primary.light})`,
-            backgroundSize: "100%",
-            WebkitBackgroundClip: "text",
-            mozBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            mozTextFillColor: "transparent",
-            fontSize: { xs: "65px", sm: "75px", md: "85px", lg: "115px" },
-            lineHeight: { xs: "55px", sm: "65px", md: "75px", lg: "95px" },
-            maxWidth: { xs: "600px", lg: "800px" },
-            mx: "auto",
-            WebkitTextStroke: ".01rem #fff",
-            fontFamily: "Staatliches",
-          }}
-          md={5}
-        >
-          Overland <br></br> Trail Blazers
+        <Typography sx={{ fontSize: { xs: "52px", sm: "65px", md: "85px", lg: "120px" } }} typography="headerText" component="h1" md={5}>
+          Overland <br /> Trail Blazers
         </Typography>
-        {/* <Typography typography="bodyTextLg" sx={{ maxWidth: "500px", mt: 4, mx: "auto" }}>
-          Dignissimos et possimus autem in aspernatur possimus id expedita atque. Ut galisum nostrum in galisum omnis sit voluptatem ipsa sit enim
-          cumque et voluptatem facilis!
-        </Typography> */}
-        {/* <IconButton href="#home-section" sx={{ position: "absolute" }}>
-          <ArrowDownwardIcon sx={{ color: "#fff", fontSize: "2.5rem" }} />
-        </IconButton> */}
       </StyledBox>
+      <Downarrow />
     </Box>
   );
 }
-
-// mobile - 800 X 1200
-// desktop - 500 x 1600
-
-// desktop -
-// a. image must be at least 1,200 pixels wide with a 16:9 aspect ratio.
-// b. ideal hero image size -  1600 x 500 pixels.
-
-// mobile -
-// a. ideal hero image size - 800 x 1,200 pixels
