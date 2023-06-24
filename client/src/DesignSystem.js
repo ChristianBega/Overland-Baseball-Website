@@ -139,6 +139,7 @@ export const mainTheme = createTheme(
     },
     typography: {
       fontFamily: "Work Sans",
+
       h1: {
         fontFamily: "Figtree",
         fontSize: "58px",
@@ -186,6 +187,11 @@ export const mainTheme = createTheme(
         lineHeight: "22px",
         fontSize: "28px",
         width: "100%",
+      },
+      headerText: {
+        fontFamily: "'Alfa Slab One', cursive",
+        width: "100%",
+        textShadow: "0 0 10px #21c067",
       },
       // MuiTypography: {
       //     styleOverrides: {
