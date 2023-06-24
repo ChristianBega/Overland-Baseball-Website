@@ -15,15 +15,22 @@ export default function LogoFooter() {
           columnGap: 4,
           borderRadius: "50%",
           cursor: "pointer",
-          "&:hover": {
-            cursor: "pointer",
-            scale: "1.1",
-            transition: ".3s all ease-in-out",
-          },
         }}
       >
         <Link to="/">
-          <Box component="img" sx={{ height: "75px", width: "auto" }} src={logo}></Box>
+          <Box
+            component="img"
+            sx={{
+              height: "75px",
+              width: "auto",
+              "&:hover": {
+                cursor: "pointer",
+                scale: "1.1",
+                transition: ".3s all ease-in-out",
+              },
+            }}
+            src={logo}
+          ></Box>
         </Link>
         <Typography component="p">
           THE OFFICIAL SITE OF{" "}

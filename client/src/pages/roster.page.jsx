@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Grid } from "@mui/material";
-
+import { motion } from "framer-motion";
+import { containerVariants } from "../components/framerMotion/transitions";
 // Components
 import Staff from "../components/roster/staff.component";
 // import Toggles from "../components/roster/toggles.component";
@@ -15,7 +16,15 @@ export default function RosterPage() {
   }, []);
   return (
     <>
-      <Container component="section" id="rooster-section" style={{ display: "flex", justifyContent: " center" }}>
+      <Container
+        component={motion.section}
+        initial={containerVariants.hidden}
+        animate={containerVariants.visible}
+        exit={containerVariants.exit}
+        transition={containerVariants.transition}
+        id="rooster-section"
+        style={{ display: "flex", justifyContent: " center" }}
+      >
         <Grid container maxWidth="lg" my={10}>
           <Staff currentTeam={currentTeam} />
           {/* <Toggles setCurrentTeam={setCurrentTeam} /> */}

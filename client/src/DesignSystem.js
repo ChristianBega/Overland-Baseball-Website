@@ -37,6 +37,7 @@ export const mainTheme = createTheme(
           },
         },
       },
+
       MuiButton: {
         styleOverrides: {
           root: {
@@ -149,7 +150,7 @@ export const mainTheme = createTheme(
         letterSpacing: ".3rem",
         fontSize: "58px",
         lineHeight: "62px",
-        fontWeight: "800",
+        fontWeight: "600",
         textShadow: "0 0 2px #c3c1c1a0",
       },
       h2: {
@@ -157,20 +158,20 @@ export const mainTheme = createTheme(
         letterSpacing: ".3rem",
         fontSize: "48px !important",
         lineHeight: "52px !important",
-        fontWeight: "700 !important",
+        fontWeight: "600 !important",
       },
       h2Small: {
         fontFamily: "'Alfa Slab One', cursive",
         letterSpacing: ".3rem",
         fontSize: "42px !important",
         lineHeight: "52px !important",
-        fontWeight: "700 !important",
+        fontWeight: "600 !important",
       },
       h3: {
         fontFamily: "'Alfa Slab One', cursive",
         fontSize: "32px",
         lineHeight: "42px",
-        fontWeight: "700",
+        fontWeight: "600",
         letterSpacing: ".3rem",
       },
       h4: {

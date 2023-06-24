@@ -1,7 +1,8 @@
 import { useTheme } from "@emotion/react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import React, { useEffect } from "react";
-
+import { motion } from "framer-motion";
+import { containerVariants } from "../components/framerMotion/transitions";
 // Components
 import Events from "../components/events/eventsDataGrid.component";
 import Fundraisers from "../components/events/fundraisers.component";
@@ -18,7 +19,15 @@ export default function EventsPage() {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <Container component="section" id="events-section" sx={{ display: "flex", justifyContent: " center" }}>
+    <Container
+      component={motion.section}
+      initial={containerVariants.hidden}
+      animate={containerVariants.visible}
+      exit={containerVariants.exit}
+      transition={containerVariants.transition}
+      id="events-section"
+      sx={{ display: "flex", justifyContent: " center" }}
+    >
       <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }} my={10}>
         <Events />
         <YouthProgram />
