@@ -1,15 +1,19 @@
 import { useTheme } from "@emotion/react";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
+import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import EventItems from "./eventItems.component";
+import CloseIcon from "@mui/icons-material/Close";
 
-export default function FundraisersDataGrid({ events, currentEvent }) {
+export default function FundraisersDataGrid({ events, currentEvent, handleClose }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   console.log(currentEvent);
 
   return (
     <>
+      <IconButton onClick={handleClose} size="medium" sx={{ justifyContent: "center", color: "theme.palette.primary.main", width: "10%" }}>
+        <CloseIcon />
+      </IconButton>
       <Typography variant="h3" component="h2" sx={{ textAlign: "center", my: 10, color: theme.palette.secondary.main }}>
         {currentEvent} Events
       </Typography>

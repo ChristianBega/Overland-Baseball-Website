@@ -16,11 +16,11 @@ const StyledModalContainer = styled("box")(({ theme }) => ({
   boxShadow: 24,
   padding: 20,
   borderRadius: 4,
-  [theme.breakpoints.down("sm")]: {
-    minWidth: 340,
+  [theme.breakpoints.only("xs")]: {
+    minWidth: 300,
   },
   [theme.breakpoints.only("sm")]: {
-    minWidth: 600,
+    minWidth: 580,
   },
   [theme.breakpoints.up("md")]: {
     minWidth: 700,
@@ -38,7 +38,7 @@ export default function FundraiserModal({ open, handleClose, events, currentEven
         aria-describedby="modal-modal-description"
       >
         <StyledModalContainer>
-          <FundraisersDataGrid events={events} currentEvent={currentEvent} />
+          <FundraisersDataGrid events={events} currentEvent={currentEvent} handleClose={handleClose} />
         </StyledModalContainer>
       </Modal>
     </>

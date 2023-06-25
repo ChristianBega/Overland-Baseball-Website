@@ -7,13 +7,16 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
-  top: "50%",
+  top: "55%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   overFlow: "hidden",
-  minWidth: "300px",
-  maxWidth: 400,
-  backgroundColor: "#d8d8d8",
+  minWidth: "350px",
+  maxWidth: 450,
+  [theme.breakpoints.up("sm")]: {
+    minWidth: 500,
+  },
+  backgroundColor: "#eaeaea",
   border: "1px solid #000",
   boxShadow: 24,
   padding: 20,
@@ -32,7 +35,7 @@ export default function YouthProgramModal({ datatypeRegistration }) {
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
-          <RegistrationForm datatypeRegistration={datatypeRegistration} />
+          <RegistrationForm datatypeRegistration={datatypeRegistration} handleClose={handleClose} />
         </StyledModalContainer>
       </Modal>
     </>
