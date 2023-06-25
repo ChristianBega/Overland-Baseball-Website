@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import PlayerEvents from "./playerEvents.component";
 
 import Toggles from "./toggles.component";
+import { useTheme } from "@emotion/react";
+import RegistrationModal from "../modals/registrationModal.component";
 
 const springData = [
   {
@@ -57,6 +59,7 @@ export default function Workouts() {
   // when the state changes
   const [currentSeason, setCurrentSeason] = useState("spring");
   const [currentInfo, setCurrentInfo] = useState([]);
+  const theme = useTheme();
 
   useEffect(() => {
     if (currentSeason === "spring") {
@@ -69,13 +72,14 @@ export default function Workouts() {
   }, [currentSeason]);
 
   return (
-    <Grid item xs={12} md={6} sx={{ minHeight: "375px", maxHeight: "450px", mt : 5 }}>
+    <Grid item xs={12} md={6} sx={{ minHeight: "375px", maxHeight: "450px", mt: 5 }}>
       <StyledInfoBox>
-        <Typography typography="h3" textAlign="center">
+        <Typography typography="h2" sx={{ color: theme.palette.primary.main, textAlign: "center" }}>
           Workouts
         </Typography>
         <Toggles setCurrentSeason={setCurrentSeason} />
         <PlayerEvents currentInfo={currentInfo} />
+        <RegistrationModal datatypeRegistration="workouts" />
       </StyledInfoBox>
     </Grid>
   );

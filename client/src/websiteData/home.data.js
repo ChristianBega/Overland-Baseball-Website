@@ -1,5 +1,5 @@
 // Team logos
-import vistaPeak from "../assets/teamLogos/vistaPeak.webp";
+import vistaPeak from "../assets/homePage/teamLogos/vistaPeak.webp";
 // import adamsCity from "../assets/teamLogos/adamsCity.webp";
 import auroraCentral from "../assets/homePage/teamLogos/auroraCentral.webp";
 import eagleCrest from "../assets/homePage/teamLogos/eagleCrest.webp";

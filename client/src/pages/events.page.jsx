@@ -11,6 +11,8 @@ import TryoutsSlider from "../components/events/tryoutsSlider.component";
 // import Workouts from "../components/events/workouts.component";
 import YouthProgram from "../components/events/youthProgram.component";
 import YouthProgramSlider from "../components/events/youthProgramSlider.component";
+import Workouts from "../components/events/workouts.component";
+import WorkoutSlider from "../components/events/workoutSlider.component";
 
 export default function EventsPage() {
   const theme = useTheme();
@@ -35,6 +37,8 @@ export default function EventsPage() {
         {!isMobile && <TryoutsSlider />}
         <Tryouts />
         {isMobile && <TryoutsSlider />}
+        <Workouts />
+        <WorkoutSlider />
         <Fundraisers />
       </Grid>
     </Container>
