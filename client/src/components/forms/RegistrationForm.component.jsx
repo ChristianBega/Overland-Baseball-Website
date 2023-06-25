@@ -1,10 +1,10 @@
-import { Stack, TextField, Typography, Button, Box } from "@mui/material";
+import { Stack, TextField, Typography, Button, Box, IconButton } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
 import React from "react";
-
-export default function RegistrationForm({ datatypeRegistration }) {
+import CloseIcon from "@mui/icons-material/Close";
+export default function RegistrationForm({ datatypeRegistration, handleClose }) {
   const theme = useTheme();
   // React hook form useForm for registering, handling, and reset forms
   const {
@@ -17,26 +17,30 @@ export default function RegistrationForm({ datatypeRegistration }) {
   const onSubmit = (data) => {
     EmailService.sendEmailRegistration(data, datatypeRegistration);
     reset();
+    handleClose(true);
   };
 
   return (
     <>
+      <IconButton onClick={handleClose} size="medium" sx={{ justifyContent: "center", color: "theme.palette.primary.main", width: "10%" }}>
+        <CloseIcon />
+      </IconButton>
       <Typography
         sx={{
           textTransform: "uppercase",
           textAlign: "center",
-          my: 5,
-          color: theme.palette.secondary.main,
+          my: 6,
+          color: theme.palette.primary.main,
           fontSize: { xs: "1.3rem", md: "1.8rem", lg: "2rem" },
         }}
         id="modal-title"
-        variant="h4"
+        variant="h3"
         component="h2"
       >
-        Overland's <br /> {datatypeRegistration} <br /> Registration Forum
+        Overland's {datatypeRegistration} <br /> Registration Forum
       </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Stack id="modal-form" spacing={4}>
+        <Stack id="modal-form" spacing={4} color={theme.palette.primary.main}>
           <Typography variant="h6" component="h3">
             Player Information:
           </Typography>
@@ -128,7 +132,7 @@ export default function RegistrationForm({ datatypeRegistration }) {
               },
             })}
           />
-          <Button onSubmit={onSubmit} type="submit" sx={{ mt: 6, alignSelf: "center" }} id="submit" size="medium">
+          <Button onSubmit={onSubmit} type="submit" sx={{ alignSelf: "center" }} id="submit" size="medium">
             Submit
           </Button>
         </Stack>

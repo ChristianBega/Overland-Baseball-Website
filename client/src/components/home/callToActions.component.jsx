@@ -1,10 +1,10 @@
 import { Grid, Paper, styled, Link, Box, Typography } from "@mui/material";
 
 // Images
-import GameChanger from "../../assets/gameChanger.logo.jpeg";
-import MaxPreps from "../../assets/maxPrepLogo.png";
-import CherryCreek from "../../assets/cherryCreek.png";
-import VenmoQrCode from "../../assets/venmoQRCode.jpg";
+import GameChanger from "../../assets/homePage/gameChanger.webp";
+import MaxPreps from "../../assets/homePage/maxPrepLogo.webp";
+import CherryCreek from "../../assets/homePage/cherryCreek.webp";
+import VenmoQrCode from "../../assets/homePage/venmoQRCode.webp";
 import { useTheme } from "@emotion/react";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({

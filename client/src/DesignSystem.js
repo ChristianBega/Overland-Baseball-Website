@@ -97,12 +97,15 @@ export const mainTheme = createTheme(
           },
         },
       },
-      // MuiTableRow: {
-      //   styleOverrides: {
-      //     root: {
-      //     },
-      //   },
-      // },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            input: {
+              color: "#283F76",
+            },
+          },
+        },
+      },
       MuiIconButton: {
         styleOverrides: {
           root: {
@@ -168,7 +171,7 @@ export const mainTheme = createTheme(
         fontWeight: "600 !important",
       },
       h3: {
-        fontFamily: "'Alfa Slab One', cursive",
+        fontFamily: "Figtree",
         fontSize: "32px",
         lineHeight: "42px",
         fontWeight: "600",

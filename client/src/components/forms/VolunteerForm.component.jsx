@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography, IconButton } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
@@ -8,13 +8,14 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
 
 const StyledDataBox = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: 3,
   alignItems: "center",
 }));
-export default function VolunteerForm({ currentEventData }) {
+export default function VolunteerForm({ currentEventData, handleClose }) {
   const theme = useTheme();
 
   const {
@@ -26,20 +27,26 @@ export default function VolunteerForm({ currentEventData }) {
   const onSubmit = (data) => {
     EmailService.sendEmailVolunteer(data, currentEventData);
     reset();
+    handleClose(true);
   };
 
   return (
     <>
+      <IconButton onClick={handleClose} size="medium" sx={{ justifyContent: "center", color: "theme.palette.primary.main", width: "10%" }}>
+        <CloseIcon />
+      </IconButton>
       <Typography
-        sx={{ textTransform: "uppercase", textAlign: "center", my: 5, color: theme.palette.secondary.main }}
+        sx={{ textTransform: "uppercase", textAlign: "center", my: 5, color: theme.palette.primary.main }}
         id="modal-title"
-        variant="h4"
+        variant="h3"
         component="h2"
       >
         Overland's volunteer form
       </Typography>
-      <Typography>Event Information:</Typography>
-      <Stack spacing={{ xs: 2, md: 4 }} direction="row" mt={3} mb={5}>
+      <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
+        Event Information:
+      </Typography>
+      <Stack sx={{ color: theme.palette.secondary.main, justifyContent: "center" }} spacing={{ xs: 2, md: 4 }} direction="row" mt={3} mb={5}>
         <StyledDataBox>
           <PlaceIcon />
           <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.event}</Typography>
@@ -53,8 +60,10 @@ export default function VolunteerForm({ currentEventData }) {
           <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.date}</Typography>
         </StyledDataBox>
       </Stack>
-      <Typography>Volunteer Information: </Typography>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
+        Volunteer Information:{" "}
+      </Typography>
+      <Box component="form" sx={{ color: theme.palette.primary.main }} onSubmit={handleSubmit(onSubmit)}>
         <Stack id="modal-form" spacing={4} mt={3}>
           {/* Player name */}
           <TextField

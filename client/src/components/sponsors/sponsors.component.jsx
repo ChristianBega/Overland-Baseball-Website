@@ -4,12 +4,12 @@ import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 
 // Sponsor images
-import casa from "../../assets/sponsors/casa.jpg";
-import ken from "../../assets/sponsors/ken.png";
-import maddios from "../../assets/sponsors/maddios.png";
-import security from "../../assets/sponsors/security.png";
-import usbank from "../../assets/sponsors/usbank.png";
-import zynex from "../../assets/sponsors/zynex.jpg";
+import casa from "../../assets/homePage/sponsors/casa.webp";
+import ken from "../../assets/homePage/sponsors/ken.webp";
+import maddios from "../../assets/homePage/sponsors/maddios.webp";
+import security from "../../assets/homePage/sponsors/security.webp";
+import usbank from "../../assets/homePage/sponsors/usbank.webp";
+import zynex from "../../assets/homePage/sponsors/zynex.webp";
 
 const responsive = {
   0: { items: 1 },

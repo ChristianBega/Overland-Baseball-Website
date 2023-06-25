@@ -3,7 +3,7 @@ import { TableRow, TableCell, Typography, Stack, Box, styled } from "@mui/materi
 import { useTheme } from "@mui/material";
 
 // Assets
-import overland from "../../assets/teamLogos/overland.webp";
+import overland from "../../assets/homePage/teamLogos/overland.webp";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(even)": {
