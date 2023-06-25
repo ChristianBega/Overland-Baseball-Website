@@ -10,7 +10,7 @@ const youthProgramData = [
   {
     // infoType: "spring",
     date: "May 20, 2023",
-    location: "Overland Baseball Field",
+    location: "Overland Field",
     time: "8am–2pm ",
     content:
       "Overland Trailblazers Baseball will hold a Youth Camp May 20, 2023 campers will get the opportunity to learn baseball skills from current players and coaches of Overland Trailblazers. From hitting and fielding, to throwing and catching, each camper will learn the fundamentals of the Game. ",

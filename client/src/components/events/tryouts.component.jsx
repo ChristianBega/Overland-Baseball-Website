@@ -10,8 +10,8 @@ import RegistrationModal from "../modals/registrationModal.component";
 const springData = [
   {
     infoType: "spring",
-    date: "Feb 27-28th, 2023",
-    location: "Overland Baseball Field",
+    date: "Feb 27, 2023",
+    location: "Overland Field",
     time: "4:00-6:00 PM",
 
     content: "Overland Baseball will hold Baseball tryouts on Feb 27th, 28th ",
@@ -25,7 +25,7 @@ const summerData = [
   {
     infoType: "summer",
     date: "TBD",
-    location: "Overland Baseball Field",
+    location: "Overland Field",
     time: "4:00-6 PM",
     content:
       "Summer ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
@@ -37,7 +37,7 @@ const fallData = [
   {
     infoType: "fall",
     date: "TBD",
-    location: "Overland Baseball Field",
+    location: "Overland Field",
     time: "4:00–6 PM",
     content:
       "Fall ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",

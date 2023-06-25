@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
-import { Box, Button, Stack, TextField, Typography, IconButton } from "@mui/material";
-import React from "react";
+import { Box, Button, Stack, TextField, Typography, IconButton, Alert } from "@mui/material";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
 // Icons
@@ -16,8 +16,8 @@ const StyledDataBox = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }));
 export default function VolunteerForm({ currentEventData, handleClose }) {
+  const [success, setSuccess] = useState(false);
   const theme = useTheme();
-
   const {
     register,
     handleSubmit,
@@ -26,8 +26,12 @@ export default function VolunteerForm({ currentEventData, handleClose }) {
   } = useForm();
   const onSubmit = (data) => {
     EmailService.sendEmailVolunteer(data, currentEventData);
+    const timer = setTimeout(() => {
+      handleClose(true);
+    }, 3000);
     reset();
-    handleClose(true);
+    setSuccess(true);
+    return () => clearTimeout(timer);
   };
 
   return (
@@ -63,7 +67,7 @@ export default function VolunteerForm({ currentEventData, handleClose }) {
       <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
         Volunteer Information:{" "}
       </Typography>
-      <Box component="form" sx={{ color: theme.palette.primary.main }} onSubmit={handleSubmit(onSubmit)}>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ color: theme.palette.primary.main }}>
         <Stack id="modal-form" spacing={4} mt={3}>
           {/* Player name */}
           <TextField
@@ -93,6 +97,11 @@ export default function VolunteerForm({ currentEventData, handleClose }) {
             Confirm
           </Button>
         </Stack>
+        {success && (
+          <Alert sx={{ mt: 8 }} severity="success">
+            Success!!
+          </Alert>
+        )}
       </Box>
     </>
   );

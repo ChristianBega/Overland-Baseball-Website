@@ -10,16 +10,18 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
   top: "55%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  overFlow: "hidden",
-  minWidth: "350px",
-  maxWidth: 450,
+  width: "350px",
+  [theme.breakpoints.only("xs")]: {
+    top: "50%",
+  },
   [theme.breakpoints.up("sm")]: {
-    minWidth: 500,
+    minWidth: 550,
+    padding: 20,
   },
   backgroundColor: "#eaeaea",
   border: "1px solid #000",
   boxShadow: 24,
-  padding: 20,
+  padding: 10,
   borderRadius: 4,
 }));
 
