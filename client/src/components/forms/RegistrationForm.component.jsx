@@ -1,11 +1,13 @@
-import { Stack, TextField, Typography, Button, Box, IconButton } from "@mui/material";
+import { Stack, TextField, Typography, Button, Box, IconButton, Alert } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
-import React from "react";
+import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 export default function RegistrationForm({ datatypeRegistration, handleClose }) {
   const theme = useTheme();
+  const [success, setSuccess] = useState(false);
+
   // React hook form useForm for registering, handling, and reset forms
   const {
     register,
@@ -16,8 +18,13 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
 
   const onSubmit = (data) => {
     EmailService.sendEmailRegistration(data, datatypeRegistration);
+    const timer = setTimeout(() => {
+      handleClose(true);
+    }, 3000);
     reset();
-    handleClose(true);
+    setSuccess(true);
+    reset();
+    return () => clearTimeout(timer);
   };
 
   return (
@@ -31,7 +38,7 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
           textAlign: "center",
           my: 6,
           color: theme.palette.primary.main,
-          fontSize: { xs: "1.3rem", md: "1.8rem", lg: "2rem" },
+          fontSize: { xs: "1.3rem", md: "1.8rem" },
         }}
         id="modal-title"
         variant="h3"
@@ -39,7 +46,7 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
       >
         Overland's {datatypeRegistration} <br /> Registration Forum
       </Typography>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Box component="form" sx={{ maxHeight: { xs: "400px", overflowY: "auto" } }} onSubmit={handleSubmit(onSubmit)}>
         <Stack id="modal-form" spacing={4} color={theme.palette.primary.main}>
           <Typography variant="h6" component="h3">
             Player Information:
@@ -136,6 +143,11 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
             Submit
           </Button>
         </Stack>
+        {success && (
+          <Alert sx={{ mt: 8 }} severity="success">
+            Success!!
+          </Alert>
+        )}
       </Box>
     </>
   );

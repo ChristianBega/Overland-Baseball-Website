@@ -17,7 +17,7 @@ export default function PlayerEvents({ currentInfo }) {
           <TableContainer sx={{ mb: 3, maxWidth: "90%", height: "auto", margin: "auto" }}>
             <Table>
               <TableBody>
-                <TableRow>
+                <TableRow sx={{ display: "flex", justifyContent: { sm: "flex-start" } }}>
                   <TableCell
                     sx={{
                       width: "32%",
@@ -26,8 +26,8 @@ export default function PlayerEvents({ currentInfo }) {
                       backgroundColor: theme.palette.accent.accentThree,
                     }}
                   >
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                      <CalendarMonthIcon sx={{ mr: 2 }} />
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", justifyContent: "center" }}>
+                      <CalendarMonthIcon sx={{ mr: { xs: 0, sm: 2 }, mb: { xs: 2, sm: 0 } }} />
                       {info.date}
                     </Box>
                   </TableCell>
@@ -39,8 +39,8 @@ export default function PlayerEvents({ currentInfo }) {
                       backgroundColor: theme.palette.accent.accentThree,
                     }}
                   >
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                      <PlaceIcon sx={{ mr: 2 }} />
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", justifyContent: "center" }}>
+                      <PlaceIcon sx={{ mr: { xs: 0, sm: 2 }, mb: { xs: 2, sm: 0 } }} />
                       {info.location}
                     </Box>
                   </TableCell>
@@ -53,8 +53,8 @@ export default function PlayerEvents({ currentInfo }) {
                       backgroundColor: theme.palette.accent.accentThree,
                     }}
                   >
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                      <AccessTimeIcon sx={{ mr: 2 }} />
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: "center", justifyContent: "center" }}>
+                      <AccessTimeIcon sx={{ mr: { xs: 0, sm: 2 }, mb: { xs: 2, sm: 0 } }} />
                       {info.time}
                     </Box>
                   </TableCell>

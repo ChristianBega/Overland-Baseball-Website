@@ -1,7 +1,7 @@
 import { Grid, Paper, styled, Link, Box, Typography } from "@mui/material";
 
 // Images
-import GameChanger from "../../assets/homePage/gameChanger.webp";
+import TeamSnap from "../../assets/homePage/teamSnap.webp";
 import MaxPreps from "../../assets/homePage/maxPrepLogo.webp";
 import CherryCreek from "../../assets/homePage/cherryCreek.webp";
 import VenmoQrCode from "../../assets/homePage/venmoQRCode.webp";
@@ -22,9 +22,9 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const ctaData = [
   {
-    ctaName: "Game Changer",
-    urlLink: "Link",
-    ctaImage: GameChanger,
+    ctaName: "Team Snap",
+    urlLink: "https://go.teamsnap.com/login/find_my_team",
+    ctaImage: TeamSnap,
   },
   {
     ctaName: "Overland HS",
@@ -33,7 +33,7 @@ const ctaData = [
   },
   {
     ctaName: "Max Preps",
-    urlLink: "https://www.maxpreps.com/co/aurora/overland-trailblazers/baseball/",
+    urlLink: "https://go.teamsnap.com/login/find_my_team",
     ctaImage: MaxPreps,
   },
   {

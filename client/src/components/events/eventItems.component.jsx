@@ -24,7 +24,6 @@ export default function EventItems({ event, isMobile }) {
     let currentDate = event.currentTarget.parentElement.parentElement.getAttribute("datatype-date");
     let currentTime = event.currentTarget.parentElement.parentElement.getAttribute("datatype-time");
     setCurrentEventData({ event: currentEvent, date: currentDate, time: currentTime });
-
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
