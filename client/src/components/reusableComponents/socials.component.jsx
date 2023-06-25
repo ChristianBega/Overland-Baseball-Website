@@ -9,7 +9,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import styled from "@emotion/styled";
 // Images
-import OverlandLogo from "../../assets/overlandLogo_3.png";
+import OverlandLogo from "../../assets/overlandLogo_3.webp";
 const socialData = [
   {
     linkName: "twitter",

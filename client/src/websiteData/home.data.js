@@ -1,22 +1,22 @@
 // Team logos
 import vistaPeak from "../assets/teamLogos/vistaPeak.webp";
 // import adamsCity from "../assets/teamLogos/adamsCity.webp";
-import auroraCentral from "../assets/teamLogos/auroraCentral.webp";
-import eagleCrest from "../assets/teamLogos/eagleCrest.webp";
-import gateWay from "../assets/teamLogos/gateWay.webp";
-import highlandsRanch from "../assets/teamLogos/vistaPeak.webp";
-import mountainRange from "../assets/teamLogos/mountainRange.webp";
-import mullen from "../assets/teamLogos/mullen.webp";
-import standleyLake from "../assets/teamLogos/standleyLake.webp";
-import thornton from "../assets/teamLogos/thornton.webp";
-import westminster from "../assets/teamLogos/westminster.webp";
-import vistaRidge from "../assets/teamLogos/vistaRidge.webp";
-import cherryCreek from "../assets/teamLogos/cherryCreek.webp";
-import grandView from "../assets/teamLogos/grandView.webp";
-import smokyHill from "../assets/teamLogos/smokyHill.webp";
-import cherokeeTrail from "../assets/teamLogos/cherokeeTrail.webp";
-import arapahoe from "../assets/teamLogos/arapahoe.webp";
-import rangeView from "../assets/teamLogos/rangeView.webp";
+import auroraCentral from "../assets/homePage/teamLogos/auroraCentral.webp";
+import eagleCrest from "../assets/homePage/teamLogos/eagleCrest.webp";
+import gateWay from "../assets/homePage/teamLogos/gateWay.webp";
+import highlandsRanch from "../assets/homePage/teamLogos/vistaPeak.webp";
+import mountainRange from "../assets/homePage/teamLogos/mountainRange.webp";
+import mullen from "../assets/homePage/teamLogos/mullen.webp";
+import standleyLake from "../assets/homePage/teamLogos/standleyLake.webp";
+import thornton from "../assets/homePage/teamLogos/thornton.webp";
+import westminster from "../assets/homePage/teamLogos/westminster.webp";
+import vistaRidge from "../assets/homePage/teamLogos/vistaRidge.webp";
+import cherryCreek from "../assets/homePage/teamLogos/cherryCreek.webp";
+import grandView from "../assets/homePage/teamLogos/grandView.webp";
+import smokyHill from "../assets/homePage/teamLogos/smokyHill.webp";
+import cherokeeTrail from "../assets/homePage/teamLogos/cherokeeTrail.webp";
+import arapahoe from "../assets/homePage/teamLogos/arapahoe.webp";
+import rangeView from "../assets/homePage/teamLogos/rangeView.webp";
 
 function createData(date, time, opponent, location, opponentLogo) {
   return { date, time, opponent, location, opponentLogo };
@@ -31,7 +31,6 @@ export const scheduleRowData = [
   createData("3/30/23", "4:30 PM", "Thornton", "Overland High", thornton),
   createData("4/1/23", "10:00 AM", "Highlands Ranch", "Overland High", highlandsRanch),
   createData("4/4/23", "4:00 PM", "Standley Lake", "Standley Lake High", standleyLake),
-
   createData("4/6/23", "4:00 PM", "Westminster", "Westminster High", westminster),
   createData("4/8/23", "10:00 AM", "Aurora Central", "Overland High", auroraCentral),
   createData("4/11/23", "4:15 PM", "Mullen", "Overland High", mullen),
@@ -47,5 +46,4 @@ export const scheduleRowData = [
   // createData("5/13/23", "4:00 PM", "Aurora Central", "Overland High", vistaPeak),
 ];
 
-
-// Call to action data 
+// Call to action data
