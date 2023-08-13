@@ -1,6 +1,6 @@
 # Overland Baseball Official Site
 
-This is the version 1.0 release for Overland Baseballs website. This web application is currently a react single page application that offers coaches and players a simple and easy way to view their schedule, team roster, and upcoming events.
+This is the version 2.0 release for Overland Baseballs website. This web application is now a fulls stack web application powered by a firebase backend and React and Material UI front end. This application offers coaches and players a simple and easy way to view their schedule, team roster, and upcoming events.
 
 ## Technologies
 
@@ -25,25 +25,18 @@ This is the version 1.0 release for Overland Baseballs website. This web applica
 
 ## Future Features
 
-- React Pdf
-  - Integrate react pdf viewer to allow users to view embedded PDF of player, parent and coach documents within website.
 - Stripe
   - Integrate stripe backend to allow users to purchase from Overland Baseballs team store, make payments to Overland baseball program, and make donations.
+
+TODO
+
+1. create setSrc and properly size images
+2. fix url link on ctas - mexpreps is going to teamsnap
+3. player images for roster page
+4. create booster page
+
+- React Pdf
+  - Integrate react pdf viewer to allow users to view embedded PDF of player, parent and coach documents within website.
 - Search Engine Optimization
   - Improve Overland Baseball SEO
   - Get site displaying on Google search
-
-
-
-TODO 
-
-1. create setSrc and properly size images 
-2. fix url link on ctas - mexpreps is going to teamsnap
-
-3. fix roster table rows - not applying correct css to nth(even)
-4. player images for roster page
-5. create booster page
-6. add boxShadows to elements that need it on the page.
-7. reformat events (youth, workouts,  tryouts) description and information sections.
-8. resize upcomming fundraiser cards 
-    . include onHover text transition to display text

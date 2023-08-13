@@ -46,7 +46,7 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
       >
         Overland's {datatypeRegistration} <br /> Registration Forum
       </Typography>
-      <Box component="form" sx={{ maxHeight: { xs: "400px", overflowY: "auto" } }} onSubmit={handleSubmit(onSubmit)}>
+      <Box component="form" sx={{ maxHeight: { xs: "400px" }, overflowY: "auto" }} onSubmit={handleSubmit(onSubmit)}>
         <Stack id="modal-form" spacing={4} color={theme.palette.primary.main}>
           <Typography variant="h6" component="h3">
             Player Information:
