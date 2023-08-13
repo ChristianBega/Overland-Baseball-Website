@@ -3,52 +3,34 @@ import Grid from "@mui/material/Grid/Grid";
 import { Typography, Box, styled, Button } from "@mui/material";
 import { useTheme } from "@emotion/react";
 
-// Site data
 import { fundraisersCardData } from "../../websiteData/events.data";
 import { eventData } from "../../websiteData/events.data";
 
 import FundraiserModal from "../modals/fundraiserModal.component";
-// Components
-// Styled components
+
 const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
   height: "100%",
   width: "100%",
   minHeight: "300px",
   maxHeight: "325px",
+  filter: "blur(3px)",
+}));
+
+const StyledOverlay = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  margin: ".9rem 0 0 .9rem",
+  padding: "1rem",
+  position: "absolute",
+  inset: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.54)",
   "&:hover": {
-    display: "block",
-    cursor: "pointer",
-    scale: "1.03",
-    transition: ".2s all ease-in-out",
     boxShadow: `0px 0px 12px 1px ${theme.palette.secondary.light}`,
+    transition: ".3s ease-in",
   },
 }));
-const StyledButton = styled(Button)(({ theme }) => ({
-  height: "100%",
-  width: "100%",
-  padding: 4,
-  border: `1px solid ${theme.palette.borders.primary}`,
-
-  backgroundColor: "transparent",
-  "&:hover": {
-    backgroundColor: "transparent",
-  },
-}));
-// const StyledOverlay = styled(Box)(({ theme }) => ({
-//   position: "absolute",
-//   top: 0,
-//   bottom: 0,
-//   right: 0,
-//   display: "none",
-//   // left: "-10px",
-
-//   backgroundColor: "rgba(0, 0, 0, 0.54)",
-//   height: "100%",
-//   width: "100%",
-//   minHeight: "240px",
-//   maxHeight: "250px",
-// }));
 
 export default function Fundraisers() {
   const [open, setOpen] = useState(false);
@@ -71,15 +53,18 @@ export default function Fundraisers() {
       </Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersCardData.map((fundraiser, index) => (
-          <Grid id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
-            {/* <StyledOverlay>
-              <Typography>Hello world</Typography>
-            </StyledOverlay> */}
-            <StyledButton sx={{ boxShadow: 12 }} onClick={handleOpen}>
-              <StyledImageBox component="img" src={fundraiser.image}>
-                {/* When the image is hovered on, then transition text and overlay */}
-              </StyledImageBox>
-            </StyledButton>
+          <Grid sx={{ position: "relative" }} id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
+            <StyledImageBox component="img" src={fundraiser.image}></StyledImageBox>
+            <StyledOverlay>
+              <Typography component="h3" variant="h3" sx={{ color: "#fff", textAlign: "center", my: 4 }}>
+                {fundraiser.eventName} Events
+              </Typography>
+              <Box textAlign="center">
+                <Button size="md" onClick={handleOpen}>
+                  Sign up!
+                </Button>
+              </Box>
+            </StyledOverlay>
             <FundraiserModal open={open} handleClose={handleClose} events={events} currentEvent={currentEvent} />
           </Grid>
         ))}

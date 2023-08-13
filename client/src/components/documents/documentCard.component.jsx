@@ -18,13 +18,6 @@ const StyledCard = styled(Card)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
-  "&:hover": {
-    cursor: "pointer",
-    scale: "1.05",
-    transition: ".3s all ease-in-out",
-    boxShadow: `0px 0px 12px 1px ${theme.palette.secondary.light}`,
-    border: `2px solid ${theme.palette.secondary.light}`,
-  },
 }));
 const StyledTypography = styled(Link)(({ theme }) => ({
   textDecoration: "none",

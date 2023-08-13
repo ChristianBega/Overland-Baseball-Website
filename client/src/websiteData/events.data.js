@@ -33,119 +33,6 @@ export const fundraisersCardData = [
 ];
 // All event data
 export const eventData = [
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "2:00 PM",
-  //   date: "July 23rd",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "1:30 PM",
-  //   date: "July 30th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "2:30 PM",
-  //   date: "Aug 13th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "2:30 PM",
-  //   date: "Aug 18th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "2:30 PM",
-  //   date: "Aug 27th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "10:00 AM",
-  //   date: "Sept 18th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "1:50 PM",
-  //   date: "Sept 25th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "1:45 PM",
-  //   date: "Oct 6th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "9:30 AM",
-  //   date: "Oct 23rd",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "9:30 AM",
-  //   date: "Nov 20th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "10:00 AM",
-  //   date: "Dec 3rd",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "1:50 PM",
-  //   date: "Dec 11th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "9:30 AM",
-  //   date: "Dec 18th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-  // {
-  //   eventName: "Broncos Game",
-  //   location: "1801 Mile High Stadium Cir Denver CO 80204",
-  //   time: "TBD",
-  //   date: "Jan 7th",
-  //   description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //   extraInformation: "Dolor in reprehenderit in voluptate...",
-  // },
-
   // Broncos Games
   createData("Broncos Game", "1801 Mile High Stadium Cir Denver CO 80204", "2:00 PM", "July 23rd"),
 
@@ -165,3 +52,69 @@ export const eventData = [
   createData("Apple Bees", "TBD", "TBD", "TBD"),
   createData("Apple Bees", "TBD", "TBD", "TBD"),
 ];
+
+export const youthProgramData = {
+  date: "May 20, 2023",
+  location: "Overland Field",
+  time: "8am–2pm ",
+  content: [
+    "Nurturing the future stars of the game is a priority at Overland Baseball. Our Youth Program is designed to instill a love for baseball in kids of all skill levels, fostering teamwork, sportsmanship, and skill development. From fundamental coaching to friendly matches, we provide a safe and supportive environment for young players to learn and grow in the sport they're passionate about.",
+    "Campers will get the opportunity to learn baseball skills from current players and coaches of Overland Trailblazers. The day will consist of hitting, fielding, throwing, and catching, teaching each camper the fundamentals of the game.",
+    "Eligible players: 7th & 8th grade",
+    "Cost: $50 per player",
+    "**Players will receive a Blazers shirt and hat **",
+  ],
+};
+
+export const springTryoutData = {
+  date: "Feb 27, 2023",
+  location: "Overland Field",
+  time: "4:00-6:00 PM",
+  content: [
+    "Are you ready to challenge yourself at Overland Baseball and take your game to the next level? Our annual tryouts are your chance to showcase your talent, determination, and passion for baseball. We're on the lookout for dedicated players who are eager to contribute to the team. Stay tuned for tryout dates, and come prepared to demonstrate your skills and commitment on the field.",
+    "Must be registered for TrailBlazer baseball, paid the Athletic Fees, and have a current physical.",
+  ],
+};
+export const summerTryoutData = {
+  date: "TBD",
+  location: "Overland Field",
+  time: "4:00-6:00 PM",
+  content: [
+    "Are you ready to challenge yourself at Overland Baseball and take your game to the next level? Our annual tryouts are your chance to showcase your talent, determination, and passion for baseball. We're on the lookout for dedicated players who are eager to contribute to the team. Stay tuned for tryout dates, and come prepared to demonstrate your skills and commitment on the field.",
+    "Must be registered for TrailBlazer baseball, paid the Athletic Fees, and have a current physical.",
+  ],
+};
+export const fallTryoutData = {
+  date: "TBD",
+  location: "Overland Field",
+  time: "4:00–6:00 PM",
+  content: [
+    "Are you ready to challenge yourself at Overland Baseball and take your game to the next level? Our annual tryouts are your chance to showcase your talent, determination, and passion for baseball. We're on the lookout for dedicated players who are eager to contribute to the team. Stay tuned for tryout dates, and come prepared to demonstrate your skills and commitment on the field.",
+    "Must be registered for TrailBlazer baseball, paid the Athletic Fees, and have a current physical.",
+  ],
+};
+
+export const springWorkoutsData = {
+  date: "TBD",
+  location: "Overland Field",
+  time: "4:00-6:00 PM",
+  content: [
+    "Success on the diamond requires more than just natural talent – it requires hard work and dedication. Our comprehensive workouts at Overland Baseball are tailored to enhance players' strength, agility, and overall performance. Through drills, conditioning exercises, and excellent coaching, we ensure that every athlete is equipped with the tools they need to excel both on and off the field. Join us in the pursuit of excellence, one rep at a time.",
+  ],
+};
+export const summerWorkoutsData = {
+  date: "TBD",
+  location: "Overland Field",
+  time: "4:00-6:00 PM",
+  content: [
+    "Success on the diamond requires more than just natural talent – it requires hard work and dedication. Our comprehensive workouts at Overland Baseball are tailored to enhance players' strength, agility, and overall performance. Through drills, conditioning exercises, and excellent coaching, we ensure that every athlete is equipped with the tools they need to excel both on and off the field. Join us in the pursuit of excellence, one rep at a time.",
+  ],
+};
+export const fallWorkoutsData = {
+  date: "TBD",
+  location: "Overland Field",
+  time: "4:00–6:00 PM",
+  content: [
+    "Success on the diamond requires more than just natural talent – it requires hard work and dedication. Our comprehensive workouts at Overland Baseball are tailored to enhance players' strength, agility, and overall performance. Through drills, conditioning exercises, and excellent coaching, we ensure that every athlete is equipped with the tools they need to excel both on and off the field. Join us in the pursuit of excellence, one rep at a time.",
+  ],
+};

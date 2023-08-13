@@ -46,4 +46,11 @@ export const scheduleRowData = [
   // createData("5/13/23", "4:00 PM", "Aurora Central", "Overland High", vistaPeak),
 ];
 
-// Call to action data
+export const newsData = [
+  {
+    news: "Welcome to the official site of Overland Baseball in Aurora, Colorado! Stay tuned for exciting news about our upcoming games, fundraisers, and other events. ",
+  },
+  {
+    news: "At Overland, we are developing players who often are overlooked and need to be looked over again. We put focus on fundamentals, minor changes and creating player improvement. Trailblazers Baseball training is expanding rapidly and our program is perfect for ages 13-18 yrs old. Trailblazer teams plan to participate in the Colorado Classic Summer League & 5Tool showcases, Developmental team (RBI), and Legion. ",
+  },
+];

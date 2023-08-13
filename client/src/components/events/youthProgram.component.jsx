@@ -5,20 +5,7 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import PlayerEvents from "./playerEvents.component";
 import RegistrationModal from "../modals/registrationModal.component";
-
-const youthProgramData = [
-  {
-    // infoType: "spring",
-    date: "May 20, 2023",
-    location: "Overland Field",
-    time: "8am–2pm ",
-    content:
-      "Overland Trailblazers Baseball will hold a Youth Camp May 20, 2023 campers will get the opportunity to learn baseball skills from current players and coaches of Overland Trailblazers. From hitting and fielding, to throwing and catching, each camper will learn the fundamentals of the Game. ",
-    content2: "Eligible players: 7th & 8th grade",
-    content3: "Cost: $50 per player",
-    content4: "**Players will receive a Blazers shirt and hat **",
-  },
-];
+import { youthProgramData } from "../../websiteData/events.data";
 
 const StyledInfoBox = styled(Box)(({ theme }) => ({
   minWidth: "350px",
