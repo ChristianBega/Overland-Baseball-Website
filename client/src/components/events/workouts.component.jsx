@@ -19,7 +19,7 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
 }));
 
-export default function Workouts() {
+export default function Workouts({ isMobile }) {
   // when the state changes
   const [currentSeason, setCurrentSeason] = useState("spring");
   const [currentEventData, setCurrentEventData] = useState([]);
@@ -35,9 +35,9 @@ export default function Workouts() {
   }, [currentSeason]);
 
   return (
-    <Grid item xs={12} md={6} sx={{ minHeight: "375px", mt: 5, mb: { xs: 15, sm: 0 } }}>
+    <Grid item xs={12} md={8} sx={{ minHeight: "375px", padding: { xs: 0, md: 8 } }}>
       <StyledInfoBox>
-        <Typography typography="h2">Workouts</Typography>
+        {!isMobile && <Typography typography="h2">Workouts</Typography>}
         <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
         <PlayerEvents currentEventData={currentEventData} />
         <RegistrationModal currentSeason={currentSeason} datatypeRegistration="workouts" currentEventData={currentEventData} />

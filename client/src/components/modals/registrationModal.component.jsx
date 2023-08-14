@@ -1,4 +1,4 @@
-import { Modal, Button } from "@mui/material";
+import { Modal, Button, Box } from "@mui/material";
 import React, { useState } from "react";
 import Form from "../forms/form.component";
 import styled from "@emotion/styled";
@@ -36,9 +36,11 @@ export default function YouthProgramModal({ datatypeRegistration, currentSeason,
 
   return (
     <>
-      <Button onClick={handleOpen} id="register" size="medium" sx={{ marginTop: 4 }}>
-        Register here
-      </Button>
+      <Box sx={{ textAlign: { xs: "center", md: "start" } }}>
+        <Button onClick={handleOpen} id="register" size="medium" sx={{ marginTop: 4, maxWidth: "200px" }}>
+          Register here
+        </Button>
+      </Box>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
           <Form

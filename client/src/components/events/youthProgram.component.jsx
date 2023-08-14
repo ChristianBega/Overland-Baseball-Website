@@ -17,7 +17,7 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
 }));
 
-export default function YouthProgram() {
+export default function YouthProgram({ isMobile }) {
   const [currentEventData, setCurrentEventData] = useState([]);
 
   useEffect(() => {
@@ -25,9 +25,9 @@ export default function YouthProgram() {
   }, [currentEventData]);
 
   return (
-    <Grid item xs={12} md={8} sx={{ maxHeight: "650px", my: { xs: 10, md: 15 } }}>
+    <Grid item xs={12} md={8} sx={{ padding: { xs: 0, md: 8 } }}>
       <StyledInfoBox>
-        <Typography typography="h2">Youth Program</Typography>
+        {!isMobile && <Typography typography="h2">Youth Program</Typography>}
         <PlayerEvents currentEventData={currentEventData} />
         <RegistrationModal currentEventData={currentEventData} datatypeRegistration="youth program" />
       </StyledInfoBox>

@@ -7,9 +7,10 @@ import React from "react";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import MinimizeIcon from "@mui/icons-material/Minimize";
 import { Box } from "@mui/system";
 export default function PlayerEvents({ currentEventData }) {
-  const { date, location, time, content } = currentEventData;
+  const { date, location, time, content, contentList } = currentEventData;
   const theme = useTheme();
   return (
     <>
@@ -21,7 +22,7 @@ export default function PlayerEvents({ currentEventData }) {
                 sx={{
                   width: "32%",
                   textAlign: "center",
-                  padding: theme.spacing(2),
+                  padding: theme.spacing(2, 0),
                   backgroundColor: theme.palette.accent.accentThree,
                 }}
               >
@@ -34,7 +35,7 @@ export default function PlayerEvents({ currentEventData }) {
                 sx={{
                   width: "41%",
                   textAlign: "center",
-                  padding: theme.spacing(2),
+                  padding: theme.spacing(2, 0),
                   backgroundColor: theme.palette.accent.accentThree,
                 }}
               >
@@ -47,7 +48,7 @@ export default function PlayerEvents({ currentEventData }) {
                 sx={{
                   width: "32%",
                   textAlign: "center",
-                  padding: theme.spacing(2),
+                  padding: theme.spacing(2, 0),
                   backgroundColor: theme.palette.accent.accentThree,
                 }}
               >
@@ -60,10 +61,18 @@ export default function PlayerEvents({ currentEventData }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Stack direction="column" spacing={3} sx={{ minHeight: "150px" }}>
+      <Stack direction="column" spacing={3}>
         {content?.map((text, index) => {
           return (
-            <Typography key={index} typography="bodyTextSm">
+            <Typography key={index} typography="p" component="p">
+              {text}
+            </Typography>
+          );
+        })}
+        {contentList?.map((text, index) => {
+          return (
+            <Typography key={index} component="small" typography="small">
+              <MinimizeIcon sx={{ fontSize: "12px" }} />
               {text}
             </Typography>
           );

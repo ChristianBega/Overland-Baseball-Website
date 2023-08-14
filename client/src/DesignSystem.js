@@ -23,16 +23,7 @@ export const mainTheme = createTheme({
     MuiModal: {
       styleOverrides: {
         root: {
-          // background: "rgb(9,31,64)",
           background: "linear-gradient(153deg, rgba(9,31,64,0.6487119437939111) 51%, rgba(0,154,78,0.6510538641686183) 98%)",
-        },
-      },
-    },
-
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          // fontWeight: "bold",
         },
       },
     },
@@ -92,7 +83,6 @@ export const mainTheme = createTheme({
         root: {
           padding: 12,
           color: "#091F40",
-          // minHeight: "170px",
         },
       },
     },
@@ -125,10 +115,6 @@ export const mainTheme = createTheme({
           "@media (min-width: 600px)": {
             padding: "2rem",
           },
-          // padding: "0 !important",
-          // `@media (max-width : ${theme.breakpoints(sm)} )`   {
-
-          // }
         },
       },
     },
@@ -168,7 +154,7 @@ export const mainTheme = createTheme({
       letterSpacing: ".2rem",
       fontSize: "45px",
       lineHeight: "47px",
-      marginBottom: "2rem",
+      marginBlock: "2rem",
       "@media (min-width: 600px)": {
         fontSize: "50px ",
         lineHeight: "55px ",
@@ -180,13 +166,12 @@ export const mainTheme = createTheme({
     },
     h2: {
       color: "#091f40e4",
-      textAlign: "center",
       textTransform: "uppercase",
       fontFamily: "Roboto Slab, serif",
       letterSpacing: ".2rem",
       fontWeight: "400",
       fontSize: "28px",
-      marginBottom: "1rem",
+      marginBlock: "1rem",
       "@media (min-width: 600px)": {
         fontSize: "34px ",
         lineHeight: "36px ",
@@ -208,6 +193,18 @@ export const mainTheme = createTheme({
         fontSize: "28px ",
         lineHeight: "36px ",
       },
+    },
+    p: {
+      color: "#091F40",
+      "@media (min-width: 900px)": {
+        fontSize: "18px ",
+      },
+    },
+    small: {
+      color: "#091F40",
+      fontSize: "14px",
+      display: "flex",
+      gap: ".1rem",
     },
 
     linkTextDesktop: {
