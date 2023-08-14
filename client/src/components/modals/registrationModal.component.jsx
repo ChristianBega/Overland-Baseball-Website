@@ -28,7 +28,7 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
   borderRadius: 4,
 }));
 
-export default function YouthProgramModal({ datatypeRegistration }) {
+export default function YouthProgramModal({ datatypeRegistration, currentSeason }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,7 +40,7 @@ export default function YouthProgramModal({ datatypeRegistration }) {
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
-          <RegistrationForm datatypeRegistration={datatypeRegistration} handleClose={handleClose} />
+          <RegistrationForm currentSeason={currentSeason} datatypeRegistration={datatypeRegistration} handleClose={handleClose} />
         </StyledModalContainer>
       </Modal>
     </>

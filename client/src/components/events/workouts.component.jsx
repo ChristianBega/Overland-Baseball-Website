@@ -43,9 +43,9 @@ export default function Workouts() {
         <Typography typography="h2" sx={{ color: theme.palette.primary.main, textAlign: "center" }}>
           Workouts
         </Typography>
-        <Toggles setCurrentSeason={setCurrentSeason} />
+        <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
         <PlayerEvents currentInfo={currentInfo} />
-        <RegistrationModal datatypeRegistration="workouts" />
+        <RegistrationModal currentSeason={currentSeason} datatypeRegistration="workouts" />
       </StyledInfoBox>
     </Grid>
   );

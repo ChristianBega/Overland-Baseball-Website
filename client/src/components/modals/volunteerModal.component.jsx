@@ -7,22 +7,18 @@ const StyledModalContainer = styled("box")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
-  top: "55%",
+  top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   height: "90%",
   width: "90%",
-  [theme.breakpoints.only("xs")]: {
-    top: "50%",
-  },
   [theme.breakpoints.up("sm")]: {
     maxWidth: 550,
-    padding: 20,
   },
   backgroundColor: "#eaeaea",
   border: "1px solid #000",
   boxShadow: 24,
-  padding: 10,
+  // padding: 10,
   borderRadius: 4,
 }));
 export default function VolunteerModal({ open, handleClose, currentEventData }) {

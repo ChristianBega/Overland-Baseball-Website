@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-export default function RegistrationForm({ datatypeRegistration, handleClose }) {
+export default function RegistrationForm({ datatypeRegistration, handleClose, currentSeason }) {
   const theme = useTheme();
   const [success, setSuccess] = useState(false);
 
@@ -17,7 +17,8 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
   } = useForm();
 
   const onSubmit = (data) => {
-    EmailService.sendEmailRegistration(data, datatypeRegistration);
+    // console.log(data);
+    EmailService.sendEmailRegistration(data, datatypeRegistration, currentSeason);
     const timer = setTimeout(() => {
       handleClose(true);
     }, 3000);
@@ -44,7 +45,7 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
         variant="h3"
         component="h2"
       >
-        Overland's {datatypeRegistration} <br /> Registration Forum
+        Overland's {currentSeason} {datatypeRegistration} <br /> Registration Forum
       </Typography>
       <Box component="form" sx={{ maxHeight: { xs: "400px" }, overflowY: "auto" }} onSubmit={handleSubmit(onSubmit)}>
         <Stack id="modal-form" spacing={4} color={theme.palette.primary.main}>

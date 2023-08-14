@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Box, Button, Stack, TextField, Typography, IconButton, Alert } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
 // Icons
@@ -9,7 +9,6 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
-
 const StyledDataBox = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: 3,
@@ -28,48 +27,65 @@ export default function VolunteerForm({ currentEventData, handleClose }) {
     EmailService.sendEmailVolunteer(data, currentEventData);
     const timer = setTimeout(() => {
       handleClose(true);
-    }, 3000);
+    }, 4000);
     reset();
     setSuccess(true);
+
     return () => clearTimeout(timer);
   };
 
+  useEffect(() => {
+    if (success) {
+      document.getElementById("success").scrollIntoView();
+    }
+  }, [success]);
+
   return (
     <>
-      <IconButton onClick={handleClose} size="medium" sx={{ justifyContent: "center", color: "theme.palette.primary.main", width: "10%" }}>
-        <CloseIcon />
-      </IconButton>
-      <Typography
-        sx={{ textTransform: "uppercase", textAlign: "center", my: 5, color: theme.palette.primary.main }}
-        id="modal-title"
-        variant="h3"
-        component="h2"
-      >
-        Overland's volunteer form
-      </Typography>
-
-      <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
-        Event Information:
-      </Typography>
-      <Stack sx={{ color: theme.palette.secondary.main, justifyContent: "center" }} spacing={{ xs: 2, md: 4 }} direction="row" mt={3} mb={5}>
-        <StyledDataBox>
-          <PlaceIcon />
-          <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.event}</Typography>
-        </StyledDataBox>
-        <StyledDataBox>
-          <AccessTimeIcon />
-          <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.time}</Typography>
-        </StyledDataBox>
-        <StyledDataBox>
-          <CalendarMonthIcon />
-          <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.date}</Typography>
-        </StyledDataBox>
-      </Stack>
-
+      <div style={{ padding: "1rem" }}>
+        {/* Close Button */}
+        <IconButton onClick={handleClose} size="medium" sx={{ justifyContent: "center", color: "theme.palette.primary.main", width: "10%" }}>
+          <CloseIcon />
+        </IconButton>
+        {/* Form Title */}
+        <Typography
+          sx={{ textTransform: "uppercase", textAlign: "center", my: 5, color: theme.palette.primary.main }}
+          id="modal-title"
+          variant="h3"
+          component="h2"
+        >
+          Overland's volunteer form
+        </Typography>
+        {/* Form Information Title */}
+        <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
+          Event Information:
+        </Typography>
+        {/* Form Information */}
+        <Stack sx={{ color: theme.palette.secondary.main, mt: 3, mb: 5 }} spacing={{ xs: 2, md: 4 }} direction="row">
+          <StyledDataBox>
+            <PlaceIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.event}</Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <AccessTimeIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.time}</Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <CalendarMonthIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData.date}</Typography>
+          </StyledDataBox>
+        </Stack>
+      </div>
+      {/* Form */}
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        sx={{ color: theme.palette.primary.main, maxHeight: { xs: "490px" }, overflowY: "auto" }}
+        sx={{
+          color: theme.palette.primary.main,
+          maxHeight: { xs: "490px" },
+          overflowY: "auto",
+          padding: "1rem",
+        }}
       >
         <Stack id="modal-form" spacing={4} mt={3}>
           <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
@@ -171,7 +187,7 @@ export default function VolunteerForm({ currentEventData, handleClose }) {
           </Button>
         </Stack>
         {success && (
-          <Alert sx={{ mt: 8 }} severity="success">
+          <Alert id="success" sx={{ mt: 8 }} severity="success">
             Success!!
           </Alert>
         )}

@@ -1,8 +1,8 @@
 import emailjs from "@emailjs/browser";
 
 const EmailService = {
-  sendEmailRegistration: (data, datatypeRegistration) => {
-    const templateParams = { ...data, datatypeRegistration };
+  sendEmailRegistration: (data, datatypeRegistration, currentSeason) => {
+    const templateParams = { ...data, datatypeRegistration, currentSeason };
     emailjs
       .send(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID_REGISTER, templateParams, process.env.REACT_APP_TEMPLATE_PARAMS)
       .then(

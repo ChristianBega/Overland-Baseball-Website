@@ -21,6 +21,7 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
 export default function YouthProgram() {
   const theme = useTheme();
   const [currentInfo, setCurrentInfo] = useState([]);
+  console.log(currentInfo);
 
   useEffect(() => {
     setCurrentInfo(youthProgramData);
