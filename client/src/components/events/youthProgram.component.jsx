@@ -20,12 +20,11 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
 
 export default function YouthProgram() {
   const theme = useTheme();
-  const [currentInfo, setCurrentInfo] = useState([]);
-  console.log(currentInfo);
+  const [currentEventData, setCurrentEventData] = useState([]);
 
   useEffect(() => {
-    setCurrentInfo(youthProgramData);
-  }, [currentInfo]);
+    setCurrentEventData(youthProgramData);
+  }, [currentEventData]);
 
   return (
     <Grid item xs={12} md={8} sx={{ maxHeight: "650px", my: { xs: 10, md: 15 } }}>
@@ -33,8 +32,8 @@ export default function YouthProgram() {
         <Typography typography="h2" sx={{ textAlign: "center", mb: 5, color: theme.palette.primary.main }} textAlign="center" mb={5}>
           Youth Baseball Program
         </Typography>
-        <PlayerEvents currentInfo={currentInfo} />
-        <RegistrationModal datatypeRegistration="youth program" />
+        <PlayerEvents currentEventData={currentEventData} />
+        <RegistrationModal currentEventData={currentEventData} datatypeRegistration="youth program" />
       </StyledInfoBox>
     </Grid>
   );

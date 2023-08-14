@@ -79,7 +79,7 @@ export default function EventItems({ event, isMobile }) {
             <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
               <AppRegistrationIcon fontSize="small" />
             </IconButton>
-            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} />
+            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} datatypeRegistration="volunteer" />
             <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
               {eventName}
             </Typography>

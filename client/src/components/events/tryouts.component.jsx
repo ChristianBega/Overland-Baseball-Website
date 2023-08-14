@@ -20,15 +20,15 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
 export default function Workouts() {
   const theme = useTheme();
   const [currentSeason, setCurrentSeason] = useState("spring");
-  const [currentInfo, setCurrentInfo] = useState([]);
+  const [currentEventData, setCurrentEventData] = useState([]);
 
   useEffect(() => {
     if (currentSeason === "spring") {
-      setCurrentInfo(springTryoutData);
+      setCurrentEventData(springTryoutData);
     } else if (currentSeason === "summer") {
-      setCurrentInfo(summerTryoutData);
+      setCurrentEventData(summerTryoutData);
     } else {
-      setCurrentInfo(fallTryoutData);
+      setCurrentEventData(fallTryoutData);
     }
   }, [currentSeason]);
 
@@ -39,8 +39,8 @@ export default function Workouts() {
           Tryouts
         </Typography>
         <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
-        <PlayerEvents currentInfo={currentInfo} />
-        <RegistrationModal datatypeRegistration="tryouts" currentSeason={currentSeason} />
+        <PlayerEvents currentEventData={currentEventData} />
+        <RegistrationModal datatypeRegistration="tryouts" currentSeason={currentSeason} currentEventData={currentEventData} />
       </StyledInfoBox>
     </Grid>
   );

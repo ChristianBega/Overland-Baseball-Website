@@ -19,7 +19,7 @@ export default function FundraisersDataGrid({ events, currentEvent, handleClose 
       </Typography>
       <TableContainer component={Paper} sx={{ color: "#000", my: 6, maxHeight: 440 }}>
         <Table stickyHeader aria-label="simple table">
-          <TableHead sx={{ border: "2px solid red", color: " Red" }}>
+          <TableHead>
             <TableRow>
               <TableCell
                 sx={{

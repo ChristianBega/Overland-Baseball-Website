@@ -8,8 +8,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Box } from "@mui/system";
-export default function PlayerEvents({ currentInfo }) {
-  const { date, location, time, content } = currentInfo;
+export default function PlayerEvents({ currentEventData }) {
+  const { date, location, time, content } = currentEventData;
+
   const theme = useTheme();
   return (
     <>

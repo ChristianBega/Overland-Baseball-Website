@@ -1,6 +1,6 @@
 import { Modal, Button } from "@mui/material";
 import React, { useState } from "react";
-import RegistrationForm from "../forms/RegistrationForm.component";
+import Form from "../forms/form.component";
 import styled from "@emotion/styled";
 
 const StyledModalContainer = styled("Box")(({ theme }) => ({
@@ -28,7 +28,8 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
   borderRadius: 4,
 }));
 
-export default function YouthProgramModal({ datatypeRegistration, currentSeason }) {
+export default function YouthProgramModal({ datatypeRegistration, currentSeason, currentEventData }) {
+  console.log("Line 32 registration modal : ", currentEventData);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,7 +41,12 @@ export default function YouthProgramModal({ datatypeRegistration, currentSeason 
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
-          <RegistrationForm currentSeason={currentSeason} datatypeRegistration={datatypeRegistration} handleClose={handleClose} />
+          <Form
+            currentEventData={currentEventData}
+            currentSeason={currentSeason}
+            datatypeRegistration={datatypeRegistration}
+            handleClose={handleClose}
+          />
         </StyledModalContainer>
       </Modal>
     </>

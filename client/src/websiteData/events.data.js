@@ -96,19 +96,19 @@ const workoutContent = [
 
 export const springWorkoutsData = {
   date: "??? ??, 2024",
-  location: "Overland Field",
+  location: "Overland Gym",
   time: "?:00-?:00 PM",
   content: [...workoutContent],
 };
 export const summerWorkoutsData = {
   date: "??? ??, 2024",
-  location: "Overland Field",
+  location: "Overland Gym",
   time: "?:00-?:00 PM",
   content: [...workoutContent],
 };
 export const fallWorkoutsData = {
   date: "??? ??, 2023",
-  location: "Overland Field",
+  location: "Overland Gym",
   time: "?:00–?:00 PM",
   content: [...workoutContent],
 };
