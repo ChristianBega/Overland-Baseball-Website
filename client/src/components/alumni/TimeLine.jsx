@@ -140,7 +140,7 @@ export default function TimeLine() {
   const theme = useTheme();
   return (
     <div className="time-line">
-      <Typography typography="h2" sx={{ textAlign: "center", my: 15, color: theme.palette.primary.main }}>
+      <Typography typography="h1" sx={{ textAlign: "center" }}>
         ALUMNI TIMELINE
       </Typography>
       <VerticalTimeline layout="2-columns" lineColor="rgba(9,31,64,.8)">

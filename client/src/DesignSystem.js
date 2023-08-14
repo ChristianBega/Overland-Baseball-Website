@@ -147,25 +147,25 @@ export const mainTheme = createTheme({
   typography: {
     fontFamily: "Work Sans",
     h1: {
-      color: "#091f40e4",
+      color: "#091F40",
       textAlign: "center",
       fontFamily: "Roboto Slab, serif",
       textTransform: "uppercase",
       letterSpacing: ".2rem",
-      fontSize: "45px",
-      lineHeight: "47px",
+      fontSize: "30px",
+      lineHeight: "40px",
       marginBlock: "2rem",
       "@media (min-width: 600px)": {
-        fontSize: "50px ",
-        lineHeight: "55px ",
+        fontSize: "40px ",
+        lineHeight: "50px ",
       },
       "@media (min-width: 900px)": {
-        fontSize: "65px ",
-        lineHeight: "70px ",
+        fontSize: "55px ",
+        lineHeight: "65px ",
       },
     },
     h2: {
-      color: "#091f40e4",
+      color: "#091F40",
       textTransform: "uppercase",
       fontFamily: "Roboto Slab, serif",
       letterSpacing: ".2rem",
@@ -177,7 +177,7 @@ export const mainTheme = createTheme({
         lineHeight: "36px ",
       },
       "@media (min-width: 900px)": {
-        fontSize: "45px ",
+        fontSize: "42px ",
         lineHeight: "47px ",
       },
     },

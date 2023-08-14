@@ -2,6 +2,7 @@ import { TableRow, Typography, Stack, Box, TableCell, useMediaQuery } from "@mui
 import "./teamRosterItem.css";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
+import PlaceHolderImage from "../../assets/rosterPlaceHolder.png";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-type-of(even)": {
@@ -40,7 +41,7 @@ export default function TeamRoosterItem({ currentRoster }) {
             scope="row"
           >
             {/* <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" /> */}
-            <Box sx={{ width: { xs: "70px", sm: "90px" }, height: "110px", backgroundColor: "Red" }}></Box>
+            <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "110px" }}></Box>
           </TableCell>
           <TableCell sx={{ border: "none", px: 0, flex: "3 0 62%" }} component="th" scope="row">
             <Stack direction="row" gap={1}>

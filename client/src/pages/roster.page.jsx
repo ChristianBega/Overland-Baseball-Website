@@ -23,7 +23,7 @@ export default function RosterPage() {
         exit={containerVariants.exit}
         transition={containerVariants.transition}
         id="rooster-section"
-        style={{ display: "flex", justifyContent: " center" }}
+        style={{ display: "flex", justifyContent: " center", padding: ".5rem" }}
       >
         <Grid container maxWidth="lg" my={10}>
           <Staff currentTeam={currentTeam} />

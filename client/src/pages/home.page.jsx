@@ -25,13 +25,13 @@ export default function HomePage() {
         animate={containerVariants.visible}
         exit={containerVariants.exit}
         transition={containerVariants.transition}
-        // component="section"
         id="home-section"
-        style={{ display: "flex", justifyContent: " center", marginTop: "3rem" }}
+        style={{ display: "flex", justifyContent: " center", marginBlock: theme.spacing(8), maxWidth: "1500px" }}
       >
-        <Grid container maxWidth="xl" spacing={{ xs: 4, md: 20 }} sx={{ justifyContent: "center" }}>
+        <Grid container rowSpacing="12" columnSpacing="12" sx={{ justifyContent: "center", maxWidth: "1500px" }}>
+          {isMobile && <ImageSlider />}
           <News />
-          <ImageSlider />
+          {!isMobile && <ImageSlider />}
           {!isMobile && <CTAGrid />}
           <Schedule />
           {isMobile && <CTAGrid />}
