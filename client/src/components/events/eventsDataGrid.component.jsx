@@ -16,10 +16,8 @@ export default function Events() {
 
   return (
     <Grid item xs={12} my={{ xs: 5, sm: 10 }}>
-      <Typography typography="h1" sx={{ textAlign: "center", my: 10, color: theme.palette.primary.main }}>
-        Upcoming Events!
-      </Typography>
-      <TableContainer component={Paper} sx={{ color: "#000", my: 6, maxHeight: 440 }}>
+      <Typography typography="h1">Upcoming Events</Typography>
+      <TableContainer component={Paper} sx={{ color: "#000", maxHeight: 440 }}>
         <Table stickyHeader aria-label="simple table">
           <TableHead>
             <TableRow>

@@ -36,7 +36,7 @@ export default function YouthProgramModal({ datatypeRegistration, currentSeason,
 
   return (
     <>
-      <Button onClick={handleOpen} sx={{ alignSelf: "center" }} id="register" size="medium">
+      <Button onClick={handleOpen} id="register" size="medium" sx={{ marginTop: 4 }}>
         Register here
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">

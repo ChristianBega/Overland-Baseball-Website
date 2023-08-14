@@ -19,7 +19,7 @@ body::-webkit-scrollbar {
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(9, 31, 64, 0.8);
+  background: #00000040;
   border-radius: 10px;
 }
 /* Handle on hover */

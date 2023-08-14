@@ -1,4 +1,3 @@
-import { useTheme } from "@emotion/react";
 import { Grid, Typography, styled } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
@@ -18,7 +17,6 @@ const StyledInfoBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function Workouts() {
-  const theme = useTheme();
   const [currentSeason, setCurrentSeason] = useState("spring");
   const [currentEventData, setCurrentEventData] = useState([]);
 
@@ -35,9 +33,7 @@ export default function Workouts() {
   return (
     <Grid item xs={12} md={8} sx={{ minHeight: "400px", maxHeight: { xs: "500px", md: "400px" }, my: 5 }}>
       <StyledInfoBox>
-        <Typography typography="h2" sx={{ color: theme.palette.primary.main, textAlign: "center" }}>
-          Tryouts
-        </Typography>
+        <Typography typography="h2">Tryouts</Typography>
         <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
         <PlayerEvents currentEventData={currentEventData} />
         <RegistrationModal datatypeRegistration="tryouts" currentSeason={currentSeason} currentEventData={currentEventData} />

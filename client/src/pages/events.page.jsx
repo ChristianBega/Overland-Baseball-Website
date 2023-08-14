@@ -30,7 +30,7 @@ export default function EventsPage() {
       id="events-section"
       sx={{ display: "flex", justifyContent: " center" }}
     >
-      <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }} my={10}>
+      <Grid id="events-main-grid" container maxWidth="lg" my={10}>
         <Events />
         <YouthProgram />
         <YouthProgramSlider />

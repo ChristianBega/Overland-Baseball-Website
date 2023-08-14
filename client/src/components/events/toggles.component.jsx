@@ -20,7 +20,7 @@ export default function Toggles({ setCurrentSeason, currentSeason }) {
     },
   ];
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", gap: 4, my: 5 }}>
+    <Box sx={{ display: "flex", justifyContent: "center", gap: 4, mb: 4 }}>
       {BUTTON_TYPES.map(({ type }, index) => {
         return (
           <Button key={type + (index + 1)} id={type} onClick={handleClick} size="small">

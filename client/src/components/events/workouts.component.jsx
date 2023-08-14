@@ -3,9 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import PlayerEvents from "./playerEvents.component";
-
 import Toggles from "./toggles.component";
-import { useTheme } from "@emotion/react";
 import RegistrationModal from "../modals/registrationModal.component";
 
 import { springWorkoutsData, summerWorkoutsData, fallWorkoutsData } from "../../websiteData/events.data";
@@ -25,7 +23,6 @@ export default function Workouts() {
   // when the state changes
   const [currentSeason, setCurrentSeason] = useState("spring");
   const [currentEventData, setCurrentEventData] = useState([]);
-  const theme = useTheme();
 
   useEffect(() => {
     if (currentSeason === "spring") {
@@ -40,9 +37,7 @@ export default function Workouts() {
   return (
     <Grid item xs={12} md={6} sx={{ minHeight: "375px", mt: 5, mb: { xs: 15, sm: 0 } }}>
       <StyledInfoBox>
-        <Typography typography="h2" sx={{ color: theme.palette.primary.main, textAlign: "center" }}>
-          Workouts
-        </Typography>
+        <Typography typography="h2">Workouts</Typography>
         <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
         <PlayerEvents currentEventData={currentEventData} />
         <RegistrationModal currentSeason={currentSeason} datatypeRegistration="workouts" currentEventData={currentEventData} />

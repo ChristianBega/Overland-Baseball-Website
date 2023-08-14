@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid/Grid";
 import { Typography, Box, styled, Button } from "@mui/material";
-import { useTheme } from "@emotion/react";
 
 import { fundraisersCardData } from "../../websiteData/events.data";
 import { eventData } from "../../websiteData/events.data";
@@ -36,7 +35,6 @@ export default function Fundraisers() {
   const [open, setOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState();
   const [events, setEvents] = useState();
-  const theme = useTheme();
   const handleOpen = (event) => {
     let currentEventId = event.currentTarget.parentElement.id;
 
@@ -48,17 +46,13 @@ export default function Fundraisers() {
   const handleClose = () => setOpen(false);
   return (
     <Grid item xs={12} mt={{ xs: 5, sm: 10, md: 15 }}>
-      <Typography typography="h2" sx={{ color: theme.palette.primary.main, textAlign: "center", my: 10 }}>
-        Upcoming fundraisers!
-      </Typography>
+      <Typography typography="h2">Upcoming fundraisers</Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersCardData.map((fundraiser, index) => (
           <Grid sx={{ position: "relative" }} id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
             <StyledImageBox component="img" src={fundraiser.image}></StyledImageBox>
             <StyledOverlay>
-              <Typography component="h3" variant="h3" sx={{ color: "#fff", textAlign: "center", my: 4 }}>
-                {fundraiser.eventName} Events
-              </Typography>
+              <Typography typography="h3">{fundraiser.eventName} Events</Typography>
               <Box textAlign="center">
                 <Button size="md" onClick={handleOpen}>
                   Sign up!
@@ -72,4 +66,3 @@ export default function Fundraisers() {
     </Grid>
   );
 }
-//
