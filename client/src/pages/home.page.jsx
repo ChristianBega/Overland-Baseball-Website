@@ -7,9 +7,8 @@ import News from "../components/home/news.component";
 import Schedule from "../components/home/schedule.component";
 import Sponsors from "../components/sponsors/sponsors.component";
 import ImageSlider from "../components/home/imageSlider.component";
-import CTAGrid from "../components/home/callToActions.component";
+import QuickLinksGrid from "../components/home/quickLinks.component";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 export default function HomePage() {
   const theme = useTheme();
@@ -34,9 +33,9 @@ export default function HomePage() {
           {isMobile && <ImageSlider />}
           <News />
           {!isMobile && <ImageSlider />}
-          {!isMobile && <CTAGrid />}
+          {!isMobile && <QuickLinksGrid />}
           <Schedule />
-          {isMobile && <CTAGrid />}
+          {isMobile && <QuickLinksGrid />}
           <Sponsors />
         </Grid>
       </Container>
