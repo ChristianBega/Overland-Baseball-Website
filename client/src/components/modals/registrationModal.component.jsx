@@ -1,6 +1,6 @@
-import { Modal, Button } from "@mui/material";
+import { Modal, Button, Box } from "@mui/material";
 import React, { useState } from "react";
-import RegistrationForm from "../forms/RegistrationForm.component";
+import Form from "../forms/form.component";
 import styled from "@emotion/styled";
 
 const StyledModalContainer = styled("Box")(({ theme }) => ({
@@ -11,8 +11,11 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "350px",
+  height: "90%",
+
   [theme.breakpoints.only("xs")]: {
     top: "50%",
+    width: "300px",
   },
   [theme.breakpoints.up("sm")]: {
     minWidth: 550,
@@ -25,19 +28,26 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
   borderRadius: 4,
 }));
 
-export default function YouthProgramModal({ datatypeRegistration }) {
+export default function YouthProgramModal({ datatypeRegistration, currentSeason, currentEventData }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <>
-      <Button onClick={handleOpen} sx={{ alignSelf: "center" }} id="register" size="medium">
-        Register here
-      </Button>
+      <Box sx={{ textAlign: { xs: "center", md: "start" } }}>
+        <Button onClick={handleOpen} id="register" size="medium" sx={{ marginTop: 4, maxWidth: "200px" }}>
+          Register here
+        </Button>
+      </Box>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
-          <RegistrationForm datatypeRegistration={datatypeRegistration} handleClose={handleClose} />
+          <Form
+            currentEventData={currentEventData}
+            currentSeason={currentSeason}
+            datatypeRegistration={datatypeRegistration}
+            handleClose={handleClose}
+          />
         </StyledModalContainer>
       </Modal>
     </>

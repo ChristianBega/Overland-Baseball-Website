@@ -17,9 +17,9 @@ import WorkoutSlider from "../components/events/workoutSlider.component";
 export default function EventsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
   return (
     <Container
       component={motion.section}
@@ -30,15 +30,16 @@ export default function EventsPage() {
       id="events-section"
       sx={{ display: "flex", justifyContent: " center" }}
     >
-      <Grid id="events-main-grid" container maxWidth="lg" spacing={{ xs: 2, md: 4 }} my={10}>
+      <Grid id="events-main-grid" container maxWidth="lg" rowSpacing={isMobile ? 12 : 32}>
         <Events />
-        <YouthProgram />
-        <YouthProgramSlider />
-        {!isMobile && <TryoutsSlider />}
-        <Tryouts />
-        {isMobile && <TryoutsSlider />}
-        <Workouts />
-        <WorkoutSlider />
+        {isMobile && <YouthProgramSlider isMobile={isMobile} />}
+        <YouthProgram isMobile={isMobile} />
+        {!isMobile && <YouthProgramSlider />}
+        <TryoutsSlider isMobile={isMobile} />
+        <Tryouts isMobile={isMobile} />
+        {isMobile && <WorkoutSlider isMobile={isMobile} />}
+        <Workouts isMobile={isMobile} />
+        {!isMobile && <WorkoutSlider />}
         <Fundraisers />
       </Grid>
     </Container>

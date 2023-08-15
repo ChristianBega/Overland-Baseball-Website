@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Grid, Paper, Table, TableBody, TableContainer } from "@mui/material";
 // Components
 import TeamRosterItem from "./teamRosterItem.component";
-
 // const roosterData = [];
 
 const varsityRoster = [
@@ -205,9 +204,9 @@ export default function TeamRoster({ currentTeam }) {
   }, [currentTeam]);
 
   return (
-    <section id="team-rooster-section" style={{ width: "100%", borderBottom: ".5px solid grey", borderTop: ".5px solid grey", margin: "3% 0 3% 0" }}>
+    <section id="team-rooster-section" style={{ width: "100%" }}>
       <Grid item xs={12} md={12} sx={{ mt: 4 }}>
-        <TableContainer component={Paper} sx={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+        <TableContainer component={Paper} sx={{ display: "flex", justifyContent: "center", flexDirection: "column", paddingBlock: ".5rem" }}>
           <Table aria-label="roster table">
             <TableBody>
               <TeamRosterItem currentRoster={currentRoster} />

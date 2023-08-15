@@ -1,30 +1,70 @@
 import React from "react";
-
-import { Grid, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-
-// Components
+import { newsData } from "../../websiteData/home.data";
+import { Grid, Typography, Box, Link, styled } from "@mui/material";
+import { HashLink } from "react-router-hash-link";
 import Socials from "../reusableComponents/socials.component";
 import { useTheme } from "@emotion/react";
 
-const newsData = {
-  news: "We are developing players who are often overlooked…. who just need to be looked over. Trailblazers Baseball training is expanding rapidly. We put major focus on fundamentals, minor changes and create player improvement. Our Program is perfectly developed for ages 13-18yrs old Trailblazer teams will participate in the Colorado Classic Summer League & 5Tool showcases. Developmental team (RBI), Legion. Trailblazers Baseball aiming for Regional and State titles.",
-};
 export default function News() {
+  const { newsOne, newsLink, newsTwo } = newsData[0];
   const theme = useTheme();
-  return (
-    <Grid item xs={12} md={8} lg={6} sx={{ position: "relative", mt: { lg: 10 } }}>
-      <Box sx={{ minHeight: { xs: "300px", md: "400px", textAlign: "center" }, p: 4 }}>
-        <Typography sx={{ my: 5, color: theme.palette.primary.main }} typography="h2Small">
-          Trail Blazer News
-        </Typography>
-        <Typography typography={{ xs: "bodyTextSm", md: "bodyTextLg" }}>{newsData.news}</Typography>
-        {/* <Box
-          component="img"
-          src={OverlandLogo}
-          sx={{ zIndex: "-100", opacity: ".3", maxWidth: "350px", position: "absolute", top: "50%", left: "50%", translate : "transform(-50%,-50%)" }}
-        ></Box> */}
 
+  const StyledHashLink = styled(HashLink)(({ theme }) => ({
+    textDecoration: "underline",
+    color: "#21c067",
+    "&:hover": {
+      cursor: "pointer",
+      color: "#007f3b",
+    },
+  }));
+  const StyledLink = styled(Link)(({ theme }) => ({
+    textDecoration: "underline",
+    color: "#21c067",
+    "&:hover": {
+      cursor: "pointer",
+      color: "#007f3b",
+    },
+  }));
+
+  return (
+    <Grid item xs={12} md={7} lg={6} sx={{ position: "relative" }}>
+      <Box sx={{ minHeight: { xs: "300px", md: "400px" }, p: 4 }}>
+        <Typography typography="h1" component="h1">
+          Blazer's News
+        </Typography>
+        <Typography typography="p" component="p">
+          {newsOne}
+        </Typography>
+        {newsLink?.map(({ name, pathname, linkType }, index) => {
+          return (
+            <Typography typography="p" component="p">
+              {index + 1 === newsLink.length ? (
+                <>
+                  &nbsp;
+                  <Typography typography="span" component="span">
+                    and
+                  </Typography>
+                  &nbsp;
+                  {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
+                  <Typography typography="span" component="span">
+                    .
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  &nbsp;
+                  {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
+                  <Typography typography="span" component="span">
+                    ,
+                  </Typography>
+                </>
+              )}
+            </Typography>
+          );
+        })}
+        <Typography typography="p" component="p" sx={{ display: "block", mt: theme.spacing(4) }}>
+          {newsTwo}
+        </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 8 }}>
           <Socials />
         </Box>

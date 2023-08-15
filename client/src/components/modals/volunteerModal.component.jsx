@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Modal } from "@mui/material";
 import React from "react";
-import VolunteerForm from "../forms/VolunteerForm.component";
+import Form from "../forms/form.component";
 
 const StyledModalContainer = styled("box")(({ theme }) => ({
   display: "flex",
@@ -10,21 +10,22 @@ const StyledModalContainer = styled("box")(({ theme }) => ({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  overFlow: "hidden",
-  minWidth: "300px",
-  maxWidth: 400,
-  backgroundColor: "#d8d8d8",
+  height: "90%",
+  width: "90%",
+  backgroundColor: "#eaeaea",
   border: "1px solid #000",
   boxShadow: 24,
-  padding: 20,
   borderRadius: 4,
+  [theme.breakpoints.up("sm")]: {
+    maxWidth: 550,
+  },
 }));
-export default function VolunteerModal({ open, handleClose, currentEventData }) {
+export default function VolunteerModal({ open, handleClose, currentEventData, datatypeRegistration }) {
   return (
     <>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
-          <VolunteerForm currentEventData={currentEventData} handleClose={handleClose} />
+          <Form currentEventData={currentEventData} handleClose={handleClose} datatypeRegistration={datatypeRegistration} />
         </StyledModalContainer>
       </Modal>
     </>

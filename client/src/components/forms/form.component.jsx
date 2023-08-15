@@ -1,54 +1,103 @@
-import { Stack, TextField, Typography, Button, Box, IconButton, Alert } from "@mui/material";
 import { useTheme } from "@emotion/react";
+import { Box, Button, Stack, TextField, Typography, IconButton, Alert } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
-import React, { useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-export default function RegistrationForm({ datatypeRegistration, handleClose }) {
-  const theme = useTheme();
-  const [success, setSuccess] = useState(false);
 
-  // React hook form useForm for registering, handling, and reset forms
+//& When I render a form component pass it a prop formType. Ex formType="registration" or formType="volunteer" or formType="booster"
+
+//& Create TextInput component - pass props to component - render component
+// Icons
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PlaceIcon from "@mui/icons-material/Place";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
+const StyledDataBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  gap: 3,
+  alignItems: "center",
+}));
+//* datatypeRegistration, currentSeason
+export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason }) {
+  console.log("Line 23 form: ", currentEventData);
+  const [success, setSuccess] = useState(false);
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-
   const onSubmit = (data) => {
-    EmailService.sendEmailRegistration(data, datatypeRegistration);
+    //* datatypeRegistration, currentSeason
+    EmailService.sendEmailVolunteer(data, currentEventData);
     const timer = setTimeout(() => {
       handleClose(true);
-    }, 3000);
+    }, 4000);
     reset();
     setSuccess(true);
-    reset();
     return () => clearTimeout(timer);
   };
 
+  useEffect(() => {
+    if (success) {
+      document.getElementById("success").scrollIntoView();
+    }
+  }, [success]);
+
   return (
     <>
-      <IconButton onClick={handleClose} size="medium" sx={{ justifyContent: "center", color: "theme.palette.primary.main", width: "10%" }}>
-        <CloseIcon />
-      </IconButton>
-      <Typography
+      <div style={{ padding: "1rem" }}>
+        {/* Close Button */}
+        <IconButton onClick={handleClose} size="medium" sx={{ justifyContent: "center", color: "theme.palette.primary.main", width: "10%" }}>
+          <CloseIcon />
+        </IconButton>
+        {/* Form Title */}
+        <Typography
+          sx={{ textTransform: "uppercase", textAlign: "center", my: 5, color: theme.palette.primary.main }}
+          id="modal-title"
+          variant="h3"
+          component="h2"
+        >
+          {/*!!!!!!!!!!!!! Overland's {currentSeason} {datatypeRegistration} <br /> Registration Forum */}
+          {currentSeason} {datatypeRegistration} form
+        </Typography>
+        {/* Form Information Title */}
+        <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
+          Event Information:
+        </Typography>
+        {/* Form Information */}
+        <Stack sx={{ color: theme.palette.secondary.main, mt: 3, mb: 5 }} spacing={{ xs: 2, md: 4 }} direction="row">
+          <StyledDataBox>
+            <PlaceIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
+              {currentEventData?.event || `${currentSeason === undefined ? datatypeRegistration : `${currentSeason} ${datatypeRegistration}`} `}
+            </Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <AccessTimeIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.time}</Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <CalendarMonthIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.date}</Typography>
+          </StyledDataBox>
+        </Stack>
+      </div>
+      {/* Form */}
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
         sx={{
-          textTransform: "uppercase",
-          textAlign: "center",
-          my: 6,
           color: theme.palette.primary.main,
-          fontSize: { xs: "1.3rem", md: "1.8rem" },
+          maxHeight: { xs: "490px" },
+          overflowY: "auto",
+          padding: "1rem",
         }}
-        id="modal-title"
-        variant="h3"
-        component="h2"
       >
-        Overland's {datatypeRegistration} <br /> Registration Forum
-      </Typography>
-      <Box component="form" sx={{ maxHeight: { xs: "400px", overflowY: "auto" } }} onSubmit={handleSubmit(onSubmit)}>
-        <Stack id="modal-form" spacing={4} color={theme.palette.primary.main}>
-          <Typography variant="h6" component="h3">
+        <Stack id="modal-form" spacing={4} mt={3}>
+          <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
             Player Information:
           </Typography>
           {/* Player name */}
@@ -92,9 +141,11 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
               },
             })}
           />
-          <Typography variant="h6" component="h3">
+
+          <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
             Parent/Guardian Information:
           </Typography>
+
           {/* Guardian Name */}
           <TextField
             id="guardianName"
@@ -139,12 +190,13 @@ export default function RegistrationForm({ datatypeRegistration, handleClose }) 
               },
             })}
           />
-          <Button onSubmit={onSubmit} type="submit" sx={{ alignSelf: "center" }} id="submit" size="medium">
-            Submit
+
+          <Button onSubmit={onSubmit} type="submit" sx={{ mt: 6, alignSelf: "center" }} id="submit" size="medium">
+            Confirm
           </Button>
         </Stack>
         {success && (
-          <Alert sx={{ mt: 8 }} severity="success">
+          <Alert id="success" sx={{ mt: 8 }} severity="success">
             Success!!
           </Alert>
         )}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Grid, TableContainer, Typography } from "@mui/material";
 import StaffItem from "./staffItem.component";
-import { useTheme } from "@emotion/react";
 const staffData = [
   {
     team: "varsity",
@@ -24,20 +23,15 @@ const staffData = [
 ];
 
 export default function Staff({ currentTeam }) {
-  const theme = useTheme();
   const [currentRooster, setCurrentRooster] = useState([]);
   useEffect(() => {
     setCurrentRooster(staffData.filter((team) => team.team === currentTeam));
   }, [currentTeam]);
   return (
-    <Grid item xs={12} sx={{ mt: { xs: 5, sm: 10 }, minHeight: { xs: "275px", md: "250px" }, textAlign: "center" }}>
+    <Grid item xs={12} sx={{ minHeight: { xs: "275px", md: "250px" }, textAlign: "center" }}>
       <TableContainer mb={5}>
-        <Typography
-          typography="h1"
-          sx={{ px: 4, my: { xs: 4, md: 6, lg: 8 }, textTransform: "uppercase", color: theme.palette.primary.main }}
-          variant="h2"
-        >
-          {currentTeam} &nbsp;Roster
+        <Typography typography="h1" component="h1" variant="h2">
+          {currentTeam} Roster
         </Typography>
         <StaffItem currentRooster={currentRooster} />
       </TableContainer>

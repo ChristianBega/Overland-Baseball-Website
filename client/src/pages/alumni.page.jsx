@@ -9,11 +9,11 @@ export default function AlumniPage() {
   }, []);
   return (
     <Container
-      component={motion.section}
-      initial={containerVariants.hidden}
-      animate={containerVariants.visible}
-      exit={containerVariants.exit}
-      transition={containerVariants.transition}
+    component={motion.section}
+    initial={containerVariants.hidden}
+    animate={containerVariants.visible}
+    exit={containerVariants.exit}
+    transition={containerVariants.transition}
     >
       <TimeLine />
     </Container>

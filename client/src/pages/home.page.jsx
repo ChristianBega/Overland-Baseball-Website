@@ -9,10 +9,12 @@ import Sponsors from "../components/sponsors/sponsors.component";
 import ImageSlider from "../components/home/imageSlider.component";
 import CTAGrid from "../components/home/callToActions.component";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -25,13 +27,13 @@ export default function HomePage() {
         animate={containerVariants.visible}
         exit={containerVariants.exit}
         transition={containerVariants.transition}
-        // component="section"
         id="home-section"
-        style={{ display: "flex", justifyContent: " center", marginTop: "3rem" }}
+        style={{ display: "flex", justifyContent: " center", marginBlock: theme.spacing(8), maxWidth: "1500px" }}
       >
-        <Grid container maxWidth="xl" spacing={{ xs: 4, md: 20 }} sx={{ justifyContent: "center" }}>
+        <Grid container rowSpacing="12" columnSpacing="12" sx={{ justifyContent: "center", maxWidth: "1500px" }}>
+          {isMobile && <ImageSlider />}
           <News />
-          <ImageSlider />
+          {!isMobile && <ImageSlider />}
           {!isMobile && <CTAGrid />}
           <Schedule />
           {isMobile && <CTAGrid />}

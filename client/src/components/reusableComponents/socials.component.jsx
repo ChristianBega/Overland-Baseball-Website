@@ -6,7 +6,7 @@ import { Stack } from "@mui/system";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
+// import YouTubeIcon from "@mui/icons-material/YouTube";
 import styled from "@emotion/styled";
 // Images
 import OverlandLogo from "../../assets/overlandLogo_3.webp";
@@ -26,11 +26,11 @@ const socialData = [
     linkUrl: "www.instagram.com/overland.baseball/",
     socialIcon: <InstagramIcon />,
   },
-  {
-    linkName: "youtube",
-    linkUrl: "youtube.com",
-    socialIcon: <YouTubeIcon />,
-  },
+  // {
+  //   linkName: "youtube",
+  //   linkUrl: "youtube.com",
+  //   socialIcon: <YouTubeIcon />,
+  // },
 ];
 const SocialLink = styled(Link)(({ theme }) => ({
   "&:hover": {
