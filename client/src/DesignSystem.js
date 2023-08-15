@@ -195,7 +195,8 @@ export const mainTheme = createTheme({
       },
     },
     p: {
-      color: "#091F40",
+      display: "inline",
+      color: "#091F40 !important",
       "@media (min-width: 900px)": {
         fontSize: "18px ",
       },
@@ -213,7 +214,7 @@ export const mainTheme = createTheme({
       lineHeight: "18px",
       fontSize: "20px",
       width: "100%",
-      // textDecoration: "none !important",
+      textDecoration: "none !important",
       ":hover": {
         color: "#F3F4F6",
         cursor: "pointer",
@@ -223,6 +224,7 @@ export const mainTheme = createTheme({
       transition: "all .3s ease-In-Out",
     },
     linkTextMobile: {
+      textDecoration: "none !important",
       color: "#283F76",
       fontFamily: "Work Sans",
       lineHeight: "22px",

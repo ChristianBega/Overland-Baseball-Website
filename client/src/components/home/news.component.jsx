@@ -26,43 +26,40 @@ export default function News() {
     },
   }));
 
-  const StyledInlineText = styled(Typography)(({ theme }) => ({
-    display: "inline",
-  }));
   return (
     <Grid item xs={12} md={7} lg={6} sx={{ position: "relative" }}>
       <Box sx={{ minHeight: { xs: "300px", md: "400px" }, p: 4 }}>
         <Typography typography="h1" component="h1">
           Blazer's News
         </Typography>
-        <StyledInlineText typography="p" component="p">
+        <Typography typography="p" component="p">
           {newsOne}
-        </StyledInlineText>
-        {newsLink?.map(({ name, pathname, linkType, section }, index) => {
+        </Typography>
+        {newsLink?.map(({ name, pathname, linkType }, index) => {
           return (
-            <StyledInlineText typography="p" component="p">
+            <Typography typography="p" component="p">
               {index + 1 === newsLink.length ? (
                 <>
                   &nbsp;
-                  <StyledInlineText typography="span" component="span">
+                  <Typography typography="span" component="span">
                     and
-                  </StyledInlineText>
+                  </Typography>
                   &nbsp;
                   {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
-                  <StyledInlineText typography="span" component="span">
+                  <Typography typography="span" component="span">
                     .
-                  </StyledInlineText>
+                  </Typography>
                 </>
               ) : (
                 <>
                   &nbsp;
                   {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
-                  <StyledInlineText typography="span" component="span">
+                  <Typography typography="span" component="span">
                     ,
-                  </StyledInlineText>
+                  </Typography>
                 </>
               )}
-            </StyledInlineText>
+            </Typography>
           );
         })}
         <Typography typography="p" component="p" sx={{ display: "block", mt: theme.spacing(4) }}>

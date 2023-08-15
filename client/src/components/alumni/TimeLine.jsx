@@ -3,8 +3,7 @@ import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeli
 import "react-vertical-timeline-component/style.min.css";
 import baseballIcon from "../../assets/baseball-icon.png";
 import "../alumni/alumni.css";
-import { useTheme } from "@emotion/react";
-
+import PlaceHolderImage from "../../assets/coachRosterPlaceHolder.jpg";
 const BaseballIcon = () => <img width="100%" height="100%" src={baseballIcon} alt="baseball icon" />;
 
 const DateTypography = ({ text }) => (
@@ -137,7 +136,6 @@ const timelineData = [
 ];
 
 export default function TimeLine() {
-  const theme = useTheme();
   return (
     <div className="time-line">
       <Typography typography="h1" sx={{ textAlign: "center" }}>
@@ -174,7 +172,7 @@ export default function TimeLine() {
                 </Stack>
               </Grid>
               <Grid item xs={12} display="flex" justifyContent="center">
-                <Box component="img" sx={{ width: "285px", height: "285px" }}></Box>
+                <Box component="img" src={PlaceHolderImage} sx={{ width: "285px", height: "285px" }}></Box>
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{ mt: 4, mb: 4, textAlign: "center" }}>

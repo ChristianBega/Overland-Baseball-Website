@@ -33,7 +33,7 @@ const ctaData = [
   },
   {
     ctaName: "Max Preps",
-    urlLink: "https://go.teamsnap.com/login/find_my_team",
+    urlLink: "https://www.maxpreps.com/co/aurora/overland-trailblazers/baseball/",
     ctaImage: MaxPreps,
   },
   {

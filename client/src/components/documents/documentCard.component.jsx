@@ -5,6 +5,8 @@ import { useTheme } from "@emotion/react";
 import codeOfConduct from "../../websiteData/documents/codeOfConduct.pdf";
 import parentPlayer from "../../websiteData/documents/parentPlayer.pdf";
 import teamLetter from "../../websiteData/documents/teamLetter.pdf";
+import newsLetterOct2024 from "../../websiteData/documents/newsLetterOct2024.pdf";
+
 import styled from "@emotion/styled";
 
 // Icons
@@ -18,14 +20,6 @@ const StyledCard = styled(Card)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   flexDirection: "column",
-}));
-const StyledTypography = styled(Link)(({ theme }) => ({
-  textDecoration: "none",
-  "&:hover": {
-    color: theme.palette.primary.light,
-    cursor: "pointer",
-    transition: ".3s all ease-in-out",
-  },
 }));
 
 const StyledLink = styled(Link)(({ theme }) => ({
@@ -44,9 +38,20 @@ export default function DocumentCard({ data, index }) {
         </CardContent>
         <CardActions sx={{ display: "flex", flexDirection: "column", gap: 4, mt: 5 }}>
           <Link href={data.documentLink} target="_blank" rel="noopener noreferrer" sx={{ height: "100%", width: "100%", textDecoration: "none" }}>
-            <StyledTypography typography={{ xs: "bodyTextSm", md: "bodyTextLg" }} color={theme.palette.secondary.main}>
+            <Typography
+              typography="p"
+              component="p"
+              sx={{
+                color: `${theme.palette.secondary.main} !important`,
+                "&:hover": {
+                  color: `${theme.palette.secondary.dark} !important`,
+                  cursor: "pointer",
+                  transition: ".3s all ease-in-out",
+                },
+              }}
+            >
               <u>Read more</u>
-            </StyledTypography>
+            </Typography>
           </Link>
           <Button sx={{ maxWidth: "50%", margin: "auto", p: 0 }}>
             {index === 0 && (
@@ -74,7 +79,7 @@ export default function DocumentCard({ data, index }) {
               </StyledLink>
             )}
             {index === 3 && (
-              <StyledLink href={codeOfConduct} download={codeOfConduct}>
+              <StyledLink href={newsLetterOct2024} download={newsLetterOct2024}>
                 <Stack direction="row" gap={2}>
                   <DownloadIcon />
                   <Typography>Download</Typography>
