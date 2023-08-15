@@ -48,7 +48,7 @@ export default function News() {
   );
 
   return (
-    <Grid item xs={12} md={7} lg={6} sx={{ position: "relative" }}>
+    <Grid item xs={12} md={12} lg={6} sx={{ position: "relative" }}>
       <StyledTextBox>
         <Typography typography="h1" component="h1">
           Blazer's News

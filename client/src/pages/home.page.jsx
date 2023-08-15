@@ -13,6 +13,8 @@ import { useEffect } from "react";
 export default function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+  const isBelowDesktop = useMediaQuery(theme.breakpoints.down("lg"));
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,10 +31,11 @@ export default function HomePage() {
         id="home-section"
         style={{ display: "flex", justifyContent: " center", marginBlock: theme.spacing(8), maxWidth: "1500px" }}
       >
-        <Grid container rowSpacing="12" columnSpacing="12" sx={{ justifyContent: "center", maxWidth: "1500px" }}>
+        <Grid container rowSpacing="12" columnSpacing={isBelowDesktop ? 6 : 12} sx={{ justifyContent: "center", maxWidth: "1500px" }}>
+          {isMd && <ImageSlider />}
           {isMobile && <ImageSlider />}
           <News />
-          {!isMobile && <ImageSlider />}
+          {!isBelowDesktop && <ImageSlider />}
           {!isMobile && <QuickLinksGrid />}
           <Schedule />
           {isMobile && <QuickLinksGrid />}
