@@ -45,7 +45,7 @@ export default function Fundraisers() {
   };
   const handleClose = () => setOpen(false);
   return (
-    <Grid item xs={12} mt={{ xs: 5, sm: 10, md: 15 }}>
+    <Grid id="fundraiser-and-events" item xs={12} mt={{ xs: 5, sm: 10, md: 15 }}>
       <Typography typography="h2">Upcoming fundraisers</Typography>
       <Grid container maxWidth="lg" spacing={4}>
         {fundraisersCardData.map((fundraiser, index) => (

@@ -213,6 +213,7 @@ export const mainTheme = createTheme({
       lineHeight: "18px",
       fontSize: "20px",
       width: "100%",
+      // textDecoration: "none !important",
       ":hover": {
         color: "#F3F4F6",
         cursor: "pointer",

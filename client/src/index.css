@@ -9,7 +9,6 @@ body::-webkit-scrollbar {
 }
 ::-webkit-scrollbar {
   width: 0.5rem;
-  /* background: transparent; */
   background: "#FAF9F6";
 }
 /* Track */
@@ -25,7 +24,4 @@ body::-webkit-scrollbar {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 154, 78, 0.5);
-}
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }

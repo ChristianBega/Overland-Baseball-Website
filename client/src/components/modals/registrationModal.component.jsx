@@ -29,7 +29,6 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
 }));
 
 export default function YouthProgramModal({ datatypeRegistration, currentSeason, currentEventData }) {
-  console.log("Line 32 registration modal : ", currentEventData);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

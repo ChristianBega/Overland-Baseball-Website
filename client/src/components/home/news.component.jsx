@@ -1,51 +1,68 @@
 import React from "react";
 import { newsData } from "../../websiteData/home.data";
-import { Grid, Typography, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Grid, Typography, Box, Link, styled } from "@mui/material";
+import { HashLink } from "react-router-hash-link";
 import Socials from "../reusableComponents/socials.component";
 import { useTheme } from "@emotion/react";
 
 export default function News() {
   const { newsOne, newsLink, newsTwo } = newsData[0];
   const theme = useTheme();
+
+  const StyledHashLink = styled(HashLink)(({ theme }) => ({
+    textDecoration: "underline",
+    color: "#21c067",
+    "&:hover": {
+      cursor: "pointer",
+      color: "#007f3b",
+    },
+  }));
+  const StyledLink = styled(Link)(({ theme }) => ({
+    textDecoration: "underline",
+    color: "#21c067",
+    "&:hover": {
+      cursor: "pointer",
+      color: "#007f3b",
+    },
+  }));
+
+  const StyledInlineText = styled(Typography)(({ theme }) => ({
+    display: "inline",
+  }));
   return (
     <Grid item xs={12} md={7} lg={6} sx={{ position: "relative" }}>
       <Box sx={{ minHeight: { xs: "300px", md: "400px" }, p: 4 }}>
         <Typography typography="h1" component="h1">
           Blazer's News
         </Typography>
-        <Typography typography="p" component="p" sx={{ display: "inline" }}>
+        <StyledInlineText typography="p" component="p">
           {newsOne}
-        </Typography>
-        {newsLink?.map(({ name, urlPath }, index) => {
+        </StyledInlineText>
+        {newsLink?.map(({ name, pathname, linkType, section }, index) => {
           return (
-            <Typography typography="p" component="p" sx={{ display: "inline" }}>
+            <StyledInlineText typography="p" component="p">
               {index + 1 === newsLink.length ? (
                 <>
                   &nbsp;
-                  <Typography typography="span" component="span" sx={{ display: "inline" }}>
+                  <StyledInlineText typography="span" component="span">
                     and
-                  </Typography>
+                  </StyledInlineText>
                   &nbsp;
-                  <Link to={urlPath} sx={{ textDecoration: "underline !important" }}>
-                    {name}
-                  </Link>
-                  <Typography typography="span" component="span" sx={{ display: "inline" }}>
+                  {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
+                  <StyledInlineText typography="span" component="span">
                     .
-                  </Typography>
+                  </StyledInlineText>
                 </>
               ) : (
                 <>
                   &nbsp;
-                  <Link to={urlPath} sx={{ textDecoration: "underline !important" }}>
-                    {name}
-                  </Link>
-                  <Typography typography="span" component="span" sx={{ display: "inline" }}>
+                  {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
+                  <StyledInlineText typography="span" component="span">
                     ,
-                  </Typography>
+                  </StyledInlineText>
                 </>
               )}
-            </Typography>
+            </StyledInlineText>
           );
         })}
         <Typography typography="p" component="p" sx={{ display: "block", mt: theme.spacing(4) }}>

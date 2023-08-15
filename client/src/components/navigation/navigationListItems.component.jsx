@@ -31,7 +31,6 @@ const StyledList = styled(List)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   overflowX: "hidden",
-  // overflowY: "hidden",
   rowGap: theme.spacing(4), // 16px
   minWidth: "60vw",
   paddingInline: theme.spacing(6),
@@ -49,14 +48,9 @@ const StyledList = styled(List)(({ theme }) => ({
 }));
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
-    // width: "100%",
-    // border: "1px solid red",
-    // textDecoration: "none !important",
     display: "flex",
     justifyContent: "space-evenly",
     width: "130px",
-    // minWidth: "135px",
-    // maxWidth: "180px",
     paddingTop: theme.spacing(0),
     borderTop: "none",
   },
@@ -64,10 +58,7 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
   paddingBottom: 0,
   paddingTop: theme.spacing(5),
   borderTop: `1px solid ${theme.palette.borders.primary}`,
-  "&:hover": {
-    // textDecoration: "underline",
-    listStyle: "none",
-  },
+
   [theme.breakpoints.down("lg")]: {
     "&:last-child": {
       borderBottom: `1px solid ${theme.palette.borders.primary}`,
@@ -81,19 +72,26 @@ const getMenuItems = (handleClose, theme, isMobile) => (
   <StyledList>
     {menuItemData.map((menuItem, index) => (
       <StyledListItem key={index} onClick={handleClose}>
-        <Link to={menuItem.urlPath} key={menuItem.linkName}>
-          <Typography typography={"linkTextDesktop"} sx={{ display: { xs: "none", lg: "flex", justifyContent: "center" } }}>
-            {menuItem.linkName}
-          </Typography>
-          <Box component="span" sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
-            <Box sx={{ display: "flex", alignItems: "center", color: theme.palette.primary.light }}>
-              {menuItem.icon}
-              <Typography ml={2} typography="linkTextMobile">
-                {menuItem.linkName}
-              </Typography>
-            </Box>
+        {/* <Link to={menuItem.urlPath} key={menuItem.linkName}> */}
+        <Typography
+          typography="linkTextDesktop"
+          component={Link}
+          to={menuItem.urlPath}
+          key={menuItem.linkName}
+          sx={{ display: { xs: "none", lg: "flex", justifyContent: "center" } }}
+        >
+          {menuItem.linkName}
+        </Typography>
+        {/* Mobile List items */}
+        <Box component="span" sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
+          <Box sx={{ display: "flex", alignItems: "center", color: theme.palette.primary.light }}>
+            {menuItem.icon}
+            <Typography ml={2} component={Link} typography="linkTextMobile">
+              {menuItem.linkName}
+            </Typography>
           </Box>
-        </Link>
+        </Box>
+        {/* </Link> */}
       </StyledListItem>
     ))}
     {isMobile && (

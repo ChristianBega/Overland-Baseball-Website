@@ -45,7 +45,7 @@ const ctaData = [
 export default function CTAGrid() {
   const theme = useTheme();
   return (
-    <Grid item xs={12} sx={{ minHeight: "475px", mt: 15 }}>
+    <Grid id="quick-links" item xs={12} sx={{ minHeight: "475px", mt: 15 }}>
       <Typography typography="h2" component="h2" sx={{ textAlign: "center", color: theme.palette.primary.main, mb: 10 }}>
         Quick Links
       </Typography>

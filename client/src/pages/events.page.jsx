@@ -17,9 +17,9 @@ import WorkoutSlider from "../components/events/workoutSlider.component";
 export default function EventsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
   return (
     <Container
       component={motion.section}

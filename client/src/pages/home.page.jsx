@@ -9,10 +9,12 @@ import Sponsors from "../components/sponsors/sponsors.component";
 import ImageSlider from "../components/home/imageSlider.component";
 import CTAGrid from "../components/home/callToActions.component";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

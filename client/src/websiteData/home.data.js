@@ -50,10 +50,10 @@ export const newsData = [
   {
     newsOne: "Welcome to the official site of Overland Baseball in Aurora, Colorado! Stay tuned for exciting news about our",
     newsLink: [
-      { name: "upcoming games", urlPath: "/#section??", type: "href" },
-      { name: "fundraisers", urlPath: "/events" },
-      { name: "useful links", urlPath: "/events", type: "href" },
-      { name: "all other events", urlPath: "/events" },
+      { name: "upcoming games", pathname: "/#schedule", linkType: "href" },
+      { name: "fundraisers", pathname: "/events#fundraiser-and-events" },
+      { name: "useful links", pathname: "/#quick-links", linkType: "href" },
+      { name: "all other events", pathname: "/events" },
     ],
     newsTwo:
       "At Overland, we are developing players who often are overlooked and need to be looked over again. We put focus on fundamentals, minor changes and creating player improvement. Trailblazers Baseball training is expanding rapidly and our program is perfect for ages 13-18 yrs old.",

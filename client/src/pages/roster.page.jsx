@@ -17,11 +17,11 @@ export default function RosterPage() {
   return (
     <>
       <Container
-        component={motion.section}
-        initial={containerVariants.hidden}
-        animate={containerVariants.visible}
-        exit={containerVariants.exit}
-        transition={containerVariants.transition}
+        // component={motion.section}
+        // initial={containerVariants.hidden}
+        // animate={containerVariants.visible}
+        // exit={containerVariants.exit}
+        // transition={containerVariants.transition}
         id="rooster-section"
         style={{ display: "flex", justifyContent: " center", padding: ".5rem" }}
       >

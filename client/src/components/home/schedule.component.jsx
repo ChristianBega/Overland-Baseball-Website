@@ -11,7 +11,7 @@ import ScheduleItem from "./scheduleItem.component";
 export default function Schedule() {
   const theme = useTheme();
   return (
-    <Grid item xs={12} mt={{ xs: 5, sm: 15 }}>
+    <Grid id="schedule" item xs={12} mt={{ xs: 5, sm: 15 }}>
       <Typography typography="h2" component="h2" sx={{ textAlign: "center", color: theme.palette.primary.main, mb: 10 }}>
         Spring 2023 Schedule
       </Typography>
