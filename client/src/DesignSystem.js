@@ -24,6 +24,16 @@ export const mainTheme = createTheme({
       styleOverrides: {
         root: {
           background: "linear-gradient(153deg, rgba(9,31,64,0.6487119437939111) 51%, rgba(0,154,78,0.6510538641686183) 98%)",
+          // background: "linear-gradient(153deg, rgba(9,31,64,0.3487119437939111) 51%, rgba(0,154,78,0.3510538641686183) 98%) !important",
+        },
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "transparent !important",
+          // opacity: -0.,
+          // display: "none",
         },
       },
     },

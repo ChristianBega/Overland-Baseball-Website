@@ -47,6 +47,7 @@ export default function EventItems({ event, isMobile }) {
         </Typography>
       </TableCell>
 
+      {/* Mobile eventItem */}
       {isMobile && (
         <TableCell sx={{ flex: "3 0 60%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
           <Typography>{location}</Typography>
@@ -54,11 +55,12 @@ export default function EventItems({ event, isMobile }) {
             <IconButton onClick={handleOpen} size="medium" style={{ color: "gray" }}>
               <AppRegistrationIcon fontSize="small" />
             </IconButton>
-            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} />
+            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} datatypeRegistration="volunteer" />
           </>
         </TableCell>
       )}
 
+      {/* Desktop eventItem */}
       {!isMobile && (
         <>
           <TableCell sx={{ flex: "3 0 60%" }}>
