@@ -37,7 +37,6 @@ export const mainTheme = createTheme({
         },
       },
     },
-
     MuiButton: {
       styleOverrides: {
         root: {
@@ -216,6 +215,16 @@ export const mainTheme = createTheme({
       fontSize: "14px",
       display: "flex",
       gap: ".1rem",
+    },
+
+    linkText: {
+      color: "#21c067",
+      ":hover": {
+        color: "#F3F4F6",
+        cursor: "pointer",
+        transform: "scale(1.1)",
+      },
+      ":focus-visible": "",
     },
 
     linkTextDesktop: {

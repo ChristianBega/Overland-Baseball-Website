@@ -73,6 +73,8 @@ const getMenuItems = (handleClose, theme, isMobile) => (
     {menuItemData.map((menuItem, index) => (
       <StyledListItem key={index} onClick={handleClose}>
         {/* <Link to={menuItem.urlPath} key={menuItem.linkName}> */}
+
+        {/* Desktop link text */}
         <Typography
           typography="linkTextDesktop"
           component={Link}
@@ -82,10 +84,12 @@ const getMenuItems = (handleClose, theme, isMobile) => (
         >
           {menuItem.linkName}
         </Typography>
+
         {/* Mobile List items */}
         <Box component="span" sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
           <Box sx={{ display: "flex", alignItems: "center", color: theme.palette.primary.light }}>
             {menuItem.icon}
+            {/* mobile link text */}
             <Typography ml={2} component={Link} typography="linkTextMobile" to={menuItem.urlPath} key={`${menuItem.linkName}-mobile`}>
               {menuItem.linkName}
             </Typography>

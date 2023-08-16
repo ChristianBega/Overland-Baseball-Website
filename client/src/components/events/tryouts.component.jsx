@@ -33,9 +33,13 @@ export default function Workouts({ isMobile }) {
   return (
     <Grid item xs={12} md={8} sx={{ padding: { xs: 0, md: 8 } }}>
       <StyledInfoBox>
-        {!isMobile && <Typography typography="h2">Tryouts</Typography>}
-        <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
-        <PlayerEvents currentEventData={currentEventData} />
+        {!isMobile && (
+          <div style={{ display: "flex", gap: "3rem" }}>
+            <Typography typography="h2">Tryouts</Typography>
+            <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
+          </div>
+        )}
+        <PlayerEvents currentEventData={currentEventData} currentSeason={currentSeason} setCurrentSeason={setCurrentSeason} isMobile={isMobile} />
         <RegistrationModal datatypeRegistration="tryouts" currentSeason={currentSeason} currentEventData={currentEventData} />
       </StyledInfoBox>
     </Grid>

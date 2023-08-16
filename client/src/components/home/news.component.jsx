@@ -25,6 +25,7 @@ export default function News() {
   const StyledHashLink = styled(HashLink)(({ theme }) => ({
     textDecoration: "underline",
     color: "#21c067",
+    transition: "all .3s ease-In-Out",
     "&:hover": {
       cursor: "pointer",
       color: "#007f3b",
@@ -33,6 +34,7 @@ export default function News() {
   const StyledLink = styled(Link)(({ theme }) => ({
     textDecoration: "underline",
     color: "#21c067",
+    transition: "all .3s ease-In-Out",
     "&:hover": {
       cursor: "pointer",
       color: "#007f3b",

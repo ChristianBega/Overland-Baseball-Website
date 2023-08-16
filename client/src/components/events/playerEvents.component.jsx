@@ -5,6 +5,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import MinimizeIcon from "@mui/icons-material/Minimize";
 import { Box } from "@mui/system";
+import Toggles from "./toggles.component";
 const StyledEventInfoBox = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
@@ -26,10 +27,15 @@ const StyledEventInfoTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export default function PlayerEvents({ currentEventData }) {
+export default function PlayerEvents({ currentEventData, setCurrentSeason, currentSeason, isMobile }) {
   const { date, location, time, content, contentList } = currentEventData;
   return (
     <>
+      {isMobile && (
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+          <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
+        </div>
+      )}
       <TableContainer sx={{ mb: 4, maxWidth: "100%", height: "auto" }}>
         <Table>
           <TableBody>
@@ -68,6 +74,7 @@ export default function PlayerEvents({ currentEventData }) {
           </TableBody>
         </Table>
       </TableContainer>
+
       <Stack direction="column" spacing={3}>
         {content?.map((text, index) => {
           return (
