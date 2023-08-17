@@ -36,8 +36,7 @@ export default function Fundraisers() {
   const [currentEvent, setCurrentEvent] = useState();
   const [events, setEvents] = useState();
   const handleOpen = (event) => {
-    let currentEventId = event.currentTarget.parentElement.id;
-
+    let currentEventId = event.currentTarget.parentElement.parentElement.parentElement.id;
     let filterEventsArray = eventData.filter((event) => event.eventName.includes(currentEventId));
     setCurrentEvent(currentEventId);
     setEvents(filterEventsArray);
