@@ -28,6 +28,7 @@ export const SelectInput = ({ currentEventData, setCurrentEventData, datatypeReg
         setCurrentSeason(currentSeason);
       } else {
         setCurrentEventData({ event: eventName, date: date, time: time });
+        setCurrentSeason(currentSeason);
       }
     },
     [currentEventData, datatypeRegistration, setCurrentEventData, setCurrentSeason]

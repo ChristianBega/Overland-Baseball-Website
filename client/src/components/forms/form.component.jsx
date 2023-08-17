@@ -17,7 +17,6 @@ const StyledDataBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason, setCurrentEventData, setCurrentSeason }) {
-  console.log(currentEventData);
   const [success, setSuccess] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -35,7 +34,7 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
     if (datatypeRegistration === "volunteer") {
       EmailService.sendEmailVolunteer(data, currentEventData);
     } else {
-      EmailService.sendEmailRegistration(data, currentEventData, currentSeason);
+      EmailService.sendEmailRegistration(data, datatypeRegistration, currentEventData, currentSeason);
     }
 
     const timer = setTimeout(() => {

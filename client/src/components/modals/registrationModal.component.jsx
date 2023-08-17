@@ -22,7 +22,7 @@ const StyledModalContainer = styled("Box")(({ theme }) => ({
   },
 }));
 
-export default function YouthProgramModal({ datatypeRegistration, currentEventData, setCurrentEventData, setCurrentSeason }) {
+export default function YouthProgramModal({ datatypeRegistration, currentEventData, setCurrentEventData, setCurrentSeason, currentSeason }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,6 +37,7 @@ export default function YouthProgramModal({ datatypeRegistration, currentEventDa
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
           <Form
+            currentSeason={currentSeason}
             setCurrentSeason={setCurrentSeason}
             setCurrentEventData={setCurrentEventData}
             currentEventData={currentEventData}

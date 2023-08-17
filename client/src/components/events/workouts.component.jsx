@@ -46,6 +46,7 @@ export default function Workouts({ isMobile }) {
         <PlayerEvents currentEventData={currentEventData} currentSeason={currentSeason} setCurrentSeason={setCurrentSeason} isMobile={isMobile} />
 
         <RegistrationModal
+          currentSeason={currentSeason}
           setCurrentSeason={setCurrentSeason}
           datatypeRegistration="workouts"
           currentEventData={currentEventData}
