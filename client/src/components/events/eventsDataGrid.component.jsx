@@ -8,12 +8,6 @@ export default function Events() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  // const [eventData, setEventData] = useState();
-
-  // useEffect(() => {
-  //   setEventData([...broncoData, ...fieldCleanUpData]);
-  // });
-
   return (
     <Grid item xs={12}>
       <Typography typography="h1" component="h1">

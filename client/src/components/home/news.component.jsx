@@ -4,14 +4,27 @@ import { Grid, Typography, Box, Link, styled } from "@mui/material";
 import { HashLink } from "react-router-hash-link";
 import Socials from "../reusableComponents/socials.component";
 import { useTheme } from "@emotion/react";
-
 export default function News() {
   const { newsOne, newsLink, newsTwo } = newsData[0];
   const theme = useTheme();
 
+  const StyledTextBox = styled(Box)(({ theme }) => ({
+    minHeight: "300px",
+    padding: theme.spacing(4),
+    [theme.breakpoints.up("md")]: {
+      minHeight: "400px",
+    },
+  }));
+  const StyledSocialBox = styled(Box)(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: theme.spacing(4),
+  }));
   const StyledHashLink = styled(HashLink)(({ theme }) => ({
     textDecoration: "underline",
     color: "#21c067",
+    transition: "all .3s ease-In-Out",
     "&:hover": {
       cursor: "pointer",
       color: "#007f3b",
@@ -20,15 +33,30 @@ export default function News() {
   const StyledLink = styled(Link)(({ theme }) => ({
     textDecoration: "underline",
     color: "#21c067",
+    transition: "all .3s ease-In-Out",
     "&:hover": {
       cursor: "pointer",
       color: "#007f3b",
     },
   }));
 
+  const renderLink = (name, pathname, linkType) =>
+    linkType === "href" ? (
+      <StyledLink href={pathname}>{name}</StyledLink>
+    ) : (
+      <StyledHashLink to={pathname} state={{ name: name }}>
+        {name}
+      </StyledHashLink>
+    );
+  const renderSpan = (char) => (
+    <Typography typography="span" component="span">
+      {char}
+    </Typography>
+  );
+
   return (
-    <Grid item xs={12} md={7} lg={6} sx={{ position: "relative" }}>
-      <Box sx={{ minHeight: { xs: "300px", md: "400px" }, p: 4 }}>
+    <Grid item xs={12} md={12} lg={6} sx={{ position: "relative" }}>
+      <StyledTextBox>
         <Typography typography="h1" component="h1">
           Blazer's News
         </Typography>
@@ -41,22 +69,16 @@ export default function News() {
               {index + 1 === newsLink.length ? (
                 <>
                   &nbsp;
-                  <Typography typography="span" component="span">
-                    and
-                  </Typography>
+                  {renderSpan("and")}
                   &nbsp;
-                  {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
-                  <Typography typography="span" component="span">
-                    .
-                  </Typography>
+                  {renderLink(name, pathname, linkType)}
+                  {renderSpan(".")}
                 </>
               ) : (
                 <>
                   &nbsp;
-                  {linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>}
-                  <Typography typography="span" component="span">
-                    ,
-                  </Typography>
+                  {renderLink(name, pathname, linkType)}
+                  {renderSpan(",")}
                 </>
               )}
             </Typography>
@@ -65,10 +87,10 @@ export default function News() {
         <Typography typography="p" component="p" sx={{ display: "block", mt: theme.spacing(4) }}>
           {newsTwo}
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 8 }}>
+        <StyledSocialBox>
           <Socials />
-        </Box>
-      </Box>
+        </StyledSocialBox>
+      </StyledTextBox>
     </Grid>
   );
 }

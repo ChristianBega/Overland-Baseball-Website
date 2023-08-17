@@ -1,28 +1,26 @@
 import { useTheme } from "@emotion/react";
-import { Box, Button, Stack, TextField, Typography, IconButton, Alert } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography, IconButton, Alert, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import EmailService from "../../services/emailService";
 
-//& When I render a form component pass it a prop formType. Ex formType="registration" or formType="volunteer" or formType="booster"
-
-//& Create TextInput component - pass props to component - render component
-// Icons
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
+import { SelectInput } from "./selectInput.component";
 const StyledDataBox = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: 3,
   alignItems: "center",
 }));
-//* datatypeRegistration, currentSeason
-export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason }) {
-  console.log("Line 23 form: ", currentEventData);
+
+export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason, setCurrentEventData, setCurrentSeason }) {
   const [success, setSuccess] = useState(false);
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const {
     register,
     handleSubmit,
@@ -30,8 +28,12 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    //* datatypeRegistration, currentSeason
-    EmailService.sendEmailVolunteer(data, currentEventData);
+    if (datatypeRegistration === "volunteer" || "events") {
+      EmailService.sendEmailVolunteer(data, currentEventData);
+    } else {
+      EmailService.sendEmailRegistration(data, datatypeRegistration, currentEventData, currentSeason);
+    }
+
     const timer = setTimeout(() => {
       handleClose(true);
     }, 4000);
@@ -60,30 +62,8 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
           variant="h3"
           component="h2"
         >
-          {/*!!!!!!!!!!!!! Overland's {currentSeason} {datatypeRegistration} <br /> Registration Forum */}
           {currentSeason} {datatypeRegistration} form
         </Typography>
-        {/* Form Information Title */}
-        <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
-          Event Information:
-        </Typography>
-        {/* Form Information */}
-        <Stack sx={{ color: theme.palette.secondary.main, mt: 3, mb: 5 }} spacing={{ xs: 2, md: 4 }} direction="row">
-          <StyledDataBox>
-            <PlaceIcon />
-            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
-              {currentEventData?.event || `${currentSeason === undefined ? datatypeRegistration : `${currentSeason} ${datatypeRegistration}`} `}
-            </Typography>
-          </StyledDataBox>
-          <StyledDataBox>
-            <AccessTimeIcon />
-            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.time}</Typography>
-          </StyledDataBox>
-          <StyledDataBox>
-            <CalendarMonthIcon />
-            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.date}</Typography>
-          </StyledDataBox>
-        </Stack>
       </div>
       {/* Form */}
       <Box
@@ -91,11 +71,47 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           color: theme.palette.primary.main,
-          maxHeight: { xs: "490px" },
+          maxHeight: { xs: "80%" },
           overflowY: "auto",
           padding: "1rem",
         }}
       >
+        {/* Form Information Title */}
+        <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
+          Event Information:
+        </Typography>
+        {/* Form Information */}
+        <Stack sx={{ color: theme.palette.secondary.main, mt: 3, mb: 5 }} spacing={isMobile ? 4 : 6} direction="row">
+          <StyledDataBox>
+            <PlaceIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
+              {datatypeRegistration === "volunteer"
+                ? currentEventData.event
+                : datatypeRegistration === "events"
+                ? currentEventData.event
+                : currentEventData.location}
+            </Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <CalendarMonthIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.date}</Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <AccessTimeIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.time}</Typography>
+          </StyledDataBox>
+        </Stack>
+        {/* <p>Maybe select input here to reselect event</p> */}
+        {datatypeRegistration !== "youth program" && (
+          <SelectInput
+            currentEventData={currentEventData}
+            setCurrentEventData={setCurrentEventData}
+            datatypeRegistration={datatypeRegistration}
+            currentSeason={currentSeason}
+            setCurrentSeason={setCurrentSeason}
+          />
+        )}
+
         <Stack id="modal-form" spacing={4} mt={3}>
           <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
             Player Information:

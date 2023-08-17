@@ -4,7 +4,7 @@ import { mainTheme } from "./DesignSystem";
 import { ThemeProvider } from "@mui/material";
 
 // Animation Route - for adding animations with framer motion.
-import AnimationRoutes from "./components/framerMotion/AnimationRoutes.component";
+import AnimationRoutes from "./pages/pageAnimationsFramerMotion/animationRoutes.component";
 import Navigation from "./components/navigation/navigation.component";
 import FooterNavigation from "./components/navigation/footer/footerNavigation.component";
 

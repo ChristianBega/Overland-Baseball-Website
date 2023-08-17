@@ -26,6 +26,7 @@ export default function EventItems({ event, isMobile }) {
     setCurrentEventData({ event: currentEvent, date: currentDate, time: currentTime });
     setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
 
   return (
@@ -47,6 +48,7 @@ export default function EventItems({ event, isMobile }) {
         </Typography>
       </TableCell>
 
+      {/* Mobile eventItem */}
       {isMobile && (
         <TableCell sx={{ flex: "3 0 60%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
           <Typography>{location}</Typography>
@@ -54,11 +56,18 @@ export default function EventItems({ event, isMobile }) {
             <IconButton onClick={handleOpen} size="medium" style={{ color: "gray" }}>
               <AppRegistrationIcon fontSize="small" />
             </IconButton>
-            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} />
+            <VolunteerModal
+              open={open}
+              handleClose={handleClose}
+              currentEventData={currentEventData}
+              setCurrentEventData={setCurrentEventData}
+              datatypeRegistration="events"
+            />
           </>
         </TableCell>
       )}
 
+      {/* Desktop eventItem */}
       {!isMobile && (
         <>
           <TableCell sx={{ flex: "3 0 60%" }}>
@@ -79,7 +88,13 @@ export default function EventItems({ event, isMobile }) {
             <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
               <AppRegistrationIcon fontSize="small" />
             </IconButton>
-            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} datatypeRegistration="volunteer" />
+            <VolunteerModal
+              open={open}
+              handleClose={handleClose}
+              currentEventData={currentEventData}
+              setCurrentEventData={setCurrentEventData}
+              datatypeRegistration="events"
+            />
             <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
               {eventName}
             </Typography>

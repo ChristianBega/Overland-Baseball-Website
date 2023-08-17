@@ -3,13 +3,13 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 // Components
-import HomePage from "../../pages/home.page";
-import BoostersPage from "../../pages/boosters.page";
-import EventsPage from "../../pages/events.page";
-import DocumentsPage from "../../pages/documents.page";
-import RosterPage from "../../pages/roster.page";
-import AlumniPage from "../../pages/alumni.page";
-import SponsorsPage from "../../pages/sponsors.page";
+import HomePage from "../home.page";
+import BoostersPage from "../boosters.page";
+import EventsPage from "../events.page";
+import DocumentsPage from "../documents.page";
+import RosterPage from "../roster.page";
+import AlumniPage from "../alumni.page";
+import SponsorsPage from "../sponsors.page";
 
 export default function AnimationRoutes() {
   const location = useLocation();

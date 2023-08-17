@@ -1,19 +1,20 @@
 import { useTheme } from "@emotion/react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
-import { containerVariants } from "../components/framerMotion/transitions";
+import { containerVariants } from "./pageAnimationsFramerMotion/transitions";
 // Components
 import News from "../components/home/news.component";
 import Schedule from "../components/home/schedule.component";
 import Sponsors from "../components/sponsors/sponsors.component";
 import ImageSlider from "../components/home/imageSlider.component";
-import CTAGrid from "../components/home/callToActions.component";
+import QuickLinksGrid from "../components/home/quickLinks.component";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 export default function HomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+  const isBelowDesktop = useMediaQuery(theme.breakpoints.down("lg"));
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,13 +31,14 @@ export default function HomePage() {
         id="home-section"
         style={{ display: "flex", justifyContent: " center", marginBlock: theme.spacing(8), maxWidth: "1500px" }}
       >
-        <Grid container rowSpacing="12" columnSpacing="12" sx={{ justifyContent: "center", maxWidth: "1500px" }}>
+        <Grid container rowSpacing="12" columnSpacing={isBelowDesktop ? 6 : 12} sx={{ justifyContent: "center", maxWidth: "1500px" }}>
+          {isMd && <ImageSlider />}
           {isMobile && <ImageSlider />}
           <News />
-          {!isMobile && <ImageSlider />}
-          {!isMobile && <CTAGrid />}
+          {!isBelowDesktop && <ImageSlider />}
+          {!isMobile && <QuickLinksGrid />}
           <Schedule />
-          {isMobile && <CTAGrid />}
+          {isMobile && <QuickLinksGrid />}
           <Sponsors />
         </Grid>
       </Container>

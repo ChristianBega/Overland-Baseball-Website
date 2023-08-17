@@ -7,7 +7,6 @@ import CloseIcon from "@mui/icons-material/Close";
 export default function FundraisersDataGrid({ events, currentEvent, handleClose }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  console.log(currentEvent);
 
   return (
     <>

@@ -42,7 +42,7 @@ const ctaData = [
     ctaImage: VenmoQrCode,
   },
 ];
-export default function CTAGrid() {
+export default function QuickLinksGrid() {
   const theme = useTheme();
   return (
     <Grid id="quick-links" item xs={12} sx={{ minHeight: "475px", mt: 15 }}>
