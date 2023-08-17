@@ -61,7 +61,7 @@ export default function EventItems({ event, isMobile }) {
               handleClose={handleClose}
               currentEventData={currentEventData}
               setCurrentEventData={setCurrentEventData}
-              datatypeRegistration="volunteer"
+              datatypeRegistration="events"
             />
           </>
         </TableCell>
@@ -93,7 +93,7 @@ export default function EventItems({ event, isMobile }) {
               handleClose={handleClose}
               currentEventData={currentEventData}
               setCurrentEventData={setCurrentEventData}
-              datatypeRegistration="volunteer"
+              datatypeRegistration="events"
             />
             <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
               {eventName}

@@ -7,8 +7,7 @@ import { useTheme } from "@emotion/react";
 export default function News() {
   const { newsOne, newsLink, newsTwo } = newsData[0];
   const theme = useTheme();
-  //! Create styled text box for line 33 - sx={{ minHeight: { xs: "300px", md: "400px" }, p: 4 }
-  //! Create styled socials box for line 70 - sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 8 }}
+
   const StyledTextBox = styled(Box)(({ theme }) => ({
     minHeight: "300px",
     padding: theme.spacing(4),
@@ -42,7 +41,13 @@ export default function News() {
   }));
 
   const renderLink = (name, pathname, linkType) =>
-    linkType === "href" ? <StyledLink href={pathname}>{name}</StyledLink> : <StyledHashLink to={pathname}>{name}</StyledHashLink>;
+    linkType === "href" ? (
+      <StyledLink href={pathname}>{name}</StyledLink>
+    ) : (
+      <StyledHashLink to={pathname} state={{ name: name }}>
+        {name}
+      </StyledHashLink>
+    );
   const renderSpan = (char) => (
     <Typography typography="span" component="span">
       {char}

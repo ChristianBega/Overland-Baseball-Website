@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Grid } from "@mui/material";
 import { motion } from "framer-motion";
-import { containerVariants } from "../components/framerMotion/transitions";
+import { containerVariants } from "./pageAnimationsFramerMotion/transitions";
 // Components
 import Staff from "../components/roster/staff.component";
 // import Toggles from "../components/roster/toggles.component";
@@ -17,11 +17,11 @@ export default function RosterPage() {
   return (
     <>
       <Container
-        // component={motion.section}
-        // initial={containerVariants.hidden}
-        // animate={containerVariants.visible}
-        // exit={containerVariants.exit}
-        // transition={containerVariants.transition}
+        component={motion.section}
+        initial={containerVariants.hidden}
+        animate={containerVariants.visible}
+        exit={containerVariants.exit}
+        transition={containerVariants.transition}
         id="rooster-section"
         style={{ display: "flex", justifyContent: " center", padding: ".5rem" }}
       >

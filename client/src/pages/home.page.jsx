@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
-import { containerVariants } from "../components/framerMotion/transitions";
+import { containerVariants } from "./pageAnimationsFramerMotion/transitions";
 // Components
 import News from "../components/home/news.component";
 import Schedule from "../components/home/schedule.component";

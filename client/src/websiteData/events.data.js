@@ -33,24 +33,28 @@ export const fundraisersCardData = [
 ];
 // All event data
 export const eventData = [
+  // Important Dates
+  // createData("Registration", "https://overland-ar.rschooltoday.com/node/17", "??:??", "Jan 17th"),
+  createData("Winter Workouts", "Overland Gym", "6:00 AM", "Jan 2nd"),
+  createData("Winter Hitting", "1338 S Valentia St, Denver, CO 80247", "??:??", "Jan 3rd"),
+  createData("Team Pictures", "Overland Gym", "??:??", "Mar 2nd"),
+
   // Broncos Games
-  createData("Broncos Game", "1801 Mile High Stadium Cir Denver CO 80204", "2:00 PM", "July 23rd"),
+  createData("Broncos Game", "1801 Mile High Stadium Cir Denver CO 80204", "Time: TBD", "Date: TBD"),
 
   // Field Clean Up
-  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "TBD"),
-  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "TBD"),
-  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "TBD"),
+  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Dec 19th"),
+  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Jan TBD"),
+  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Feb TBD"),
+  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "March TBD"),
+  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "April TBD"),
+  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "May TBD"),
 
   // Tournament data
-  createData("Tournaments", "1300 W Swallow Rd. Fort Collins CO", "TBD", "July 27th"),
-  createData("Tournaments", "10300 W South Boulder Rd. Lafayette CO", "TBD", "July 28th"),
-  createData("Tournaments", "TBD", "TBD", "TBD"),
+  createData("Tournaments", "Location: TBD", "Time: TBD", "Date: TBD"),
 
   // Apple Bees
-  createData("Apple Bees", "TBD", "TBD", "TBD"),
-  createData("Apple Bees", "TBD", "TBD", "TBD"),
-  createData("Apple Bees", "TBD", "TBD", "TBD"),
-  createData("Apple Bees", "TBD", "TBD", "TBD"),
+  createData("Apple Bees", "Location: TBD", "Time: TBD", "Date: TBD"),
 ];
 
 export const youthProgramData = {

@@ -28,7 +28,7 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    if (datatypeRegistration === "volunteer") {
+    if (datatypeRegistration === "volunteer" || "events") {
       EmailService.sendEmailVolunteer(data, currentEventData);
     } else {
       EmailService.sendEmailRegistration(data, datatypeRegistration, currentEventData, currentSeason);
@@ -71,7 +71,7 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           color: theme.palette.primary.main,
-          maxHeight: { xs: "490px" },
+          maxHeight: { xs: "80%" },
           overflowY: "auto",
           padding: "1rem",
         }}
@@ -85,8 +85,11 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
           <StyledDataBox>
             <PlaceIcon />
             <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
-              {/* {currentEventData?.event || `${currentSeason === undefined ? datatypeRegistration : `${currentSeason} ${datatypeRegistration}`} `} */}
-              {datatypeRegistration === "volunteer" ? currentEventData.event : currentEventData.location}
+              {datatypeRegistration === "volunteer"
+                ? currentEventData.event
+                : datatypeRegistration === "events"
+                ? currentEventData.event
+                : currentEventData.location}
             </Typography>
           </StyledDataBox>
           <StyledDataBox>
