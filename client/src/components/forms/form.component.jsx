@@ -28,9 +28,6 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    //^^^^^^^^^^^^^^^ TEST LATER !!!!!!!!!!!!!!! datatypeRegistration, currentSeason
-    //^^^^^^^^^^^^^^^ TEST LATER !!!!!!!!!!!!!!! datatypeRegistration, currentSeason
-    //^^^^^^^^^^^^^^^ TEST LATER !!!!!!!!!!!!!!! datatypeRegistration, currentSeason
     if (datatypeRegistration === "volunteer") {
       EmailService.sendEmailVolunteer(data, currentEventData);
     } else {
