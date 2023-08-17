@@ -40,7 +40,7 @@ export const eventData = [
   createData("Team Pictures", "Overland Gym", "??:??", "Mar 2nd"),
 
   // Broncos Games
-  createData("Broncos Game", "1801 Mile High Stadium Cir Denver CO 80204", "Time: TBD", "Date: TBD"),
+  createData("Broncos Games", "1801 Mile High Stadium Cir Denver CO 80204", "Time: TBD", "Date: TBD"),
 
   // Field Clean Up
   createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Dec 19th"),
