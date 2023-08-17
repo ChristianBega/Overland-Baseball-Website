@@ -127,6 +127,13 @@ export const mainTheme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          color: "#283F76 !important",
+        },
+      },
+    },
   },
   palette: {
     primary: {

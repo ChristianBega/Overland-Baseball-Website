@@ -26,6 +26,7 @@ export default function EventItems({ event, isMobile }) {
     setCurrentEventData({ event: currentEvent, date: currentDate, time: currentTime });
     setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
 
   return (
@@ -55,7 +56,13 @@ export default function EventItems({ event, isMobile }) {
             <IconButton onClick={handleOpen} size="medium" style={{ color: "gray" }}>
               <AppRegistrationIcon fontSize="small" />
             </IconButton>
-            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} datatypeRegistration="volunteer" />
+            <VolunteerModal
+              open={open}
+              handleClose={handleClose}
+              currentEventData={currentEventData}
+              setCurrentEventData={setCurrentEventData}
+              datatypeRegistration="volunteer"
+            />
           </>
         </TableCell>
       )}
@@ -81,7 +88,13 @@ export default function EventItems({ event, isMobile }) {
             <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
               <AppRegistrationIcon fontSize="small" />
             </IconButton>
-            <VolunteerModal open={open} handleClose={handleClose} currentEventData={currentEventData} datatypeRegistration="volunteer" />
+            <VolunteerModal
+              open={open}
+              handleClose={handleClose}
+              currentEventData={currentEventData}
+              setCurrentEventData={setCurrentEventData}
+              datatypeRegistration="volunteer"
+            />
             <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
               {eventName}
             </Typography>

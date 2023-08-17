@@ -28,7 +28,7 @@ export default function Workouts({ isMobile }) {
     } else {
       setCurrentEventData(fallTryoutData);
     }
-  }, [currentSeason]);
+  }, [currentSeason, currentEventData]);
 
   return (
     <Grid item xs={12} md={8} sx={{ padding: { xs: 0, md: 8 } }}>
@@ -40,7 +40,12 @@ export default function Workouts({ isMobile }) {
           </div>
         )}
         <PlayerEvents currentEventData={currentEventData} currentSeason={currentSeason} setCurrentSeason={setCurrentSeason} isMobile={isMobile} />
-        <RegistrationModal datatypeRegistration="tryouts" currentSeason={currentSeason} currentEventData={currentEventData} />
+        <RegistrationModal
+          setCurrentSeason={setCurrentSeason}
+          datatypeRegistration="tryouts"
+          currentEventData={currentEventData}
+          setCurrentEventData={setCurrentEventData}
+        />
       </StyledInfoBox>
     </Grid>
   );

@@ -44,7 +44,13 @@ export default function Workouts({ isMobile }) {
           </div>
         )}
         <PlayerEvents currentEventData={currentEventData} currentSeason={currentSeason} setCurrentSeason={setCurrentSeason} isMobile={isMobile} />
-        <RegistrationModal currentSeason={currentSeason} datatypeRegistration="workouts" currentEventData={currentEventData} />
+
+        <RegistrationModal
+          setCurrentSeason={setCurrentSeason}
+          datatypeRegistration="workouts"
+          currentEventData={currentEventData}
+          setCurrentEventData={setCurrentEventData}
+        />
       </StyledInfoBox>
     </Grid>
   );

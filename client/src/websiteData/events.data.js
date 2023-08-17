@@ -60,9 +60,6 @@ export const youthProgramData = {
   content: [
     "Our Youth Program is designed to instill a love for baseball in kids of all skill levels, fostering teamwork, sportsmanship, and skill development. From fundamental coaching to friendly matches, we provide a safe and supportive environment for young players to learn and grow in the sport they're passionate about.",
     "Campers will get the opportunity to learn baseball skills from current players and coaches of Overland Trailblazers. The day will consist of hitting, fielding, throwing, and catching, teaching each camper the fundamentals of the game.",
-    // "Eligible players: 7th & 8th grade",
-    // "Cost: $50 per player",
-    // "**Players will receive a Blazers shirt and hat **",
   ],
   contentList: ["Eligible players: 7th & 8th grade", "Cost: $50 per player", "Players will receive a Blazers shirt and hat"],
 };
@@ -71,26 +68,33 @@ const tryoutContent = [
   "Are you ready to challenge yourself at Overland Baseball and take your game to the next level? Our annual tryouts are your chance to showcase your talent, determination, and passion for baseball. We're on the lookout for dedicated players who are eager to contribute to the team. Stay tuned for tryout dates, and come prepared to demonstrate your skills and commitment on the field.",
 ];
 const tryoutContentList = ["Must be registered for TrailBlazer baseball, paid the Athletic Fees, and have a current physical."];
+
 export const springTryoutData = {
+  eventName: "Spring tryouts",
   date: "Feb 27, 2023",
   location: "Overland Field",
   time: "4:00-6:00 PM",
   content: [...tryoutContent],
   contentList: tryoutContentList,
+  currentSeason: "spring",
 };
 export const summerTryoutData = {
+  eventName: "Summer tryouts",
   date: "June ??, 2023",
   location: "Overland Field",
   time: "10:00-12:00 AM",
   content: [...tryoutContent],
   contentList: tryoutContentList,
+  currentSeason: "summer",
 };
 export const fallTryoutData = {
+  eventName: "Fall tryouts",
   date: "Oct ??, 2023",
   location: "Overland Field",
   time: "4:00–6:00 PM",
   content: [...tryoutContent],
   contentList: tryoutContentList,
+  currentSeason: "fall",
 };
 
 const workoutContent = [
@@ -98,20 +102,26 @@ const workoutContent = [
 ];
 
 export const springWorkoutsData = {
+  eventName: "Spring workouts",
   date: "??? ??, 2024",
   location: "Overland Gym",
   time: "?:00-?:00 PM",
   content: [...workoutContent],
+  currentSeason: "spring",
 };
 export const summerWorkoutsData = {
+  eventName: "Summer workouts",
   date: "??? ??, 2024",
   location: "Overland Gym",
   time: "?:00-?:00 PM",
   content: [...workoutContent],
+  currentSeason: "summer",
 };
 export const fallWorkoutsData = {
+  eventName: "Fall workouts",
   date: "??? ??, 2023",
   location: "Overland Gym",
   time: "?:00–?:00 PM",
   content: [...workoutContent],
+  currentSeason: "fall",
 };

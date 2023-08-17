@@ -9,13 +9,15 @@ import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
+import { SelectInput } from "./selectInput.component";
 const StyledDataBox = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: 3,
   alignItems: "center",
 }));
 
-export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason }) {
+export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason, setCurrentEventData, setCurrentSeason }) {
+  console.log(currentEventData);
   const [success, setSuccess] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -66,27 +68,6 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
         >
           {currentSeason} {datatypeRegistration} form
         </Typography>
-        {/* Form Information Title */}
-        <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
-          Event Information:
-        </Typography>
-        {/* Form Information */}
-        <Stack sx={{ color: theme.palette.secondary.main, mt: 3, mb: 5 }} spacing={isMobile ? 4 : 6} direction="row">
-          <StyledDataBox>
-            <PlaceIcon />
-            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
-              {currentEventData?.event || `${currentSeason === undefined ? datatypeRegistration : `${currentSeason} ${datatypeRegistration}`} `}
-            </Typography>
-          </StyledDataBox>
-          <StyledDataBox>
-            <AccessTimeIcon />
-            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.time}</Typography>
-          </StyledDataBox>
-          <StyledDataBox>
-            <CalendarMonthIcon />
-            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.date}</Typography>
-          </StyledDataBox>
-        </Stack>
       </div>
       {/* Form */}
       <Box
@@ -99,6 +80,39 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
           padding: "1rem",
         }}
       >
+        {/* Form Information Title */}
+        <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
+          Event Information:
+        </Typography>
+        {/* Form Information */}
+        <Stack sx={{ color: theme.palette.secondary.main, mt: 3, mb: 5 }} spacing={isMobile ? 4 : 6} direction="row">
+          <StyledDataBox>
+            <PlaceIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
+              {/* {currentEventData?.event || `${currentSeason === undefined ? datatypeRegistration : `${currentSeason} ${datatypeRegistration}`} `} */}
+              {datatypeRegistration === "volunteer" ? currentEventData.event : currentEventData.location}
+            </Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <CalendarMonthIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.date}</Typography>
+          </StyledDataBox>
+          <StyledDataBox>
+            <AccessTimeIcon />
+            <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>{currentEventData?.time}</Typography>
+          </StyledDataBox>
+        </Stack>
+        {/* <p>Maybe select input here to reselect event</p> */}
+        {datatypeRegistration !== "youth program" && (
+          <SelectInput
+            currentEventData={currentEventData}
+            setCurrentEventData={setCurrentEventData}
+            datatypeRegistration={datatypeRegistration}
+            currentSeason={currentSeason}
+            setCurrentSeason={setCurrentSeason}
+          />
+        )}
+
         <Stack id="modal-form" spacing={4} mt={3}>
           <Typography sx={{ color: theme.palette.primary.main }} variant="h6" component="h3">
             Player Information:

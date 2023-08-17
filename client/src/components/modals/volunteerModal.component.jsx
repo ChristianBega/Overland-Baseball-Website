@@ -20,12 +20,17 @@ const StyledModalContainer = styled("box")(({ theme }) => ({
     maxWidth: 550,
   },
 }));
-export default function VolunteerModal({ open, handleClose, currentEventData, datatypeRegistration }) {
+export default function VolunteerModal({ open, handleClose, currentEventData, datatypeRegistration, setCurrentEventData }) {
   return (
     <>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <StyledModalContainer>
-          <Form currentEventData={currentEventData} handleClose={handleClose} datatypeRegistration={datatypeRegistration} />
+          <Form
+            currentEventData={currentEventData}
+            setCurrentEventData={setCurrentEventData}
+            handleClose={handleClose}
+            datatypeRegistration={datatypeRegistration}
+          />
         </StyledModalContainer>
       </Modal>
     </>
