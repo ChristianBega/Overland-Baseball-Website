@@ -42,7 +42,9 @@ export const SelectInput = ({ currentEventData, setCurrentEventData, datatypeReg
       } else if (datatypeRegistration === "volunteer") {
         setCurrentOptions(eventData);
       } else {
-        console.log("Line 47 DatatypeRegistration", datatypeRegistration);
+        setCurrentOptions(eventData);
+
+        // console.log("Line 47 DatatypeRegistration", datatypeRegistration);
       }
     };
     renderOptions();
