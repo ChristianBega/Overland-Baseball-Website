@@ -15,6 +15,7 @@ const renderImage = () => {
     return (
       <picture>
         <img
+          loading="lazy"
           fetchpriority="low"
           key={index}
           srcSet={`

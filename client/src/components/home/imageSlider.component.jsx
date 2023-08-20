@@ -1,27 +1,27 @@
 // import { useTheme } from "@emotion/react";
-import { Box, Grid, useMediaQuery } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import React from "react";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { useTheme } from "@emotion/react";
 
 import { imageSliderData } from "../../websiteData/home.data";
-
+//
 const renderImages = (isBetween, isDesktop) => {
   return imageSliderData.map(({ imageUrl, description }, index) => {
     return (
       <img
-        fetchpriority="high"
+        fetchpriority={index === 0 ? "high" : "low"}
         key={index}
-        src={imageUrl.small}
+        src={imageUrl.original}
         alt={description}
         srcSet={`
-            ${imageUrl?.small} 1x,
-            ${imageUrl?.medium} 2x,
+            ${imageUrl.small} 349w,
+            ${imageUrl.medium} 492w,
+            ${imageUrl.original} 600w,
           `}
-        style={{ display: "flex", margin: "auto", height: "475px" }}
-
-        // style={(isBetween ? { minHeight: "475px" } : isDesktop ? { minHeight: "450px" } : { height: "350px" }, { minWidth: "100%" })}
+        sizes="(min-width: 740px) 711px, calc(96.19vw + 18px)"
+        style={{ display: "flex", margin: "auto", maxHeight: "475px" }}
       />
     );
   });
@@ -34,21 +34,19 @@ export default function ImageSlider() {
 
   return (
     <Grid item xs={12} md={8} lg={6} sx={{ margin: "auto 0" }}>
-      <Box sx={{ boxShadow: 15 }}>
-        <AliceCarousel
-          autoPlay
-          disableDotsControls
-          mouseTracking
-          items={renderImages(isBetween, isDesktop)}
-          controlsStrategy="alternate"
-          disableButtonsControls
-          infinite
-          animationType="fadeout"
-          autoPlayStrategy="none"
-          autoPlayInterval={1000}
-          animationDuration={2000}
-        />
-      </Box>
+      <AliceCarousel
+        autoPlay
+        disableDotsControls
+        mouseTracking
+        items={renderImages(isBetween, isDesktop)}
+        controlsStrategy="alternate"
+        disableButtonsControls
+        infinite
+        animationType="fadeout"
+        autoPlayStrategy="none"
+        autoPlayInterval={2000}
+        animationDuration={2000}
+      />
     </Grid>
   );
 }

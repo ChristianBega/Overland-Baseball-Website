@@ -19,28 +19,33 @@ import rangeView from "../assets/homePage/teamLogos/rangeView.webp";
 
 // Slider Images
 import aleman2 from "../assets/imagesSlider/Aleman2.webp";
-import aleman2Sm from "../assets/imagesSlider/mobileImages/Aleman2-small.webp";
+import aleman2Sm from "../assets/imagesSlider/mobileImages/Aleman2-sm.webp";
+
+import aleman2Md from "../assets/imagesSlider/tabletImages/Aleman2-md.webp";
 
 import bega from "../assets/imagesSlider/Bega1.webp";
-import begaSm from "../assets/imagesSlider/mobileImages/Bega1-small.webp";
+import begaSm from "../assets/imagesSlider/mobileImages/Bega1-sm.webp";
+import begaMd from "../assets/imagesSlider/tabletImages/Bega1-md.webp";
 
 import bega3 from "../assets/imagesSlider/Bega3.webp";
-import bega3m from "../assets/imagesSlider/mobileImages/Bega3-small.webp";
+import bega3Sm from "../assets/imagesSlider/mobileImages/Bega3-sm.webp";
+import bega3Md from "../assets/imagesSlider/tabletImages/Bega3-md.webp";
 
 import cox from "../assets/imagesSlider/Cox2.webp";
-import coxSm from "../assets/imagesSlider/mobileImages/Cox2-small.webp";
+import coxSm from "../assets/imagesSlider/mobileImages/Cox2-sm.webp";
+import coxMd from "../assets/imagesSlider/tabletImages/Cox2-md.webp";
 
 import dom from "../assets/imagesSlider/Dom2.webp";
-import domSm from "../assets/imagesSlider/mobileImages/Dom2-small.webp";
+import domSm from "../assets/imagesSlider/mobileImages/Dom2-sm.webp";
+import domMd from "../assets/imagesSlider/tabletImages/Dom2-md.webp";
 
 import medley1 from "../assets/imagesSlider/Medleyhitting.webp";
-import medley1Sm from "../assets/imagesSlider/mobileImages/Medleyhitting-small.webp";
-
-import medley2 from "../assets/imagesSlider/Medleywatching.webp";
-import medley2Sm from "../assets/imagesSlider/mobileImages/Medleywatching-small.webp";
+import medley1Sm from "../assets/imagesSlider/mobileImages/Medleyhitting-sm.webp";
+import medley1Md from "../assets/imagesSlider/tabletImages/Medleyhitting-md.webp";
 
 import medley3 from "../assets/imagesSlider/Medley3.webp";
-import medley3Sm from "../assets/imagesSlider/mobileImages/Medley3-small.webp";
+import medley3Sm from "../assets/imagesSlider/mobileImages/Medley3-sm.webp";
+import medley3Md from "../assets/imagesSlider/tabletImages/Medley3-md.webp";
 
 function createData(date, time, opponent, location, opponentLogo) {
   return { date, time, opponent, location, opponentLogo };
@@ -84,12 +89,14 @@ export const newsData = [
 ];
 
 export const imageSliderData = [
-  { imageUrl: { small: aleman2Sm, medium: aleman2 }, description: "Right handed batter Aleman taking a huge swing at home plate." },
-  { imageUrl: { small: begaSm, medium: bega }, description: "Bega pitching..." },
-  { imageUrl: { small: bega3m, medium: bega3 }, description: "Bega first base..." },
-  { imageUrl: { small: coxSm, medium: cox }, description: "Cox fielding..." },
-  { imageUrl: { small: domSm, medium: dom }, description: "Dom throwing..." },
-  { imageUrl: { small: medley1Sm, medium: medley1 }, description: "Medley hitting..." },
-  { imageUrl: { small: medley2Sm, medium: medley2 }, description: "Medley watching..." },
-  { imageUrl: { small: medley3Sm, medium: medley3 }, description: "Medley running bases..." },
+  {
+    imageUrl: { small: aleman2Sm, medium: aleman2Md, original: aleman2 },
+    description: "Right handed batter Aleman taking a huge swing at home plate.",
+  },
+  { imageUrl: { small: begaSm, medium: begaMd, original: bega }, description: "Bega pitching..." },
+  { imageUrl: { small: bega3Sm, medium: bega3Md, original: bega3 }, description: "Bega first base..." },
+  { imageUrl: { small: coxSm, medium: coxMd, original: cox }, description: "Cox fielding..." },
+  { imageUrl: { small: domSm, medium: domMd, original: dom }, description: "Dom throwing..." },
+  { imageUrl: { small: medley1Sm, medium: medley1Md, original: medley1 }, description: "Medley hitting..." },
+  { imageUrl: { small: medley3Sm, medium: medley3Md, original: medley3 }, description: "Medley running bases..." },
 ];

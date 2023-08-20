@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Overland High School Baseball Team Official Home Page" />
+
+    <!-- Image preloads -->
+    <link
+      rel="preload"
+      fetchpriority="high"
+      as="image"
+      href="../../client/src/assets/imagesSlider/Aleman2.webp"
+      srcSet="../../client/src/assets/imagesSlider/mobileImages/Aleman2-sm.webp 349w,
+      ../../client/src/assets/imagesSlider/tabletImages/Aleman2-md.webp 492w,
+      ../../client/src/assets/imagesSlider/Aleman2.webp 600w"
+      type="image/webp"
+    />
     <!-- Font families : "Figtree" & "work sans" -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,6 +35,7 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
