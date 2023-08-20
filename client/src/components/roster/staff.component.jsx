@@ -5,7 +5,7 @@ const staffData = [
   {
     team: "varsity",
     coach: "Mike Bega",
-    assistantCoach: "Steve Gonzalez ",
+    assistantCoach: "Tyler Bame",
     teamManager: "N/A",
   },
   {
