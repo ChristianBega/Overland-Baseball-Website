@@ -65,7 +65,7 @@ export default function News() {
         </Typography>
         {newsLink?.map(({ name, pathname, linkType }, index) => {
           return (
-            <Typography typography="p" component="p">
+            <Typography typography="p" component="p" key={index}>
               {index + 1 === newsLink.length ? (
                 <>
                   &nbsp;

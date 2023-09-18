@@ -52,8 +52,6 @@ export default function TeamRoosterItem({ currentRoster }) {
             </Stack>
             <Box
               sx={{
-                // minWidth: { xs: "75vw", md: "80vw", lg: "80vw", xlg: "80vw" },
-                // maxWidth: "80vw",
                 width: "100%",
                 display: "flex",
                 justifyContent: "space-between",

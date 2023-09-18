@@ -1,13 +1,13 @@
 import { Grid, Paper, styled, Link, Box, Typography } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
 // Images
 import TeamSnap from "../../assets/homePage/teamSnap.webp";
 import MaxPreps from "../../assets/homePage/maxPrepLogo.webp";
 import CherryCreek from "../../assets/homePage/cherryCreek.webp";
 import VenmoQrCode from "../../assets/homePage/venmoQRCode.webp";
-import { useTheme } from "@emotion/react";
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledQuickLinkCard = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.primary,
   background: theme.palette.accent.accentOne,
@@ -43,14 +43,20 @@ const ctaData = [
 export default function QuickLinksGrid() {
   const theme = useTheme();
   return (
-    <Grid id="quick-links" item xs={12} sx={{ minHeight: "475px", mt: 15 }}>
+    <Grid id="quick-links" item xs={12} sx={{ minHeight: "425px", mt: 15 }}>
       <Typography typography="h2" component="h2" sx={{ textAlign: "center", color: theme.palette.primary.main, mb: 10 }}>
         Quick Links
       </Typography>
       <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: { xs: ".5rem", lg: "1rem" } }}>
-        {ctaData.map((cta) => (
-          <Link sx={{ display: "flex", justifyContent: "center", maxWidth: "90%" }} href={cta.urlLink} target="_blank" rel="noopener noreferrer">
-            <StyledPaper
+        {ctaData.map(({ urlLink, ctaImage }, index) => (
+          <Link
+            key={index}
+            sx={{ display: "flex", justifyContent: "center", maxWidth: "90%" }}
+            href={urlLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <StyledQuickLinkCard
               sx={{
                 height: { xs: "175px", sm: "200px", lg: "220px" },
                 width: { xs: "175px", sm: "200px", lg: "220px" },
@@ -58,8 +64,8 @@ export default function QuickLinksGrid() {
                 boxShadow: 10,
               }}
             >
-              <Box component="img" src={cta.ctaImage} sx={{ objectFit: "contain", width: "100%", height: "100%", color: "#c3c1c1a0" }}></Box>
-            </StyledPaper>
+              <Box component="img" src={ctaImage} sx={{ objectFit: "contain", width: "100%", height: "100%", color: "#c3c1c1a0" }}></Box>
+            </StyledQuickLinkCard>
           </Link>
         ))}
       </Box>

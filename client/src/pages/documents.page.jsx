@@ -1,5 +1,5 @@
 import { Container, Grid, Typography, useTheme } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { containerVariants } from "./pageAnimationsFramerMotion/transitions";
 import DocumentsGrid from "../components/documents/documentGrid.component";
@@ -7,9 +7,6 @@ import { playerDocuments } from "../websiteData/documents/documents.data";
 
 export default function DocumentsPage() {
   const theme = useTheme();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <Container
       component={motion.section}

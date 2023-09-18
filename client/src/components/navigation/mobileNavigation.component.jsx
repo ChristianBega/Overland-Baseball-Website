@@ -4,12 +4,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Mui components
-import { IconButton, Drawer, Toolbar, styled, Box } from "@mui/material";
+import { IconButton, Drawer, Toolbar, styled } from "@mui/material";
 import NavigationListItems from "./navigationListItems.component";
 
 //Logo
 import OverlandLogo from "./logo.component";
-// import Account from "./account.component";
+import Account from "./account.component";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -55,9 +55,7 @@ export default function MobileNavigation() {
         </StyledDrawerMenu>
 
         <OverlandLogo sx={{ flexGrow: 1 }} />
-        {/* <Account /> */}
-        {/* Placeholder box for account log - remove box & uncomment account when auth is set up */}
-        <Box sx={{ width: "35px", height: "35px" }}></Box>
+        <Account />
       </StyledToolbar>
     </>
   );
