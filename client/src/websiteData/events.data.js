@@ -33,28 +33,28 @@ export const fundraisersCardData = [
 ];
 // All event data
 export const eventData = [
-  // Important Dates
-  // createData("Registration", "https://overland-ar.rschooltoday.com/node/17", "??:??", "Jan 17th"),
-  createData("Winter Workouts", "Overland Gym", "6:00 AM", "Jan 2nd"),
-  createData("Winter Hitting", "1338 S Valentia St, Denver, CO 80247", "??:??", "Jan 3rd"),
-  createData("Team Pictures", "Overland Gym", "??:??", "Mar 2nd"),
+  // createData("Winter Workouts", "Overland Gym", "6:00 AM", "Jan 2nd"),
+  // createData("Winter Hitting", "1338 S Valentia St, Denver, CO 80247", "??:??", "Jan 3rd"),
+  // createData("Team Pictures", "Overland Gym", "??:??", "Mar 2nd"),
 
-  // Broncos Games
-  createData("Broncos Games", "1801 Mile High Stadium Cir Denver CO 80204", "Time: TBD", "Date: TBD"),
-
-  // Field Clean Up
-  createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Dec 19th"),
-  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Jan TBD"),
-  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "Feb TBD"),
-  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "March TBD"),
-  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "April TBD"),
-  // createData("Field Clean Up", "Overland Baseball field", "10:00 PM", "May TBD"),
-
+  createData("Uniforms deposit", "N/A", "N/A", "3/01/24"),
+  createData("Spring Break Begins", "N/A", "N/A", "3/18/24"),
+  createData("Spring Season", "N/A", "N/A", "3/4/24"),
+  createData("Winter Break", "N/A", "N/A", "12/22/23"),
   // Tournament data
   createData("Tournaments", "Location: TBD", "Time: TBD", "Date: TBD"),
 
   // Apple Bees
   createData("Apple Bees", "Location: TBD", "Time: TBD", "Date: TBD"),
+  // Field Clean Up
+  createData("Field Clean Up", "Overland Baseball field", "TBD", "11/1/23"),
+  createData("Spring Tryouts", "Overland baseball Field", "TBD", "2/26/24"),
+  createData("Individual Pictures Day", "TBD", "TBD", "3/2/24"),
+  createData("Spirit Day", "TBD", "TBD", "3/02/24"),
+  createData("Fall Workouts", "TBD", "4-6pm", "TBD"),
+  createData("Winter Workouts", "TBD", "4-6pm", "2/1/24"),
+  createData("Winter Hitting", "Legends Hitting Facility", "4-5:45p", "1/4/24"),
+  createData("Spring Registration", "https://overland-ar.rschooltoday.com/node/17", "N/A", "1/16/23"),
 ];
 
 export const youthProgramData = {
@@ -67,15 +67,13 @@ export const youthProgramData = {
   ],
   contentList: ["Eligible players: 7th & 8th grade", "Cost: $50 per player", "Players will receive a Blazers shirt and hat"],
 };
-
 const tryoutContent = [
   "Are you ready to challenge yourself at Overland Baseball and take your game to the next level? Our annual tryouts are your chance to showcase your talent, determination, and passion for baseball. We're on the lookout for dedicated players who are eager to contribute to the team. Stay tuned for tryout dates, and come prepared to demonstrate your skills and commitment on the field.",
 ];
 const tryoutContentList = ["Must be registered for TrailBlazer baseball, paid the Athletic Fees, and have a current physical."];
-
 export const springTryoutData = {
   eventName: "Spring tryouts",
-  date: "Feb 27, 2023",
+  date: "Feb 26, 2024",
   location: "Overland Field",
   time: "4:00-6:00 PM",
   content: [...tryoutContent],
@@ -104,28 +102,27 @@ export const fallTryoutData = {
 const workoutContent = [
   "Success on the diamond requires more than just natural talent – it requires hard work and dedication. Our comprehensive workouts at Overland Baseball are tailored to enhance players' strength, agility, and overall performance. Through drills, conditioning exercises, and excellent coaching, we ensure that every athlete is equipped with the tools they need to excel both on and off the field. Join us in the pursuit of excellence, one rep at a time.",
 ];
-
 export const springWorkoutsData = {
   eventName: "Spring workouts",
-  date: "??? ??, 2024",
+  date: "Jan 2nd - Mon & Wed",
   location: "Overland Gym",
-  time: "?:00-?:00 PM",
+  time: "4:00-6:00pm",
   content: [...workoutContent],
   currentSeason: "spring",
 };
 export const summerWorkoutsData = {
   eventName: "Summer workouts",
-  date: "??? ??, 2024",
+  date: "Mon & Wed ??/??/????",
   location: "Overland Gym",
-  time: "?:00-?:00 PM",
+  time: "4:00-6:00pm",
   content: [...workoutContent],
   currentSeason: "summer",
 };
 export const fallWorkoutsData = {
   eventName: "Fall workouts",
-  date: "??? ??, 2023",
+  date: "Mon & Wed ??/??/????",
   location: "Overland Gym",
-  time: "?:00–?:00 PM",
+  time: "4:00-6:00pm",
   content: [...workoutContent],
   currentSeason: "fall",
 };

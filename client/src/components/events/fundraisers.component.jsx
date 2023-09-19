@@ -51,7 +51,7 @@ export default function Fundraisers() {
           <Grid sx={{ position: "relative" }} id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
             <StyledImageBox component="img" src={fundraiser.image}></StyledImageBox>
             <StyledOverlay>
-              <Typography typography="h3">{fundraiser.eventName} Events</Typography>
+              <Typography typography="h3Card">{fundraiser.eventName} Events</Typography>
               <Box textAlign="center">
                 <Button size="md" onClick={handleOpen}>
                   Sign up!

@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { containerVariants } from "./pageAnimationsFramerMotion/transitions";
 // Components
@@ -12,19 +12,10 @@ import YouthProgram from "../components/events/youthProgram.component";
 import YouthProgramSlider from "../components/events/youthProgramSlider.component";
 import Workouts from "../components/events/workouts.component";
 import WorkoutSlider from "../components/events/workoutSlider.component";
-import { useLocation } from "react-router-dom";
 
 export default function EventsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const location = useLocation();
-  useEffect(() => {
-    if (location.state?.name !== "fundraisers") {
-      window.scrollTo(0, 0);
-    } else {
-      return;
-    }
-  }, [location.state?.name]);
   return (
     <Container
       component={motion.section}

@@ -1,4 +1,3 @@
-import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { mainTheme } from "./DesignSystem";
 import { ThemeProvider } from "@mui/material";

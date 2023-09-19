@@ -198,6 +198,17 @@ export const mainTheme = createTheme({
       },
     },
     h3: {
+      color: "#091f40",
+      fontFamily: "Roboto Slab, serif",
+      fontSize: "16px",
+      fontWeight: "600",
+      letterSpacing: ".1rem",
+      "@media (min-width: 600px)": {
+        fontSize: "22px ",
+        lineHeight: "36px ",
+      },
+    },
+    h3Card: {
       color: "#fff",
       textAlign: "center",
       marginBlock: "1rem",

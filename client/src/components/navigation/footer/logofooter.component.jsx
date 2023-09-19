@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 // Image assets
-import logo from "../../../assets/overlandLogo_3.png";
+import logo from "../../../assets/overlandLogo_3.webp";
 
 import { Box, Grid, Typography } from "@mui/material";
 

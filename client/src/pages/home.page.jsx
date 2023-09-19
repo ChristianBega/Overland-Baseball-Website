@@ -8,7 +8,6 @@ import Schedule from "../components/home/schedule.component";
 import Sponsors from "../components/sponsors/sponsors.component";
 import ImageSlider from "../components/home/imageSlider.component";
 import QuickLinksGrid from "../components/home/quickLinks.component";
-import { useEffect } from "react";
 
 export default function HomePage() {
   const theme = useTheme();
@@ -16,9 +15,6 @@ export default function HomePage() {
   const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
   const isBelowDesktop = useMediaQuery(theme.breakpoints.down("lg"));
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <>
       {/* <HeroBackground /> */}

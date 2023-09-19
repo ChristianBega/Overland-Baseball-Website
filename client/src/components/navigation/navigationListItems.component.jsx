@@ -9,6 +9,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import EventIcon from "@mui/icons-material/Event";
 import TopicIcon from "@mui/icons-material/Topic";
 import GroupsIcon from "@mui/icons-material/Groups";
+import SportsIcon from "@mui/icons-material/Sports";
 
 // Components
 import Socials from "../reusableComponents/socials.component";
@@ -19,7 +20,7 @@ const menuItemData = [
   { linkName: "Home", urlPath: "/", icon: <HomeIcon fontSize="large" /> },
   { linkName: "Roster", urlPath: "/roster", icon: <FormatListNumberedIcon fontSize="large" /> },
   { linkName: "Events", urlPath: "/events", icon: <EventIcon fontSize="large" /> },
-  // { linkName: "Boosters", urlPath: "/boosters" },
+  { linkName: "Boosters", urlPath: "/boosters", icon: <SportsIcon fontSize="large" /> },
   { linkName: "Documents", urlPath: "/documents", icon: <TopicIcon fontSize="large" /> },
   { linkName: "Alumni", urlPath: "/alumni", icon: <GroupsIcon fontSize="large" /> },
   // { linkName: "Sponsors", urlPath: "/sponsors" },

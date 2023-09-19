@@ -10,7 +10,7 @@ export default function Events() {
 
   return (
     <Grid item xs={12}>
-      <Typography typography="h1" component="h1">
+      <Typography typography="h1" component="h1" sx={{ mb: theme.spacing(8) }}>
         Upcoming Events
       </Typography>
       <TableContainer component={Paper} sx={{ color: "#000", maxHeight: 440 }}>

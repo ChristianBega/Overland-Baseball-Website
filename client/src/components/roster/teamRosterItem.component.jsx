@@ -12,6 +12,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   maxHeight: "120px",
   display: "flex",
 }));
+
 const StyledNumberTypography = styled(Typography)(({ theme }) => ({
   fontSize: "1rem",
   fontWeight: "700",
@@ -33,27 +34,24 @@ export default function TeamRoosterItem({ currentRoster }) {
 
   return (
     <>
-      {currentRoster.map((playerData, index) => (
+      {currentRoster.map(({ position, height, weight, handed, number, name, year, yearAbbr }, index) => (
         <StyledTableRow key={index}>
           <TableCell
             sx={{ pl: 0, pr: 2, border: "none", flex: "1 1 90px", display: "flex", justifyContent: "center", alignItems: "center" }}
             component="th"
             scope="row"
           >
-            {/* <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" /> */}
             <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "110px" }}></Box>
           </TableCell>
           <TableCell sx={{ border: "none", px: 0, flex: "3 0 62%" }} component="th" scope="row">
             <Stack direction="row" gap={1}>
-              <StyledTypography>{playerData.position} |</StyledTypography>
-              <StyledTypography>{playerData.height} |</StyledTypography>
-              <StyledTypography>{playerData.weight} |</StyledTypography>
-              <StyledTypography>{playerData.handed}</StyledTypography>
+              <StyledTypography>{position} |</StyledTypography>
+              <StyledTypography>{height} |</StyledTypography>
+              <StyledTypography>{weight} |</StyledTypography>
+              <StyledTypography>{handed}</StyledTypography>
             </Stack>
             <Box
               sx={{
-                // minWidth: { xs: "75vw", md: "80vw", lg: "80vw", xlg: "80vw" },
-                // maxWidth: "80vw",
                 width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
@@ -61,12 +59,12 @@ export default function TeamRoosterItem({ currentRoster }) {
               }}
             >
               <Stack direction="row" gap={2} sx={{ display: "flex", alignItems: "center", mt: 4 }}>
-                <StyledNumberTypography>{playerData.number}</StyledNumberTypography>
+                <StyledNumberTypography>{number}</StyledNumberTypography>
                 <Typography
                   typography={{ xs: "bodyTextLg" }}
                   sx={{ minWidth: { xs: "60%", lg: "350px" }, fontWeight: 700, fontSize: { md: "24px" } }}
                 >
-                  {playerData.name}
+                  {name}
                 </Typography>
               </Stack>
             </Box>
@@ -77,8 +75,8 @@ export default function TeamRoosterItem({ currentRoster }) {
             scope="row"
           >
             <Typography typography={{ xs: "bodyTextLg" }} sx={{ display: "inline-block", mb: 4 }}>
-              {!isMobile_XS && playerData.year}
-              {isMobile_XS && playerData.yearAbbr}
+              {!isMobile_XS && year}
+              {isMobile_XS && yearAbbr}
             </Typography>
           </TableCell>
         </StyledTableRow>
