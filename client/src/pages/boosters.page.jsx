@@ -42,7 +42,7 @@ export default function BoostersPage() {
 
   return (
     <Container component="section" id="boosters-section" style={{ display: "flex", justifyContent: " center", flexDirection: "column" }}>
-      <Typography typography="h1" component="h1" sx={{ mb: theme.spacing(24) }}>
+      <Typography typography="h1" component="h1" sx={{ mb: { lg: theme.spacing(24) } }}>
         Boosters Club
       </Typography>
       <Grid container maxWidth="lg" rowSpacing={isMobile ? 12 : 32}>
@@ -78,7 +78,7 @@ export default function BoostersPage() {
         )}
         {!isMobile && (
           <>
-            <TextComponent isMobile={isMobile} boosterData={boostersDataVolunteer} />
+            <TextComponent sectionType={"volunteer"} isMobile={isMobile} boosterData={boostersDataVolunteer} />
             <BoosterImageSlider boosterData={boostersDataVolunteer} isMobile={isMobile} />
           </>
         )}

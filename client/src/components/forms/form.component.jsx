@@ -86,10 +86,10 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
             <PlaceIcon />
             <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
               {datatypeRegistration === "volunteer"
-                ? currentEventData.event
+                ? currentEventData?.event
                 : datatypeRegistration === "events"
-                ? currentEventData.event
-                : currentEventData.location}
+                ? currentEventData?.event
+                : currentEventData?.location}
             </Typography>
           </StyledDataBox>
           <StyledDataBox>
