@@ -17,6 +17,8 @@ const StyledDataBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason, setCurrentEventData, setCurrentSeason }) {
+  console.log(datatypeRegistration);
+  console.log(currentEventData);
   const [success, setSuccess] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -89,7 +91,9 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
                 ? currentEventData?.event
                 : datatypeRegistration === "events"
                 ? currentEventData?.event
-                : currentEventData?.location}
+                : datatypeRegistration === "boosters club"
+                ? currentEventData?.eventName || currentEventData?.event
+                : null}
             </Typography>
           </StyledDataBox>
           <StyledDataBox>

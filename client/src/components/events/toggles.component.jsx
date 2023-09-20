@@ -51,9 +51,6 @@ export default function Toggles({ setCurrentSeason, currentSeason, toggleType })
     {
       type: "winter",
     },
-    // {
-    //   type: "summer",
-    // },
   ];
   return (
     <StyledToggleContainer>
@@ -74,7 +71,6 @@ export default function Toggles({ setCurrentSeason, currentSeason, toggleType })
               </StyledText>
             );
           })}
-      {/* {BUTTON_TYPES.map(({ type }, index) => {})} */}
     </StyledToggleContainer>
   );
 }

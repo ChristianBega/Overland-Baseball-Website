@@ -73,7 +73,7 @@ export default function BoostersPage() {
         {isMobile && (
           <>
             <BoosterImageSlider boosterData={boostersDataVolunteer} isMobile={isMobile} />
-            <TextComponent isMobile={isMobile} boosterData={boostersDataVolunteer} />
+            <TextComponent sectionType={"volunteer"} isMobile={isMobile} boosterData={boostersDataVolunteer} />
           </>
         )}
         {!isMobile && (
