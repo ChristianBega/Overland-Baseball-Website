@@ -22,9 +22,6 @@ const StyledEventInfoTableCell = styled(TableCell)(({ theme }) => ({
   textAlign: "center",
   padding: theme.spacing(2, 0),
   backgroundColor: theme.palette.accent.accentThree,
-  [theme.breakpoints.up("md")]: {
-    width: "33% !important",
-  },
 }));
 
 export default function PlayerEvents({ currentEventData, setCurrentSeason, currentSeason, isMobile }) {

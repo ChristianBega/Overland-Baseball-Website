@@ -33,34 +33,32 @@ export const fundraisersCardData = [
 ];
 // All event data
 export const eventData = [
-  // createData("Winter Workouts", "Overland Gym", "6:00 AM", "Jan 2nd"),
-  // createData("Winter Hitting", "1338 S Valentia St, Denver, CO 80247", "??:??", "Jan 3rd"),
-  // createData("Team Pictures", "Overland Gym", "??:??", "Mar 2nd"),
-
-  createData("Uniforms deposit", "N/A", "N/A", "3/01/24"),
-  createData("Spring Break Begins", "N/A", "N/A", "3/18/24"),
-  createData("Spring Season", "N/A", "N/A", "3/4/24"),
-  createData("Winter Break", "N/A", "N/A", "12/22/23"),
-  // Tournament data
-  createData("Tournaments", "Location: TBD", "Time: TBD", "Date: TBD"),
-
-  // Apple Bees
+  createData("Uniform Issue", "Overland Hs Locker Room", "4-6:00pm", "3/01/24"),
+  createData("Spring Break Begins", "Overland Hs", "", "3/18/24"),
+  createData("Spring Season", "Overland Hs", "", "3/04/24"),
+  createData("Winter Break", "Overland Hs", "", "12/22/23"),
+  createData("Tournaments", "Overland Hs Schenbeck Field", "9am-6pm", "9/23/23"),
+  createData("Tournaments", "Overland Hs Schenbeck Field", "9am-6pm", "9/24/23"),
+  createData("Tournaments", "Overland Hs Schenbeck Field", "9am-6pm", "9/30/23"),
+  createData("Tournaments", "Overland Hs Schenbeck Field", "9am-6pm", "10/01/23"),
+  createData("Field Clean Up", "Overland Hs Schenbeck Field", "4-6:00pm", "11/01/23"),
+  createData("Spring Tryouts", "Overland baseball Field", "4-6:00pm", "2/26/24"),
+  createData("Individual/Team Picture Day", "OHS Gym/ Schenbeck Field", "4-6:00pm", "3/02/24"),
+  createData("Spirit Day", "Overland Hs Gym/ Schenbeck Field", "4-6:00pm", "3/02/24"),
+  createData("Fall Workouts", "Overland Hs Weightroom/ Schenbeck Field", "4-6pm", "10/2/23"),
+  createData("Winter Hitting", "Legends Hitting Facility", "4-6:00pm", "1/04/24"),
+  createData("Spring Registration", "https://overland-ar.rschooltoday.com/node/17", "", "1/16/24"),
+  createData("Winter conditioning", "Overland Hs Weightroom", "4-6:00pm", "1/02/24"),
+  createData("Spring Season Start", "Overland Hs Schenbeck Field", "4-6:00pm", "3/04/24"),
+  createData("Spring Break", "Overland Hs", "", "3/18/24"),
   createData("Apple Bees", "Location: TBD", "Time: TBD", "Date: TBD"),
-  // Field Clean Up
-  createData("Field Clean Up", "Overland Baseball field", "TBD", "11/1/23"),
-  createData("Spring Tryouts", "Overland baseball Field", "TBD", "2/26/24"),
-  createData("Individual Pictures Day", "TBD", "TBD", "3/2/24"),
-  createData("Spirit Day", "TBD", "TBD", "3/02/24"),
-  createData("Fall Workouts", "TBD", "4-6pm", "TBD"),
-  createData("Winter Workouts", "TBD", "4-6pm", "2/1/24"),
-  createData("Winter Hitting", "Legends Hitting Facility", "4-5:45p", "1/4/24"),
-  createData("Spring Registration", "https://overland-ar.rschooltoday.com/node/17", "N/A", "1/16/23"),
+  createData("Broncos Game", "Location: TBD", "Time: TBD", "Date: TBD"),
 ];
 
 export const youthProgramData = {
-  date: "May 20, 2023",
+  date: "May 20, 2024",
   location: "Overland Field",
-  time: "8am–2pm ",
+  time: "8:00am–2:00pm ",
   content: [
     "Our Youth Program is designed to instill a love for baseball in kids of all skill levels, fostering teamwork, sportsmanship, and skill development. From fundamental coaching to friendly matches, we provide a safe and supportive environment for young players to learn and grow in the sport they're passionate about.",
     "Campers will get the opportunity to learn baseball skills from current players and coaches of Overland Trailblazers. The day will consist of hitting, fielding, throwing, and catching, teaching each camper the fundamentals of the game.",
@@ -82,7 +80,7 @@ export const springTryoutData = {
 };
 export const summerTryoutData = {
   eventName: "Summer tryouts",
-  date: "June ??, 2023",
+  date: "May 20, 2024",
   location: "Overland Field",
   time: "10:00-12:00 AM",
   content: [...tryoutContent],
@@ -91,7 +89,7 @@ export const summerTryoutData = {
 };
 export const fallTryoutData = {
   eventName: "Fall tryouts",
-  date: "Oct ??, 2023",
+  date: "Aug 15, 2024",
   location: "Overland Field",
   time: "4:00–6:00 PM",
   content: [...tryoutContent],
@@ -104,24 +102,24 @@ const workoutContent = [
 ];
 export const springWorkoutsData = {
   eventName: "Spring workouts",
-  date: "Jan 2nd - Mon & Wed",
+  date: "Jan 2, 2024",
   location: "Overland Gym",
   time: "4:00-6:00pm",
   content: [...workoutContent],
   currentSeason: "spring",
 };
-export const summerWorkoutsData = {
-  eventName: "Summer workouts",
-  date: "Mon & Wed ??/??/????",
-  location: "Overland Gym",
+export const winterWorkoutsData = {
+  eventName: "Winter hitting",
+  date: "Jan 4, 2024",
+  location: "Legends Hitting Facility",
   time: "4:00-6:00pm",
   content: [...workoutContent],
-  currentSeason: "summer",
+  currentSeason: "winter",
 };
 export const fallWorkoutsData = {
   eventName: "Fall workouts",
-  date: "Mon & Wed ??/??/????",
-  location: "Overland Gym",
+  date: "Oct 2, 2023",
+  location: "OHS Weightroom/Field",
   time: "4:00-6:00pm",
   content: [...workoutContent],
   currentSeason: "fall",

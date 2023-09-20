@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import { Modal } from "@mui/material";
-import React from "react";
+import { Button, Modal } from "@mui/material";
+import React, { useState } from "react";
 import Form from "../forms/form.component";
 
 const StyledModalContainer = styled("box")(({ theme }) => ({

@@ -49,3 +49,6 @@ export default function YouthProgramModal({ datatypeRegistration, currentEventDa
     </>
   );
 }
+// {
+//   modalType === "booster" && <Button>Sign up Today</Button>;
+// }
