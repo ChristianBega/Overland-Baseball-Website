@@ -6,7 +6,7 @@ import PlayerEvents from "./playerEvents.component";
 import Toggles from "./toggles.component";
 import RegistrationModal from "../modals/registrationModal.component";
 
-import { springWorkoutsData, summerWorkoutsData, fallWorkoutsData } from "../../websiteData/events.data";
+import { springWorkoutsData, winterWorkoutsData, fallWorkoutsData } from "../../websiteData/events.data";
 
 const StyledInfoBox = styled(Box)(({ theme }) => ({
   minWidth: "350px",
@@ -27,8 +27,8 @@ export default function Workouts({ isMobile }) {
   useEffect(() => {
     if (currentSeason === "spring") {
       setCurrentEventData(springWorkoutsData);
-    } else if (currentSeason === "summer") {
-      setCurrentEventData(summerWorkoutsData);
+    } else if (currentSeason === "winter") {
+      setCurrentEventData(winterWorkoutsData);
     } else {
       setCurrentEventData(fallWorkoutsData);
     }
@@ -40,7 +40,7 @@ export default function Workouts({ isMobile }) {
         {!isMobile && (
           <div style={{ display: "flex", gap: "3rem" }}>
             <Typography typography="h2">Workouts</Typography>
-            <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} />
+            <Toggles setCurrentSeason={setCurrentSeason} currentSeason={currentSeason} toggleType={"workouts"} />
           </div>
         )}
         <PlayerEvents currentEventData={currentEventData} currentSeason={currentSeason} setCurrentSeason={setCurrentSeason} isMobile={isMobile} />

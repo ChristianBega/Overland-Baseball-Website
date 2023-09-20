@@ -7,7 +7,7 @@ import {
   fallTryoutData,
   summerTryoutData,
   springWorkoutsData,
-  summerWorkoutsData,
+  winterWorkoutsData,
   fallWorkoutsData,
 } from "../../websiteData/events.data";
 
@@ -38,7 +38,7 @@ export const SelectInput = ({ currentEventData, setCurrentEventData, datatypeReg
       if (datatypeRegistration === "tryouts") {
         setCurrentOptions([springTryoutData, summerTryoutData, fallTryoutData]);
       } else if (datatypeRegistration === "workouts") {
-        setCurrentOptions([springWorkoutsData, summerWorkoutsData, fallWorkoutsData]);
+        setCurrentOptions([springWorkoutsData, winterWorkoutsData, fallWorkoutsData]);
       } else if (datatypeRegistration === "volunteer") {
         setCurrentOptions(eventData);
       } else {

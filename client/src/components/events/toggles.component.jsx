@@ -1,7 +1,7 @@
-import { Box,  Typography, styled } from "@mui/material";
+import { Box, Typography, styled } from "@mui/material";
 import React from "react";
 
-export default function Toggles({ setCurrentSeason, currentSeason }) {
+export default function Toggles({ setCurrentSeason, currentSeason, toggleType }) {
   const handleClick = (event) => setCurrentSeason(event.currentTarget.id);
 
   const StyledText = styled(Typography)(({ theme, currentSeason, type }) => ({
@@ -12,7 +12,6 @@ export default function Toggles({ setCurrentSeason, currentSeason }) {
     textDecoration: currentSeason !== type && "underline",
 
     "&:hover": {
-      cursor: "pointer",
       cursor: currentSeason === type && "none",
       color: theme.palette.secondary.dark,
       transform: "scale(1)",
@@ -41,15 +40,41 @@ export default function Toggles({ setCurrentSeason, currentSeason }) {
       type: "fall",
     },
   ];
+
+  const BUTTON_TYPES_WORKOUTS = [
+    {
+      type: "spring",
+    },
+    {
+      type: "fall",
+    },
+    {
+      type: "winter",
+    },
+    // {
+    //   type: "summer",
+    // },
+  ];
   return (
     <StyledToggleContainer>
-      {BUTTON_TYPES.map(({ type }, index) => {
-        return (
-          <StyledText typography="linkText" key={type + (index + 1)} id={type} onClick={handleClick} currentSeason={currentSeason} type={type}>
-            {type}
-          </StyledText>
-        );
-      })}
+      {toggleType === "workouts"
+        ? BUTTON_TYPES_WORKOUTS.map(({ type }, index) => {
+            return (
+              <StyledText typography="linkText" key={type + (index + 1)} id={type} onClick={handleClick} currentSeason={currentSeason} type={type}>
+                {type}
+                {toggleType === "workouts" && type === "fall" && null}
+              </StyledText>
+            );
+          })
+        : BUTTON_TYPES.map(({ type }, index) => {
+            return (
+              <StyledText typography="linkText" key={type + (index + 2)} id={type} onClick={handleClick} currentSeason={currentSeason} type={type}>
+                {type}
+                {toggleType === "workouts" && type === "fall" && null}
+              </StyledText>
+            );
+          })}
+      {/* {BUTTON_TYPES.map(({ type }, index) => {})} */}
     </StyledToggleContainer>
   );
 }
