@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import RegistrationModal from "../modals/registrationModal.component";
 import { eventData } from "../../websiteData/events.data";
 export default function TextComponent({ boosterData, isMobile, sectionType }) {
-  console.log(boosterData);
-
   const [currentEventData, setCurrentEventData] = useState([]);
 
   useEffect(() => {

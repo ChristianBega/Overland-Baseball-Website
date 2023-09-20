@@ -51,8 +51,8 @@ export const eventData = [
   createData("Winter conditioning", "Overland Hs Weightroom", "4-6:00pm", "1/02/24"),
   createData("Spring Season Start", "Overland Hs Schenbeck Field", "4-6:00pm", "3/04/24"),
   createData("Spring Break", "Overland Hs", "", "3/18/24"),
-  createData("Apple Bees", "Location: TBD", "Time: TBD", "Date: TBD"),
-  createData("Broncos Game", "Location: TBD", "Time: TBD", "Date: TBD"),
+  createData("Apple Bees", "TBD", "TBD", "TBD"),
+  createData("Broncos Game", "TBD", "TBD", "TBD"),
 ];
 
 export const youthProgramData = {
