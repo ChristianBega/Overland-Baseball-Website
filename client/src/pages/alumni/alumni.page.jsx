@@ -1,7 +1,7 @@
 import React from "react";
 import TimeLine from "./components/timeLine/timeLine.component";
 import { motion } from "framer-motion";
-import { containerVariants } from "../../setup/pageAnimationsFramerMotion/transitions";
+import { containerVariants } from "../../setup/framerAnimations/transitions";
 import { Container } from "@mui/material";
 export default function AlumniPage() {
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Grid } from "@mui/material";
 import { motion } from "framer-motion";
-import { containerVariants } from "../../setup/pageAnimationsFramerMotion/transitions";
+import { containerVariants } from "../../setup/framerAnimations/transitions";
 // Components
 import Staff from "./components/staff/staff.component";
 // import Toggles from "../components/roster/toggles.component";

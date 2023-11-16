@@ -2,7 +2,7 @@ import { useTheme } from "@emotion/react";
 import { Box, Button, Stack, TextField, Typography, IconButton, Alert, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import EmailService from "../../services/emailService";
+import EmailService from "../../setup/utils/emailServices/emailService";
 
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -17,8 +17,6 @@ const StyledDataBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason, setCurrentEventData, setCurrentSeason }) {
-  console.log(datatypeRegistration);
-  console.log(currentEventData);
   const [success, setSuccess] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));

@@ -2,7 +2,7 @@ import { useTheme } from "@emotion/react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import React from "react";
 import { motion } from "framer-motion";
-import { containerVariants } from "../../setup/pageAnimationsFramerMotion/transitions";
+import { containerVariants } from "../../setup/framerAnimations/transitions";
 // Components
 import Events from "./components/eventsDataGrid/eventsDataGrid.component";
 import Fundraisers from "./components/fundraisers/fundraisers.component";
