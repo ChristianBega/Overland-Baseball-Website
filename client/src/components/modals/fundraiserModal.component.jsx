@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "@mui/material";
 import styled from "@emotion/styled";
-import FundraisersDataGrid from "../events/fundraisersDataGrid.component";
+import FundraisersDataGrid from "../../pages/events/components/fundraisersDataGrid/fundraisersDataGrid.component";
 
 const StyledModalContainer = styled("box")(({ theme }) => ({
   display: "flex",
