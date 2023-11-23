@@ -1,0 +1,54 @@
+[
+  {
+    "name": "userName",
+    "placeholder": "Enter user's name here...",
+    "label": "User Name",
+    "type": "text",
+    "rules": {
+      "required": "User Name is required *",
+      "pattern": {
+        "value": "^[a-zA-Z]+$",
+        "message": "Invalid character or number *"
+      }
+    }
+  },
+  {
+    "name": "email",
+    "label": "Email",
+    "placeholder": "Enter email here...",
+    "type": "email",
+    "rules": {
+      "required": "Email is required *",
+      "pattern": {
+        "value": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+        "message": "Invalid email address *"
+      }
+    }
+  },
+  {
+    "name": "password",
+    "label": "Password",
+    "placeholder": "Enter password here...",
+    "type": "password",
+    "rules": {
+      "required": "Password is required *",
+      "pattern": {
+        "value": "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
+        "message": "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=!)"
+      }
+    }
+  },
+  {
+    "name": "confirmPassword",
+    "label": "Confirm Password",
+    "placeholder": "Enter password here...",
+    "type": "password",
+    "rules": {
+      "required": "Password is required *",
+      "pattern": {
+        "value": "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
+        "message": "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=!)"
+      }
+    }
+  }
+]

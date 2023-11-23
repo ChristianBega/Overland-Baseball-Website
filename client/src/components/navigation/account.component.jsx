@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { IconButton } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Button, IconButton } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../setup/context/authentication.context";
+import { signOutUser } from "../../setup/utils/firebase/authentication";
 
 export default function Account() {
+  const { isAuthorized } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleUserSignOut = () => {
+    signOutUser();
+    navigate("/");
+  };
+
   return (
-    <Link to="/">
+    <>
       <IconButton sx={{ color: "#fff" }}>
-        <AccountCircleIcon fontSize="large" />
+        {isAuthorized ? (
+          <Button size="sm" onClick={handleUserSignOut}>
+            Sign Out
+          </Button>
+        ) : (
+          <Link to="/authentication">
+            <AccountCircleIcon fontSize="large" />
+          </Link>
+        )}
       </IconButton>
-    </Link>
+    </>
   );
 }

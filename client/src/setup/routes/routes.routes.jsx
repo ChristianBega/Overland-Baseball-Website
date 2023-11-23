@@ -10,6 +10,7 @@ import DocumentsPage from "../../pages/documents/documents.page";
 import RosterPage from "../../pages/roster/roster.page";
 import AlumniPage from "../../pages/alumni/alumni.page";
 import SponsorsPage from "../../pages/sponsors/sponsors.page";
+import AuthenticationPage from "../../pages/authentication/authentication.page";
 import { ScrollToTop } from "../../components/scrollToTop/scrollToTop.component";
 
 export default function AnimationRoutes() {
@@ -26,6 +27,7 @@ export default function AnimationRoutes() {
         <Route path="/alumni" element={<AlumniPage />}></Route>
         <Route path="/sponsors" element={<SponsorsPage />}></Route>
         <Route path="/boosters" element={<BoostersPage />}></Route>
+        <Route path="/authentication" element={<AuthenticationPage />}></Route>
       </Routes>
     </AnimatePresence>
   );
