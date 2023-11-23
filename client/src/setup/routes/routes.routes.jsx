@@ -11,6 +11,8 @@ import RosterPage from "../../pages/roster/roster.page";
 import AlumniPage from "../../pages/alumni/alumni.page";
 import SponsorsPage from "../../pages/sponsors/sponsors.page";
 import AuthenticationPage from "../../pages/authentication/authentication.page";
+import PasswordResetPage from "../../pages/passwordReset/passwordReset.page";
+
 import { ScrollToTop } from "../../components/scrollToTop/scrollToTop.component";
 
 export default function AnimationRoutes() {
@@ -27,7 +29,11 @@ export default function AnimationRoutes() {
         <Route path="/alumni" element={<AlumniPage />}></Route>
         <Route path="/sponsors" element={<SponsorsPage />}></Route>
         <Route path="/boosters" element={<BoostersPage />}></Route>
-        <Route path="/authentication" element={<AuthenticationPage />}></Route>
+
+        {/* auth-route */}
+        <Route path="/authentication/sign-in" element={<AuthenticationPage />}></Route>
+        <Route path="/authentication/sign-up" element={<AuthenticationPage />}></Route>
+        <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>
       </Routes>
     </AnimatePresence>
   );

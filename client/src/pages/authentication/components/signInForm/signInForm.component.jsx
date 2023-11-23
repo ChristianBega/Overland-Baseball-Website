@@ -1,11 +1,12 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import signUpInputFields from "./signUpInputFields.config.json";
+import signInInputFields from "./signInInputFields.config.json";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../../../setup/utils/firebase/authentication";
 import { Link, useNavigate } from "react-router-dom";
-import FormHeader from "../formHeader/formHeader.component";
 import styled from "@emotion/styled";
+import FormHeader from "../formHeader/formHeader.component";
+
 const StyledForm = styled("form")(({ theme }) => ({
   minHeight: "800px",
   maxWidth: "600px",
@@ -16,7 +17,8 @@ const StyledForm = styled("form")(({ theme }) => ({
   gap: "1rem",
   padding: "1rem",
 }));
-const SignUpForm = () => {
+
+const SignInForm = () => {
   const navigate = useNavigate();
   const {
     control,
@@ -25,11 +27,7 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm();
   const handleSignUpForm = async (data) => {
-    const { userName, email, password, confirmPassword } = data;
-    //  if (!userName || !email || !password || !confirmPassword) {
-    //    console.error("All fields are required");
-    //    return;
-    //  }
+    const { userName, email, password } = data;
     try {
       const { user } = await createAuthUserWithEmailAndPassword(email, password);
       await createUserDocumentFromAuth(user, { userName });
@@ -56,10 +54,9 @@ const SignUpForm = () => {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-up-form">
-      <FormHeader formHeaderContent={"Sign Up Form"} />
-
-      {signUpInputFields.map((config, index) => (
+    <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-in-form">
+      <FormHeader formHeaderContent={"Sign In Form"} />
+      {signInInputFields.map((config, index) => (
         <Controller
           required
           key={index + config.name}
@@ -80,18 +77,23 @@ const SignUpForm = () => {
           )}
         />
       ))}
-      {/* <Link to={"/authentication/password-reset"}>Forgot your password?</Link> */}
-      <Button id="sign-up-form" type="submit">
-        Sign Up
+      <Link to={"/authentication/password-reset"}>Forgot your password?</Link>
+      {/* <Stack>
+        <Button id="sign-up-form" type="submit">
+          Sign In With Google
+        </Button>
+      </Stack> */}
+      <Button id="sign-in-form" type="submit">
+        Sign In
       </Button>
       <Typography component="span">
-        Already have an account? <Link to={"/authentication/sign-in"}>Sign In</Link>
+        Don't have an account? <Link to={"/authentication/sign-up"}>Create Account</Link>
       </Typography>
     </StyledForm>
   );
 };
 
-export default SignUpForm;
+export default SignInForm;
 // {
 //   "name": "password",
 //   "label": "Blazer Number",

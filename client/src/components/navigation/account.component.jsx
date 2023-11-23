@@ -21,7 +21,7 @@ export default function Account() {
             Sign Out
           </Button>
         ) : (
-          <Link to="/authentication">
+          <Link to="/authentication/sign-in">
             <AccountCircleIcon fontSize="large" />
           </Link>
         )}
