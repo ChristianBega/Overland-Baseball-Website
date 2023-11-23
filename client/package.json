@@ -11,7 +11,9 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "context": "^3.0.15",
     "dotenv": "^10.0.0",
+    "firebase": "^10.6.0",
     "framer-motion": "^10.2.3",
     "react": "^18.2.0",
     "react-alice-carousel": "^2.7.0",
@@ -22,6 +24,7 @@
     "react-router-hash-link": "^2.4.3",
     "react-scripts": "5.0.1",
     "react-vertical-timeline-component": "^3.6.0",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
