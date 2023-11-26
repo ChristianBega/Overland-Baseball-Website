@@ -3,7 +3,7 @@ import { mainTheme } from "./DesignSystem";
 import { ThemeProvider } from "@mui/material";
 
 // Animation Route - for adding animations with framer motion.
-import Routes from "./setup/routes/routes.routes";
+import Unauthorized from "./setup/routes/unauthorized/unauthorized.routes";
 import Navigation from "./components/navigation/navigation.component";
 import FooterNavigation from "./components/navigation/footer/footerNavigation.component";
 
@@ -13,7 +13,7 @@ function App() {
       <ThemeProvider theme={mainTheme}>
         <Router>
           <Navigation />
-          <Routes />
+          <Unauthorized />
           {/* Error with "react does not recognize show label" - can't find it but somewhere in footer */}
           <FooterNavigation />
         </Router>
