@@ -4,9 +4,12 @@ import { Button, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../setup/context/authentication.context";
 import { signOutUser } from "../../setup/utils/firebase/authentication";
+import { UserContext } from "../../setup/context/user.context";
 
 export default function Account() {
   const { isAuthorized } = useContext(AuthContext);
+  const { currentUser } = useContext(UserContext);
+  console.log(currentUser);
   const navigate = useNavigate();
   const handleUserSignOut = () => {
     signOutUser();

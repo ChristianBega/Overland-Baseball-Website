@@ -26,10 +26,10 @@ const SignUpForm = () => {
   } = useForm();
   const handleSignUpForm = async (data) => {
     const { userName, email, password, confirmPassword } = data;
-    //  if (!userName || !email || !password || !confirmPassword) {
-    //    console.error("All fields are required");
-    //    return;
-    //  }
+    if (!userName || !email || !password || !confirmPassword) {
+      console.error("All fields are required");
+      return;
+    }
     try {
       const { user } = await createAuthUserWithEmailAndPassword(email, password);
       await createUserDocumentFromAuth(user, { userName });

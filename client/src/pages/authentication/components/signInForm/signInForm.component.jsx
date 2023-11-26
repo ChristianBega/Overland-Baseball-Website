@@ -2,7 +2,7 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import signInInputFields from "./signInInputFields.config.json";
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../../../setup/utils/firebase/authentication";
+import { signInAuthWithEmailAndPassword } from "../../../../setup/utils/firebase/authentication";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import FormHeader from "../formHeader/formHeader.component";
@@ -26,29 +26,26 @@ const SignInForm = () => {
     reset,
     formState: { errors },
   } = useForm();
+
   const handleSignUpForm = async (data) => {
-    const { userName, email, password } = data;
+    const { email, password } = data;
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(email, password);
-      await createUserDocumentFromAuth(user, { userName });
+      await signInAuthWithEmailAndPassword(email, password);
       reset();
       navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
-          alert("Incorrect Password");
+          alert("Incorrect Password!");
           break;
         case "auth/user-not-found":
-          alert("No user found!");
-          break;
-        case "auth/invalid-email":
-          alert("Invalid Email");
+          alert("Sorry, no user found!");
           break;
         case "auth/invalid-login-credentials":
-          alert("Invalid Login In Credentials");
+          alert("Please recheck your email/password!");
           break;
         default:
-          console.log(error);
+          alert(error);
       }
     }
   };
