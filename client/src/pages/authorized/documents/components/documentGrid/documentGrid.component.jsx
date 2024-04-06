@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import DocumentCard from "../documentCard/documentGrid.component";
+import DocumentCard from "./documentGrid.component";
 
 export default function DocumentsGrid({ documentsData }) {
   return (

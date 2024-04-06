@@ -10,7 +10,7 @@ import AlumniPage from "../../../pages/unauthorized/alumni/alumni.page";
 import SponsorsPage from "../../../pages/unauthorized/sponsors/sponsors.page";
 import AuthenticationPage from "../../../pages/unauthorized/authentication/authentication.page";
 import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwordReset.page";
-import Page404 from "../../../pages/unauthorized/404/404.page";
+import Page404 from "../../../pages/404/404.page";
 
 import { ScrollToTop } from "../../../components/scrollToTop/scrollToTop.component";
 

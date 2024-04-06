@@ -1,31 +1,44 @@
-// Import createContext
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { createUserDocumentFromAuth, onAuthStateChangedListener } from "../utils/firebase/authentication";
-// import { getProfileAccountDocument } from "../utils/firebase/accountProfiles.firebase";
-// Import firebase utils
+import { auth } from "../utils/firebase/index.firebase";
+import { AuthContext } from "./authentication.context";
+import { getCurrentUserProfile } from "../utils/firebase/users.firebase";
 
-// Creating UserContext which represents the actual value you want to access === CONTEXT
 export const UserContext = createContext({
-  currentUser: null,
-  setCurrentUser: () => null,
+  currentUserObject: {},
+  currentUserProfile: {},
+  setCurrentUserObject: () => null,
 });
 
 export const UserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const { isAuthorized } = useContext(AuthContext);
+  const [currentUserObject, setCurrentUserObject] = useState(null);
+  const [currentUserProfile, setCurrentUserProfile] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
       }
-      setCurrentUser(user);
+      setCurrentUserObject(user);
     });
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    const getCurrentUserProfileData = async () => {
+      if (isAuthorized && auth.currentUser.uid) {
+        const userProfile = await getCurrentUserProfile(auth.currentUser.uid, setCurrentUserProfile);
+        setCurrentUserProfile(userProfile);
+      }
+    };
+    getCurrentUserProfileData();
+  }, [isAuthorized]);
+
   const value = {
-    currentUser,
-    setCurrentUser,
+    currentUserProfile,
+    currentUserObject,
+    setCurrentUserObject,
   };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

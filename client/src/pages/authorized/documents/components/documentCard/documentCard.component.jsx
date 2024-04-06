@@ -2,10 +2,10 @@ import React from "react";
 import { Button, Card, CardActions, CardContent, Grid, Link, Stack, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 // PDFs
-import codeOfConduct from "../../../../websiteData/documents/codeOfConduct.pdf";
-import parentPlayer from "../../../../websiteData/documents/parentPlayer.pdf";
-import teamLetter from "../../../../websiteData/documents/teamLetter.pdf";
-import newsLetterOct2024 from "../../../../websiteData/documents/newsLetterOct2024.pdf";
+import codeOfConduct from "../../../../../websiteData/documents/codeOfConduct.pdf";
+import parentPlayer from "../../../../../websiteData/documents/parentPlayer.pdf";
+import teamLetter from "../../../../../websiteData/documents/teamLetter.pdf";
+import newsLetterOct2024 from "../../../../../websiteData/documents/newsLetterOct2024.pdf";
 
 import styled from "@emotion/styled";
 
@@ -27,17 +27,18 @@ const StyledLink = styled(Link)(({ theme }) => ({
   color: "#fff",
 }));
 export default function DocumentCard({ data, index }) {
+  console.log(data);
   const theme = useTheme();
   return (
     <Grid id="document-grid-item" item xs={12} sm={6}>
       <StyledCard elevation={8}>
         <CardContent>
           <Typography variant="h5" color={theme.palette.primary.main}>
-            {data.documentName}
+            {data?.documentName}
           </Typography>
         </CardContent>
         <CardActions sx={{ display: "flex", flexDirection: "column", gap: 4, mt: 5 }}>
-          <Link href={data.documentLink} target="_blank" rel="noopener noreferrer" sx={{ height: "100%", width: "100%", textDecoration: "none" }}>
+          <Link href={data?.documentLink} target="_blank" rel="noopener noreferrer" sx={{ height: "100%", width: "100%", textDecoration: "none" }}>
             <Typography
               typography="p"
               component="p"

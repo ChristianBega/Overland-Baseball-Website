@@ -28,7 +28,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
         uid,
         email,
         createdAtTimestamp,
-        role: "",
+        role: "user",
         ...additionalInfo,
       });
     }
