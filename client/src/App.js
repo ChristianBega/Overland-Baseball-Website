@@ -17,7 +17,10 @@ function App() {
       <ThemeProvider theme={mainTheme}>
         <Router>
           <Navigation />
-          {currentUserProfile?.role === "admin" || currentUserProfile?.role === "player" || currentUserProfile?.role === "coach" ? (
+          {currentUserProfile?.role === "admin" ||
+          currentUserProfile?.role === "player" ||
+          currentUserProfile?.role === "coach" ||
+          currentUserProfile?.role === "parent" ? (
             <AuthorizedRoutes />
           ) : (
             <UnauthorizedRoutes />

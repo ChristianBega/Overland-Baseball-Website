@@ -27,7 +27,6 @@ export default function UnauthorizedRoutes() {
         <Route path="/roster" element={<RosterPage />}></Route>
         <Route path="/alumni" element={<AlumniPage />}></Route>
         <Route path="/sponsors" element={<SponsorsPage />}></Route>
-        <Route path="/boosters" element={<BoostersPage />}></Route>
         <Route path="/authentication/sign-in" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/sign-up" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>

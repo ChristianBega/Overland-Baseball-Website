@@ -14,6 +14,8 @@ import SportsIcon from "@mui/icons-material/Sports";
 // Components
 import Socials from "../reusableComponents/socials.component";
 import ContactUs from "./footer/contactUs.component";
+import { useContext } from "react";
+import { UserContext } from "../../setup/context/user.context";
 
 // Navigation menu item data
 const menuItemData = [
@@ -68,48 +70,56 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
   },
 }));
 
-// Get menu items
-const getMenuItems = (handleClose, theme, isMobile) => (
-  <StyledList>
-    {menuItemData.map((menuItem, index) => (
-      <StyledListItem key={index} onClick={handleClose}>
-        {/* <Link to={menuItem.urlPath} key={menuItem.linkName}> */}
+const getMenuItems = (handleClose, theme, isMobile, role) => {
+  const allowedRolesToShowDocuments = ["player", "coach", "parent", "admin"];
 
-        {/* Desktop link text */}
-        <Typography
-          typography="linkTextDesktop"
-          component={Link}
-          to={menuItem.urlPath}
-          key={menuItem.linkName}
-          sx={{ display: { xs: "none", lg: "flex", justifyContent: "center" } }}
-        >
-          {menuItem.linkName}
-        </Typography>
+  const filteredMenuItems = menuItemData.filter((menuItem) => {
+    if (menuItem.linkName === "Documents" && !allowedRolesToShowDocuments.includes(role)) {
+      return false; // Exclude the "Documents" menu item for specified roles
+    }
+    return true; // Include all other menu items
+  });
 
-        {/* Mobile List items */}
-        <Box component="span" sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
-          <Box sx={{ display: "flex", alignItems: "center", color: theme.palette.primary.light }}>
-            {menuItem.icon}
-            {/* mobile link text */}
-            <Typography ml={2} component={Link} typography="linkTextMobile" to={menuItem.urlPath} key={`${menuItem.linkName}-mobile`}>
-              {menuItem.linkName}
-            </Typography>
+  return (
+    <StyledList>
+      {filteredMenuItems.map((menuItem, index) => (
+        <StyledListItem key={index} onClick={handleClose}>
+          {/* Desktop link text */}
+          <Typography
+            typography="linkTextDesktop"
+            component={Link}
+            to={menuItem.urlPath}
+            key={menuItem.linkName}
+            sx={{ display: { xs: "none", lg: "flex", justifyContent: "center" } }}
+          >
+            {menuItem.linkName}
+          </Typography>
+
+          {/* Mobile List items */}
+          <Box component="span" sx={{ display: { xs: "flex", lg: "none" }, width: "100%" }}>
+            <Box sx={{ display: "flex", alignItems: "center", color: theme.palette.primary.light }}>
+              {menuItem.icon}
+              {/* mobile link text */}
+              <Typography ml={2} component={Link} typography="linkTextMobile" to={menuItem.urlPath} key={`${menuItem.linkName}-mobile`}>
+                {menuItem.linkName}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        {/* </Link> */}
-      </StyledListItem>
-    ))}
-    {isMobile && (
-      <>
-        <Socials dataTypeDevice="mobile" />
-        <ContactUs />
-      </>
-    )}
-  </StyledList>
-);
+        </StyledListItem>
+      ))}
+      {isMobile && (
+        <>
+          <Socials dataTypeDevice="mobile" />
+          <ContactUs />
+        </>
+      )}
+    </StyledList>
+  );
+};
 
 export default function NavigationListItems({ handleClose }) {
+  const { currentUserProfile } = useContext(UserContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
-  return <>{getMenuItems(handleClose, theme, isMobile)}</>;
+  return <>{getMenuItems(handleClose, theme, isMobile, currentUserProfile?.role)}</>;
 }
