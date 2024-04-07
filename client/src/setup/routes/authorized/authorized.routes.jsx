@@ -14,6 +14,7 @@ import SponsorsPage from "../../../pages/unauthorized/sponsors/sponsors.page";
 import AuthenticationPage from "../../../pages/unauthorized/authentication/authentication.page";
 import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwordReset.page";
 import Page404 from "../../../pages/404/404.page";
+import AdminDashboardPage from "../../../pages/authorized/adminDashboard";
 
 export default function AuthorizedRoutes() {
   const location = useLocation();
@@ -36,6 +37,7 @@ export default function AuthorizedRoutes() {
         <Route path="/authentication/sign-in" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/sign-up" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>
+        <Route path="/dashboard" element={<AdminDashboardPage />}></Route>
       </Routes>
     </AnimatePresence>
   );

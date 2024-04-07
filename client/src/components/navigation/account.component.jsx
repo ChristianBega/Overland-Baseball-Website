@@ -22,7 +22,7 @@ export default function Account() {
             Sign Out
           </Button>
         ) : (
-          <Link to="/authentication/sign-in">
+          <Link to="/authentication/sign-in" style={{ color: "#fff" }}>
             <AccountCircleIcon fontSize="large" />
           </Link>
         )}

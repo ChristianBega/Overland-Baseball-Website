@@ -10,7 +10,7 @@ import EventIcon from "@mui/icons-material/Event";
 import TopicIcon from "@mui/icons-material/Topic";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SportsIcon from "@mui/icons-material/Sports";
-
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 // Components
 import Socials from "../reusableComponents/socials.component";
 import ContactUs from "./footer/contactUs.component";
@@ -25,6 +25,8 @@ const menuItemData = [
   { linkName: "Boosters", urlPath: "/boosters", icon: <SportsIcon fontSize="large" /> },
   { linkName: "Documents", urlPath: "/documents", icon: <TopicIcon fontSize="large" /> },
   { linkName: "Alumni", urlPath: "/alumni", icon: <GroupsIcon fontSize="large" /> },
+  { linkName: "Dashboard", urlPath: "/dashboard", icon: <AdminPanelSettingsIcon fontSize="large" /> },
+
   // { linkName: "Sponsors", urlPath: "/sponsors" },
 ];
 
@@ -72,10 +74,14 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 
 const getMenuItems = (handleClose, theme, isMobile, role) => {
   const allowedRolesToShowDocuments = ["player", "coach", "parent", "admin"];
+  const allowedRolesToShowAdmin = ["admin"];
 
   const filteredMenuItems = menuItemData.filter((menuItem) => {
     if (menuItem.linkName === "Documents" && !allowedRolesToShowDocuments.includes(role)) {
       return false; // Exclude the "Documents" menu item for specified roles
+    }
+    if (menuItem.linkName === "Dashboard" && !allowedRolesToShowAdmin.includes(role)) {
+      return false; // Exclude the "Dashboard" menu item for specified roles
     }
     return true; // Include all other menu items
   });
