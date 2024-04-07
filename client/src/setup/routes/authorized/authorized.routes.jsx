@@ -16,6 +16,7 @@ import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwor
 import Page404 from "../../../pages/404/404.page";
 import AdminDashboardPage from "../../../pages/authorized/adminDashboard";
 import CMSEditPage from "../../../pages/contentManagementSystem/editPage";
+import CMSCreateItemPage from "../../../pages/contentManagementSystem/createPage";
 
 export default function AuthorizedRoutes() {
   const location = useLocation();
@@ -38,7 +39,8 @@ export default function AuthorizedRoutes() {
         <Route path="/authentication/sign-up" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>
         <Route path="/dashboard" element={<AdminDashboardPage />}></Route>
-        <Route path="/cms-edit-page" element={<CMSEditPage />}></Route>
+        <Route path="/cms-edit" element={<CMSEditPage />}></Route>
+        <Route path="/cms-create" element={<CMSCreateItemPage />}></Route>
       </Routes>
     </AnimatePresence>
   );

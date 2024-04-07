@@ -52,6 +52,7 @@ function createData(date, time, opponent, location, opponentLogo) {
 }
 
 export const scheduleRowData = [
+  // date || time || Opponent || Location || Image
   createData("3/9/23", "4:00 PM", "Vista Peak", "Vista Peak Preparatory", vistaPeak),
   createData("3/11/23", "10:00 AM", "Vista Ridge", "Vista Ridge High", vistaRidge),
   createData("3/14/23", "4:00 PM", "Mountain Range", "Overland High", mountainRange),
