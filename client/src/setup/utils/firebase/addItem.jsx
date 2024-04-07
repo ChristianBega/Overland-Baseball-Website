@@ -1,21 +1,41 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, writeBatch } from "firebase/firestore";
 import { db } from "./index.firebase";
 import { v4 as uuidv4 } from "uuid";
 
-// parameters - userUid & role
-export const addScheduleItem = async (userUid, role, data) => {
+export const addCMSItem = async (userUid, role, data, type) => {
+  if (!userUid || role !== "admin") return;
   console.log(data);
-  const scheduleItemDocRef = doc(db, "schedule", uuidv4());
+
+  const cmsItemDocRef = doc(db, `${type}`, uuidv4());
   try {
-    await setDoc(scheduleItemDocRef, {
+    await setDoc(cmsItemDocRef, {
       userUid: userUid,
       role: role,
       ...data,
     });
-    // Optionally, return some status or the ID of the newly created document
-    return { success: true, id: scheduleItemDocRef.id };
+    return { success: true, id: cmsItemDocRef.id };
   } catch (error) {
     console.error("Error with your request", error);
     throw error;
   }
 };
+
+// export function bulkAddDocuments(documents) {
+//   const batch = writeBatch(db);
+//   const collectionRef = collection(db, "schedule");
+
+//   documents.forEach((documentData) => {
+//     const docRef = doc(collectionRef); // Correctly generates a new document ID
+//     batch.set(docRef, documentData);
+//   });
+
+//   // Commit the batch
+//   batch
+//     .commit()
+//     .then(() => {
+//       console.log("Documents successfully added!");
+//     })
+//     .catch((error) => {
+//       console.error("Error adding documents: ", error);
+//     });
+// }

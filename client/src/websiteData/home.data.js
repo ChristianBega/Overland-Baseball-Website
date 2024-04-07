@@ -70,9 +70,9 @@ export const scheduleRowData = [
   createData("4/25/23", "4:15 PM", "Smoky Hill", "Smoky Hill High", smokyHill),
   createData("4/27/23", "4:15 PM", "Cherokee Trail", "Overland High", cherokeeTrail),
   createData("5/2/23", "4:15 PM", "Arapahoe", "Arapahoe High", arapahoe),
+  createData("5/11/23", "4:00 PM", "Range View", "Overland High", rangeView),
   // createData("5/6/23", "11:00 AM", "Aurora Central", "Overland High", vistaPeak),
   // createData("5/9/23", "4:15 PM", "Aurora Central", "Overland High", vistaPeak),
-  createData("5/11/23", "4:00 PM", "Range View", "Overland High", rangeView),
   // createData("5/13/23", "4:00 PM", "Aurora Central", "Overland High", vistaPeak),
 ];
 export const newsData = [

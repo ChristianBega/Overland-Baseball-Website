@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormHeader from "../../../../unauthorized/authentication/components/formHeader/formHeader.component";
 // import { Form } from "@mui/material";
-import { addScheduleItem } from "../../../../../setup/utils/firebase/addItem";
+import { addCMSItem } from "../../../../../setup/utils/firebase/addItem";
 
 import createScheduleItemInputFields from "./createScheduleItemInputFields.config.json";
 import { Controller, useForm } from "react-hook-form";
@@ -18,7 +18,7 @@ import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQuer
 //   away: "", // boolean
 // };
 const buttonActions = {
-  schedule: (uid, role, data) => addScheduleItem(uid, role, data),
+  schedule: (uid, role, data, type) => addCMSItem(uid, role, data, type),
 };
 
 const CreateScheduleItemForm = () => {
@@ -43,11 +43,10 @@ const CreateScheduleItemForm = () => {
   const handleAdd = async (data, e) => {
     const buttonType = e.target.dataset.btntype;
     try {
-      const result = await buttonActions[buttonType](uid, role, data);
+      const result = await buttonActions[buttonType](uid, role, data, type);
       if (result.success === true) {
         setStatus(true);
         reset();
-        alert(status);
         navigate(`/cms-edit?type=${type}&role=${role}&uid=${uid}`);
       }
     } catch (error) {
