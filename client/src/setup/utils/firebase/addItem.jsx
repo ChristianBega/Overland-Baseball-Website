@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 // parameters - userUid & role
 export const addScheduleItem = async (userUid, role, data) => {
+  console.log(data);
   const scheduleItemDocRef = doc(db, "schedule", uuidv4());
   try {
     await setDoc(scheduleItemDocRef, {
