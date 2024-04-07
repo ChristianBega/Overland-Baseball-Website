@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import FormHeader from "../../../../unauthorized/authentication/components/formHeader/formHeader.component";
+// import { Form } from "@mui/material";
 import { addCMSItem } from "../../../../../setup/utils/firebase/addItem";
 
-import createScheduleItemInputFields from "./createScheduleItemInputFields.config.json";
+import createRosterItemInputFields from "./createRosterItemInputFields.config.json";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { TextField, Checkbox, Typography, Button } from "@mui/material";
 import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQueryParams";
-// const scheduleItem = {
-//   date: "",
-//   time: "",
-//   opponent: "",
-//   opponentIcon: "",
-//   location: "",
-//   home: "", // boolean
-//   away: "", // boolean
+const rosterItem = {
+  name: "",
+  number: "",
+  position: "",
+  height: "",
+  weight: "",
+  handed: "", // Left Or Right
+  year: "",
+  yearAbbr: "", // Sr. Jr. So. Fr.
+};
+// const buttonActions = {
+//   schedule: (uid, role, data, type) => addCMSItem(uid, role, data, type),
 // };
 
-const CreateScheduleItemForm = () => {
+const CreateRosterItemForm = () => {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
   let queryParams = useUrlQueryParams();
@@ -37,7 +42,6 @@ const CreateScheduleItemForm = () => {
   });
 
   const handleAdd = async (data, e) => {
-    const buttonType = e.target.dataset.btntype;
     try {
       const result = await addCMSItem(uid, role, data, type);
       if (result.success === true) {
@@ -51,9 +55,9 @@ const CreateScheduleItemForm = () => {
   };
 
   return (
-    <form data-btntype={type} onSubmit={handleSubmit(handleAdd)} style={{ display: "flex", flexDirection: "column" }}>
-      <FormHeader formHeaderContent={"Create Schedule Item"} />
-      {createScheduleItemInputFields.map(({ name, label, placeholder, type, rules }, index) => {
+    <form data-btntype={type} onSubmit={handleSubmit(handleAdd)} style={{ display: "flex", flexDirection: "column", gap: "1rem  " }}>
+      <FormHeader formHeaderContent={"Create Roster Item"} />
+      {createRosterItemInputFields.map(({ name, label, placeholder, type, rules }, index) => {
         return (
           <Controller
             required
@@ -64,9 +68,6 @@ const CreateScheduleItemForm = () => {
             render={({ field }) => {
               return (
                 <>
-                  <Typography component={"p"} variant="p" mb={2}>
-                    {label}
-                  </Typography>
                   {(type === "text" || type === "date" || type === "time") && (
                     <TextField
                       id={name}
@@ -74,25 +75,11 @@ const CreateScheduleItemForm = () => {
                       error={Boolean(errors[name])}
                       variant="outlined"
                       helperText={errors[name]?.message}
+                      label={label}
+                      placeholder={placeholder}
                       variable
                       {...field}
                     />
-                  )}
-                  {type === "checkbox" && (
-                    <div>
-                      <Checkbox
-                        sx={{ display: "inline-block" }}
-                        defaultUnchecked
-                        id={name}
-                        type={type}
-                        error={Boolean(errors[name])}
-                        variant="outlined"
-                        helperText={errors[name]?.message}
-                        variable
-                        {...field}
-                        checked={field.value}
-                      />
-                    </div>
                   )}
                 </>
               );
@@ -105,4 +92,4 @@ const CreateScheduleItemForm = () => {
   );
 };
 
-export default CreateScheduleItemForm;
+export default CreateRosterItemForm;

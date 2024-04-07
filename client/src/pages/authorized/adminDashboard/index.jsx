@@ -15,9 +15,15 @@ const AdminDashboardPage = () => {
                 Click here to edit your: schedule
               </Link>
             </ListItem>
-            <ListItem>Click here to edit your: events</ListItem>
+            <ListItem>
+              Click here to edit your: events
+              {/* <Link to={`/cms-edit?type=events&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`}> */}
+              {/* </Link> */}
+            </ListItem>
             <ListItem>Click here to edit your: quick links</ListItem>
-            <ListItem>Click here to edit your: roster</ListItem>
+            <ListItem>
+              <Link to={`/cms-edit?type=roster&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`}>Click here to edit your: roster</Link>
+            </ListItem>
           </List>
         </>
       )}

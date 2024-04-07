@@ -3,6 +3,7 @@ import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParam
 import { Container } from "@mui/material";
 import CMSSchedule from "../schedule";
 import { Link } from "react-router-dom";
+import CMSRoster from "../roster";
 // import { bulkAddDocuments } from "../../../setup/utils/firebase/addItem";
 
 // add - home, away, userUid : "Hlmu2Cdx4lSuN8HiIiMq6YJBa8j2", role : "admin"
@@ -19,12 +20,13 @@ const CMSEditPage = () => {
 
   return (
     <Container>
-      <Link to={`/cms-create?type=schedule&role=${role}&uid=${uid}`}>Add New {btnTypeName} Item</Link>
+      <Link to={`/cms-create?type=${type}&role=${role}&uid=${uid}`}>Add New {btnTypeName} Item</Link>
       {/* <button onClick={handleAddItems}>Bulk Add Schedule Items</button> */}
       <button>Remove {btnTypeName} Item</button>
       <button>Edit {btnTypeName} Item</button>
 
       {type === "schedule" && <CMSSchedule />}
+      {type === "roster" && <CMSRoster />}
     </Container>
   );
 };
