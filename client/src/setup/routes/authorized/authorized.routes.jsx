@@ -15,6 +15,7 @@ import AuthenticationPage from "../../../pages/unauthorized/authentication/authe
 import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwordReset.page";
 import Page404 from "../../../pages/404/404.page";
 import AdminDashboardPage from "../../../pages/authorized/adminDashboard";
+import CMSEditPage from "../../../pages/contentManagementSystem/editPage";
 
 export default function AuthorizedRoutes() {
   const location = useLocation();
@@ -26,7 +27,6 @@ export default function AuthorizedRoutes() {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/coach/player-roster" element={<PlayerRosterPage />}></Route>
         <Route path="/documents" element={<DocumentsPage />}></Route>
-
         {/* Previous Unauthorized routes */}
         <Route path="/boosters" element={<BoostersPage />}></Route>
         <Route path="/events" element={<EventsPage />}></Route>
@@ -38,6 +38,7 @@ export default function AuthorizedRoutes() {
         <Route path="/authentication/sign-up" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>
         <Route path="/dashboard" element={<AdminDashboardPage />}></Route>
+        <Route path="/cms-edit-page" element={<CMSEditPage />}></Route>
       </Routes>
     </AnimatePresence>
   );
