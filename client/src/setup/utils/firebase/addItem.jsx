@@ -1,5 +1,6 @@
-import { doc, setDoc, collection, writeBatch } from "firebase/firestore";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+// collection, writeBatch;
+// import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import { db } from "./index.firebase";
 import { v4 as uuidv4 } from "uuid";
@@ -24,7 +25,7 @@ export const addCMSItem = async (userUid, role, data, type) => {
 
 // export function bulkAddDocuments(documents) {
 //   const batch = writeBatch(db);
-//   const collectionRef = collection(db, "schedule");
+//   const collectionRef = collection(db, "roster");
 
 //   documents.forEach((documentData) => {
 //     const docRef = doc(collectionRef); // Correctly generates a new document ID

@@ -34,7 +34,7 @@ export default function TeamRoosterItem({ currentRoster }) {
 
   return (
     <>
-      {currentRoster.map(({ position, height, weight, handed, number, name, year, yearAbbr }, index) => (
+      {currentRoster?.map(({ position, height, weight, handed, number, name, year, yearAbbr }, index) => (
         <StyledTableRow key={index}>
           <TableCell
             sx={{ pl: 0, pr: 2, border: "none", flex: "1 1 90px", display: "flex", justifyContent: "center", alignItems: "center" }}

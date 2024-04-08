@@ -1,15 +1,27 @@
 import React from "react";
-import { Container, Box } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import { useFetchScheduleItemsList } from "../schedule/components/hooks/fetchCmsItem";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 const CMSRoster = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   const { data, isLoading, error } = useFetchScheduleItemsList(type);
+  if (isLoading) {
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+  }
 
+  if (error) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Typography variant="h6" color="error">
+          Error fetching data
+        </Typography>
+      </div>
+    );
+  }
   return (
     <Container>
-      <h1>Hello World - CMSROSTER</h1>
+      <h1>Hello World </h1>
       {data?.map(({ handed, height, home, name, number, position, role, userUid, weight, year, yearAbbr }, index) => {
         return (
           <Box
@@ -28,12 +40,9 @@ const CMSRoster = () => {
           >
             <p>Handed: {handed}</p>
             <p>Height: {height}</p>
-            <p>Home: {home ? "Yes" : "No"}</p>
             <p>Name: {name}</p>
             <p>Number: {number}</p>
             <p>Position: {position}</p>
-            <p>Role: {role}</p>
-            <p>User UID: {userUid}</p>
             <p>Weight: {weight}</p>
             <p>Year: {year}</p>
             <p>Year Abbreviation: {yearAbbr}</p>

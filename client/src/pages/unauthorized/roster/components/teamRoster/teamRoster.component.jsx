@@ -1,22 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper, Table, TableBody, TableContainer } from "@mui/material";
+import { Grid, Paper, Table, TableBody, TableContainer, Typography } from "@mui/material";
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component";
-// const roosterData = [];
-import { varsityRoster } from "../../../../../websiteData/roster.data";
+import { useFetchScheduleItemsList } from "../../../../contentManagementSystem/schedule/components/hooks/fetchCmsItem";
 
 export default function TeamRoster({ currentTeam }) {
   const [currentRoster, setCurrentRoster] = useState([]);
+  const { data, isLoading, error } = useFetchScheduleItemsList("roster");
 
   useEffect(() => {
-    if (currentTeam === "varsity") {
-      setCurrentRoster(varsityRoster);
+    if (currentTeam === "varsity" && !isLoading) {
+      setCurrentRoster(data);
     } else if (currentTeam === "juniorVarsity") {
-      // setCurrentRoster(juniorVarsityRoster);
+      // Logic for setting juniorVarsityRoster
     } else {
-      // setCurrentRoster(freshmanRoster);
+      // Logic for setting freshmanRoster
     }
-  }, [currentTeam]);
+  }, [currentTeam, isLoading, data]);
+
+  if (isLoading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        Loading...
+        {/* <CircularProgress /> */}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Typography variant="h6" color="error">
+          Error fetching data
+        </Typography>
+      </div>
+    );
+  }
+
+  if (!currentRoster || currentRoster.length === 0) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Typography variant="h6">No data available</Typography>
+      </div>
+    );
+  }
 
   return (
     <section id="team-rooster-section" style={{ width: "100%" }}>

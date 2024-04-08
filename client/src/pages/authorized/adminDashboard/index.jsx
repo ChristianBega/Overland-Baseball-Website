@@ -2,9 +2,7 @@ import React, { useContext } from "react";
 import { Container, List, ListItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../setup/context/user.context";
-import { uploadImageAndSaveMetadata } from "../../../setup/utils/firebase/uploadImage";
-import Test from "./../../../assets/homePage/teamLogos/adamsCity.webp";
-
+// import { uploadImageAndSaveMetadata } from "../../../setup/utils/firebase/uploadImage";
 const AdminDashboardPage = () => {
   const { currentUserProfile } = useContext(UserContext);
 
@@ -27,6 +25,10 @@ const AdminDashboardPage = () => {
             <ListItem>
               <Link to={`/cms-edit?type=roster&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`}>Click here to edit your: roster</Link>
             </ListItem>
+
+            {/* <button id="bulk-add" onClick={handleAddBulkItems}>
+              click here to bulk add roster items
+            </button> */}
           </List>
         </>
       )}

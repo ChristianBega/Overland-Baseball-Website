@@ -10,10 +10,26 @@ import ScheduleItem from "../scheduleItem/scheduleItem.component";
 import { useFetchScheduleItemsList } from "../../../../contentManagementSystem/schedule/components/hooks/fetchCmsItem";
 
 export default function Schedule() {
-  const { data, isLoading, error } = useFetchScheduleItemsList("schedule");
-  const sortByDate = (data) => data.sort((a, b) => new Date(a.date) - new Date(b.date));
-  const sortedData = sortByDate([...data]);
   const theme = useTheme();
+  const { data, isLoading, error } = useFetchScheduleItemsList("schedule");
+  const sortByDate = (data) => data?.sort((a, b) => new Date(a.date) - new Date(b.date));
+  // const sortedData = sortByDate([...data]);
+  const sortedData = data ? sortByDate([...data]) : [];
+
+  if (isLoading) {
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Typography variant="h6" color="error">
+          Error fetching data
+        </Typography>
+      </div>
+    );
+  }
+
   return (
     <Grid id="schedule" item xs={12} mt={{ xs: 5, sm: 15 }}>
       <Typography typography="h2" component="h2" sx={{ textAlign: "center", color: theme.palette.primary.main, mb: 10 }}>
