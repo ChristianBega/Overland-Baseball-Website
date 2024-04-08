@@ -2,6 +2,9 @@ import React, { useContext } from "react";
 import { Container, List, ListItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../setup/context/user.context";
+import { uploadImageAndSaveMetadata } from "../../../setup/utils/firebase/uploadImage";
+import Test from "./../../../assets/homePage/teamLogos/adamsCity.webp";
+
 const AdminDashboardPage = () => {
   const { currentUserProfile } = useContext(UserContext);
 

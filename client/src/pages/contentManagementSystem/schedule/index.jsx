@@ -10,7 +10,6 @@ const CMSSchedule = () => {
   // let role = queryParams.get("role");
   // let uid = queryParams.get("uid");
   const { data, isLoading, error } = useFetchScheduleItemsList(type);
-  console.log(data);
 
   return (
     <Container>
