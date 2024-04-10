@@ -12,8 +12,7 @@ export const addCMSItem = async (userUid, role, data, type) => {
   const cmsItemDocRef = doc(db, `${type}`, uuidv4());
   try {
     await setDoc(cmsItemDocRef, {
-      userUid: userUid,
-      role: role,
+      addedByUserUid: userUid,
       ...data,
     });
     return { success: true, id: cmsItemDocRef.id };

@@ -1,45 +1,37 @@
 import React from "react";
-import { Container, Box } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
-import { useFetchCMSItemsList } from "./hooks/fetchCmsItem";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import CmsListItem from "../cmsListItem";
+import { useFetchCMSItemsList } from "../cmsListItem/hooks/fetchCmsItem";
 
 const CMSSchedule = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
-  // let role = queryParams.get("role");
-  // let uid = queryParams.get("uid");
+  let values;
+
   const { data, isLoading, error } = useFetchCMSItemsList(type);
+
+  if (isLoading) {
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Typography variant="h6" color="error">
+          Error fetching data
+        </Typography>
+      </div>
+    );
+  }
 
   return (
     <Container>
-      {data?.map((data, index) => {
-        return (
-          <CmsListItem data={data} key={`${type}-${index}`} index={index} />
+      {data?.map(({ away, home, date, location, opponent, time }, index) => {
+        values = [{ away, home, date, location, opponent, time }];
 
-          // <Box
-          //   key={type + index}
-          //   sx={{
-          //     display: "flex",
-          //     flexDirection: "row",
-          //     alignItems: "flex-start",
-          //     p: 2,
-          //     mb: 2,
-          //     border: "1px solid #ccc",
-          //     borderRadius: "8px",
-          //     boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          //     width: "100%",
-          //   }}
-          // >
-          //   <p>Away: {away === true ? "Yes" : "No"}</p>
-          //   <p>Home: {home === true ? "Yes" : "No"}</p>
-          //   <p>Date: {date}</p>
-          //   <p>Location: {location}</p>
-          //   <p>Opponent: {opponent}</p>
-          //   <p>Time: {time}</p>
-          // </Box>
-        );
+        return <CmsListItem values={values} key={`${type}-${index}`} indexz={index} />;
       })}
     </Container>
   );

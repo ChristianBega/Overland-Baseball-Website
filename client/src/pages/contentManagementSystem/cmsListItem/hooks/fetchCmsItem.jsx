@@ -24,6 +24,6 @@ export const useFetchCMSItemsList = (type) => {
     };
 
     fetchCMSItemsList();
-  }, []);
-  return { data, isLoading };
+  }, [type]);
+  return { data, isLoading, error };
 };

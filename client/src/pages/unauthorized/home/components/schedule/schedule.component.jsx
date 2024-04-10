@@ -7,7 +7,7 @@ import { useTheme } from "@emotion/react";
 
 // Components
 import ScheduleItem from "../scheduleItem/scheduleItem.component";
-import { useFetchCMSItemsList } from "../../../../contentManagementSystem/schedule/hooks/fetchCmsItem";
+import { useFetchCMSItemsList } from "../../../../contentManagementSystem/cmsListItem/hooks/fetchCmsItem";
 
 export default function Schedule() {
   const theme = useTheme();

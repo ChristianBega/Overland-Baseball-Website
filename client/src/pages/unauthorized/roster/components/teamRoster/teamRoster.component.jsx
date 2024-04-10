@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, Paper, Table, TableBody, TableContainer, Typography } from "@mui/material";
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component";
-import { useFetchCMSItemsList } from "../../../../contentManagementSystem/schedule/hooks/fetchCmsItem";
+import { useFetchCMSItemsList } from "../../../../contentManagementSystem/cmsListItem/hooks/fetchCmsItem";
 
 export default function TeamRoster({ currentTeam }) {
   const [currentRoster, setCurrentRoster] = useState([]);
