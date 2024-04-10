@@ -7,11 +7,11 @@ import { useTheme } from "@emotion/react";
 
 // Components
 import ScheduleItem from "../scheduleItem/scheduleItem.component";
-import { useFetchScheduleItemsList } from "../../../../contentManagementSystem/schedule/components/hooks/fetchCmsItem";
+import { useFetchCMSItemsList } from "../../../../contentManagementSystem/schedule/hooks/fetchCmsItem";
 
 export default function Schedule() {
   const theme = useTheme();
-  const { data, isLoading, error } = useFetchScheduleItemsList("schedule");
+  const { data, isLoading, error } = useFetchCMSItemsList("schedule");
   const sortByDate = (data) => data?.sort((a, b) => new Date(a.date) - new Date(b.date));
   // const sortedData = sortByDate([...data]);
   const sortedData = data ? sortByDate([...data]) : [];

@@ -1,7 +1,7 @@
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "./index.firebase";
 
-export const fetchCMSItem = async (type) => {
+export const fetchCMSItems = async (type) => {
   if (!type) {
     console.error("Type is required");
     return null;

@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Box, Typography } from "@mui/material";
-import { useFetchScheduleItemsList } from "../schedule/components/hooks/fetchCmsItem";
+import { useFetchCMSItemsList } from "../schedule/hooks/fetchCmsItem";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 const CMSRoster = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
-  const { data, isLoading, error } = useFetchScheduleItemsList(type);
+  const { data, isLoading, error } = useFetchCMSItemsList(type);
   if (isLoading) {
     return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
   }
@@ -21,7 +21,6 @@ const CMSRoster = () => {
   }
   return (
     <Container>
-      <h1>Hello World </h1>
       {data?.map(({ handed, height, home, name, number, position, role, userUid, weight, year, yearAbbr }, index) => {
         return (
           <Box

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Grid, Paper, Table, TableBody, TableContainer, Typography } from "@mui/material";
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component";
-import { useFetchScheduleItemsList } from "../../../../contentManagementSystem/schedule/components/hooks/fetchCmsItem";
+import { useFetchCMSItemsList } from "../../../../contentManagementSystem/schedule/hooks/fetchCmsItem";
 
 export default function TeamRoster({ currentTeam }) {
   const [currentRoster, setCurrentRoster] = useState([]);
-  const { data, isLoading, error } = useFetchScheduleItemsList("roster");
+  const { data, isLoading, error } = useFetchCMSItemsList("roster");
 
   useEffect(() => {
     if (currentTeam === "varsity" && !isLoading) {

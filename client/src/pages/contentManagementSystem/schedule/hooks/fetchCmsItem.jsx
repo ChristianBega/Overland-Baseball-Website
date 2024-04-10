@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { fetchCMSItem } from "../../../../../setup/utils/firebase/getItem";
+import { fetchCMSItems } from "../../../../setup/utils/firebase/getItem";
 
 // const = {
 //   schedu
 // }
-export const useFetchScheduleItemsList = (type) => {
+export const useFetchCMSItemsList = (type) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   useEffect(() => {
-    const fetchScheduleItemsList = async () => {
+    const fetchCMSItemsList = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetchCMSItem(type);
+        const response = await fetchCMSItems(type);
         setData(response);
         setIsLoading(false);
       } catch (error) {
@@ -23,7 +23,7 @@ export const useFetchScheduleItemsList = (type) => {
       }
     };
 
-    fetchScheduleItemsList();
+    fetchCMSItemsList();
   }, []);
   return { data, isLoading };
 };
