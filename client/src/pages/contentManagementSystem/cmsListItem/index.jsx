@@ -5,18 +5,20 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
+import { useModal } from "../../../setup/context/useCmsModal";
+import CmsModal from "../cmsModal";
 const CmsListItem = ({ values, indexz, id }) => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
-  let role = queryParams.get("role");
-  let uid = queryParams.get("uid");
+
+  const { requestDelete } = useModal();
   const handleDeleteCmsItem = (event) => {
-    alert(`Are you sure you'd like to delete ${event.currentTarget.id}`);
-    deleteCMSItem(uid, role, event.currentTarget.id, type);
+    requestDelete(event.currentTarget.id, type);
   };
 
   return (
     <Container sx={{ padding: "0 !important" }}>
+      <CmsModal />
       <Stack direction={"row"} alignItems={"center"} spacing={2}>
         <h1 style={{ margin: 0 }}>
           {type.charAt(0).toUpperCase() + type.slice(1)} Item #{indexz + 1}
