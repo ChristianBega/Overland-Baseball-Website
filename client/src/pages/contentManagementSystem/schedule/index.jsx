@@ -28,10 +28,10 @@ const CMSSchedule = () => {
 
   return (
     <Container>
-      {data?.map(({ away, home, date, location, opponent, time }, index) => {
+      {data?.map(({ away, home, date, location, opponent, time, id }, index) => {
         values = [{ away, home, date, location, opponent, time }];
 
-        return <CmsListItem values={values} key={`${type}-${index}`} indexz={index} />;
+        return <CmsListItem id={id} values={values} key={`${type}-${index}`} indexz={index} />;
       })}
     </Container>
   );
