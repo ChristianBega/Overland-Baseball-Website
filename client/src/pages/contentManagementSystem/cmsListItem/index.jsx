@@ -13,6 +13,7 @@ const CmsListItem = ({ values, indexz, id }) => {
 
   const { requestDelete } = useModal();
   const handleDeleteCmsItem = (event) => {
+    // values[indexz]
     requestDelete(event.currentTarget.id, type);
   };
 

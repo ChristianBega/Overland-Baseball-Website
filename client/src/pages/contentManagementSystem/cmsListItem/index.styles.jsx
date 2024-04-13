@@ -28,16 +28,4 @@ export const StyledCmsItem = styled(ListItem)(({ theme }) => ({
     backgroundColor: "#fff",
     paddingBlock: ".5rem",
   },
-  [theme.breakpoints.up("md")]: {
-    width: "100%",
-
-    "& span": {
-      display: "inline",
-    },
-  },
-  [theme.breakpoints.up("lg")]: {
-    "& span": {
-      display: "block",
-    },
-  },
 }));
