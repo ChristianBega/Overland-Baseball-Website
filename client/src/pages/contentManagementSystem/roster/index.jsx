@@ -1,12 +1,14 @@
 import React from "react";
 import { Container, Typography } from "@mui/material";
-import { useFetchCMSItemsList } from "../cmsListItem/hooks/fetchCmsItem";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { useQuery } from "@tanstack/react-query";
+
 import CmsListItem from "../cmsListItem";
+import { fetchCMSItems } from "../../../setup/utils/firebase/getItem";
 const CMSRoster = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
-  const { data, isLoading, error } = useFetchCMSItemsList(type);
+  const { data, isLoading, error } = useQuery({ queryKey: ["roster-cms"], queryFn: () => fetchCMSItems("roster") });
   let values = [{}];
 
   if (isLoading) {

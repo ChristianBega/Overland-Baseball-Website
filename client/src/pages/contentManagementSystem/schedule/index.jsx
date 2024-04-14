@@ -1,16 +1,17 @@
 import React from "react";
 import { Container, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import CmsListItem from "../cmsListItem";
-import { useFetchCMSItemsList } from "../cmsListItem/hooks/fetchCmsItem";
+import { fetchCMSItems } from "../../../setup/utils/firebase/getItem";
 
 const CMSSchedule = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   let values;
 
-  const { data, isLoading, error } = useFetchCMSItemsList(type);
+  const { data, isLoading, error } = useQuery({ queryKey: ["schedule-cms"], queryFn: () => fetchCMSItems("schedule") });
 
   if (isLoading) {
     return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;

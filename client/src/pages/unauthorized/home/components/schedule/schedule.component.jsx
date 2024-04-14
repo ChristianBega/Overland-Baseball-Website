@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 
 // Components
 import ScheduleItem from "../scheduleItem/scheduleItem.component";
-// import { useFetchCMSItemsList } from "../../../../contentManagementSystem/cmsListItem/hooks/fetchCmsItem";
 import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
 
 export default function Schedule() {
