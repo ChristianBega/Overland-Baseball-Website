@@ -6,9 +6,9 @@ import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./setup/context/authentication.context";
 import { UserProvider } from "./setup/context/user.context";
 import { ModalProvider } from "./setup/context/useCmsModal";
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  // <QueryClientProvider client={queryClient}>
   <React.StrictMode>
     <AuthProvider>
       <UserProvider>
@@ -18,6 +18,7 @@ root.render(
       </UserProvider>
     </AuthProvider>
   </React.StrictMode>
+  // </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
