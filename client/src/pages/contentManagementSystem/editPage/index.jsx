@@ -4,11 +4,9 @@ import { Container } from "@mui/material";
 import CMSSchedule from "../schedule";
 import { Link } from "react-router-dom";
 import CMSRoster from "../roster";
-import CmsListItem from "../cmsListItem";
 
 // import { bulkAddDocuments } from "../../../setup/utils/firebase/addItem";
 
-// add - home, away, userUid : "Hlmu2Cdx4lSuN8HiIiMq6YJBa8j2", role : "admin"
 const CMSEditPage = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
@@ -24,8 +22,6 @@ const CMSEditPage = () => {
     <Container>
       <Link to={`/cms-create?type=${type}&role=${role}&uid=${uid}`}>Add New {btnTypeName} Item</Link>
       {/* <button onClick={handleAddItems}>Bulk Add Schedule Items</button> */}
-      <button>Remove {btnTypeName} Item</button>
-      <button>Edit {btnTypeName} Item</button>
       {type === "schedule" && <CMSSchedule />}
       {type === "roster" && <CMSRoster />}
     </Container>

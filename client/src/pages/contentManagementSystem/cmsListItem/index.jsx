@@ -4,7 +4,6 @@ import { StyledCmsItem, StyledList } from "./index.styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
 import { useModal } from "../../../setup/context/useCmsModal";
 import CmsModal from "../cmsModal";
 const CmsListItem = ({ values, indexz, id }) => {
@@ -13,7 +12,6 @@ const CmsListItem = ({ values, indexz, id }) => {
 
   const { requestDelete } = useModal();
   const handleDeleteCmsItem = (event) => {
-    // values[indexz]
     requestDelete(event.currentTarget.id, type);
   };
 

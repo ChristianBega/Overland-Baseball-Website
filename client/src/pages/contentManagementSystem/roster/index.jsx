@@ -25,9 +25,9 @@ const CMSRoster = () => {
 
   return (
     <Container>
-      {data?.map(({ handed, height, name, number, position, weight, year, yearAbbr }, index) => {
+      {data?.map(({ handed, height, name, number, position, weight, year, yearAbbr, id }, index) => {
         values = [{ handed, height, name, number, position, weight, year, yearAbbr }];
-        return <CmsListItem indexz={index} values={values} key={`${type}-${index}`} />;
+        return <CmsListItem id={id} indexz={index} values={values} key={`${type}-${index}`} />;
       })}
     </Container>
   );
