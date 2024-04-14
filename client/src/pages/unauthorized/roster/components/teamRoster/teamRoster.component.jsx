@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Grid, Paper, Table, TableBody, TableContainer, Typography } from "@mui/material";
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component";
-import { useFetchCMSItemsList } from "../../../../contentManagementSystem/cmsListItem/hooks/fetchCmsItem";
+import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
+import { useQuery } from "@tanstack/react-query";
 
 export default function TeamRoster({ currentTeam }) {
   const [currentRoster, setCurrentRoster] = useState([]);
-  const { data, isLoading, error } = useFetchCMSItemsList("roster");
-
+  const { data, isLoading, error } = useQuery({ queryKey: ["roster"], queryFn: () => fetchCMSItems("roster") });
   useEffect(() => {
     if (currentTeam === "varsity" && !isLoading) {
       setCurrentRoster(data);
@@ -19,12 +19,7 @@ export default function TeamRoster({ currentTeam }) {
   }, [currentTeam, isLoading, data]);
 
   if (isLoading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        Loading...
-        {/* <CircularProgress /> */}
-      </div>
-    );
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
   }
 
   if (error) {

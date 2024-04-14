@@ -1,19 +1,18 @@
 import React from "react";
 import { Paper, Grid, TableContainer, Table, Typography, TableBody } from "@mui/material";
 import { useTheme } from "@emotion/react";
-
-// Schedule Data
-// import { scheduleRowData } from "../../../../../websiteData/home.data";
+import { useQuery } from "@tanstack/react-query";
 
 // Components
 import ScheduleItem from "../scheduleItem/scheduleItem.component";
-import { useFetchCMSItemsList } from "../../../../contentManagementSystem/cmsListItem/hooks/fetchCmsItem";
+// import { useFetchCMSItemsList } from "../../../../contentManagementSystem/cmsListItem/hooks/fetchCmsItem";
+import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
 
 export default function Schedule() {
   const theme = useTheme();
-  const { data, isLoading, error } = useFetchCMSItemsList("schedule");
   const sortByDate = (data) => data?.sort((a, b) => new Date(a.date) - new Date(b.date));
-  // const sortedData = sortByDate([...data]);
+  const { data, isLoading, error } = useQuery({ queryKey: ["schedule"], queryFn: () => fetchCMSItems("schedule") });
+
   const sortedData = data ? sortByDate([...data]) : [];
 
   if (isLoading) {
@@ -24,7 +23,7 @@ export default function Schedule() {
     return (
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <Typography variant="h6" color="error">
-          Error fetching data
+          Error fetching/caching the data
         </Typography>
       </div>
     );
