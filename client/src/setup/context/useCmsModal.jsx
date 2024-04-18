@@ -9,7 +9,6 @@ export const ModalProvider = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [cmsType, setCmsType] = useState(null);
-  console.log(isModalOpen);
 
   const requestDelete = (content, type) => {
     setModalContent(content);

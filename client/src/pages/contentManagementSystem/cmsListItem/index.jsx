@@ -10,14 +10,14 @@ const CmsListItem = ({ values, indexz, id }) => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
 
-  const { requestDelete } = useModal();
+  const { requestDelete, isModalOpen } = useModal();
   const handleDeleteCmsItem = (event) => {
     requestDelete(event.currentTarget.id, type);
   };
 
   return (
     <Container sx={{ padding: "0 !important" }}>
-      <CmsModal />
+      {isModalOpen && <CmsModal />}
       <Stack direction={"row"} alignItems={"center"} spacing={2}>
         <h1 style={{ margin: 0 }}>
           {type.charAt(0).toUpperCase() + type.slice(1)} Item #{indexz + 1}
