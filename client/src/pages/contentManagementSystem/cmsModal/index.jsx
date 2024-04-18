@@ -6,6 +6,7 @@ import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParam
 import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCMSItemById } from "../../../setup/utils/firebase/getItem";
+import LoadingErrorIndicator from "../../loadingErrorIndicator";
 
 const style = {
   position: "absolute",
@@ -52,22 +53,11 @@ const CmsModal = () => {
     deleteCMSItem(uid, role, modalContent, type);
     closeModal();
   };
-  if (isLoading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
-  }
-
-  if (error) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <Typography variant="h6" color="error">
-          Error fetching data
-        </Typography>
-      </div>
-    );
-  }
 
   return (
     <StyledModal open={isModalOpen} onClose={closeModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+      <LoadingErrorIndicator isLoading={isLoading} error={error} />
+
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h5" component="p" mb={2}>
           Are you sure you'd like to delete
