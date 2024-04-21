@@ -6,7 +6,7 @@ import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParam
 import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCMSItemById } from "../../../setup/utils/firebase/getItem";
-import LoadingErrorIndicator from "../../loadingErrorIndicator";
+// import LoadingErrorIndicator from "../../loadingErrorIndicator";
 
 const style = {
   position: "absolute",
@@ -32,7 +32,7 @@ const CmsModal = () => {
   let role = queryParams.get("role");
   let uid = queryParams.get("uid");
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [`${cmsType}-cms`],
     queryFn: () => fetchCMSItemById(cmsType, modalContent),
     staleTime: 600000,
@@ -56,7 +56,7 @@ const CmsModal = () => {
 
   return (
     <StyledModal open={isModalOpen} onClose={closeModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-      <LoadingErrorIndicator isLoading={isLoading} error={error} />
+      {/* <LoadingErrorIndicator isLoading={isLoading} error={error} /> */}
 
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h5" component="p" mb={2}>
@@ -72,7 +72,7 @@ const CmsModal = () => {
         </Stack>
         <Box id="modal-modal-description" sx={{ my: 4, display: "flex", flexDirection: "column", gap: ".75rem" }}>
           {matchedCachedItem &&
-            Object.entries(matchedCachedItem).map(([key, value]) => (
+            Object?.entries(matchedCachedItem)?.map(([key, value]) => (
               <div key={key}>
                 <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {value.toString()}
               </div>
