@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
@@ -6,24 +6,13 @@ import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParam
 import CmsListItem from "../cmsListItem";
 import LoadingErrorIndicator from "../../loadingErrorIndicator";
 import { fetchCMSItems } from "../../../setup/utils/firebase/getItem";
-import ListComponent from "../cmsListItem/demo";
-
+import { EditItemContext } from "../../../setup/context/edit.context";
 const CMSSchedule = () => {
+  const { data, isLoading, error } = useQuery({ queryKey: ["schedule-cms"], queryFn: () => fetchCMSItems("schedule") });
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   let values;
-  const [activeIndex, setActiveIndex] = useState(null); // State to track the clicked item
-  const [isActive, setIsActive] = useState(true);
-  const { data, isLoading, error } = useQuery({ queryKey: ["schedule-cms"], queryFn: () => fetchCMSItems("schedule") });
-
-  const handleItemClick = (index) => {
-    if (activeIndex === index) {
-      setIsActive(!isActive); // Toggle only if clicking the same item again
-    } else {
-      setActiveIndex(index);
-      setIsActive(true); // Set active to true when a new item is clicked
-    }
-  };
+  const { activeIndex, isActive, handleItemClick, setActiveIndex, setIsActive } = useContext(EditItemContext);
 
   return (
     <Container>

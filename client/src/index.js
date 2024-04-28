@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./setup/context/authentication.context";
 import { UserProvider } from "./setup/context/user.context";
 import { ModalProvider } from "./setup/context/useCmsModal";
+import { EditItemProvider } from "./setup/context/edit.context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <QueryClientProvider client={queryClient}>
@@ -13,7 +14,9 @@ root.render(
     <AuthProvider>
       <UserProvider>
         <ModalProvider>
-          <App />
+          <EditItemProvider>
+            <App />
+          </EditItemProvider>
         </ModalProvider>
       </UserProvider>
     </AuthProvider>
