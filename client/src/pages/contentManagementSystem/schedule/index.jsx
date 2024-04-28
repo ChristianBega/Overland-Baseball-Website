@@ -27,7 +27,7 @@ const CMSSchedule = () => {
 
   return (
     <Container>
-      <ListComponent />
+      {/* <ListComponent /> */}
       <LoadingErrorIndicator isLoading={isLoading} error={error} />
       {data?.map(({ away, home, date, location, opponent, time, id }, index) => {
         values = [{ away, home, date, location, opponent, time }];
@@ -40,7 +40,9 @@ const CMSSchedule = () => {
             indexz={index}
             activeIndex={activeIndex}
             isActive={activeIndex === index && isActive}
+            setIsActive={setIsActive}
             onItemClick={handleItemClick}
+            setActiveIndex={setActiveIndex}
           />
         );
       })}
