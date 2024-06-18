@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { Container, List, ListItem } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Container, Grid } from "@mui/material";
 import { UserContext } from "../../../setup/context/user.context";
+import DashboardSideBarMenu from "./components/dashboardSideBarMenu";
+import DashboardContentList from "./components/dashboardContentList";
 // import { uploadImageAndSaveMetadata } from "../../../setup/utils/firebase/uploadImage";
 const AdminDashboardPage = () => {
   const { currentUserProfile } = useContext(UserContext);
@@ -9,28 +10,10 @@ const AdminDashboardPage = () => {
   return (
     <Container>
       {currentUserProfile.role !== "admin" ? null : (
-        <>
-          <List>
-            <ListItem>
-              <Link to={`/cms-edit?type=schedule&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`}>
-                Click here to edit your: schedule
-              </Link>
-            </ListItem>
-            <ListItem>
-              Click here to edit your: events
-              {/* <Link to={`/cms-edit?type=events&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`}> */}
-              {/* </Link> */}
-            </ListItem>
-            <ListItem>Click here to edit your: quick links</ListItem>
-            <ListItem>
-              <Link to={`/cms-edit?type=roster&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`}>Click here to edit your: roster</Link>
-            </ListItem>
-
-            {/* <button id="bulk-add" onClick={handleAddBulkItems}>
-              click here to bulk add roster items
-            </button> */}
-          </List>
-        </>
+        <Grid container>
+          <DashboardSideBarMenu />
+          <DashboardContentList />
+        </Grid>
       )}
     </Container>
   );

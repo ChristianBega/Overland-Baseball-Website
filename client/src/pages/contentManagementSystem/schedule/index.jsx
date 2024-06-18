@@ -13,7 +13,7 @@ const CMSSchedule = () => {
   let type = queryParams.get("type");
   let values;
   const { activeIndex, isActive, handleItemClick, setActiveIndex, setIsActive } = useContext(EditItemContext);
-
+  console.log(data);
   return (
     <Container>
       {/* <ListComponent /> */}
