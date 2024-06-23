@@ -53,7 +53,7 @@ const DashboardSideBarMenu = () => {
   };
 
   return (
-    <Grid item xs={12} lg={8}>
+    <Grid item xs={12} lg={12}>
       <MenuWrapper id="menu-wrapper" onBlur={handleBlur} tabIndex={-1} ref={menuRef}>
         <Box>
           <SliderButton id="slider-btn" onClick={toggleMenu} theme={theme} isOpen={isOpen}>
