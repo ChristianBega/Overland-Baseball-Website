@@ -1,4 +1,4 @@
-import { Box, Button, Grid, List, ListItem, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useState, useRef } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -9,35 +9,8 @@ import EventIcon from "@mui/icons-material/Event";
 import TopicIcon from "@mui/icons-material/Topic";
 import LinkIcon from "@mui/icons-material/Link";
 import DateRangeIcon from "@mui/icons-material/DateRange";
-const containerVariants = {
-  open: {
-    height: "100%",
-    maxHeight: "400px",
-    y: 0,
-    opacity: 1,
-    transition: { easeInOut: [0.43, 0.13, 0.23, 0.96], duration: 0.6, stiffness: 90, mass: 0.5, damping: 10, type: "spring" },
-  },
-  closed: {
-    opacity: 0,
-    height: 0,
-    transition: { easeInOut: [0.43, 0.13, 0.23, 0.96], duration: 0.6, stiffness: 90, mass: 0.5, damping: 10, type: "spring" },
-  },
-};
-
-const itemVariants = {
-  initial: { opacity: 1, backgroundColor: "transparent" },
-  hover: {
-    opacity: 1,
-    backgroundColor: "#007f3b",
-    transition: { easeInOut: [0.43, 0.13, 0.23, 0.96], duration: 0.6, stiffness: 90, mass: 0.5, damping: 10, type: "spring" },
-  },
-  tap: {
-    opacity: 1,
-    backgroundColor: "#21c067",
-    transition: { easeInOut: [0.43, 0.13, 0.23, 0.96], duration: 0.6, stiffness: 90, mass: 0.5, damping: 10, type: "spring" },
-  },
-  faded: { opacity: 0.5, transition: { duration: 0.3 } },
-};
+import { containerVariants, itemVariants } from "../../../../../setup/framerAnimations/dashboardMenu";
+import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, MenuItem } from "./index.styles";
 
 const menuListItems = [
   { linkName: "Schedule", urlPath: "/", icon: <DateRangeIcon sx={{ fontSize: "20px" }} /> },
@@ -81,61 +54,22 @@ const DashboardSideBarMenu = () => {
 
   return (
     <Grid item xs={12} lg={8}>
-      <Box id="menu-wrapper" sx={{ position: "relative" }} onBlur={handleBlur} tabIndex={-1} ref={menuRef}>
+      <MenuWrapper id="menu-wrapper" onBlur={handleBlur} tabIndex={-1} ref={menuRef}>
         <Box>
-          <Button
-            id="slider-btn"
-            onClick={toggleMenu}
-            sx={{
-              width: "100%",
-              position: isOpen ? "absolute" : "relative",
-              top: 0,
-              right: 0,
-              zIndex: 1,
-              borderRadius: 0,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              backgroundColor: theme.palette.secondary.main,
-              "&:hover": {
-                backgroundColor: theme.palette.secondary.main,
-              },
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+          <SliderButton id="slider-btn" onClick={toggleMenu} theme={theme} isOpen={isOpen}>
+            <IconBox>
               {currentItem?.icon}
               <Typography component="span" sx={{ ml: "1rem", display: "flex", alignItems: "center" }}>
                 {currentItem ? <>{currentItem.linkName}</> : "Please Select An Option To Edit"}
               </Typography>
-            </Box>
+            </IconBox>
             <ArrowDropDownIcon sx={{ transform: isOpen ? "rotate(180deg)" : "none" }} />
-          </Button>
+          </SliderButton>
         </Box>
-        <Box
-          id="slider-menu"
-          component={motion.section}
-          initial={false}
-          animate={isOpen ? "open" : "closed"}
-          variants={containerVariants}
-          sx={{
-            width: "100%",
-            height: "100%",
-            textAlign: "center",
-            overflowY: "scroll",
-          }}
-        >
-          <List
-            sx={{
-              padding: 0,
-              marginTop: isOpen && "48px",
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              backgroundColor: theme.palette.primary.main,
-            }}
-          >
+        <SliderMenu id="slider-menu" initial={false} animate={isOpen ? "open" : "closed"} variants={containerVariants}>
+          <MenuList theme={theme} isOpen={isOpen}>
             {menuListItems.map((item, index) => (
-              <ListItem
+              <MenuItem
                 component={motion.div}
                 key={index}
                 onClick={() => handleSelectMenuItem(item)}
@@ -145,22 +79,14 @@ const DashboardSideBarMenu = () => {
                 animate={hoveredIndex === null ? "initial" : hoveredIndex === index ? "hover" : "faded"}
                 whileTap="tap"
                 variants={itemVariants}
-                sx={{
-                  color: "#fff",
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  padding: "1rem",
-                  cursor: "pointer",
-                }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", mr: "1rem" }}>{item.icon}</Box>
+                <IconBox sx={{ mr: "1rem" }}>{item.icon}</IconBox>
                 {item.linkName}
-              </ListItem>
+              </MenuItem>
             ))}
-          </List>
-        </Box>
-      </Box>
+          </MenuList>
+        </SliderMenu>
+      </MenuWrapper>
     </Grid>
   );
 };
