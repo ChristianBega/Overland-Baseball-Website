@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
 import LoadingErrorIndicator from "../../../../loadingErrorIndicator";
-import CmsListItem from "../../../../contentManagementSystem/cmsListItem";
+import CmsListItem from "../../../contentManagementSystem/cmsListItem";
 import { EditItemContext } from "../../../../../setup/context/edit.context";
 
 const DashboardContentList = ({ currentItem }) => {

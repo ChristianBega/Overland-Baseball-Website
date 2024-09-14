@@ -15,8 +15,8 @@ import AuthenticationPage from "../../../pages/unauthorized/authentication/authe
 import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwordReset.page";
 import Page404 from "../../../pages/404/404.page";
 import AdminDashboardPage from "../../../pages/authorized/adminDashboard";
-import CMSEditPage from "../../../pages/contentManagementSystem/editPage";
-import CMSCreateItemPage from "../../../pages/contentManagementSystem/createPage";
+import CMSEditPage from "../../../pages/authorized/contentManagementSystem/editPage";
+import CMSCreateItemPage from "../../../pages/authorized/contentManagementSystem/createPage";
 
 export default function AuthorizedRoutes() {
   const location = useLocation();

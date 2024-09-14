@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react";
 import { Container } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
 import CmsListItem from "../cmsListItem";
-import LoadingErrorIndicator from "../../loadingErrorIndicator";
-import { fetchCMSItems } from "../../../setup/utils/firebase/getItem";
-import { EditItemContext } from "../../../setup/context/edit.context";
+import LoadingErrorIndicator from "../../../loadingErrorIndicator";
+import { fetchCMSItems } from "../../../../setup/utils/firebase/getItem";
+import { EditItemContext } from "../../../../setup/context/edit.context";
 const CMSSchedule = () => {
   const { data, isLoading, error } = useQuery({ queryKey: ["schedule-cms"], queryFn: () => fetchCMSItems("schedule") });
   let queryParams = useUrlQueryParams();

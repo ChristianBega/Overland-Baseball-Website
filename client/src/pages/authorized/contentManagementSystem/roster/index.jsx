@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Container } from "@mui/material";
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
 import { useQuery } from "@tanstack/react-query";
 
 import CmsListItem from "../cmsListItem";
-import { fetchCMSItems } from "../../../setup/utils/firebase/getItem";
-import LoadingErrorIndicator from "../../loadingErrorIndicator";
-import { EditItemContext } from "../../../setup/context/edit.context";
+import { fetchCMSItems } from "../../../../setup/utils/firebase/getItem";
+import LoadingErrorIndicator from "../../../loadingErrorIndicator";
+import { EditItemContext } from "../../../../setup/context/edit.context";
 const CMSRoster = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");

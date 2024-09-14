@@ -5,14 +5,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import CloseIcon from "@mui/icons-material/Close";
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import { useModal } from "../../../setup/context/useCmsModal";
+import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
+import { useModal } from "../../../../setup/context/useCmsModal";
 import CmsModal from "../cmsModal";
-import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
+import { updateCMSItem } from "../../../../setup/utils/firebase/editItem";
 import { Controller, useForm } from "react-hook-form";
 import { useTheme } from "@mui/material/styles";
-import ScheduleItem from "../../unauthorized/home/components/scheduleItem/scheduleItem.component";
-import TeamRoosterItem from "../../unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
+import ScheduleItem from "../../../unauthorized/home/components/scheduleItem/scheduleItem.component";
+import TeamRoosterItem from "../../../unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 
 const CmsListItem = ({ values, indexz, id, activeIndex, isActive, onItemClick, setIsActive, setActiveIndex }) => {
   let queryParams = useUrlQueryParams();

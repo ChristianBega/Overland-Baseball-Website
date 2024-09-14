@@ -1,7 +1,7 @@
 import React from "react";
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
 import { Container } from "@mui/material";
-import CMSSchedule from "../schedule";
+import CMSSchedule from "../../contentManagementSystem/schedule";
 import { Link } from "react-router-dom";
 import CMSRoster from "../roster";
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Typography, Box, Stack } from "@mui/material";
 import { styled } from "@mui/material";
-import { useModal } from "../../../setup/context/useCmsModal";
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
+import { useModal } from "../../../../setup/context/useCmsModal";
+import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
+import { deleteCMSItem } from "../../../../setup/utils/firebase/deleteItem";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCMSItemById } from "../../../setup/utils/firebase/getItem";
+import { fetchCMSItemById } from "../../../../setup/utils/firebase/getItem";
 // import LoadingErrorIndicator from "../../loadingErrorIndicator";
 
 const style = {
