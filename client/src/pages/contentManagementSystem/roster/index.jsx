@@ -11,6 +11,7 @@ const CMSRoster = () => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   const { data, isLoading, error } = useQuery({ queryKey: ["roster-cms"], queryFn: () => fetchCMSItems("roster") });
+
   const { activeIndex, isActive, handleItemClick, setActiveIndex, setIsActive } = useContext(EditItemContext);
   let values = [{}];
 

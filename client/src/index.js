@@ -7,17 +7,20 @@ import { AuthProvider } from "./setup/context/authentication.context";
 import { UserProvider } from "./setup/context/user.context";
 import { ModalProvider } from "./setup/context/useCmsModal";
 import { EditItemProvider } from "./setup/context/edit.context";
+import { CmsProvider } from "./setup/context/cms.context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <QueryClientProvider client={queryClient}>
   <React.StrictMode>
     <AuthProvider>
       <UserProvider>
-        <ModalProvider>
-          <EditItemProvider>
-            <App />
-          </EditItemProvider>
-        </ModalProvider>
+        <CmsProvider>
+          <ModalProvider>
+            <EditItemProvider>
+              <App />
+            </EditItemProvider>
+          </ModalProvider>
+        </CmsProvider>
       </UserProvider>
     </AuthProvider>
   </React.StrictMode>

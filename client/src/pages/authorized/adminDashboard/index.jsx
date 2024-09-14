@@ -1,21 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import { UserContext } from "../../../setup/context/user.context";
 import DashboardSideBarMenu from "./components/dashboardSideBarMenu";
 import DashboardContentList from "./components/dashboardContentList";
 import { useTheme } from "@emotion/react";
+import { CmsContext } from "../../../setup/context/cms.context";
+import { useNavigate } from "react-router-dom";
 // import { uploadImageAndSaveMetadata } from "../../../setup/utils/firebase/uploadImage";
 const AdminDashboardPage = () => {
   const theme = useTheme();
-  const { currentUserProfile } = useContext(UserContext);
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
+  const { currentUserProfile } = useContext(UserContext);
+  const { currentItem } = useContext(CmsContext);
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  console.log("line 17", currentItem);
+  useEffect(() => {
+    if (currentItem) {
+      const newUrl = `/dashboard?type=${currentItem.linkName}&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`;
+      navigate(newUrl);
+    }
+  }, [currentItem, currentUserProfile.role, currentUserProfile.uid]);
+
+  //  <Link to={`/cms-edit?type=schedule&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`}>Click here to edit your: schedule</Link>;
+
+  // 1. Access currentItem state
+  // 2. pass currentItem state to contentList
+  // 3. contentList component runs a useQuery/fetch for appropriate data
   return (
     <Container sx={{ display: "flex", justifyContent: " center" }}>
       {currentUserProfile.role !== "admin" ? null : (
-        <Grid id="dashboard-main-grid" container maxWidth="lg" rowSpacing={isMobile ? 12 : 32}>
+        <Grid id="dashboard-main-grid" container maxWidth="lg">
           <DashboardSideBarMenu />
-          <DashboardContentList />
+          <DashboardContentList currentItem={currentItem} />
         </Grid>
       )}
     </Container>

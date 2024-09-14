@@ -1,13 +1,14 @@
 import styled from "@emotion/styled";
-import { ListItem, List, Container } from "@mui/material";
+import { ListItem, List, Container, Divider, Box } from "@mui/material";
 
 export const StyledList = styled(List)(({ theme, itemIndex }) => ({
-  display: "flex",
-  justifyContent: "center",
-  flexWrap: "wrap",
-  [theme.breakpoints.up("lg")]: {
-    flexWrap: "nowrap",
-  },
+  // display: "flex",
+  // justifyContent: "center",
+  // flexWrap: "wrap",
+  // [theme.breakpoints.up("lg")]: {
+  //   flexWrap: "nowrap",
+  // },
+  border: "1px solid red",
 }));
 
 export const StyledCmsItem = styled(ListItem)(({ theme }) => ({

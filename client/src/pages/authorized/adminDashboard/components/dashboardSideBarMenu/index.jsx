@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useTheme } from "@emotion/react";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
@@ -11,6 +11,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import { containerVariants, itemVariants } from "../../../../../setup/framerAnimations/dashboardMenu";
 import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, MenuItem } from "./index.styles";
+import { CmsContext } from "../../../../../setup/context/cms.context";
 
 const menuListItems = [
   { linkName: "Schedule", urlPath: "/", icon: <DateRangeIcon sx={{ fontSize: "20px" }} /> },
@@ -26,8 +27,8 @@ const DashboardSideBarMenu = () => {
   const menuRef = useRef();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const { currentItem, setCurrentItem } = useContext(CmsContext);
 
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);
