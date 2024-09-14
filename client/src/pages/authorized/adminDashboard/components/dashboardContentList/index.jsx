@@ -7,8 +7,14 @@ import CmsListItem from "../../../contentManagementSystem/cmsListItem";
 import { EditItemContext } from "../../../../../setup/context/edit.context";
 
 const DashboardContentList = ({ currentItem }) => {
+  // if currentItem is not present then we shouldn't run this queryKey function ....
   const queryKey = `${currentItem?.linkName.toLowerCase()}-cms`;
-  const { data, isLoading, error } = useQuery({ queryKey: [queryKey], queryFn: () => fetchCMSItems(currentItem.linkName.toLowerCase()) });
+  const { data, isLoading, error } = useQuery({
+    queryKey: [queryKey],
+    queryFn: () => fetchCMSItems(currentItem?.linkName?.toLowerCase()), // Ensure currentItem and linkName are defined
+    enabled: !!currentItem?.linkName, // Prevent the query from running if currentItem or linkName is undefined/null
+  });
+
   const { activeIndex, isActive, handleItemClick, setActiveIndex, setIsActive } = useContext(EditItemContext);
   let values = [{}];
   return (
@@ -18,19 +24,22 @@ const DashboardContentList = ({ currentItem }) => {
         <p>Search...</p>
         <div>
           <LoadingErrorIndicator isLoading={isLoading} error={error} />
-          {data?.slice(0, 1).map((item, index) => (
-            <CmsListItem
-              id={item.id}
-              indexz={index}
-              values={[item]}
-              key={`${currentItem}-${index}`}
-              activeIndex={activeIndex}
-              isActive={activeIndex === index && isActive}
-              setIsActive={setIsActive}
-              onItemClick={handleItemClick}
-              setActiveIndex={setActiveIndex}
-            />
-          ))}
+          {data &&
+            data
+              ?.slice(0, 1)
+              .map((item, index) => (
+                <CmsListItem
+                  id={item.id}
+                  indexz={index}
+                  values={[item]}
+                  key={`${currentItem}-${index}`}
+                  activeIndex={activeIndex}
+                  isActive={activeIndex === index && isActive}
+                  setIsActive={setIsActive}
+                  onItemClick={handleItemClick}
+                  setActiveIndex={setActiveIndex}
+                />
+              ))}
         </div>
       </Box>
     </Grid>

@@ -23,7 +23,7 @@ const CmsListItem = ({ values, indexz, id, activeIndex, isActive, onItemClick, s
   const isDesktop = useMediaQuery(theme.breakpoints.down("lg"));
   const { requestDelete, isModalOpen } = useModal();
 
-  console.log("Values:", values);
+  // console.log("Values:", values);
 
   const {
     control,
