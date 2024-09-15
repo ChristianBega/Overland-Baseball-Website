@@ -4,14 +4,17 @@ import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryPa
 import ScheduleItem from "../../../unauthorized/home/components/scheduleItem/scheduleItem.component";
 import TeamRoosterItem from "../../../unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 import withEditableFields from "./components/editable";
-import { CmsEditItemContext } from "../../../../setup/context/cmsEdit.context";
+import { CmsEditItemContext, CmsEditItemProvider } from "../../../../setup/context/cmsEdit.context";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import CloseIcon from "@mui/icons-material/Close";
+import { deleteCMSItem } from "../../../../setup/utils/firebase/deleteItem";
+import { UserContext } from "../../../../setup/context/user.context";
 
 const CmsListItem = ({ values, id }) => {
+  const { currentUserProfile } = useContext(UserContext);
   const { editableItems, toggleEditMode, removeEditableItem } = useContext(CmsEditItemContext);
   const queryParams = useUrlQueryParams();
   const type = queryParams.get("type");
@@ -34,7 +37,13 @@ const CmsListItem = ({ values, id }) => {
     }
   };
 
+  const handleDeleteItem = async () => {
+    const { uid, role } = currentUserProfile;
+    deleteCMSItem(uid, role, id, type);
+  };
+
   return (
+    // <CmsEditItemProvider>
     <ListItem
       sx={{
         display: "flex",
@@ -45,7 +54,12 @@ const CmsListItem = ({ values, id }) => {
         {/* Save and cancel buttons */}
         {editableItems[id] && (
           <>
-            <Button color="error" sx={{ border: "1px solid red", height: "70px", padding: 0, backgroundColor: "red" }} type="submit">
+            <Button
+              onClick={handleDeleteItem}
+              color="error"
+              sx={{ border: "1px solid red", height: "70px", padding: 0, backgroundColor: "red" }}
+              type="submit"
+            >
               <DeleteIcon />
             </Button>
           </>
@@ -72,6 +86,7 @@ const CmsListItem = ({ values, id }) => {
         )}
       </Box>
     </ListItem>
+    // </CmsEditItemProvider>
   );
 };
 

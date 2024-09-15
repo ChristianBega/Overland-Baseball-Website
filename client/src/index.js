@@ -17,9 +17,9 @@ root.render(
       <UserProvider>
         <CmsProvider>
           <ModalProvider>
-            <CmsEditItemProvider>
+            {/* <CmsEditItemProvider> */}
               <App />
-            </CmsEditItemProvider>
+            {/* </CmsEditItemProvider> */}
           </ModalProvider>
         </CmsProvider>
       </UserProvider>

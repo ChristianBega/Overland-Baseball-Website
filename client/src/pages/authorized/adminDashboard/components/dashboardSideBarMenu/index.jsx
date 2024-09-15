@@ -14,12 +14,12 @@ import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, MenuItem } fr
 import { CmsContext } from "../../../../../setup/context/cms.context";
 
 const menuListItems = [
-  { linkName: "Schedule", urlPath: "/", icon: <DateRangeIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "Roster", urlPath: "/", icon: <FormatListNumberedIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "Events", urlPath: "/", icon: <EventIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "Documents", urlPath: "/", icon: <TopicIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "Sponsors", urlPath: "/", icon: <VolunteerActivismIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "Quick Links", urlPath: "/", icon: <LinkIcon sx={{ fontSize: "20px" }} /> },
+  { linkName: "schedule", urlPath: "/", icon: <DateRangeIcon sx={{ fontSize: "20px" }} /> },
+  { linkName: "roster", urlPath: "/", icon: <FormatListNumberedIcon sx={{ fontSize: "20px" }} /> },
+  { linkName: "events", urlPath: "/", icon: <EventIcon sx={{ fontSize: "20px" }} /> },
+  { linkName: "documents", urlPath: "/", icon: <TopicIcon sx={{ fontSize: "20px" }} /> },
+  { linkName: "sponsors", urlPath: "/", icon: <VolunteerActivismIcon sx={{ fontSize: "20px" }} /> },
+  { linkName: "quick links", urlPath: "/", icon: <LinkIcon sx={{ fontSize: "20px" }} /> },
 ];
 
 const DashboardSideBarMenu = () => {

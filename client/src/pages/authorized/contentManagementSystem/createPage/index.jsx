@@ -11,8 +11,8 @@ const CMSCreateItemPage = () => {
   let uid = queryParams.get("uid");
   return (
     <Container>
-      {type === "schedule" && <CreateScheduleItemForm />}
-      {type === "roster" && <CreateRosterItemForm />}
+      {type?.toLowerCase() === "schedule" && <CreateScheduleItemForm />}
+      {type?.toLowerCase() === "roster" && <CreateRosterItemForm />}
     </Container>
   );
 };

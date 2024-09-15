@@ -43,7 +43,8 @@ const CreateScheduleItemForm = () => {
       if (result.success === true) {
         setStatus(true);
         reset();
-        navigate(`/cms-edit?type=${type}&role=${role}&uid=${uid}`);
+        navigate("/dashboard");
+        // navigate(`/cms-edit?type=${type}&role=${role}&uid=${uid}`);
       }
     } catch (error) {
       console.error("Failed to add schedule item:", error);

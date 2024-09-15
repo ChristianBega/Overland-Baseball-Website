@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 export const addCMSItem = async (userUid, role, data, type) => {
   if (!userUid || role !== "admin") return;
   const docId = uuidv4();
+  console.log(type);
   const cmsItemDocRef = doc(db, `${type}`, docId);
   try {
     await setDoc(cmsItemDocRef, {

@@ -8,6 +8,7 @@ export const CmsEditItemContext = createContext({
 export const CmsEditItemProvider = ({ children }) => {
   const [editableItems, setEditableItems] = useState({});
   const toggleEditMode = (itemId) => {
+    console.log(itemId);
     setEditableItems((prevEditableItems) => ({
       ...prevEditableItems,
       [itemId]: !prevEditableItems[itemId],

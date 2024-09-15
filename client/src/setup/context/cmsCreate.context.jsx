@@ -1,31 +1,20 @@
 import React, { createContext, useState } from "react";
 
-export const CmsCreateItemContext = createContext({
-  // editableItems: {},
-  // toggleEditMode: () => {},
-});
+export const CmsCreateItemContext = createContext({});
 
 export const CmsCreateItemProvider = ({ children }) => {
-  // const [editableItems, setCreateableItems] = useState({});
-  // console.log(editableItems);
-  // const toggleCreateMode = (itemId) => {
-  //   setCreateableItems((prevCreateableItems) => ({
-  //     ...prevCreateableItems,
-  //     [itemId]: !prevCreateableItems[itemId],
-  //   }));
-  // };
-  // const removeCreateableItem = (itemId) => {
-  //   setCreateableItems((prevCreateableItems) => {
-  //     const newState = { ...prevCreateableItems };
-  //     delete newState[itemId];
-  //     return newState;
-  //   });
-  // };
+  const [newItem, setNewItem] = useState(null);
+
+  const createItem = (itemData) => {
+    // Here you would typically make an API call to create the item
+    // For now, we'll just set it in the state
+    setNewItem(itemData);
+    console.log("New item created:", itemData);
+  };
 
   const contextValue = {
-    // editableItems,
-    // toggleCreateMode,
-    // removeCreateableItem,
+    newItem,
+    createItem,
   };
 
   return <CmsCreateItemContext.Provider value={contextValue}>{children}</CmsCreateItemContext.Provider>;
