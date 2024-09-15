@@ -8,6 +8,7 @@ import { UserProvider } from "./setup/context/user.context";
 import { ModalProvider } from "./setup/context/useCmsModal";
 import { EditItemProvider } from "./setup/context/edit.context";
 import { CmsProvider } from "./setup/context/cms.context";
+import { CmsEditItemProvider } from "./setup/context/cmsEdit.context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <QueryClientProvider client={queryClient}>
@@ -16,9 +17,9 @@ root.render(
       <UserProvider>
         <CmsProvider>
           <ModalProvider>
-            <EditItemProvider>
+            <CmsEditItemProvider>
               <App />
-            </EditItemProvider>
+            </CmsEditItemProvider>
           </ModalProvider>
         </CmsProvider>
       </UserProvider>

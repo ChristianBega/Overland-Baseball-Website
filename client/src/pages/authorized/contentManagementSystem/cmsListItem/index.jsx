@@ -72,33 +72,31 @@ const CmsListItem = ({ values, indexz, id, activeIndex, isActive, onItemClick, s
             {type.charAt(0).toUpperCase() + type.slice(1)} Item #{indexz + 1} | ID : {id}
           </Typography>
           </Stack> */}
-        <List>
-          <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
-            <input type="checkbox"></input>
-            {renderContent()}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              {isActive ? (
-                <>
-                  <Button sx={{ border: "1px solid red", padding: 0 }} type="submit">
-                    <SaveAsIcon />
-                  </Button>
-                  <Button sx={{ border: "1px solid red", padding: 0 }}>
-                    <CloseIcon onClick={handleCancelEditCmsItem} />
-                  </Button>
-                </>
-              ) : (
-                <Button sx={{ border: "1px solid red", padding: 0 }} onClick={() => onItemClick(indexz)}>
-                  <EditIcon />
+        <ListItem sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
+          <input type="checkbox"></input>
+          {renderContent()}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {isActive ? (
+              <>
+                <Button sx={{ border: "1px solid red", padding: 0 }} type="submit">
+                  <SaveAsIcon />
                 </Button>
-              )}
-              {!isActive && (
-                <Button sx={{ border: "1px solid red", padding: 0 }} id={id} onClick={handleDeleteCmsItem}>
-                  <DeleteIcon />
+                <Button sx={{ border: "1px solid red", padding: 0 }}>
+                  <CloseIcon onClick={handleCancelEditCmsItem} />
                 </Button>
-              )}
-            </Box>
-          </ListItem>
-        </List>
+              </>
+            ) : (
+              <Button sx={{ border: "1px solid red", padding: 0 }} onClick={() => onItemClick(indexz)}>
+                <EditIcon />
+              </Button>
+            )}
+            {!isActive && (
+              <Button sx={{ border: "1px solid red", padding: 0 }} id={id} onClick={handleDeleteCmsItem}>
+                <DeleteIcon />
+              </Button>
+            )}
+          </Box>
+        </ListItem>
       </form>
     </StyledCmsItemContainer>
   );

@@ -37,7 +37,7 @@ export default function Schedule() {
         <Table aria-label="schedule table">
           <TableBody>
             {sortedData?.map((gameData, index) => (
-              <ScheduleItem gameData={gameData} key={index} />
+              <ScheduleItem data={gameData} key={index} />
             ))}
           </TableBody>
         </Table>

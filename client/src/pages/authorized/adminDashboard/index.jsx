@@ -14,7 +14,7 @@ const AdminDashboardPage = () => {
   const { currentUserProfile } = useContext(UserContext);
   const { currentItem } = useContext(CmsContext);
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  console.log("line 17", currentItem);
+  // console.log("line 17", currentItem);
   useEffect(() => {
     if (currentItem) {
       const newUrl = `/dashboard?type=${currentItem.linkName}&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`;
