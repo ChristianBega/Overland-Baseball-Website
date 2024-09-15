@@ -4,6 +4,8 @@ import { useTheme } from "@mui/material";
 
 // Assets
 import overland from "../../../../../assets/homePage/teamLogos/overland.webp";
+import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
+import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(even)": {
@@ -12,32 +14,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toISOString().split("T")[0]; // Returns 'YYYY-MM-DD'
-};
-
-// Helper function to format the time to HH:MM
-const convertTo24HourFormat = (timeString) => {
-  const [time, modifier] = timeString.split(" "); // Split the time and AM/PM part
-  let [hours, minutes] = time.split(":"); // Split hours and minutes
-
-  // Convert hours from string to integer for calculation
-  hours = parseInt(hours, 10);
-
-  if (modifier === "PM" && hours !== 12) {
-    hours += 12; // Convert PM hours, except for 12 PM
-  } else if (modifier === "AM" && hours === 12) {
-    hours = 0; // Convert 12 AM to 00
-  }
-
-  // Convert hours back to a string and pad with leading zero if necessary
-  return `${String(hours).padStart(2, "0")}:${minutes}`; // Return in HH:MM format
-};
-
 export default function ScheduleItem({ data, isEditable, editableData, handleChange }) {
   const theme = useTheme();
-  // time - key on gameData object
   const { date, time, location, opponent, opponentLogo } = data || editableData;
 
   return (
@@ -76,8 +54,6 @@ export default function ScheduleItem({ data, isEditable, editableData, handleCha
         }}
       >
         <Stack>
-          {/* <Typography component="span">Opponent: {opponent}</Typography>
-          <Typography component="span">Location: {location}</Typography> */}
           {isEditable ? (
             <input onChange={handleChange("opponent")} type="text" value={opponent}></input>
           ) : (
