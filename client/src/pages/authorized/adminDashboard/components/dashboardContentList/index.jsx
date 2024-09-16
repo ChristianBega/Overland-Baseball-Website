@@ -28,7 +28,11 @@ const DashboardContentList = ({ currentItem }) => {
             <div>
               <LoadingErrorIndicator isLoading={isLoading} error={error} />
               <List>
-                {data && data.map((item, index) => <CmsListItem id={item.id} indexz={index} values={[item]} key={`${currentItem}-${index}`} />)}
+                {data ? (
+                  data.map((item, index) => <CmsListItem id={item.id} indexz={index} values={[item]} key={`${currentItem}-${index}`} />)
+                ) : (
+                  <p>No data</p>
+                )}
               </List>
             </div>
           </Box>

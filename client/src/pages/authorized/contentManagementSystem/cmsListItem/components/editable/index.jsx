@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { CmsEditItemContext } from "../../../../../../setup/context/cmsEdit.context";
 
 const withEditableFields = (WrappedComponent) => {
   return ({ data, isEditable, ...props }) => {
@@ -35,3 +36,30 @@ const withEditableFields = (WrappedComponent) => {
 };
 
 export default withEditableFields;
+
+// import React, { useContext, useEffect } from "react";
+// import { CmsEditItemContext } from "../../../../../../setup/context/cmsEdit.context";
+
+// const withEditableFields = (WrappedComponent) => {
+//   return ({ data, isEditable, ...props }) => {
+//     console.log(data);
+//     const { editableData, updateEditableData, currentEditingItem } = useContext(CmsEditItemContext);
+
+//     useEffect(() => {
+//       if (isEditable && currentEditingItem) {
+//         // Initialize editableData when entering edit mode
+//         Object.keys(data).forEach((key) => {
+//           updateEditableData(key, data[key]);
+//         });
+//       }
+//     }, [isEditable, currentEditingItem, data, updateEditableData]);
+
+//     const handleChange = (field) => (e) => {
+//       updateEditableData(field, e.target.value); // Use context method
+//     };
+
+//     return <WrappedComponent {...props} isEditable={isEditable} editableData={editableData} handleChange={handleChange} />;
+//   };
+// };
+
+// export default withEditableFields;
