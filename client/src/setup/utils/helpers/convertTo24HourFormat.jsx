@@ -1,4 +1,5 @@
 export const convertTo24HourFormat = (timeString) => {
+  if (!timeString) return;
   const [time, modifier] = timeString.split(" "); // Split the time and AM/PM part
   let [hours, minutes] = time.split(":"); // Split hours and minutes
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 const LoadingErrorIndicator = ({ isLoading, error }) => {
-  console.log("line 4", error);
+  // console.log("line 4", error);
   return (
     <>
       {isLoading && <div>Loading...</div>}

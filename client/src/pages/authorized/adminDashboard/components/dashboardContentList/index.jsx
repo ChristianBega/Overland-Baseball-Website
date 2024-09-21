@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
 import LoadingErrorIndicator from "../../../../loadingErrorIndicator";
-import CmsListItem from "../../../contentManagementSystem/cmsListItem/new";
+import CmsListItem from "../../../contentManagementSystem/cmsListItem/cmsListItem";
 import DashboardOptions from "../dashboardOptions";
 import { CmsCreateItemProvider } from "../../../../../setup/context/cmsCreate.context";
 import { CmsEditItemProvider } from "../../../../../setup/context/cmsEdit.context";

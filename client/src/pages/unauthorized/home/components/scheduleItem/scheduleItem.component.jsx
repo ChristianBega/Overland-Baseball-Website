@@ -16,9 +16,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function ScheduleItem({ data, isEditable, editableData, handleChange }) {
   const theme = useTheme();
-  // time - key on gameData object
-  const { date, time, location, opponent, opponentLogo } = data || editableData;
-
+  const currentData = isEditable ? editableData : data;
+  const { date, time, location, opponent, opponentLogo } = currentData;
   return (
     <StyledTableRow>
       <TableCell
