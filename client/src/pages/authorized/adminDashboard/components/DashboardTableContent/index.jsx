@@ -1,7 +1,5 @@
+import React from "react";
 import { Box, Grid, Paper, Table, TableBody, TableContainer } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchCMSItems, subscribeToCMSItems } from "../../../../../setup/utils/firebase/getItem"; // Import modularized functions
 import LoadingErrorIndicator from "../../../../loadingErrorIndicator";
 import CmsListItem from "../../../contentManagementSystem/cmsListItem/cmsListItem";
 import DashboardOptions from "../dashboardOptions";

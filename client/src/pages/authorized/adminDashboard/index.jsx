@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Container, Grid, useMediaQuery } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { UserContext } from "../../../setup/context/user.context";
 import DashboardSideBarMenu from "./components/dashboardSideBarMenu";
 import DashboardTableContent from "./components/DashboardTableContent";
@@ -13,7 +13,7 @@ const AdminDashboardPage = () => {
 
   const { currentUserProfile } = useContext(UserContext);
   const { currentItem } = useContext(CmsContext);
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   // console.log("line 17", currentItem);
   useEffect(() => {
     if (currentItem) {
