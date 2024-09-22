@@ -1,0 +1,74 @@
+[
+  {
+    "name": "name",
+    "label": "Full Name",
+    "placeholder": "Enter name here...",
+    "type": "text",
+    "rules": {
+      "required": "Name is required *"
+    }
+  },
+  {
+    "name": "number",
+    "label": "Players Jersey Number",
+    "placeholder": "Enter number here...",
+    "type": "text",
+    "rules": {
+      "required": "Number is required *"
+    }
+  },
+  {
+    "name": "position",
+    "label": "Position",
+    "placeholder": "Enter position here...",
+    "type": "text",
+    "rules": {
+      "required": "Position is required *"
+    }
+  },
+  {
+    "name": "height",
+    "label": "Height",
+    "placeholder": "Enter height here...",
+    "type": "text",
+    "rules": {
+      "required": "Height is required *"
+    }
+  },
+  {
+    "name": "weight",
+    "label": "Weight",
+    "placeholder": "Enter weight here...",
+    "type": "text",
+    "rules": {
+      "required": "Weight is required *"
+    }
+  },
+  {
+    "name": "handed",
+    "label": "Handed",
+    "placeholder": "Enter handed (Left or Right) here...",
+    "type": "text",
+    "rules": {
+      "required": "Handed is required *"
+    }
+  },
+  {
+    "name": "year",
+    "label": "Year",
+    "placeholder": "Enter year here...",
+    "type": "text",
+    "rules": {
+      "required": "Year is required *"
+    }
+  },
+  {
+    "name": "yearAbbr",
+    "label": "Year Abbreviation",
+    "placeholder": "Enter year abbreviation (Sr. Jr. So. Fr.) here...",
+    "type": "text",
+    "rules": {
+      "required": "Year abbreviation is required *"
+    }
+  }
+]

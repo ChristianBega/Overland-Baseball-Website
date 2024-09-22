@@ -1,0 +1,62 @@
+[
+  {
+    "name": "date",
+    "label": "Date",
+    "placeholder": "Enter date here...",
+    "type": "date",
+    "rules": {
+      "required": "Date is required *"
+    }
+  },
+  {
+    "name": "time",
+    "label": "Time",
+    "placeholder": "Enter time here...",
+    "type": "time",
+    "rules": {
+      "required": "Time is required *"
+    }
+  },
+  {
+    "name": "opponent",
+    "label": "Opponent",
+    "placeholder": "Enter opponent here...",
+    "type": "text",
+    "rules": {
+      "required": "Opponent name is required *"
+    }
+  },
+  {
+    "name": "opponentIcon",
+    "label": "Opponent Icon URL",
+    "placeholder": "Enter opponent icon URL here...",
+    "type": "text",
+    "rules": {
+      "pattern": {
+        "value": "^(http[s]?:\\/\\/)?([^\\/\\s]+\\/)(.*)$",
+        "message": "Invalid URL *"
+      }
+    }
+  },
+  {
+    "name": "location",
+    "label": "Location",
+    "placeholder": "Enter location here...",
+    "type": "text",
+    "rules": {
+      "required": "Location is required *"
+    }
+  },
+  {
+    "name": "home",
+    "label": "Home Game",
+    "type": "checkbox",
+    "rules": {}
+  },
+  {
+    "name": "away",
+    "label": "Away Game",
+    "type": "checkbox",
+    "rules": {}
+  }
+]

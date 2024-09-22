@@ -1,78 +1,42 @@
-import { Button, Modal, Box } from "@mui/material";
-// import { CmsCreateItemContext } from "../../../../../setup/context/cmsCreate.context";
-import { useState } from "react";
-import CMSCreateItemPage from "../../../contentManagementSystem/createPage";
+import { Button } from "@mui/material";
+import { useModal } from "../../../../../setup/context/modal.context";
+import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQueryParams";
+import CmsForm from "../../../contentManagementSystem/cmsForm/cmsForm";
 
 const DashboardOptions = () => {
-  const [currentSelectedOption, setCurrentSelectedOption] = useState(null); // this can be : create, bulkAdd, delete
-  // const { createItem } = useContext(CmsCreateItemContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleToggleModal = () => setIsModalOpen(!isModalOpen);
-
-  // const handleCreate = () => {
-  //   const newItemData = { name: "New Item", description: "This is a new item" };
-  //   createItem(newItemData);
-  // };
+  // const [currentSelectedOption, setCurrentSelectedOption] = useState(null);
+  const { openModal } = useModal();
+  let queryParams = useUrlQueryParams();
+  let type = queryParams.get("type");
 
   const handleCreate = () => {
-    setCurrentSelectedOption("create");
-    handleToggleModal();
+    // setCurrentSelectedOption("create");
+    openModal(<CmsForm formType="create" />);
   };
 
   const handleBulkAdd = () => {
-    setCurrentSelectedOption("bulkAdd");
-    handleToggleModal();
+    // setCurrentSelectedOption("bulkAdd");
+    openModal(<CmsForm formType="bulkAdd" />);
   };
 
   const handleDelete = () => {
-    setCurrentSelectedOption("delete");
-    handleToggleModal();
+    // setCurrentSelectedOption("delete");
+    openModal(<CmsForm formType="delete" />);
   };
 
-  // When a user clicks on a button we set the state of currentSelectedOption to the button name
-
-  // Each button will have its own handler that will set the state of currentSelectedOption to the button name & open the modal
-
-  // Using the currentSelectedOption state we can determine which form to render in the modal
-
   return (
-    <>
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <Button onClick={handleCreate} sx={{ width: "50px" }}>
-          Create
-        </Button>
-        <Button onClick={handleBulkAdd} sx={{ width: "50px" }}>
-          Bulk Add
-        </Button>
-        <Button onClick={handleDelete} sx={{ width: "50px" }}>
-          Delete
-        </Button>
-      </div>
-      <Modal open={isModalOpen} onClose={handleToggleModal}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          {currentSelectedOption === "create" && <CMSCreateItemPage />}
-          {currentSelectedOption === "bulkAdd" && <div>Bulk Add</div>}
-          {currentSelectedOption === "delete" && <div>Delete</div>}
-          {/* <CMSCreateItemPage /> */}
-        </Box>
-      </Modal>
-    </>
+    <div style={{ display: "flex", gap: "1rem" }}>
+      <Button onClick={handleCreate} sx={{ width: "100px", padding: "0rem" }}>
+        <span style={{ fontSize: "12px" }}>Create</span>
+      </Button>
+      <Button onClick={handleBulkAdd} sx={{ width: "100px", padding: "0rem" }}>
+        <span style={{ fontSize: "12px" }}>Bulk Add </span>
+      </Button>
+      <Button onClick={handleDelete} sx={{ width: "100px", padding: "0rem" }}>
+        <span style={{ fontSize: "12px" }}> Delete</span>
+      </Button>
+    </div>
   );
 };
 
 export default DashboardOptions;
-
-// build a modal component that will render in different content passed to it.
-
-// for the dashboard options we will pass the different forms to the modal component

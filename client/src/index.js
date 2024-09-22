@@ -5,10 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./setup/context/authentication.context";
 import { UserProvider } from "./setup/context/user.context";
-import { ModalProvider } from "./setup/context/useCmsModal";
+// import { ModalProvider } from "./setup/context/useCmsModal";
 import { EditItemProvider } from "./setup/context/edit.context";
 import { CmsProvider } from "./setup/context/cms.context";
 import { CmsEditItemProvider } from "./setup/context/cmsEdit.context";
+import { ModalProvider } from "./setup/context/modal.context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <QueryClientProvider client={queryClient}>
@@ -18,7 +19,7 @@ root.render(
         <CmsProvider>
           <ModalProvider>
             {/* <CmsEditItemProvider> */}
-              <App />
+            <App />
             {/* </CmsEditItemProvider> */}
           </ModalProvider>
         </CmsProvider>
