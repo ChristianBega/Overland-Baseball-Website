@@ -1,19 +1,18 @@
 import React from "react";
 import { Paper, Grid, TableContainer, Table, Typography, TableBody } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import { useQuery } from "@tanstack/react-query";
 
 // Components
 import ScheduleItem from "../scheduleItem/scheduleItem.component";
-import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
+import { useRealtimeData } from "../../../../../hooks/useRealtimeData";
 
 export default function Schedule() {
   const theme = useTheme();
+  const { data, isLoading, error } = useRealtimeData("schedule");
   const sortByDate = (data) => data?.sort((a, b) => new Date(a.date) - new Date(b.date));
-  const { data, isLoading, error } = useQuery({ queryKey: ["schedule"], queryFn: () => fetchCMSItems("schedule") });
-
   const sortedData = data ? sortByDate([...data]) : [];
 
+  //! update this status with our custom status component
   if (isLoading) {
     return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
   }
@@ -22,7 +21,7 @@ export default function Schedule() {
     return (
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <Typography variant="h6" color="error">
-          Error fetching/caching the data
+          {error ? "Error with real-time updates" : "Error fetching/caching the data"}
         </Typography>
       </div>
     );

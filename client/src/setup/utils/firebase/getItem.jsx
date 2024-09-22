@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "./index.firebase";
 
 export const fetchCMSItems = async (type) => {
@@ -46,5 +46,38 @@ export const fetchCMSItemById = async (type, id) => {
   } catch (error) {
     console.error("Error fetching document: ", error);
     throw error;
+  }
+};
+
+// Real-time listener for CMS Items
+export const subscribeToCMSItems = (type, onUpdate, onError) => {
+  if (!type) {
+    console.error("Type is required");
+    return () => {};
+  }
+
+  try {
+    const cmsItemsCollectionRef = collection(db, type);
+
+    const unsubscribe = onSnapshot(
+      cmsItemsCollectionRef,
+      (snapshot) => {
+        const cmsItems = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        onUpdate(cmsItems);
+      },
+      (error) => {
+        console.error("Error subscribing to CMS items:", error);
+        if (onError) onError(error);
+      }
+    );
+
+    return unsubscribe; // Return the unsubscribe function
+  } catch (error) {
+    console.error("Error in real-time subscription: ", error);
+    if (onError) onError(error);
+    return () => {};
   }
 };

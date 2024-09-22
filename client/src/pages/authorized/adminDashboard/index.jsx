@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import { UserContext } from "../../../setup/context/user.context";
 import DashboardSideBarMenu from "./components/dashboardSideBarMenu";
-import DashboardContentList from "./components/dashboardContentList";
+import DashboardTableContent from "./components/DashboardTableContent";
 import { useTheme } from "@emotion/react";
 import { CmsContext } from "../../../setup/context/cms.context";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ const AdminDashboardPage = () => {
       {currentUserProfile.role !== "admin" ? null : (
         <Grid id="dashboard-main-grid" container maxWidth="lg">
           <DashboardSideBarMenu />
-          <DashboardContentList currentItem={currentItem} />
+          <DashboardTableContent currentItem={currentItem} />
         </Grid>
       )}
     </Container>
