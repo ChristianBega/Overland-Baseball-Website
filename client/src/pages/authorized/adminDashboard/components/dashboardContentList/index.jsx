@@ -1,4 +1,4 @@
-import { Box, Grid, List } from "@mui/material";
+import { Box, Grid, List, Paper, Table, TableBody, TableContainer } from "@mui/material";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
@@ -27,13 +27,33 @@ const DashboardContentList = ({ currentItem }) => {
             <p>Search...</p>
             <div>
               <LoadingErrorIndicator isLoading={isLoading} error={error} />
-              <List>
+              {/* <List>
                 {data ? (
                   data.map((item, index) => <CmsListItem id={item.id} indexz={index} values={[item]} key={`${currentItem}-${index}`} />)
                 ) : (
                   <p>No data</p>
                 )}
-              </List>
+              </List> */}
+              <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+                <Table aria-label="schedule table">
+                  {/* <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell align="right">Age</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Date</TableCell>
+                  </TableRow>
+                </TableHead> */}
+                  <TableBody>
+                    {data ? (
+                      data.map((item, index) => <CmsListItem id={item.id} indexz={index} values={[item]} key={`${currentItem}-${index}`} />)
+                    ) : (
+                      <p>No data</p>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
           </Box>
         </Grid>

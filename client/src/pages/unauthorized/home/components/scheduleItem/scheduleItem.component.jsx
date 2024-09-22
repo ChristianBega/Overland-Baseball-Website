@@ -15,7 +15,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function ScheduleItem({ data, isEditable, editableData, handleChange, isLoading, isError, isSuccess }) {
+export default function ScheduleItem({ data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true }) {
   const theme = useTheme();
   const currentData = isEditable ? editableData : data;
   const { date, time, location, opponent, opponentLogo } = currentData;
@@ -24,8 +24,8 @@ export default function ScheduleItem({ data, isEditable, editableData, handleCha
     return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
   }
 
-  return (
-    <StyledTableRow>
+  const content = (
+    <>
       <TableCell
         className="table-cell"
         sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, flex: "1 0 10%", textAlign: "center" }}
@@ -72,6 +72,8 @@ export default function ScheduleItem({ data, isEditable, editableData, handleCha
           )}
         </Stack>
       </TableCell>
-    </StyledTableRow>
+    </>
   );
+
+  return renderAsRow ? <StyledTableRow>{content}</StyledTableRow> : content;
 }

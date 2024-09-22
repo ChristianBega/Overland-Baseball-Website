@@ -1,24 +1,24 @@
 // //* 1. compare the original item data with the editable item data and make a patch update?? Only update the fields that have changed.
-// // 2. create error handling states to track firebase errors and display to the user.
-// // 3. create loading states to track the loading state of the update item.
-// // 4. create success states to track the success state of the update item.
-// // 5. realtime updates to the cms list item so the user sees the changes as they happen.
-// // 7. how to make sure only the admin can edit the cms? What additional security features do we need?
+//* 2. create error handling states to track firebase errors and display to the user.
+//* 3. create loading states to track the loading state of the update item.
+//* 4. create success states to track the success state of the update item.
+// 5. realtime updates to the cms list item so the user sees the changes as they happen.
+// 7. how to make sure only the admin can edit the cms? What additional security features do we need?
 
-// // Cms Input field component -
-// // 1. add form validation to the input fields to make sure the user has entered valid data.
-// // 2. add error handling to the input fields to make sure the user knows if they have entered invalid data.
-// // 3. add a loading state to the input fields to make sure the user knows that the data is being saved.
-// // 4. add a success message to the input fields to make sure the user knows that the data has been saved.
-// // 5. update styling for input fields with labels, etc
+// Cms Input field component -
+// 1. add form validation to the input fields to make sure the user has entered valid data.
+// 2. add error handling to the input fields to make sure the user knows if they have entered invalid data.
+// 3. add a loading state to the input fields to make sure the user knows that the data is being saved.
+// 4. add a success message to the input fields to make sure the user knows that the data has been saved.
+// 5. update styling for input fields with labels, etc
 
-// // Ideas for the future
-// // 1. add a preview of the changes before they are saved.
-// // 2. add a history of the changes to the item.
-// // 6. undo feature for the user to undo their changes. last for 30 seconds.
+// Ideas for the future
+// 1. add a preview of the changes before they are saved.
+// 2. add a history of the changes to the item.
+// 6. undo feature for the user to undo their changes. last for 30 seconds.
 
 import React, { useContext } from "react";
-import { ListItem, Box, Button, Typography, CircularProgress } from "@mui/material";
+import { Box, Button, Typography, TableRow, TableCell } from "@mui/material";
 import ScheduleItem from "../../../unauthorized/home/components/scheduleItem/scheduleItem.component";
 import { CmsEditItemContext } from "../../../../setup/context/cmsEdit.context";
 import { UserContext } from "../../../../setup/context/user.context";
@@ -89,7 +89,7 @@ const CmsListItem = ({ values, id }) => {
 
     return values.map((value, idx) => (
       <ScheduleItem
-        key={idx}
+        renderAsRow={false}
         data={value}
         isEditable={isEditing}
         editableData={editableItemData}
@@ -102,54 +102,59 @@ const CmsListItem = ({ values, id }) => {
   };
 
   return (
-    <ListItem sx={{ display: "flex" }}>
-      <input type="checkbox" />
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {isEditing && role === "admin" && (
-          <Button
-            onClick={handleDeleteItem}
-            color="error"
-            sx={{ border: "1px solid red", height: "70px", padding: 0, backgroundColor: "red" }}
-            type="button"
-            disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
-          >
-            <DeleteIcon />
-          </Button>
-        )}
-      </Box>
-
-      {/* Render editable fields or just display the content */}
-      {renderEditableCmsItem()}
-
-      {/* Edit/Save/Cancel buttons */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        {!isEditing && role === "admin" && (
-          <Button onClick={handleEditClick} sx={{ border: "1px solid red", padding: 0 }} type="button">
-            <EditIcon />
-          </Button>
-        )}
-        {isEditing && (
-          <>
+    <>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <input type="checkbox" />
+        </TableCell>
+        <TableCell>
+          {isEditing && role === "admin" && (
             <Button
-              disabled={!checkForEditChanges() || cmsOperationStatus.loading || cmsOperationStatus.success}
-              onClick={handleUpdateItem}
-              sx={{ border: "1px solid red", padding: 0 }}
+              onClick={handleDeleteItem}
+              color="error"
+              sx={{ border: "1px solid red", height: "70px", padding: 0, backgroundColor: "red" }}
               type="button"
-            >
-              <SaveAsIcon />
-            </Button>
-            <Button
               disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
-              onClick={cancelEditing}
-              sx={{ border: "1px solid red", padding: 0 }}
-              type="button"
             >
-              <CloseIcon />
+              <DeleteIcon />
             </Button>
-          </>
-        )}
-      </Box>
-    </ListItem>
+          )}
+        </TableCell>
+        <TableCell>
+          {/* Render editable fields or just display the content */}
+          {renderEditableCmsItem()}
+        </TableCell>
+        <TableCell>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {!isEditing && role === "admin" && (
+              <Button onClick={handleEditClick} sx={{ border: "1px solid red", padding: 0 }} type="button">
+                <EditIcon />
+              </Button>
+            )}
+            {isEditing && (
+              <>
+                <Button
+                  disabled={!checkForEditChanges() || cmsOperationStatus.loading || cmsOperationStatus.success}
+                  onClick={handleUpdateItem}
+                  sx={{ border: "1px solid red", padding: 0 }}
+                  type="button"
+                >
+                  <SaveAsIcon />
+                </Button>
+                <Button
+                  disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
+                  onClick={cancelEditing}
+                  sx={{ border: "1px solid red", padding: 0 }}
+                  type="button"
+                >
+                  <CloseIcon />
+                </Button>
+              </>
+            )}
+          </Box>
+        </TableCell>
+      </TableRow>
+    </>
   );
 };
 
