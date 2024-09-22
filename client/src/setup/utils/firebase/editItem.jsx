@@ -22,3 +22,5 @@ export const updateCMSItem = async (userUid, role, docId, data, type) => {
     return { success: false, message: "Error updating document", error };
   }
 };
+
+// How can i make this a realtime database???

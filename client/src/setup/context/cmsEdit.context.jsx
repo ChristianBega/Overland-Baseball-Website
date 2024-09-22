@@ -7,12 +7,15 @@ export const CmsEditItemContext = createContext({
   cancelEditing: () => {},
   updateEditableItemData: () => {},
   checkForEditChanges: () => {},
+  cmsOperationStatus: { type: null, loading: false, error: null, success: false },
+  setCmsOperationStatus: () => {},
 });
 
 export const CmsEditItemProvider = ({ children }) => {
   const [editableItemId, setEditableItemId] = useState(null);
   const [editableItemData, setEditableItemData] = useState(null);
   const [originalItemData, setOriginalItemData] = useState(null);
+  const [cmsOperationStatus, setCmsOperationStatus] = useState({ type: null, loading: false, error: null, success: false });
   // create a state for tracking "please save or cancel the current edit before editing another item."
 
   const startEditing = (itemId, itemData) => {
@@ -49,6 +52,8 @@ export const CmsEditItemProvider = ({ children }) => {
     cancelEditing,
     updateEditableItemData,
     checkForEditChanges,
+    cmsOperationStatus,
+    setCmsOperationStatus,
   };
 
   return <CmsEditItemContext.Provider value={contextValue}>{children}</CmsEditItemContext.Provider>;

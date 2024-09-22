@@ -6,6 +6,7 @@ import { useTheme } from "@mui/material";
 import overland from "../../../../../assets/homePage/teamLogos/overland.webp";
 import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
 import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
+import CmsOperationStatus from "../../../../authorized/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(even)": {
@@ -14,10 +15,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function ScheduleItem({ data, isEditable, editableData, handleChange }) {
+export default function ScheduleItem({ data, isEditable, editableData, handleChange, isLoading, isError, isSuccess }) {
   const theme = useTheme();
   const currentData = isEditable ? editableData : data;
   const { date, time, location, opponent, opponentLogo } = currentData;
+
+  if (isLoading || isError || isSuccess) {
+    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  }
+
   return (
     <StyledTableRow>
       <TableCell
