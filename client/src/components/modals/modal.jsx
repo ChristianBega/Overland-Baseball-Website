@@ -13,7 +13,7 @@ const ModalComponent = ({ isOpen, onToggle, children }) => {
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
-          maxWidth: "90%",
+          width: "50%",
           maxHeight: "90%",
           overflow: "auto",
         }}

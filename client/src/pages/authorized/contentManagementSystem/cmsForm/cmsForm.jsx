@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
-import { Box } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 
-const CmsForm = ({ formType }) => {
+const CmsForm = ({ formType, ...props }) => {
   const formComponents = {
     create: React.lazy(() => import("./addItemsForm/addItemsForm")),
     bulkAdd: React.lazy(() => import("./bulkAddItemsForm/bulkAddItemsForm")),
@@ -16,9 +16,12 @@ const CmsForm = ({ formType }) => {
 
   return (
     <Box>
-      <h2> Form</h2>
+      <Stack alignItems={"center"} direction="row" justifyContent="space-between">
+        <h2> Form</h2>
+        <Button onClick={props.closeModal}>X</Button>
+      </Stack>
       <Suspense fallback={<div>Loading...</div>}>
-        <FormComponent />
+        <FormComponent {...props} />
       </Suspense>
     </Box>
   );
