@@ -1,8 +1,13 @@
-import { TextField } from "@mui/material";
+import { InputLabel } from "@mui/material";
 import React from "react";
 
 const TimeInputField = ({ ...props }) => {
-  return <TextField {...props} type="time" />;
+  return (
+    <>
+      <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
+      <input type="time" {...props} />
+    </>
+  );
 };
 
 export default TimeInputField;

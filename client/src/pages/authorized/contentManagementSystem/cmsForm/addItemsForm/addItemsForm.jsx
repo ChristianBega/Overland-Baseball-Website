@@ -32,6 +32,8 @@ const AddItemsForm = ({ ...props }) => {
   });
 
   const handleAdd = async (data) => {
+    // so when i click to create, i should be seeing this realtime data update....
+    console.log("data", data);
     setStatus("loading");
     try {
       const result = await addCMSItem(uid, role, data, cmsItemType);
@@ -90,3 +92,9 @@ const AddItemsForm = ({ ...props }) => {
 };
 
 export default AddItemsForm;
+
+
+// turn location input field into a dropdown menu with a list of locations
+// turn opponent Icon input into dropdown menu with a list of icons OR upload your own
+// turn opponent type input into dropdown menu with a list of types OR upload your own
+ 

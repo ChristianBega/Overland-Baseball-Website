@@ -1,8 +1,13 @@
-import { Checkbox } from "@mui/material";
+import { Checkbox, InputLabel } from "@mui/material";
 import React from "react";
 
 const CheckBoxField = ({ ...props }) => {
-  return <Checkbox {...props} sx={{ display: "inline-block" }} defaultUnchecked variant="outlined" variable />;
+  return (
+    <>
+      <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
+      <Checkbox {...props} sx={{ display: "inline-block" }} defaultUnchecked variant="outlined" variable />;
+    </>
+  );
 };
 
 export default CheckBoxField;

@@ -1,8 +1,15 @@
-import { TextField } from "@mui/material";
+import { InputLabel, TextField } from "@mui/material";
 import React from "react";
 
 const TextInputField = ({ ...props }) => {
-  return <TextField type="text" {...props} />;
+  const { label, ...rest } = props;
+
+  return (
+    <>
+      <InputLabel htmlFor={props.name}>{label}</InputLabel>
+      <TextField type="text" {...rest} />
+    </>
+  );
 };
 
 export default TextInputField;
