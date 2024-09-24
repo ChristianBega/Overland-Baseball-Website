@@ -1,4 +1,4 @@
-import { doc, setDoc, writeBatch, collection } from "firebase/firestore";
+import { doc, setDoc, writeBatch, collection, serverTimestamp } from "firebase/firestore";
 
 import { db } from "./index.firebase";
 import { v4 as uuidv4 } from "uuid";
@@ -32,6 +32,7 @@ export const bulkAddToFirebase = async (userUid, role, type, csvData, setProgres
         ...csvData[i],
         id: documentId,
         addedByUserUid: userUid,
+        createdAt: serverTimestamp(),
       };
       batch.set(docRef, documentData);
 

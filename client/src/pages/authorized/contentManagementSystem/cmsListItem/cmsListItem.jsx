@@ -69,6 +69,8 @@ const CmsListItem = ({ values, id }) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       const { uid } = currentUserProfile;
       await deleteCMSItem(uid, role, id, "schedule");
+      cancelEditing();
+      // after you delete an item, it seems like i need to reset the state to because their is an alert preventing me from deleting the next item.
     }
   };
 
