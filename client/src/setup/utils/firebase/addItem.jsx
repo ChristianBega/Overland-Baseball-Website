@@ -1,6 +1,4 @@
-import { doc, setDoc } from "firebase/firestore";
-// collection, writeBatch;
-// import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, writeBatch, collection } from "firebase/firestore";
 
 import { db } from "./index.firebase";
 import { v4 as uuidv4 } from "uuid";
@@ -8,7 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 export const addCMSItem = async (userUid, role, data, type) => {
   if (!userUid || role !== "admin") return;
   const docId = uuidv4();
-  console.log(type);
   const cmsItemDocRef = doc(db, `${type}`, docId);
   try {
     await setDoc(cmsItemDocRef, {
@@ -23,22 +20,32 @@ export const addCMSItem = async (userUid, role, data, type) => {
   }
 };
 
-// export function bulkAddDocuments(documents) {
-//   const batch = writeBatch(db);
-//   const collectionRef = collection(db, "roster");
+export const bulkAddToFirebase = async (userUid, role, type, csvData, setProgress) => {
+  if (!userUid || role !== "admin") return;
+  const batch = writeBatch(db);
+  const collectionRef = collection(db, `${type}`);
+  try {
+    for (let i = 0; i < csvData.length; i++) {
+      const docRef = doc(collectionRef);
+      const documentId = docRef.id;
+      const documentData = {
+        ...csvData[i],
+        id: documentId,
+        addedByUserUid: userUid,
+      };
+      batch.set(docRef, documentData);
 
-//   documents.forEach((documentData) => {
-//     const docRef = doc(collectionRef); // Correctly generates a new document ID
-//     batch.set(docRef, documentData);
-//   });
+      // Update progress
+      setProgress(((i + 1) / csvData.length) * 100);
+    }
 
-//   // Commit the batch
-//   batch
-//     .commit()
-//     .then(() => {
-//       console.log("Documents successfully added!");
-//     })
-//     .catch((error) => {
-//       console.error("Error adding documents: ", error);
-//     });
-// }
+    // Commit the batch
+    await batch.commit();
+    // ! create returns objects for success
+    alert("Bulk upload successful!");
+  } catch (error) {
+    // ! create returns objects for failure
+    console.error("Error during bulk upload:", error);
+    alert("Error during bulk upload. Check the console for more details.");
+  }
+};

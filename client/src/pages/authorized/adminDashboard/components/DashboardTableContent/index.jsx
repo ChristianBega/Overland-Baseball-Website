@@ -10,13 +10,16 @@ import { useRealtimeData } from "../../../../../hooks/useRealtimeData";
 const DashboardTableContent = ({ currentItem }) => {
   const { data: displayData, isLoading, error } = useRealtimeData(currentItem?.linkName?.toLowerCase());
 
+  // filter by addedByUserUid
+  // filter by createdAt
+  // filter by data - time,date, location, etc.
   return (
     <CmsCreateItemProvider>
       <CmsEditItemProvider>
         <Grid item xs={12} lg={12}>
           <Box sx={{ border: "1px solid blue", marginTop: "2rem" }}>
             <DashboardOptions />
-            <p>Search...</p>
+            <p>Search... </p>
             <div>
               <LoadingErrorIndicator isLoading={isLoading} error={error} />
               <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
