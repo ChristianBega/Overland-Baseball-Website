@@ -3,6 +3,7 @@ import "./teamRosterItem.styles.css";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
+import CmsOperationStatus from "../../../../authorized/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-type-of(even)": {
@@ -24,41 +25,75 @@ const StyledNumberTypography = styled(Typography)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
 }));
+
 const StyledTypography = styled(Typography)(({ theme }) => ({
   fontSize: "1rem",
 }));
 
-export default function TeamRoosterItem({ currentRoster }) {
+export default function TeamRoosterItem({ data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true }) {
   const theme = useTheme();
-  const isMobile_XS = useMediaQuery(theme.breakpoints.only("xs"));
+  const currentData = isEditable ? editableData : data;
+  const { position, height, weight, handed, number, name, year, yearAbbr } = currentData;
 
-  return (
+  const isMobile_XS = useMediaQuery(theme.breakpoints.only("xs"));
+  if (isLoading || isError || isSuccess) {
+    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  }
+
+  const content = (
     <>
-      {currentRoster?.map(({ position, height, weight, handed, number, name, year, yearAbbr }, index) => (
-        <StyledTableRow key={index}>
-          <TableCell
-            sx={{ pl: 0, pr: 2, border: "none", flex: "1 1 90px", display: "flex", justifyContent: "center", alignItems: "center" }}
-            component="th"
-            scope="row"
-          >
+      <TableCell
+        sx={{ pl: 0, pr: 2, border: "none", flex: "1 1 90px", display: "flex", justifyContent: "center", alignItems: "center" }}
+        component="th"
+        scope="row"
+      >
+        {isEditable ? (
+          <Stack>
             <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "110px" }}></Box>
-          </TableCell>
-          <TableCell sx={{ border: "none", px: 0, flex: "3 0 62%" }} component="th" scope="row">
-            <Stack direction="row" gap={1}>
+            <button>upload</button>
+          </Stack>
+        ) : (
+          // <input onChange={handleChange("image")} type="file" accept="image/*" />
+          <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "110px" }}></Box>
+        )}
+      </TableCell>
+      <TableCell sx={{ border: "none", px: 0, flex: "3 0 62%" }} component="th" scope="row">
+        <Stack direction="row" gap={1}>
+          {isEditable ? (
+            <>
+              <input onChange={handleChange("position")} type="text" value={position}></input>
+              <input onChange={handleChange("height")} type="text" value={height} />
+              <span> | </span>
+              <input onChange={handleChange("weight")} type="text" value={weight} />
+              <span> | </span>
+              <input onChange={handleChange("handed")} type="text" value={handed} />
+            </>
+          ) : (
+            <>
               <StyledTypography>{position} |</StyledTypography>
               <StyledTypography>{height} |</StyledTypography>
               <StyledTypography>{weight} |</StyledTypography>
               <StyledTypography>{handed}</StyledTypography>
-            </Stack>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Stack direction="row" gap={2} sx={{ display: "flex", alignItems: "center", mt: 4 }}>
+            </>
+          )}
+        </Stack>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Stack direction="row" gap={2} sx={{ display: "flex", alignItems: "center", mt: 4 }}>
+            {isEditable ? (
+              <>
+                <input onChange={handleChange("number")} type="number" value={number} style={{ width: "50px", marginRight: "10px" }} />
+                <input onChange={handleChange("name")} type="text" value={name} style={{ width: "200px" }} />
+                <input onChange={handleChange("year")} type="text" value={year} />
+              </>
+            ) : (
+              <>
                 <StyledNumberTypography>{number}</StyledNumberTypography>
                 <Typography
                   typography={{ xs: "bodyTextLg" }}
@@ -66,21 +101,24 @@ export default function TeamRoosterItem({ currentRoster }) {
                 >
                   {name}
                 </Typography>
-              </Stack>
-            </Box>
-          </TableCell>
-          <TableCell
-            sx={{ p: 2, border: "none", flex: "1 0 15%", display: "flex", justifyContent: "flex-start", alignItems: "end" }}
-            component="th"
-            scope="row"
-          >
-            <Typography typography={{ xs: "bodyTextLg" }} sx={{ display: "inline-block", mb: 4 }}>
-              {!isMobile_XS && year}
-              {isMobile_XS && yearAbbr}
-            </Typography>
-          </TableCell>
-        </StyledTableRow>
-      ))}
+              </>
+            )}
+          </Stack>
+        </Box>
+      </TableCell>
+      <TableCell
+        sx={{ p: 2, border: "none", flex: "1 0 15%", display: "flex", justifyContent: "flex-start", alignItems: "end" }}
+        component="th"
+        scope="row"
+      >
+        {isEditable ? null : (
+          <Typography typography={{ xs: "bodyTextLg" }} sx={{ display: "inline-block", mb: 4 }}>
+            {!isMobile_XS ? year : yearAbbr}
+          </Typography>
+        )}
+      </TableCell>
     </>
   );
+
+  return renderAsRow ? <StyledTableRow>{content}</StyledTableRow> : content;
 }

@@ -46,7 +46,9 @@ export default function TeamRoster({ currentTeam }) {
         <TableContainer component={Paper} sx={{ display: "flex", justifyContent: "center", flexDirection: "column", paddingBlock: ".5rem" }}>
           <Table aria-label="roster table">
             <TableBody>
-              <TeamRosterItem currentRoster={currentRoster} />
+              {currentRoster.map((rosterItem, index) => (
+                <TeamRosterItem data={rosterItem} key={index} />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

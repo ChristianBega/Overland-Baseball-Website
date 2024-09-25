@@ -29,9 +29,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import CloseIcon from "@mui/icons-material/Close";
+import TeamRoosterItem from "../../../unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
+import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
 
 const CmsListItem = ({ values, id }) => {
   const { currentUserProfile } = useContext(UserContext);
+  let queryParams = useUrlQueryParams();
+  let type = queryParams.get("type");
   const {
     editableItemId,
     editableItemData,
@@ -52,7 +56,7 @@ const CmsListItem = ({ values, id }) => {
 
     try {
       const { uid } = currentUserProfile;
-      await updateCMSItem(uid, role, id, editableItemData, "schedule");
+      await updateCMSItem(uid, role, id, editableItemData, type);
       setCmsOperationStatus({ type: "update", loading: false, error: null, success: true });
 
       setTimeout(() => {
@@ -68,7 +72,7 @@ const CmsListItem = ({ values, id }) => {
     if (role !== "admin") return; // Security: only admin can delete
     if (window.confirm("Are you sure you want to delete this item?")) {
       const { uid } = currentUserProfile;
-      await deleteCMSItem(uid, role, id, "schedule");
+      await deleteCMSItem(uid, role, id, type);
       cancelEditing();
       // after you delete an item, it seems like i need to reset the state to because their is an alert preventing me from deleting the next item.
     }
@@ -88,19 +92,21 @@ const CmsListItem = ({ values, id }) => {
     if (!values || values.length === 0) {
       return <Typography>No content available</Typography>;
     }
+    const props = {
+      isEditable: isEditing,
+      editableData: editableItemData,
+      handleChange: handleChange,
+      isLoading: isEditing && cmsOperationStatus.loading,
+      isError: isEditing && cmsOperationStatus.error,
+      isSuccess: isEditing && cmsOperationStatus.success,
+    };
 
-    return values.map((value, idx) => (
-      <ScheduleItem
-        renderAsRow={false}
-        data={value}
-        isEditable={isEditing}
-        editableData={editableItemData}
-        handleChange={handleChange}
-        isLoading={isEditing && cmsOperationStatus.loading}
-        isError={isEditing && cmsOperationStatus.error}
-        isSuccess={isEditing && cmsOperationStatus.success}
-      />
-    ));
+    const editableCmsItemsMap = {
+      schedule: values.map((value, index) => <ScheduleItem key={index} data={value} renderAsRow={false} {...props} />),
+      roster: values.map((value, index) => <TeamRoosterItem key={index} data={value} renderAsRow={true} {...props} />),
+    };
+
+    return editableCmsItemsMap[type];
   };
 
   return (
@@ -122,10 +128,7 @@ const CmsListItem = ({ values, id }) => {
             </Button>
           )}
         </TableCell>
-        <TableCell>
-          {/* Render editable fields or just display the content */}
-          {renderEditableCmsItem()}
-        </TableCell>
+        <TableCell>{renderEditableCmsItem()}</TableCell>
         <TableCell>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {!isEditing && role === "admin" && (
