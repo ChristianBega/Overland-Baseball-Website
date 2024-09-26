@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export const CmsEditItemContext = createContext({
   editableItemId: null,
@@ -17,6 +18,13 @@ export const CmsEditItemProvider = ({ children }) => {
   const [originalItemData, setOriginalItemData] = useState(null);
   const [cmsOperationStatus, setCmsOperationStatus] = useState({ type: null, loading: false, error: null, success: false });
   // create a state for tracking "please save or cancel the current edit before editing another item."
+
+  const location = useLocation();
+
+  // Reset editing state when URL changes
+  useEffect(() => {
+    cancelEditing();
+  }, [location.search]);
 
   const startEditing = (itemId, itemData) => {
     if (editableItemId && editableItemId !== itemId) {
