@@ -2,7 +2,7 @@
 //* 2. create error handling states to track firebase errors and display to the user.
 //* 3. create loading states to track the loading state of the update item.
 //* 4. create success states to track the success state of the update item.
-// 5. realtime updates to the cms list item so the user sees the changes as they happen.
+//* 5. realtime updates to the cms list item so the user sees the changes as they happen.
 // 7. how to make sure only the admin can edit the cms? What additional security features do we need?
 
 // Cms Input field component -
@@ -17,7 +17,7 @@
 // 2. add a history of the changes to the item.
 // 6. undo feature for the user to undo their changes. last for 30 seconds.
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, Typography, TableRow, TableCell } from "@mui/material";
 import ScheduleItem from "../../../unauthorized/home/components/scheduleItem/scheduleItem.component";
 import { CmsEditItemContext } from "../../../../setup/context/cmsEdit.context";
@@ -31,11 +31,16 @@ import SaveAsIcon from "@mui/icons-material/SaveAs";
 import CloseIcon from "@mui/icons-material/Close";
 import TeamRoosterItem from "../../../unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
+import { CmsBulkActionContext } from "../../../../setup/context/cmsBulkActions.context";
 
 const CmsListItem = ({ values, id }) => {
-  const { currentUserProfile } = useContext(UserContext);
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
+  // user context
+  const { currentUserProfile } = useContext(UserContext);
+  const { role } = currentUserProfile;
+
+  // cms edit context
   const {
     editableItemId,
     editableItemData,
@@ -46,11 +51,11 @@ const CmsListItem = ({ values, id }) => {
     cmsOperationStatus,
     setCmsOperationStatus,
   } = useContext(CmsEditItemContext);
+  // cms bulk action context
+  const { selectedItems, handleCheckboxChange } = useContext(CmsBulkActionContext);
 
+  //! needs to be moved to cmsEdit.context
   const isEditing = editableItemId === id;
-  const { role } = currentUserProfile;
-
-  // Handle the update item logic
   const handleUpdateItem = async () => {
     setCmsOperationStatus({ type: "update cms", loading: true, error: null, success: false });
 
@@ -67,7 +72,6 @@ const CmsListItem = ({ values, id }) => {
       setCmsOperationStatus({ type: "update", loading: false, error: error.message, success: false });
     }
   };
-
   const handleDeleteItem = async () => {
     if (role !== "admin") return; // Security: only admin can delete
     if (window.confirm("Are you sure you want to delete this item?")) {
@@ -77,15 +81,14 @@ const CmsListItem = ({ values, id }) => {
       // after you delete an item, it seems like i need to reset the state to because their is an alert preventing me from deleting the next item.
     }
   };
-
   const handleEditClick = () => {
     startEditing(id, values[0]);
   };
-
   const handleChange = (field) => (event) => {
     const value = event.target.value;
     updateEditableItemData(field, value);
   };
+  //! needs to be moved to cmsEdit.context
 
   // Renders the editable fields during edit mode
   const renderEditableCmsItem = () => {
@@ -108,12 +111,11 @@ const CmsListItem = ({ values, id }) => {
 
     return editableCmsItemsMap[type];
   };
-
   return (
     <>
       <TableRow>
         <TableCell padding="checkbox">
-          <input type="checkbox" />
+          <input type="checkbox" checked={selectedItems.includes(id)} onChange={() => handleCheckboxChange(id)} />
         </TableCell>
         <TableCell>
           {isEditing && role === "admin" && (

@@ -1,12 +1,13 @@
 import React from "react";
 import { Box, CircularProgress, Alert } from "@mui/material";
 
-const FormStatusIndicator = ({ status }) => {
+const FormStatusIndicator = ({ status, progress }) => {
   return (
     <>
       {status === "loading" && (
         <Box display="flex" justifyContent="center" my={2}>
           <CircularProgress />
+          <p>{progress}%</p>
         </Box>
       )}
       {status === "success" && (
