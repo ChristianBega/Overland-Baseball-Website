@@ -1,10 +1,11 @@
 import React from "react";
 import { Box, CircularProgress, Alert } from "@mui/material";
 
-const FormStatusIndicator = ({ status, progress }) => {
+const FormStatusIndicator = ({ statusMessage, progress }) => {
   return (
     <>
-      {status === "loading" && (
+      {statusMessage}
+      {/* {status === "loading" && (
         <Box display="flex" justifyContent="center" my={2}>
           <CircularProgress />
           <p>{progress}%</p>
@@ -12,14 +13,15 @@ const FormStatusIndicator = ({ status, progress }) => {
       )}
       {status === "success" && (
         <Alert severity="success" sx={{ mb: 2 }}>
-          Item added successfully!
+          Success!
         </Alert>
       )}
       {status === "error" && (
         <Alert severity="error" sx={{ mb: 2 }}>
-          Failed to add item. Please try again.
+          Failed! Please try again.
         </Alert>
-      )}
+
+      )} */}
     </>
   );
 };

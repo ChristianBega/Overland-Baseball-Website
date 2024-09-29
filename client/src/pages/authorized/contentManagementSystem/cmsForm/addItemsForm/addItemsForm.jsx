@@ -7,8 +7,9 @@ import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
 import { addCMSItem } from "../../../../../setup/utils/firebase/addItem";
 import FormStatusIndicator from "../../../../../components/statusIndicators/formStatusIndicator";
 const AddItemsForm = ({ ...props }) => {
-  const { cmsItemType, uid, role, closeModal } = props;
+  const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
+  const [statusMessage, setStatusMessage] = useState(null);
 
   const inputFieldsConfig = {
     schedule: scheduleItemInputFieldsConfig,
@@ -33,20 +34,21 @@ const AddItemsForm = ({ ...props }) => {
 
   const handleAdd = async (data) => {
     // so when i click to create, i should be seeing this realtime data update....
-    console.log("data", data);
-    setStatus("loading");
+    setStatusMessage("Loading...");
     try {
       const result = await addCMSItem(uid, role, data, cmsItemType);
       if (result.success === true) {
-        setStatus("success");
+        // setStatus("success");
+        setStatusMessage(result.message);
         reset();
         setTimeout(() => {
           closeModal();
         }, 2000);
+        setSelectedItems([]);
       }
     } catch (error) {
       console.error("Failed to add schedule item:", error);
-      setStatus("error");
+      setStatusMessage("Error during add. Check the console for more details.");
     }
   };
 
@@ -62,7 +64,7 @@ const AddItemsForm = ({ ...props }) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit(handleAdd)}>
-      <FormStatusIndicator status={status} />
+      <FormStatusIndicator statusMessage={statusMessage} />
       {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules }, index) => (
         <Controller
           key={index + name}
@@ -93,8 +95,6 @@ const AddItemsForm = ({ ...props }) => {
 
 export default AddItemsForm;
 
-
 // turn location input field into a dropdown menu with a list of locations
 // turn opponent Icon input into dropdown menu with a list of icons OR upload your own
 // turn opponent type input into dropdown menu with a list of types OR upload your own
- 

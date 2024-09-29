@@ -1,41 +1,38 @@
 import { Box, Button } from "@mui/material";
-import React, { useContext, useState } from "react";
-import { CmsBulkActionContext } from "../../../../../setup/context/cmsBulkActions.context";
+import React, { useState } from "react";
 import { bulkDeleteFromFirebase } from "../../../../../setup/utils/firebase/deleteItem";
 import FormStatusIndicator from "../../../../../components/statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../../../components/inputFields/inputFields";
 
 const DeleteItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, selectedItems, setSelectedItems } = props;
-  // const { setStatus, status, setProgress } = useContext(CmsBulkActionContext);
-  const [status, setStatus] = useState(null);
+  const [statusMessage, setStatusMessage] = useState(null);
   const [progress, setProgress] = useState(0);
-  // console.log("selectedItems line 11 - deleteItemsForm", selectedItems);
   const [inputValueConfirmDelete, setInputValueConfirmDelete] = useState("");
-
   const confirmDeleteIsTrue = inputValueConfirmDelete === "Confirm Delete";
+
   const handleDeleteItems = async () => {
     if (!confirmDeleteIsTrue) {
-      setStatus("error");
-      alert("Please type 'Confirm Delete' to delete, check the case sensitivity");
+      setStatusMessage("Please type 'Confirm Delete' to delete, check the case sensitivity");
       return;
     }
     if (!window.confirm("Are you sure you want to delete these items? This action cannot be undone.")) {
       return;
     }
-    setStatus("loading");
+    setStatusMessage("Loading...");
+    // Filter out the ids from selectedItems
+    const itemIdsToDelete = selectedItems.map((item) => item.id);
     try {
-      const result = await bulkDeleteFromFirebase(uid, role, cmsItemType, selectedItems, setProgress);
-      console.log("result line 27 - deleteItemsForm", result);
+      const result = await bulkDeleteFromFirebase(uid, role, cmsItemType, itemIdsToDelete, setProgress);
       if (result.success === true) {
-        setStatus("success");
+        setStatusMessage(result.message);
         setTimeout(() => {
           closeModal();
         }, 2000);
         setSelectedItems([]);
       }
     } catch (error) {
-      setStatus("error");
+      setStatusMessage("Error during bulk delete. Check the console for more details.");
       console.error("Error during bulk delete:", error);
       alert("Error during bulk delete. Check the console for more details.");
     }
@@ -45,12 +42,36 @@ const DeleteItemsForm = ({ ...props }) => {
   };
   return (
     <Box component="form">
-      <FormStatusIndicator status={status} progress={progress} />
+      <FormStatusIndicator statusMessage={statusMessage} progress={progress} />
       <p>Are you sure you want to delete the selected items?</p>
       <p style={{ color: "red" }}>Please type "Confirm Delete" to delete</p>
-      <input type="text" value={inputValueConfirmDelete} onChange={handleInputChange} />
+      <table style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            {Object.keys(selectedItems[0] || {})
+              .filter((key) => !["createdAt", "addedByUserUid", "id"].includes(key))
+              .map((key) => (
+                <th key={key}>
+                  <p style={{ textAlign: "left" }}>{key}</p>
+                </th>
+              ))}
+          </tr>
+        </thead>
+        <tbody>
+          {selectedItems.map((row, index) => (
+            <tr key={index}>
+              {Object.entries(row)
+                .filter(([key]) => !["createdAt", "addedByUserUid", "id"].includes(key))
+                .map(([key, value], i) => (
+                  <td key={i}>{value}</td>
+                ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <InputFieldComponent type="text" placeholder=" Type 'Confirm Delete' here..." value={inputValueConfirmDelete} onChange={handleInputChange} />
 
-      <Button disabled={!confirmDeleteIsTrue} onClick={handleDeleteItems} variant="contained" color="secondary">
+      <Button disabled={!confirmDeleteIsTrue} onClick={handleDeleteItems} variant="contained" color="primary">
         Confirm Delete
       </Button>
     </Box>

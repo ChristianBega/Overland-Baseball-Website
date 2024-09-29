@@ -8,6 +8,7 @@ export const CmsBulkActionContext = createContext({
   setStatus: () => {},
   handleCheckboxChange: () => {},
   setSelectedItems: () => {},
+  handleSelectAll: () => {},
 });
 
 export const CmsBulkActionProvider = ({ children }) => {
@@ -15,11 +16,25 @@ export const CmsBulkActionProvider = ({ children }) => {
   const [status, setStatus] = useState(null);
   const [progress, setProgress] = useState(0);
 
-  const handleCheckboxChange = (id) => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems((prevSelected) => prevSelected.filter((i) => i !== id));
+  const handleCheckboxChange = (item) => {
+    setSelectedItems((prevSelected) => {
+      const itemId = item.id; 
+      const isItemSelected = prevSelected.some((selectedItem) => selectedItem.id === itemId);
+
+      if (isItemSelected) {
+        return prevSelected.filter((selectedItem) => selectedItem.id !== itemId);
+      } else {
+        return [...prevSelected, item];
+      }
+    });
+  };
+
+  const handleSelectAll = (event, displayData) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectedItems(displayData);
     } else {
-      setSelectedItems((prevSelected) => [...prevSelected, id]);
+      setSelectedItems([]);
     }
   };
 
@@ -31,6 +46,7 @@ export const CmsBulkActionProvider = ({ children }) => {
     setStatus,
     progress,
     setProgress,
+    handleSelectAll,
   };
 
   return <CmsBulkActionContext.Provider value={contextValue}>{children}</CmsBulkActionContext.Provider>;

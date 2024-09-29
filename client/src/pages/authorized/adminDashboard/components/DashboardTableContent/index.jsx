@@ -1,46 +1,59 @@
-import React from "react";
-import { Box, Grid, Paper, Table, TableBody, TableContainer } from "@mui/material";
+import React, { useContext } from "react";
+import { Box, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, useMediaQuery } from "@mui/material";
 import LoadingErrorIndicator from "../../../../loadingErrorIndicator";
 import CmsListItem from "../../../contentManagementSystem/cmsListItem/cmsListItem";
 import DashboardOptions from "../dashboardOptions";
-import { CmsCreateItemProvider } from "../../../../../setup/context/cmsCreate.context";
-import { CmsEditItemProvider } from "../../../../../setup/context/cmsEdit.context";
 import { useRealtimeData } from "../../../../../hooks/useRealtimeData";
-import { CmsBulkActionProvider } from "../../../../../setup/context/cmsBulkActions.context";
+import { CmsBulkActionContext } from "../../../../../setup/context/cmsBulkActions.context";
+import InputFieldComponent from "../../../../../components/inputFields/inputFields";
+import { useTheme } from "@emotion/react";
 
 const DashboardTableContent = ({ currentItem }) => {
+  const theme = useTheme();
+  const { handleSelectAll, selectedItems } = useContext(CmsBulkActionContext);
   const { data: displayData, isLoading, error } = useRealtimeData(currentItem?.linkName?.toLowerCase());
 
-  // filter by addedByUserUid
-  // filter by createdAt
-  // filter by data - time,date, location, etc.
+  const tableHeaders =
+    displayData && displayData.length > 0
+      ? Object.keys(displayData[0]).filter((key) => key !== "id" && key !== "addedByUserUid" && key !== "createdAt" && key !== "updatedAt")
+      : [];
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  console.log("selectedItems.length === displayData.length", selectedItems?.length === displayData?.length);
   return (
-    <CmsBulkActionProvider>
-      <CmsCreateItemProvider>
-        <CmsEditItemProvider>
-          <Grid item xs={12} lg={12}>
-            <Box sx={{ border: "1px solid blue", marginTop: "2rem" }}>
-              <DashboardOptions />
-              <p>Search... </p>
-              <div>
-                <LoadingErrorIndicator isLoading={isLoading} error={error} />
-                <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-                  <Table aria-label="cms table">
-                    <TableBody>
-                      {displayData ? (
-                        displayData.map((item, index) => <CmsListItem id={item.id} indexz={index} values={[item]} key={`${currentItem}-${index}`} />)
-                      ) : (
-                        <p>No data</p>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            </Box>
-          </Grid>
-        </CmsEditItemProvider>
-      </CmsCreateItemProvider>
-    </CmsBulkActionProvider>
+    <Grid item xs={12} lg={12}>
+      <Box sx={{ marginTop: "2rem" }}>
+        <Stack direction={isMobile ? "column" : "row"} justifyContent="space-between" spacing={2} sx={{ marginBottom: "1rem", padding: "1rem" }}>
+          <DashboardOptions />
+          <InputFieldComponent type="text" placeholder="Search..." />
+        </Stack>
+        <div>
+          <LoadingErrorIndicator isLoading={isLoading} error={error} />
+          <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+            <TableHead>
+              <TableCell>
+                <input
+                  type="checkbox"
+                  checked={displayData?.length > 0 ? displayData?.length === selectedItems?.length : selectedItems?.length > 0}
+                  onChange={(event) => handleSelectAll(event, displayData)}
+                />
+              </TableCell>
+              {tableHeaders.map((header, index) => (
+                <TableCell key={index}>{header}</TableCell>
+              ))}
+            </TableHead>
+            <Table aria-label="cms table">
+              <TableBody>
+                {displayData ? (
+                  displayData.map((item, index) => <CmsListItem id={item.id} indexz={index} values={[item]} key={`${currentItem}-${index}`} />)
+                ) : (
+                  <p>No data</p>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </Box>
+    </Grid>
   );
 };
 

@@ -16,7 +16,6 @@ export const deleteCMSItem = async (userUid, role, docId, type) => {
 };
 
 export const bulkDeleteFromFirebase = async (userUid, role, type, idsToDelete, setProgress) => {
-  console.log("bulkDeleteFromFirebase line 20", idsToDelete);
   if (!userUid || role !== "admin") return;
   const batch = writeBatch(db);
 

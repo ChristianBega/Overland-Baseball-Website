@@ -4,14 +4,17 @@ import React, { useState } from "react";
 import { bulkAddToFirebase } from "../../../../../setup/utils/firebase/addItem";
 import { processCsvUpload } from "./helpers/processCsvUpload";
 import scheduleExpectedDataStructure from "./data/schedule.config.json";
+import FormStatusIndicator from "../../../../../components/statusIndicators/formStatusIndicator";
 
 const BulkAddItemsForm = ({ ...props }) => {
-  const { uid, cmsItemType, closeModal, role } = props;
+  const { uid, cmsItemType, closeModal, role, setSelectedItems } = props;
 
   const steps = ["Upload CSV", "Confirm Data", "Upload Progress"];
   const [csvData, setCsvData] = useState([]);
   const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+  const [status, setStatus] = useState(null);
+  const [statusMessage, setStatusMessage] = useState(null);
 
   const expectedCvsDataStructure = {
     schedule: scheduleExpectedDataStructure,
@@ -22,9 +25,23 @@ const BulkAddItemsForm = ({ ...props }) => {
     setCurrentStep(1);
   };
 
-  const handleConfirmData = () => {
+  const handleConfirmData = async () => {
     setCurrentStep(2);
-    bulkAddToFirebase(uid, role, cmsItemType, csvData, setProgress);
+    setStatusMessage("Loading...");
+    try {
+      const result = await bulkAddToFirebase(uid, role, cmsItemType, csvData, setProgress);
+      if (result.success === true) {
+        setStatusMessage(result.message);
+        setTimeout(() => {
+          closeModal();
+        }, 2000);
+        setSelectedItems([]);
+      }
+    } catch (error) {
+      setStatusMessage("Error during bulk add. Check the console for more details.");
+      console.error("Error during bulk delete:", error);
+      alert("Error during bulk add. Check the console for more details.");
+    }
   };
 
   return (
@@ -69,6 +86,7 @@ const BulkAddItemsForm = ({ ...props }) => {
 
       {currentStep === 2 && (
         <div>
+          <FormStatusIndicator statusMessage={statusMessage} progress={progress} />
           <p>Progress: {progress}%</p>
           <progress value={progress} max="100"></progress>
         </div>

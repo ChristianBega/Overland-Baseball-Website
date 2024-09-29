@@ -6,9 +6,8 @@ import { CmsBulkActionContext } from "../../../../../setup/context/cmsBulkAction
 import { useContext } from "react";
 
 const DashboardOptions = () => {
-  // const [currentSelectedOption, setCurrentSelectedOption] = useState(null);
   const { openModal, closeModal } = useModal();
-  const { selectedItems, setSelectedItems } = useContext(CmsBulkActionContext);
+  const { selectedItems, setSelectedItems, selectAll } = useContext(CmsBulkActionContext);
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   let role = queryParams.get("role");
@@ -22,27 +21,23 @@ const DashboardOptions = () => {
     selectedItems: selectedItems,
     setSelectedItems: setSelectedItems,
   };
-  const handleCreate = () => {
-    // setCurrentSelectedOption("create");
+  const handleCreate = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     openModal(<CmsForm formType="create" {...props} />);
   };
 
-  const handleBulkAdd = () => {
-    // setCurrentSelectedOption("bulkAdd");
+  const handleBulkAdd = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     openModal(<CmsForm formType="bulkAdd" {...props} />);
   };
 
-  const handleDelete = () => {
-    // setCurrentSelectedOption("delete");
+  const handleDelete = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     openModal(<CmsForm formType="delete" {...props} />);
   };
-
-  // 1. i need to track which listItems are selected - selectedListItems
-  // 2. if selectedListItems length is 0, then disable delete button
-  // 3. if selectedListItems length is >=1, then enable delete button
-  // 4. when the delete button is clicked, open a modal to confirm the deletion of the selected listItems
-  // 5. list the selected listItems in the modal and allow the user to remove listItems from the selection
-  // 6. when the user confirms the deletion, delete the selected listItems by typing "Confirm Delete" in the modal and clicking confirm.
 
   return (
     <div style={{ display: "flex", gap: "1rem" }}>

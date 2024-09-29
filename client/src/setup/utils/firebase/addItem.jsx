@@ -13,7 +13,7 @@ export const addCMSItem = async (userUid, role, data, type) => {
       addedByUserUid: userUid,
       ...data,
     });
-    return { success: true, id: cmsItemDocRef.id };
+    return { success: true, id: cmsItemDocRef.id, message: "Created Item successfully!" };
   } catch (error) {
     console.error("Error with your request", error);
     throw error;
@@ -43,7 +43,7 @@ export const bulkAddToFirebase = async (userUid, role, type, csvData, setProgres
     // Commit the batch
     await batch.commit();
     // ! create returns objects for success
-    alert("Bulk upload successful!");
+    return { success: true, message: "Bulk upload successful!" };
   } catch (error) {
     // ! create returns objects for failure
     console.error("Error during bulk upload:", error);

@@ -39,7 +39,6 @@ const CmsListItem = ({ values, id }) => {
   // user context
   const { currentUserProfile } = useContext(UserContext);
   const { role } = currentUserProfile;
-
   // cms edit context
   const {
     editableItemId,
@@ -111,14 +110,18 @@ const CmsListItem = ({ values, id }) => {
 
     return editableCmsItemsMap[type];
   };
+
+  const isItemSelected = selectedItems.some((item) => item.id === id);
+
   return (
     <>
       <TableRow>
         <TableCell padding="checkbox">
-          <input type="checkbox" checked={selectedItems.includes(id)} onChange={() => handleCheckboxChange(id)} />
+          {/* when i complete a bulk delete, the checkbox needs to be reset to unchecked */}
+          <input type="checkbox" checked={isItemSelected} onChange={() => handleCheckboxChange({ id, ...values[0] })} />
         </TableCell>
-        <TableCell>
-          {isEditing && role === "admin" && (
+        {isEditing && role === "admin" && (
+          <TableCell>
             <Button
               onClick={handleDeleteItem}
               color="error"
@@ -128,8 +131,8 @@ const CmsListItem = ({ values, id }) => {
             >
               <DeleteIcon />
             </Button>
-          )}
-        </TableCell>
+          </TableCell>
+        )}
         <TableCell>{renderEditableCmsItem()}</TableCell>
         <TableCell>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
