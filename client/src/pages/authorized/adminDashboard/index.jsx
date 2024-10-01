@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { CmsCreateItemProvider } from "../../../setup/context/cmsCreate.context";
 import { CmsEditItemProvider } from "../../../setup/context/cmsEdit.context";
 import { CmsBulkActionProvider } from "../../../setup/context/cmsBulkActions.context";
+import DashboardGridContent from "./components/dashboardGridContent/dashboardGridContent";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 
   const { currentUserProfile } = useContext(UserContext);
   const { currentItem } = useContext(CmsContext);
-
   useEffect(() => {
     if (currentItem) {
       const newUrl = `/dashboard?type=${currentItem.linkName}&role=${currentUserProfile.role}&uid=${currentUserProfile.uid}`;
@@ -29,7 +29,8 @@ const AdminDashboardPage = () => {
           <CmsBulkActionProvider>
             <CmsCreateItemProvider>
               <CmsEditItemProvider>
-                <DashboardTableContent currentItem={currentItem} />
+                {currentItem?.linkName === "dashboard" ? <DashboardGridContent /> : <DashboardTableContent currentItem={currentItem} />}
+                {/* <DashboardTableContent currentItem={currentItem} /> */}
               </CmsEditItemProvider>
             </CmsCreateItemProvider>
           </CmsBulkActionProvider>

@@ -1,98 +1,71 @@
-// ! STUCK MOVING ON FOR NOW
-// import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-// import { doc, setDoc } from "firebase/firestore";
-// import { auth, db } from "./index.firebase";
+import { storage, db } from "./index.firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, serverTimestamp, collection } from "firebase/firestore";
 
-// // Initialize Firebase Storage
-// const storage = getStorage();
+export const handleUploadImage = async (file, userUid, setProgress) => {
+  try {
+    if (!file) {
+      console.log("No file provided for upload.");
+      throw new Error("No file to upload.");
+    }
 
-// // Initialize Firestore
+    const imageRef = ref(storage, `mediaStorage/${file.name}`);
 
-// /**
-//  * Uploads an image to Firebase Storage and creates/updates a Firestore document with the image's metadata.
-//  * @param {File} file - The image file to upload.
-//  * @param {string} path - The storage path where the image will be saved.
-//  * @param {Object} metadata - Metadata for the upload, including contentType.
-//  * @param {Object} docData - The data to be saved in Firestore, including the associated date.
-//  */
-// export async function uploadImageAndSaveMetadata(file, path, metadata, docData) {
-//   // Reference to the storage location
-//   const storageRef = ref(storage, path + file.name);
+    if (file.size > 10 * 1024 * 1024) {
+      throw new Error("File size exceeds the limit."); // 10 MB size limit
+    }
 
-//   // Start the file upload
-//   const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+    const uploadTask = uploadBytesResumable(imageRef, file);
 
-//   // Listen for state changes, errors, and completion of the upload
-//   uploadTask.on(
-//     "state_changed",
-//     (snapshot) => {
-//       // Optionally handle progress, pause, resume
-//       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-//       console.log(`Upload is ${progress}% done`);
-//     },
-//     (error) => {
-//       // Handle any errors
-//       console.error("Upload error:", error);
-//     },
-//     () => {
-//       // Upload completed successfully, now get the download URL
-//       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-//         console.log("File available at", downloadURL);
+    // Monitor the upload progress, including any errors that may occur during upload
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Progress updates: track bytes transferred and total size
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress);
 
-//         // Here you add the downloadURL to your docData
-//         docData.imageUrl = downloadURL;
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+        }
+      },
+      (error) => {
+        switch (error.code) {
+          case "storage/retry-limit-exceeded":
+            throw new Error("Max retry time for operation exceeded. Please try again.");
+          case "storage/unauthorized":
+            throw new Error("User doesn't have permission to access the object.");
+          case "storage/canceled":
+            throw new Error("User canceled the upload.");
+          default:
+            throw new Error("Unexpected upload error: " + error.message);
+        }
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-//         // Now save docData to Firestore. Adjust `yourCollectionName` and `documentId` as needed
-//         const docRef = doc(db, "teamLogos", docData.date); // Example: using date as document ID
-//         setDoc(docRef, docData)
-//           .then(() => console.log("Document successfully written!"))
-//           .catch((error) => console.error("Error writing document: ", error));
-//       });
-//     }
-//   );
-// }
+        const cmsItemDocRef = doc(collection(db, "mediaStorage"));
+        const docId = cmsItemDocRef.id;
 
-// const images = [
-//   { name: "Vista Peak", path: "teamLogos/vistaPeak.webp" },
-//   { name: "Aurora Central", path: "teamLogos/auroraCentral.webp" },
-//   { name: "Eagle Crest", path: "teamLogos/eagleCrest.webp" },
-//   { name: "GateWay", path: "teamLogos/gateWay.webp" },
-//   { name: "Highlands Ranch", path: "teamLogos/highlandsRanch.webp" },
-//   { name: "Mountain Range", path: "teamLogos/mountainRange.webp" },
-//   { name: "Mullen", path: "teamLogos/mullen.webp" },
-//   { name: "Standley Lake", path: "teamLogos/standleyLake.webp" },
-//   { name: "Thornton", path: "teamLogos/thornton.webp" },
-//   { name: "Westminster", path: "teamLogos/westminster.webp" },
-//   { name: "Vista Ridge", path: "teamLogos/vistaRidge.webp" },
-//   { name: "Cherry Creek", path: "teamLogos/cherryCreek.webp" },
-//   { name: "Grand View", path: "teamLogos/grandView.webp" },
-//   { name: "Smoky Hill", path: "teamLogos/smokyHill.webp" },
-//   { name: "Cherokee Trail", path: "teamLogos/cherokeeTrail.webp" },
-//   { name: "Arapahoe", path: "teamLogos/arapahoe.webp" },
-//   { name: "Range View", path: "teamLogos/rangeView.webp" },
-// ];
-// // move later
-// const handleUploadImage = () => {
-//   images.forEach(async (image) => {
-//     const response = await fetch(`./../../../assets/homePage/${image.path}`);
-//     console.log(response);
-//     const blob = await response.blob();
-//     console.log(blob);
-
-//     // Use the blob here to upload as previously described
-//     const metadata = {
-//       contentType: "image/webp",
-//     };
-
-//     const docData = {
-//       date: new Date().toISOString(), // Example date
-//       description: `${image.name} Logo`,
-//     };
-
-//     // Construct a unique path for Firebase Storage
-//     const uploadPath = `teamLogos/${image.name.replace(/\s+/g, "_").toLowerCase()}.webp`;
-
-//     // Assuming `uploadImageAndSaveMetadata` is adapted to work with Blob objects
-//     uploadImageAndSaveMetadata(blob, uploadPath, metadata, docData);
-//   });
-// };
+        await setDoc(cmsItemDocRef, {
+          id: docId,
+          createdAt: serverTimestamp(),
+          createdByUserUid: userUid,
+          url: downloadURL,
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type,
+        });
+      }
+    );
+    return { success: true, message: "Uploaded image successfully" };
+  } catch (error) {
+    console.log("Error during upload:", error.message);
+    return { success: false, error: `Unexpected error: ${error.message}` };
+  }
+};

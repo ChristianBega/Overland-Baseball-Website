@@ -5,7 +5,8 @@ const FormStatusIndicator = ({ statusMessage, progress }) => {
   return (
     <>
       {statusMessage}
-      {/* {status === "loading" && (
+      {/* {progress > 0 && <p>{progress}%</p>} */}
+      {/* {statusMessage === "Loading..." && (
         <Box display="flex" justifyContent="center" my={2}>
           <CircularProgress />
           <p>{progress}%</p>
@@ -20,7 +21,6 @@ const FormStatusIndicator = ({ statusMessage, progress }) => {
         <Alert severity="error" sx={{ mb: 2 }}>
           Failed! Please try again.
         </Alert>
-
       )} */}
     </>
   );

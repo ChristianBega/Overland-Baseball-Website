@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useTheme } from "@emotion/react";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
@@ -9,11 +9,13 @@ import EventIcon from "@mui/icons-material/Event";
 import TopicIcon from "@mui/icons-material/Topic";
 import LinkIcon from "@mui/icons-material/Link";
 import DateRangeIcon from "@mui/icons-material/DateRange";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import { containerVariants, itemVariants } from "../../../../../setup/framerAnimations/dashboardMenu";
 import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, MenuItem } from "./index.styles";
 import { CmsContext } from "../../../../../setup/context/cms.context";
 
 const menuListItems = [
+  { linkName: "dashboard", urlPath: "/", icon: <DashboardIcon sx={{ fontSize: "20px" }} /> },
   { linkName: "schedule", urlPath: "/", icon: <DateRangeIcon sx={{ fontSize: "20px" }} /> },
   { linkName: "roster", urlPath: "/", icon: <FormatListNumberedIcon sx={{ fontSize: "20px" }} /> },
   { linkName: "events", urlPath: "/", icon: <EventIcon sx={{ fontSize: "20px" }} /> },
@@ -29,6 +31,10 @@ const DashboardSideBarMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const { currentItem, setCurrentItem } = useContext(CmsContext);
+
+  useEffect(() => {
+    setCurrentItem(menuListItems[0]);
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen((prevState) => !prevState);

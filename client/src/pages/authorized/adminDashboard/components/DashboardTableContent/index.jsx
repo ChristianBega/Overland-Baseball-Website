@@ -18,7 +18,7 @@ const DashboardTableContent = ({ currentItem }) => {
       ? Object.keys(displayData[0]).filter((key) => key !== "id" && key !== "addedByUserUid" && key !== "createdAt" && key !== "updatedAt")
       : [];
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  console.log("selectedItems.length === displayData.length", selectedItems?.length === displayData?.length);
+
   return (
     <Grid item xs={12} lg={12}>
       <Box sx={{ marginTop: "2rem" }}>

@@ -1,20 +1,48 @@
 import React, { createContext, useState, useContext } from "react";
 import ModalComponent from "../../components/modals/modal";
 
-const ModalContext = createContext();
+const ModalContext = createContext({
+  openModal: () => {},
+  closeModal: () => {},
+  closeAllModals: () => {},
+  preview: null,
+  setPreview: () => {},
+  file: null,
+  setFile: () => {},
+});
 
 export const ModalProvider = ({ children }) => {
-  const [modalContent, setModalContent] = useState(null);
+  const [modalContent, setModalContent] = useState([]);
+  const [preview, setPreview] = useState(null); // Image preview state
+  const [file, setFile] = useState(null); // File state
 
-  const openModal = (content) => setModalContent(content);
-  const closeModal = () => setModalContent(null);
+  const openModal = (content) => {
+    setModalContent((prevStack) => [...prevStack, content]);
+  };
+
+  const closeModal = () => {
+    setModalContent((prevStack) => {
+      const newStack = prevStack.slice(0, -1);
+      if (newStack.length === 0) {
+        setPreview(null);
+      }
+      return newStack;
+    });
+  };
+
+  const closeAllModals = () => {
+    setModalContent([]);
+    setPreview(null);
+  };
 
   return (
-    <ModalContext.Provider value={{ openModal, closeModal }}>
+    <ModalContext.Provider value={{ openModal, closeModal, closeAllModals, preview, setPreview, file, setFile }}>
       {children}
-      <ModalComponent isOpen={!!modalContent} onToggle={closeModal}>
-        {modalContent}
-      </ModalComponent>
+      {modalContent.map((content, index) => (
+        <ModalComponent key={index} isOpen={true} onToggle={() => closeModal()} zIndex={1000 + index}>
+          {content}
+        </ModalComponent>
+      ))}
     </ModalContext.Provider>
   );
 };
