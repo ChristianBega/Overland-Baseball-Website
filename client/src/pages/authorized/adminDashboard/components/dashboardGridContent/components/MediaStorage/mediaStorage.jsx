@@ -4,9 +4,11 @@ import { useModal } from "../../../../../../../setup/context/modal.context";
 import { UserContext } from "../../../../../../../setup/context/user.context";
 import { handleUploadImage } from "../../../../../../../setup/utils/firebase/uploadImage";
 import FormStatusIndicator from "../../../../../../../components/statusIndicators/formStatusIndicator";
+import { useRealtimeData } from "../../../../../../../hooks/useRealtimeData";
 
 const MediaStorage = () => {
   const { preview, setPreview, closeModal, file, setFile } = useModal();
+  const { data: displayData, isLoading, error } = useRealtimeData("mediaStorage");
   const fileInputRef = useRef(null);
   const { currentUserProfile } = useContext(UserContext);
   const { uid } = currentUserProfile;
@@ -52,12 +54,13 @@ const MediaStorage = () => {
       if (response.success) {
         setStatusMessage(response.message);
         setTimeout(() => {
-          closeModal();
+          // closeModal();
+          setProgress(0);
+          setFile(null);
+          setPreview(null);
+          fileInputRef.current.value = "";
+          setStatusMessage(null);
         }, 2000);
-        setProgress(0);
-        setFile(null);
-        setPreview(null);
-        fileInputRef.current.value = "";
       } else {
         setStatusMessage(response.error);
         alert(response.error);
@@ -102,9 +105,19 @@ const MediaStorage = () => {
           Upload Image
         </Button>
       </form>
-      <div>
-
-        
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }}>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error}</p>
+        ) : (
+          displayData.map((item) => (
+            <div style={{ border: "1px dotted red", padding: "1rem", marginBottom: "1rem", width: "150px", height: "150px" }} key={item.id}>
+              <img style={{ height: "50px", width: "50px" }} src={item.url} alt={item.id} />
+              <p>{item.fileName}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

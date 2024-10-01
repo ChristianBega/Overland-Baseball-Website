@@ -1,6 +1,8 @@
 import React from "react";
 import { useModal } from "../../../../../setup/context/modal.context";
 import MediaStorage from "./components/MediaStorage/mediaStorage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 const DashboardGridContent = () => {
   const { openModal } = useModal();

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import ModalComponent from "../../components/modals/modal";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 const ModalContext = createContext({
   openModal: () => {},
   closeModal: () => {},
@@ -36,14 +37,16 @@ export const ModalProvider = ({ children }) => {
   };
 
   return (
-    <ModalContext.Provider value={{ openModal, closeModal, closeAllModals, preview, setPreview, file, setFile }}>
-      {children}
-      {modalContent.map((content, index) => (
-        <ModalComponent key={index} isOpen={true} onToggle={() => closeModal()} zIndex={1000 + index}>
-          {content}
-        </ModalComponent>
-      ))}
-    </ModalContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <ModalContext.Provider value={{ openModal, closeModal, closeAllModals, preview, setPreview, file, setFile }}>
+        {children}
+        {modalContent.map((content, index) => (
+          <ModalComponent key={index} isOpen={true} onToggle={() => closeModal()} zIndex={1000 + index}>
+            {content}
+          </ModalComponent>
+        ))}
+      </ModalContext.Provider>
+    </QueryClientProvider>
   );
 };
 
