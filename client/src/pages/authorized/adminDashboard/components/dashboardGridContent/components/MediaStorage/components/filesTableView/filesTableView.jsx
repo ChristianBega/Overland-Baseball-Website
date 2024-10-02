@@ -1,5 +1,19 @@
-import { Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React from "react";
+import InputFieldComponent from "../../../../../../../../../components/inputFields/inputFields";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  textAlign: "center",
+  "& > *": {
+    display: "flex",
+    alignItems: "center",
+    height: "100%",
+  },
+  "&.wide-cell": {
+    width: "200px !important",
+    minWidth: "80px !important",
+  },
+}));
 
 const FilesTableView = ({ displayData, isLoading, error }) => {
   const formatDate = (timestamp) => {
@@ -30,18 +44,40 @@ const FilesTableView = ({ displayData, isLoading, error }) => {
       <Table aria-label="files table">
         <TableHead>
           <TableRow>
-            <TableCell>Image</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Created At</TableCell>
-            <TableCell>File Size</TableCell>
-            <TableCell>File Type</TableCell>
-            <TableCell>URL</TableCell>
-            <TableCell>Actions</TableCell>
+            <StyledTableCell>
+              <div>
+                <InputFieldComponent type="checkbox" />
+              </div>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography component="p">Image</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography component="p">Name</Typography>
+            </StyledTableCell>
+            <StyledTableCell className="wide-cell">
+              <Typography component="p">Created At</Typography>
+            </StyledTableCell>
+            <StyledTableCell className="wide-cell">
+              <Typography component="p">File Size</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography component="p">File Type</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography component="p">URL</Typography>
+            </StyledTableCell>
+            <StyledTableCell>
+              <Typography component="p">Actions</Typography>
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {displayData.map((row) => (
             <TableRow key={row.id}>
+              <TableCell>
+                <InputFieldComponent type="checkbox" />
+              </TableCell>
               <TableCell>
                 <img src={row.url} alt={row.fileName} style={{ height: "50px", width: "50px" }} />
               </TableCell>

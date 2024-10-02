@@ -20,11 +20,9 @@ const InputFieldComponent = ({ type, ...props }) => {
   }
 
   return (
-    <Box>
-      <Suspense fallback={<div>Loading...</div>}>
-        <InputComponent {...props} />
-      </Suspense>
-    </Box>
+    <Suspense fallback={<div>Loading...</div>}>
+      <InputComponent {...props} />
+    </Suspense>
   );
 };
 

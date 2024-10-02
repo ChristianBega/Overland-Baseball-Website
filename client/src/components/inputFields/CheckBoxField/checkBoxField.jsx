@@ -5,7 +5,14 @@ const CheckBoxField = ({ ...props }) => {
   return (
     <>
       <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
-      <Checkbox {...props} sx={{ display: "inline-block" }} defaultUnchecked variant="outlined" variable />;
+      <Checkbox
+        {...props}
+        sx={{ display: "inline-block", padding: props?.padding ? props.padding : "0px" }}
+        defaultUnchecked
+        variant="outlined"
+        variable
+      />
+      ;
     </>
   );
 };
