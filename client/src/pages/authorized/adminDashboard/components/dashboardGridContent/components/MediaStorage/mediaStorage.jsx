@@ -5,6 +5,8 @@ import { UserContext } from "../../../../../../../setup/context/user.context";
 import { handleUploadImage } from "../../../../../../../setup/utils/firebase/uploadImage";
 import FormStatusIndicator from "../../../../../../../components/statusIndicators/formStatusIndicator";
 import { useRealtimeData } from "../../../../../../../hooks/useRealtimeData";
+import FilesGridView from "./components/filesGridView/filesGridView";
+import FilesTableView from "./components/filesTableView/filesTableView";
 
 const MediaStorage = () => {
   const { preview, setPreview, closeModal, file, setFile } = useModal();
@@ -14,6 +16,7 @@ const MediaStorage = () => {
   const { uid } = currentUserProfile;
   const [progress, setProgress] = useState(0);
   const [statusMessage, setStatusMessage] = useState(null);
+  const [viewMode, setViewMode] = useState("grid");
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -72,6 +75,7 @@ const MediaStorage = () => {
     }
   };
 
+  const fileViewProps = { displayData, isLoading, error };
   return (
     <div>
       <Stack alignItems={"center"} direction="row" justifyContent="space-between">
@@ -105,20 +109,23 @@ const MediaStorage = () => {
           Upload Image
         </Button>
       </form>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }}>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>Error: {error}</p>
-        ) : (
-          displayData.map((item) => (
-            <div style={{ border: "1px dotted red", padding: "1rem", marginBottom: "1rem", width: "150px", height: "150px" }} key={item.id}>
-              <img style={{ height: "50px", width: "50px" }} src={item.url} alt={item.id} />
-              <p>{item.fileName}</p>
-            </div>
-          ))
-        )}
-      </div>
+
+      {/* + new button for creating new file and folder (eventually folder) */}
+      {/* search bar with filter options */}
+      {/* grid view & list view toggle  */}
+      <Stack direction="row" spacing={2}>
+        <Button variant="contained" onClick={() => setViewMode("grid")} disabled={viewMode === "grid"}>
+          Grid View
+        </Button>
+        <Button variant="contained" onClick={() => setViewMode("list")} disabled={viewMode === "list"}>
+          List View
+        </Button>
+      </Stack>
+      {/* folder section with folder buttons allowing you to delete, rename, etc which updates the displayData to show only images in that folder. This structure will be in our firebase storage */}
+      {/*   */}
+      {/* files section that displays each file an options menu to delete, download, rename, move to folder, get link, etc...  */}
+      {viewMode === "grid" ? <FilesGridView {...fileViewProps} /> : <FilesTableView {...fileViewProps} />}
+      {/* pagination with previous and next buttons, and page number buttons  1-5, page selection dropdown, and total pages */}
     </div>
   );
 };
