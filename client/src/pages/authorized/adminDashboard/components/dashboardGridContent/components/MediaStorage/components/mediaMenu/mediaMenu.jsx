@@ -25,7 +25,7 @@ const MediaMenu = ({ anchorEl, open, handleClose, handleAddNewMediaItem, fileInp
           Upload File
         </Typography>
       </MenuItem>
-      <MenuItem onClick={handleClose}>
+      <MenuItem disabled onClick={handleClose}>
         <Typography component="span" fontSize="0.8rem">
           New Folder
         </Typography>
