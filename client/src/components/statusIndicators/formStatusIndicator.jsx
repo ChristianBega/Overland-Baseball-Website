@@ -4,8 +4,8 @@ import { Box, CircularProgress, Alert } from "@mui/material";
 const FormStatusIndicator = ({ statusMessage, progress }) => {
   return (
     <>
-      {statusMessage}
-      {/* {progress > 0 && <p>{progress}%</p>} */}
+      {progress > 0 && <progress value={progress} max="100" />}
+      {statusMessage && <p>{statusMessage}</p>}
       {/* {statusMessage === "Loading..." && (
         <Box display="flex" justifyContent="center" my={2}>
           <CircularProgress />

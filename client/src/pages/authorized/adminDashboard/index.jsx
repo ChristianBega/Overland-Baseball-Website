@@ -9,6 +9,7 @@ import { CmsCreateItemProvider } from "../../../setup/context/cmsCreate.context"
 import { CmsEditItemProvider } from "../../../setup/context/cmsEdit.context";
 import { CmsBulkActionProvider } from "../../../setup/context/cmsBulkActions.context";
 import DashboardGridContent from "./components/dashboardGridContent/dashboardGridContent";
+import { MediaStorageProvider } from "../../../setup/context/cmsContext/mediaStorage";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 
@@ -27,12 +28,14 @@ const AdminDashboardPage = () => {
         <Grid id="dashboard-main-grid" container maxWidth="lg">
           <DashboardSideBarMenu />
           <CmsBulkActionProvider>
-            <CmsCreateItemProvider>
-              <CmsEditItemProvider>
-                {currentItem?.linkName === "dashboard" ? <DashboardGridContent /> : <DashboardTableContent currentItem={currentItem} />}
-                {/* <DashboardTableContent currentItem={currentItem} /> */}
-              </CmsEditItemProvider>
-            </CmsCreateItemProvider>
+            <MediaStorageProvider>
+              <CmsCreateItemProvider>
+                <CmsEditItemProvider>
+                  {currentItem?.linkName === "dashboard" ? <DashboardGridContent /> : <DashboardTableContent currentItem={currentItem} />}
+                  {/* <DashboardTableContent currentItem={currentItem} /> */}
+                </CmsEditItemProvider>
+              </CmsCreateItemProvider>
+            </MediaStorageProvider>
           </CmsBulkActionProvider>
         </Grid>
       )}

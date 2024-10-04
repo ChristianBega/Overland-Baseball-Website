@@ -40,7 +40,7 @@ const FilesTableView = ({ displayData, isLoading, error }) => {
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer id="files-table-view" sx={{ minHeight: "800px", border: "1px dotted red" }} component={Paper}>
       <Table aria-label="files table">
         <TableHead>
           <TableRow>

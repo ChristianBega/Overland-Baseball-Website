@@ -18,11 +18,11 @@ const FilesGridView = ({ displayData, isLoading, error }) => {
     return <div>Error: {error}</div>;
   }
 
-  return ( 
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }}>
-      {displayData.map((item) => (
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center", minHeight: "400px" }}>
+      {displayData.map((item, index) => (
         <div
-          key={item.id}
+          key={index}
           style={{
             backgroundImage: `url(${item.url})`,
             backgroundSize: "cover",
