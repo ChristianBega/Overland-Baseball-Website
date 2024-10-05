@@ -59,7 +59,6 @@ const RenameImage = ({ file, closeModal, setAnchorEl }) => {
 const FileMenuOptions = ({ file }) => {
   const { currentUserProfile } = useContext(UserContext);
   const { closeModal, openModal } = useModal();
-
   const { role, uid } = currentUserProfile;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -118,8 +117,15 @@ const FileMenuOptions = ({ file }) => {
     console.log("move to folder");
     handleClose();
   };
-  const handleGetLink = () => {
-    console.log("get link");
+
+  const handleGetLink = async () => {
+    try {
+      await navigator.clipboard.writeText(file.url);
+      alert("Link copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy link: ", err);
+      alert("Failed to copy link. Please try again.");
+    }
     handleClose();
   };
 
@@ -166,9 +172,6 @@ const FileMenuOptions = ({ file }) => {
         <MenuItem onClick={() => handleDownload(file.url, file.fileName)}>
           <Typography component="span" fontSize="0.8rem">
             Download
-            {/* <a href={file.url} download>
-              Download
-            </a> */}
           </Typography>
         </MenuItem>
         <MenuItem onClick={handleDeleteItem}>
