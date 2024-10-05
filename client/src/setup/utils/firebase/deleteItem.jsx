@@ -1,6 +1,7 @@
 import { doc, deleteDoc, writeBatch } from "firebase/firestore";
 
 import { db } from "./index.firebase";
+import { deleteObject, getStorage, ref } from "firebase/storage";
 
 export const deleteCMSItem = async (userUid, role, docId, type) => {
   if (!userUid || role !== "admin") return;
@@ -32,5 +33,20 @@ export const bulkDeleteFromFirebase = async (userUid, role, type, idsToDelete, s
   } catch (error) {
     console.error("Error during bulk delete:", error);
     return { success: false, error: "Error during bulk delete. Check the console for more details." };
+  }
+};
+
+export const deleteItemFromStorage = async (userUid, role, imagePath) => {
+  if (!userUid || role !== "admin") return;
+  const storage = getStorage();
+  const imageRef = ref(storage, imagePath);
+
+  try {
+    await deleteObject(imageRef);
+    console.log("Image deleted successfully");
+    return { success: true, message: "Image deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    return { success: false, error: "Error deleting image. Check the console for more details." };
   }
 };

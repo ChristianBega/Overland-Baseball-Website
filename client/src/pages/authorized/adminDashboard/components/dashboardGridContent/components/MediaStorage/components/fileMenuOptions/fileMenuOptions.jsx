@@ -1,8 +1,12 @@
 import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { getDownloadableUrl } from "../../../../../../../../../setup/utils/firebase/uploadImage";
 import axios from "axios";
+import { UserContext } from "../../../../../../../../../setup/context/user.context";
+import { deleteCMSItem, deleteItemFromStorage } from "../../../../../../../../../setup/utils/firebase/deleteItem";
 const FileMenuOptions = ({ file }) => {
+  const { currentUserProfile } = useContext(UserContext);
+  const { role, uid } = currentUserProfile;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -13,6 +17,8 @@ const FileMenuOptions = ({ file }) => {
   };
 
   const handleDownload = async (filePath, fileName) => {
+    if (role !== "admin") return;
+    if (!filePath || !fileName) return;
     try {
       const url = await getDownloadableUrl(filePath);
 
@@ -29,13 +35,21 @@ const FileMenuOptions = ({ file }) => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(blobUrl);
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
     } catch (error) {
       console.error("Error during download:", error);
     }
   };
 
-  const handleDelete = () => {
-    console.log("delete");
+  const handleDeleteItem = async () => {
+    if (role !== "admin") return;
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      await deleteCMSItem(uid, role, file.id, "mediaStorage");
+      await deleteItemFromStorage(uid, role, file.url);
+      alert("Item deleted successfully");
+    }
 
     handleClose();
   };
@@ -47,7 +61,7 @@ const FileMenuOptions = ({ file }) => {
     console.log("move to folder");
     handleClose();
   };
-  const handleGetLink = () => { 
+  const handleGetLink = () => {
     console.log("get link");
     handleClose();
   };
@@ -100,7 +114,7 @@ const FileMenuOptions = ({ file }) => {
             </a> */}
           </Typography>
         </MenuItem>
-        <MenuItem onClick={handleDelete}>
+        <MenuItem onClick={handleDeleteItem}>
           <Typography component="span" fontSize="0.8rem">
             Delete
           </Typography>
