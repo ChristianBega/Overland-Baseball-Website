@@ -1,17 +1,73 @@
 import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
-import { useContext, useRef, useState } from "react";
-import { getDownloadableUrl } from "../../../../../../../../../setup/utils/firebase/uploadImage";
+import { useContext, useEffect, useRef, useState } from "react";
+import { getDownloadableUrl, handleUpdateImage } from "../../../../../../../../../setup/utils/firebase/uploadImage";
 import axios from "axios";
 import { UserContext } from "../../../../../../../../../setup/context/user.context";
 import { deleteCMSItem, deleteItemFromStorage } from "../../../../../../../../../setup/utils/firebase/deleteItem";
+import { useModal } from "../../../../../../../../../setup/context/modal.context";
+import TextInputField from "../../../../../../../../../components/inputFields/TextInputField/textInputField";
+import { updateCMSItem } from "../../../../../../../../../setup/utils/firebase/editItem";
+
+// ! rename image component
+const RenameImage = ({ file, closeModal, setAnchorEl }) => {
+  const [newFileName, setNewFileName] = useState();
+  const originalFileExtension = file.fileName.split(".")[1];
+  const { currentUserProfile } = useContext(UserContext);
+  const { role, uid } = currentUserProfile;
+
+  const handleSaveRename = async () => {
+    const newFileNameWithExt = newFileName + "." + originalFileExtension;
+    const originalFileNameWithExt = file.fileName;
+    const renameResponse = await handleUpdateImage(uid, role, originalFileNameWithExt, newFileNameWithExt);
+
+    if (renameResponse.success) {
+      const newFileData = {
+        fileName: newFileName + "." + originalFileExtension,
+        url: renameResponse.newDownloadURL,
+      };
+      const response = await updateCMSItem(uid, role, file.id, newFileData, "mediaStorage");
+      if (response.success) {
+        alert("File renamed successfully");
+        closeModal();
+        setTimeout(() => {
+          setAnchorEl(null);
+        }, 100);
+      } else {
+        alert("Error renaming file");
+      }
+    }
+  };
+  const handleEditChange = (event) => {
+    const { value } = event.target;
+    setNewFileName(value);
+  };
+
+  const currentData = newFileName || file.fileName;
+
+  return (
+    <div>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h6">Rename File</Typography>
+        <Button onClick={closeModal}>X Cancel</Button>
+      </Stack>
+      <TextInputField type="text" label="New File Name" name="fileName" value={currentData.split(".")[0]} onChange={handleEditChange} />
+      <Button onClick={handleSaveRename}>Save</Button>
+    </div>
+  );
+};
+
 const FileMenuOptions = ({ file }) => {
   const { currentUserProfile } = useContext(UserContext);
+  const { closeModal, openModal } = useModal();
+
   const { role, uid } = currentUserProfile;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -53,10 +109,11 @@ const FileMenuOptions = ({ file }) => {
 
     handleClose();
   };
-  const handleRename = () => {
-    console.log("rename");
-    handleClose();
+
+  const handleEditClick = () => {
+    openModal(<RenameImage file={file} closeModal={closeModal} setAnchorEl={setAnchorEl} />);
   };
+
   const handleMoveToFolder = () => {
     console.log("move to folder");
     handleClose();
@@ -119,12 +176,12 @@ const FileMenuOptions = ({ file }) => {
             Delete
           </Typography>
         </MenuItem>
-        <MenuItem onClick={handleRename}>
+        <MenuItem onClick={handleEditClick}>
           <Typography component="span" fontSize="0.8rem">
             Rename
           </Typography>
         </MenuItem>
-        <MenuItem onClick={handleMoveToFolder}>
+        <MenuItem disabled onClick={handleMoveToFolder}>
           <Typography component="span" fontSize="0.8rem">
             Move to folder
           </Typography>
