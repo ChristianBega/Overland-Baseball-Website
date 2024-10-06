@@ -3,7 +3,7 @@ import "./teamRosterItem.styles.css";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
-import CmsOperationStatus from "../../../../authorized/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-type-of(even)": {

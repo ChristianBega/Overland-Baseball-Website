@@ -1,8 +1,8 @@
 import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
-import { bulkDeleteFromFirebase } from "../../../../../setup/utils/firebase/deleteItem";
-import FormStatusIndicator from "../../../../../components/statusIndicators/formStatusIndicator";
-import InputFieldComponent from "../../../../../components/inputFields/inputFields";
+import { bulkDeleteFromFirebase } from "../../../../setup/utils/firebase/deleteItem";
+import FormStatusIndicator from "../../../statusIndicators/formStatusIndicator";
+import InputFieldComponent from "../../../inputFields/inputFields";
 
 const DeleteItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, selectedItems, setSelectedItems } = props;

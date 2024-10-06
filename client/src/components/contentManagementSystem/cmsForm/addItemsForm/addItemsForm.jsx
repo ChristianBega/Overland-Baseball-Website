@@ -1,11 +1,11 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import InputFieldComponent from "../../../../../components/inputFields/inputFields";
 import { Controller, useForm } from "react-hook-form";
 import scheduleItemInputFieldsConfig from "./data/addScheduleItem.config.json";
 import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
-import { addCMSItem } from "../../../../../setup/utils/firebase/addItem";
-import FormStatusIndicator from "../../../../../components/statusIndicators/formStatusIndicator";
+import { addCMSItem } from "../../../../setup/utils/firebase/addItem";
+import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
+import InputFieldComponent from "../../../inputFields/inputFields";
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);

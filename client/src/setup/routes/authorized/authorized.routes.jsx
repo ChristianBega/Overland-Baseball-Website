@@ -3,7 +3,6 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { ScrollToTop } from "../../../components/scrollToTop/scrollToTop.component";
-import PlayerRosterPage from "../../../pages/authorized/playerRoster/playerRoster.page";
 import DocumentsPage from "../../../pages/authorized/documents/documents.page";
 import HomePage from "../../../pages/unauthorized/home/home.page";
 import BoostersPage from "../../../pages/unauthorized/boosters/boosters.page";
@@ -15,7 +14,6 @@ import AuthenticationPage from "../../../pages/unauthorized/authentication/authe
 import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwordReset.page";
 import Page404 from "../../../pages/404/404.page";
 import AdminDashboardPage from "../../../pages/authorized/adminDashboard";
-import CMSCreateItemPage from "../../../pages/authorized/contentManagementSystem/createPage";
 
 export default function AuthorizedRoutes() {
   const location = useLocation();
@@ -25,7 +23,6 @@ export default function AuthorizedRoutes() {
       <Routes key={location.pathname} location={location}>
         <Route path="*" element={<Page404 />} />
         <Route path="/" element={<HomePage />}></Route>
-        <Route path="/coach/player-roster" element={<PlayerRosterPage />}></Route>
         <Route path="/documents" element={<DocumentsPage />}></Route>
         {/* Previous Unauthorized routes */}
         <Route path="/boosters" element={<BoostersPage />}></Route>
@@ -38,7 +35,6 @@ export default function AuthorizedRoutes() {
         <Route path="/authentication/sign-up" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>
         <Route path="/dashboard" element={<AdminDashboardPage />}></Route>
-        <Route path="/cms-create" element={<CMSCreateItemPage />}></Route>
       </Routes>
     </AnimatePresence>
   );

@@ -1,10 +1,10 @@
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import React, { useState } from "react";
 
-import { bulkAddToFirebase } from "../../../../../setup/utils/firebase/addItem";
 import { processCsvUpload } from "./helpers/processCsvUpload";
 import scheduleExpectedDataStructure from "./data/schedule.config.json";
-import FormStatusIndicator from "../../../../../components/statusIndicators/formStatusIndicator";
+import { bulkAddToFirebase } from "../../../../setup/utils/firebase/addItem";
+import FormStatusIndicator from "../../../statusIndicators/formStatusIndicator";
 
 const BulkAddItemsForm = ({ ...props }) => {
   const { uid, cmsItemType, closeModal, role, setSelectedItems } = props;

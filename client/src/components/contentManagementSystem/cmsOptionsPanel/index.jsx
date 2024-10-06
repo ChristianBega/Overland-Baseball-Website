@@ -1,12 +1,12 @@
 import { Button } from "@mui/material";
-import { useModal } from "../../../../../setup/context/modal.context";
-import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQueryParams";
-import CmsForm from "../../../contentManagementSystem/cmsForm/cmsForm";
-import { CmsBulkActionContext } from "../../../../../setup/context/cmsBulkActions.context";
+import CmsForm from "../cmsForm/cmsForm";
 import { useContext } from "react";
-import { CmsEditItemContext } from "../../../../../setup/context/cmsEdit.context";
+import { useModal } from "../../../setup/context/modal.context";
+import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
+import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
 
-const DashboardOptions = () => {
+const CmsOptionsPanel = () => {
   const { openModal, closeModal } = useModal();
   const { selectedItems, setSelectedItems, selectAll } = useContext(CmsBulkActionContext);
   const { editableItemData } = useContext(CmsEditItemContext);
@@ -57,4 +57,4 @@ const DashboardOptions = () => {
   );
 };
 
-export default DashboardOptions;
+export default CmsOptionsPanel;

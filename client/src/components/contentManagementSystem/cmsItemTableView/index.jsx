@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 import { Box, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, useMediaQuery } from "@mui/material";
-import LoadingErrorIndicator from "../../../../loadingErrorIndicator";
-import CmsListItem from "../../../contentManagementSystem/cmsListItem/cmsListItem";
-import DashboardOptions from "../dashboardOptions";
-import { useRealtimeData } from "../../../../../hooks/useRealtimeData";
-import { CmsBulkActionContext } from "../../../../../setup/context/cmsBulkActions.context";
-import InputFieldComponent from "../../../../../components/inputFields/inputFields";
+import CmsListItem from "../cmsListItem/cmsListItem";
+import CmsOptionsPanel from "../cmsOptionsPanel";
 import { useTheme } from "@emotion/react";
-import { CmsEditItemContext } from "../../../../../setup/context/cmsEdit.context";
+import { useRealtimeData } from "../../../hooks/useRealtimeData";
+import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
+import InputFieldComponent from "../../inputFields/inputFields";
+import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
 
-const DashboardTableContent = ({ currentItem }) => {
+const CmsItemTableView = ({ currentItem }) => {
   const theme = useTheme();
   const { handleSelectAll, selectedItems } = useContext(CmsBulkActionContext);
   const { editableItemData } = useContext(CmsEditItemContext);
@@ -25,11 +24,11 @@ const DashboardTableContent = ({ currentItem }) => {
     <Grid item xs={12} lg={12}>
       <Box sx={{ marginTop: "2rem" }}>
         <Stack direction={isMobile ? "column" : "row"} justifyContent="space-between" spacing={2} sx={{ marginBottom: "1rem", padding: "1rem" }}>
-          <DashboardOptions  />
+          <CmsOptionsPanel />
           <InputFieldComponent type="text" placeholder="Search..." />
         </Stack>
         <div>
-          <LoadingErrorIndicator isLoading={isLoading} error={error} />
+          {/* <LoadingErrorIndicator isLoading={isLoading} error={error} /> */}
           <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
             <TableHead>
               <TableCell>
@@ -60,4 +59,4 @@ const DashboardTableContent = ({ currentItem }) => {
   );
 };
 
-export default DashboardTableContent;
+export default CmsItemTableView;

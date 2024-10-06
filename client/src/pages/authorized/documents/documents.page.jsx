@@ -6,7 +6,6 @@ import DocumentsGrid from "./components/documentCard/documentCard.component";
 import { playerDocuments } from "../../../websiteData/documents/documents.data";
 
 export default function DocumentsPage() {
-  console.log(playerDocuments);
   const theme = useTheme();
   return (
     <Container

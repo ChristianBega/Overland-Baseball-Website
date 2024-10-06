@@ -19,19 +19,19 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, Typography, TableRow, TableCell } from "@mui/material";
-import ScheduleItem from "../../../unauthorized/home/components/scheduleItem/scheduleItem.component";
-import { CmsEditItemContext } from "../../../../setup/context/cmsEdit.context";
-import { UserContext } from "../../../../setup/context/user.context";
-import { deleteCMSItem } from "../../../../setup/utils/firebase/deleteItem";
-import { updateCMSItem } from "../../../../setup/utils/firebase/editItem";
+import ScheduleItem from "../../../pages/unauthorized/home/components/scheduleItem/scheduleItem.component";
+import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
+import { UserContext } from "../../../setup/context/user.context";
+import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
+import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import CloseIcon from "@mui/icons-material/Close";
-import TeamRoosterItem from "../../../unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
-import { useUrlQueryParams } from "../../../../setup/utils/helpers/useUrlQueryParams";
-import { CmsBulkActionContext } from "../../../../setup/context/cmsBulkActions.context";
+import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
+import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();

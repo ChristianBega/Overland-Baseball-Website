@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import overland from "../../../../../assets/homePage/teamLogos/overland.webp";
 import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
 import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
-import CmsOperationStatus from "../../../../authorized/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(even)": {
