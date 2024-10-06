@@ -1,6 +1,7 @@
 import { Button, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React from "react";
 import InputFieldComponent from "../../../../../../../../../components/inputFields/inputFields";
+import FileMenuOptions from "../fileMenuOptions/fileMenuOptions";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   textAlign: "center",
@@ -91,11 +92,7 @@ const FilesTableView = ({ displayData, isLoading, error }) => {
                 </a>
               </TableCell>
               <TableCell>
-                <Stack direction="column" spacing={0.5}>
-                  <div style={{ borderRadius: "50%", backgroundColor: "red", height: "5px", width: "5px" }}></div>
-                  <div style={{ borderRadius: "50%", backgroundColor: "red", height: "5px", width: "5px" }}></div>
-                  <div style={{ borderRadius: "50%", backgroundColor: "red", height: "5px", width: "5px" }}></div>
-                </Stack>
+                <FileMenuOptions file={row} />
               </TableCell>
             </TableRow>
           ))}

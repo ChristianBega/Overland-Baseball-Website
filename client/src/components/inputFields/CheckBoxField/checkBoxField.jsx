@@ -12,7 +12,6 @@ const CheckBoxField = ({ ...props }) => {
         variant="outlined"
         variable
       />
-      ;
     </>
   );
 };
