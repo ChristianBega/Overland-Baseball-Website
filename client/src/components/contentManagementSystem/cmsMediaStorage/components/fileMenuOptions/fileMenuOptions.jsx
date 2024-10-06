@@ -1,12 +1,12 @@
 import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useContext, useState } from "react";
-import { getDownloadableUrl, handleUpdateImage } from "../../../../../../../../../setup/utils/firebase/uploadImage";
 import axios from "axios";
-import { UserContext } from "../../../../../../../../../setup/context/user.context";
-import { deleteCMSItem, deleteItemFromStorage } from "../../../../../../../../../setup/utils/firebase/deleteItem";
-import { useModal } from "../../../../../../../../../setup/context/modal.context";
-import TextInputField from "../../../../../../../../../components/inputFields/TextInputField/textInputField";
-import { updateCMSItem } from "../../../../../../../../../setup/utils/firebase/editItem";
+import { updateCMSItem } from "../../../../../setup/utils/firebase/editItem";
+import TextInputField from "../../../../inputFields/TextInputField/textInputField";
+import { getDownloadableUrl, handleUpdateImage } from "../../../../../setup/utils/firebase/uploadImage";
+import { UserContext } from "../../../../../setup/context/user.context";
+import { deleteCMSItem, deleteItemFromStorage } from "../../../../../setup/utils/firebase/deleteItem";
+import { useModal } from "../../../../../setup/context/modal.context";
 
 // ! rename image component
 const RenameImage = ({ file, closeModal, setAnchorEl }) => {

@@ -1,8 +1,8 @@
 import { Paper, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React, { useState } from "react";
-import InputFieldComponent from "../../../../../../../../../components/inputFields/inputFields";
 import FileMenuOptions from "../fileMenuOptions/fileMenuOptions";
 import PreviewIcon from "@mui/icons-material/Preview";
+import InputFieldComponent from "../../../../inputFields/inputFields";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   textAlign: "center",
   "& > *": {

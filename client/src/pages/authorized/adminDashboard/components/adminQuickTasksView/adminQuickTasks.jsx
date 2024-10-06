@@ -1,11 +1,11 @@
 import React from "react";
 import { useModal } from "../../../../../setup/context/modal.context";
-import MediaStorage from "./components/MediaStorage/mediaStorage";
+import CmsMediaStorage from "../../../../../components/contentManagementSystem/cmsMediaStorage/cmsMediaStorage";
 
 const DashboardGridContent = () => {
   const { openModal } = useModal();
   const handleViewMediaStorage = () => {
-    openModal(<MediaStorage />);
+    openModal(<CmsMediaStorage />);
   };
   return (
     <div style={{ marginTop: "2rem", border: "2px solid grey", width: "100%", height: 600, padding: "1rem" }}>

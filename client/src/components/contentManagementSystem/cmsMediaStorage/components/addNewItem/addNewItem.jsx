@@ -1,10 +1,10 @@
 import { Button } from "@mui/material";
 import React, { useCallback, useContext, useRef, useState } from "react";
-import { UserContext } from "../../../../../../../../../setup/context/user.context";
-import { handleUploadImage } from "../../../../../../../../../setup/utils/firebase/uploadImage";
-import { scrollTo } from "../../../../../../../../../setup/utils/helpers/scrollTo";
 import MediaMenu from "../mediaMenu/mediaMenu";
 import MediaPreviewManager from "../mediaPreviewManager/mediaPreviewManager";
+import { UserContext } from "../../../../../setup/context/user.context";
+import { handleUploadImage } from "../../../../../setup/utils/firebase/uploadImage";
+import { scrollTo } from "../../../../../setup/utils/helpers/scrollTo";
 
 const AddNewItem = () => {
   const { currentUserProfile } = useContext(UserContext);

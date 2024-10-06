@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@mui/material";
-import FormStatusIndicator from "../../../../../../../../../components/statusIndicators/formStatusIndicator";
+import FormStatusIndicator from "../../../../statusIndicators/formStatusIndicator";
 
 const MediaPreviewManager = ({ preview, file, progress, statusMessage, handleUploadMedia, handleCancelUpload }) => {
   return (

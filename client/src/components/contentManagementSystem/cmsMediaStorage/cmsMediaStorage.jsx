@@ -1,14 +1,13 @@
 import { Button, Stack } from "@mui/material";
 import { useState } from "react";
-import { useModal } from "../../../../../../../setup/context/modal.context";
-import { useRealtimeData } from "../../../../../../../hooks/useRealtimeData";
 import FilesGridView from "./components/filesGridView/filesGridView";
 import FilesTableView from "./components/filesTableView/filesTableView";
-import InputFieldComponent from "../../../../../../../components/inputFields/inputFields";
 import FileViewToggle from "./components/fileViewToggle/fileViewToggle";
 import AddNewItem from "./components/addNewItem/addNewItem";
-
-const MediaStorage = () => {
+import { useModal } from "../../../setup/context/modal.context";
+import { useRealtimeData } from "../../../hooks/useRealtimeData";
+import InputFieldComponent from "../../inputFields/inputFields";
+const CmsMediaStorage = () => {
   const { closeModal } = useModal();
   const { data: displayData, isLoading, error } = useRealtimeData("mediaStorage");
   const [viewMode, setViewMode] = useState("grid");
@@ -45,4 +44,4 @@ const MediaStorage = () => {
   );
 };
 
-export default MediaStorage;
+export default CmsMediaStorage;
