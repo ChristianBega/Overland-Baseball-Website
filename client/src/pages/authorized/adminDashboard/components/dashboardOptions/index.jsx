@@ -4,10 +4,13 @@ import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQuer
 import CmsForm from "../../../contentManagementSystem/cmsForm/cmsForm";
 import { CmsBulkActionContext } from "../../../../../setup/context/cmsBulkActions.context";
 import { useContext } from "react";
+import { CmsEditItemContext } from "../../../../../setup/context/cmsEdit.context";
 
 const DashboardOptions = () => {
   const { openModal, closeModal } = useModal();
   const { selectedItems, setSelectedItems, selectAll } = useContext(CmsBulkActionContext);
+  const { editableItemData } = useContext(CmsEditItemContext);
+
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   let role = queryParams.get("role");
@@ -41,13 +44,13 @@ const DashboardOptions = () => {
 
   return (
     <div style={{ display: "flex", gap: "1rem" }}>
-      <Button onClick={handleCreate} sx={{ width: "100px", padding: "0rem" }}>
+      <Button disabled={editableItemData} onClick={handleCreate} sx={{ width: "100px", padding: "0rem" }}>
         <span style={{ fontSize: "12px" }}>Create</span>
       </Button>
-      <Button onClick={handleBulkAdd} sx={{ width: "100px", padding: "0rem" }}>
+      <Button disabled={editableItemData} onClick={handleBulkAdd} sx={{ width: "100px", padding: "0rem" }}>
         <span style={{ fontSize: "12px" }}>Bulk Add </span>
       </Button>
-      <Button disabled={selectedItems.length === 0} onClick={handleDelete} sx={{ width: "100px", padding: "0rem" }}>
+      <Button disabled={selectedItems.length === 0 || editableItemData} onClick={handleDelete} sx={{ width: "100px", padding: "0rem" }}>
         <span style={{ fontSize: "12px" }}> Delete</span>
       </Button>
     </div>

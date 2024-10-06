@@ -1,8 +1,8 @@
-import { Button, Paper, Stack, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import React from "react";
+import { Paper, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import React, { useState } from "react";
 import InputFieldComponent from "../../../../../../../../../components/inputFields/inputFields";
 import FileMenuOptions from "../fileMenuOptions/fileMenuOptions";
-
+import PreviewIcon from "@mui/icons-material/Preview";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   textAlign: "center",
   "& > *": {
@@ -17,6 +17,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const FilesTableView = ({ displayData, isLoading, error }) => {
+  const [selectedItems, setSelectedItems] = useState([]);
   const formatDate = (timestamp) => {
     if (timestamp && timestamp.seconds) {
       return new Date(timestamp.seconds * 1000).toLocaleString();
@@ -32,6 +33,27 @@ const FilesTableView = ({ displayData, isLoading, error }) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
+  const handleCheckboxChange = (item) => {
+    setSelectedItems((prevSelected) => {
+      const itemId = item.id;
+      const isItemSelected = prevSelected.some((selectedItem) => selectedItem.id === itemId);
+
+      if (isItemSelected) {
+        return prevSelected.filter((selectedItem) => selectedItem.id !== itemId);
+      } else {
+        return [...prevSelected, item];
+      }
+    });
+  };
+  const handleSelectAll = (event, displayData) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectedItems(displayData);
+    } else {
+      setSelectedItems([]);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -41,13 +63,17 @@ const FilesTableView = ({ displayData, isLoading, error }) => {
   }
 
   return (
-    <TableContainer id="files-table-view" sx={{ minHeight: "800px", border: "1px dotted red" }} component={Paper}>
+    <TableContainer id="files-table-view" sx={{ minHeight: "400px" }} component={Paper}>
       <Table aria-label="files table">
         <TableHead>
           <TableRow>
             <StyledTableCell>
               <div>
-                <InputFieldComponent type="checkbox" />
+                <InputFieldComponent
+                  checked={displayData?.length > 0 ? displayData?.length === selectedItems?.length : selectedItems?.length > 0}
+                  type="checkbox"
+                  onChange={(event) => handleSelectAll(event, displayData)}
+                />
               </div>
             </StyledTableCell>
             <StyledTableCell>
@@ -74,28 +100,31 @@ const FilesTableView = ({ displayData, isLoading, error }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {displayData.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>
-                <InputFieldComponent type="checkbox" />
-              </TableCell>
-              <TableCell>
-                <img src={row.url} alt={row.fileName} style={{ height: "50px", width: "50px" }} />
-              </TableCell>
-              <TableCell>{row.fileName}</TableCell>
-              <TableCell>{formatDate(row.createdAt)}</TableCell>
-              <TableCell>{formatFileSize(row.fileSize)}</TableCell>
-              <TableCell>{row.fileType}</TableCell>
-              <TableCell>
-                <a href={row.url} target="_blank" rel="noopener noreferrer">
-                  View File
-                </a>
-              </TableCell>
-              <TableCell>
-                <FileMenuOptions file={row} />
-              </TableCell>
-            </TableRow>
-          ))}
+          {displayData.map((row) => {
+            const isItemSelected = selectedItems.some((item) => item.id === row.id);
+            return (
+              <TableRow key={row.id}>
+                <TableCell>
+                  <InputFieldComponent type="checkbox" checked={isItemSelected} onChange={() => handleCheckboxChange(row)} />
+                </TableCell>
+                <TableCell>
+                  <img src={row.url} alt={row.fileName} style={{ height: "50px", width: "50px" }} />
+                </TableCell>
+                <TableCell>{row.fileName}</TableCell>
+                <TableCell>{formatDate(row.createdAt)}</TableCell>
+                <TableCell>{formatFileSize(row.fileSize)}</TableCell>
+                <TableCell>{row.fileType}</TableCell>
+                <TableCell>
+                  <a href={row.url} target="_blank" rel="noopener noreferrer">
+                    <PreviewIcon sx={{ cursor: "pointer", color: "green" }} />
+                  </a>
+                </TableCell>
+                <TableCell>
+                  <FileMenuOptions file={row} />
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

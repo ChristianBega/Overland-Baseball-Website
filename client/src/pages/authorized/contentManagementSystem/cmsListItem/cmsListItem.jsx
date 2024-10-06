@@ -118,7 +118,12 @@ const CmsListItem = ({ values, id }) => {
       <TableRow>
         <TableCell padding="checkbox">
           {/* when i complete a bulk delete, the checkbox needs to be reset to unchecked */}
-          <input type="checkbox" checked={isItemSelected} onChange={() => handleCheckboxChange({ id, ...values[0] })} />
+          <input
+            disabled={cmsOperationStatus.loading || cmsOperationStatus.success || editableItemData}
+            type="checkbox"
+            checked={isItemSelected}
+            onChange={() => handleCheckboxChange({ id, ...values[0] })}
+          />
         </TableCell>
         {isEditing && role === "admin" && (
           <TableCell>
@@ -137,7 +142,14 @@ const CmsListItem = ({ values, id }) => {
         <TableCell>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {!isEditing && role === "admin" && (
-              <Button onClick={handleEditClick} sx={{ border: "1px solid red", padding: 0 }} type="button">
+              <Button
+                // if a user selects and item and it is not the current item they are editing, then the edit button should be disabled
+                // disableEditButton
+                disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
+                onClick={handleEditClick}
+                sx={{ border: "1px solid red", padding: 0 }}
+                type="button"
+              >
                 <EditIcon />
               </Button>
             )}

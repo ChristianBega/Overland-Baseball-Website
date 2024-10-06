@@ -19,7 +19,6 @@ const FilesGridView = ({ displayData, isLoading, error }) => {
             backgroundImage: `url(${item.url})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            border: "1px dotted red",
             padding: "1rem",
             marginBottom: "1rem",
             width: "150px",
@@ -28,6 +27,7 @@ const FilesGridView = ({ displayData, isLoading, error }) => {
             flexDirection: "column",
             alignItems: "flex-end",
             justifyContent: "space-between",
+            boxShadow: "0px 0px 15px 0px rgb(0, 0, 0, 0.3)",
           }}
         >
           <FileMenuOptions file={item} />

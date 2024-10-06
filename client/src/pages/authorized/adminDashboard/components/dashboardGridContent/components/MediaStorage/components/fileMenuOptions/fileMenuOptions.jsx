@@ -1,5 +1,5 @@
 import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { getDownloadableUrl, handleUpdateImage } from "../../../../../../../../../setup/utils/firebase/uploadImage";
 import axios from "axios";
 import { UserContext } from "../../../../../../../../../setup/context/user.context";
@@ -37,6 +37,7 @@ const RenameImage = ({ file, closeModal, setAnchorEl }) => {
       }
     }
   };
+
   const handleEditChange = (event) => {
     const { value } = event.target;
     setNewFileName(value);

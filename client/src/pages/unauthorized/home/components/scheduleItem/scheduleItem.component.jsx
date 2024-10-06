@@ -18,7 +18,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function ScheduleItem({ data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true }) {
   const theme = useTheme();
   const currentData = isEditable ? editableData : data;
-  const { date, time, location, opponent, opponentLogo } = currentData;
+  const { date, time, location, opponent, opponentIcon } = currentData;
 
   if (isLoading || isError || isSuccess) {
     return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
@@ -48,7 +48,11 @@ export default function ScheduleItem({ data, isEditable, editableData, handleCha
         {location !== "Overland High" ? "@" : "Vs"}
       </TableCell>
       <TableCell sx={{ flex: "2 0 25%" }}>
-        <Box component="img" src={opponentLogo} sx={{ maxWidth: "55px", display: "flex", margin: "auto", borderRadius: "50%" }}></Box>
+        {isEditable ? (
+          <input onChange={handleChange("opponentIcon")} type="text" value={opponentIcon}></input>
+        ) : (
+          <Box component="img" src={opponentIcon} sx={{ maxWidth: "55px", display: "flex", margin: "auto", borderRadius: "50%" }}></Box>
+        )}
       </TableCell>
       <TableCell
         sx={{

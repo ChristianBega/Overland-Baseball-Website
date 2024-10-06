@@ -24,13 +24,15 @@ const MediaStorage = () => {
       <AddNewItem />
       {/* search bar with filter options */}
       {/* grid view & list view toggle buttons  */}
-      <Stack sx={{ border: "1px dotted red", marginBlock: "2rem" }} direction="row" spacing={2} alignItems="center">
+      <Stack sx={{ marginBlock: "2rem" }} direction="row" spacing={2} alignItems="center">
         <div style={{ width: "100%" }}>
           <InputFieldComponent
+            disabled
             type="text"
             placeholder="Search here..."
             sx={{
               width: "100%",
+              border: "1px dotted red",
             }}
           />
         </div>

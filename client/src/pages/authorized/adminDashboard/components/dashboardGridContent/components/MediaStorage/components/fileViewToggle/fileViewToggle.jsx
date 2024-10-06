@@ -4,7 +4,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 const FileViewToggle = ({ currentView, onViewChange }) => {
   return (
-    <Stack direction="row" sx={{ border: "1px dotted red" }}>
+    <Stack direction="row">
       <Button
         sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
         variant="contained"
