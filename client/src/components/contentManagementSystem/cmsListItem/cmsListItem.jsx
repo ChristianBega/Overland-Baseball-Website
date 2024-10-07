@@ -32,10 +32,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
+import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
+  const checkAuthorization = useCheckAuthorization();
   // user context
   const { currentUserProfile } = useContext(UserContext);
   const { role } = currentUserProfile;
@@ -56,6 +58,7 @@ const CmsListItem = ({ values, id }) => {
   //! needs to be moved to cmsEdit.context
   const isEditing = editableItemId === id;
   const handleUpdateItem = async () => {
+    if (!checkAuthorization(role)) return;
     setCmsOperationStatus({ type: "update cms", loading: true, error: null, success: false });
 
     try {
@@ -72,7 +75,7 @@ const CmsListItem = ({ values, id }) => {
     }
   };
   const handleDeleteItem = async () => {
-    if (role !== "admin") return; // Security: only admin can delete
+    if (!checkAuthorization(role)) return;
     if (window.confirm("Are you sure you want to delete this item?")) {
       const { uid } = currentUserProfile;
       await deleteCMSItem(uid, role, id, type);
@@ -81,9 +84,11 @@ const CmsListItem = ({ values, id }) => {
     }
   };
   const handleEditClick = () => {
+    if (!checkAuthorization(role)) return;
     startEditing(id, values[0]);
   };
   const handleChange = (field) => (event) => {
+    if (!checkAuthorization(role)) return;
     const value = event.target.value;
     updateEditableItemData(field, value);
   };

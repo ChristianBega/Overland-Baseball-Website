@@ -13,6 +13,9 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import { containerVariants, itemVariants } from "../../../../../setup/framerAnimations/dashboardMenu";
 import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, MenuItem } from "./index.styles";
 import { CmsContext } from "../../../../../setup/context/cms.context";
+import { UserContext } from "../../../../../setup/context/user.context";
+import { useNavigate } from "react-router-dom";
+import { checkAuthorization, useCheckAuthorization } from "../../../../../setup/utils/helpers/checkAuthorization";
 
 const menuListItems = [
   { linkName: "dashboard", urlPath: "/", icon: <DashboardIcon sx={{ fontSize: "20px" }} /> },
@@ -27,10 +30,12 @@ const menuListItems = [
 const DashboardSideBarMenu = () => {
   const theme = useTheme();
   const menuRef = useRef();
-
+  const { currentUserProfile } = useContext(UserContext);
+  const { role } = currentUserProfile;
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const { currentItem, setCurrentItem } = useContext(CmsContext);
+  const checkAuthorization = useCheckAuthorization();
 
   useEffect(() => {
     setCurrentItem(menuListItems[0]);
@@ -49,6 +54,7 @@ const DashboardSideBarMenu = () => {
   };
 
   const handleSelectMenuItem = (item) => {
+    if (!checkAuthorization(role)) return;
     setCurrentItem(item);
     setIsOpen(false);
   };
@@ -67,7 +73,7 @@ const DashboardSideBarMenu = () => {
             <IconBox>
               {currentItem?.icon}
               <Typography component="span" sx={{ ml: "1rem", display: "flex", alignItems: "center" }}>
-                {currentItem ? <>{currentItem.linkName}</> : "Please Select An Option To Edit"}
+                {currentItem ? <>{currentItem.linkName.toUpperCase()}</> : "Please Select An Option To Edit"}
               </Typography>
             </IconBox>
             <ArrowDropDownIcon sx={{ transform: isOpen ? "rotate(180deg)" : "none" }} />
@@ -88,7 +94,7 @@ const DashboardSideBarMenu = () => {
                 variants={itemVariants}
               >
                 <IconBox sx={{ mr: "1rem" }}>{item.icon}</IconBox>
-                {item.linkName}
+                <Typography>{item.linkName.slice(0, 1).toUpperCase() + item.linkName.slice(1)}</Typography>
               </MenuItem>
             ))}
           </MenuList>

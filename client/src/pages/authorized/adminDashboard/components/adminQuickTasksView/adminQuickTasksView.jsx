@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useModal } from "../../../../../setup/context/modal.context";
 import CmsMediaStorage from "../../../../../components/contentManagementSystem/cmsMediaStorage/cmsMediaStorage";
+import { useCheckAuthorization } from "../../../../../setup/utils/helpers/checkAuthorization";
+import { UserContext } from "../../../../../setup/context/user.context";
 
-const DashboardGridContent = () => {
+const AdminQuickTasksView = () => {
   const { openModal } = useModal();
-  const handleViewMediaStorage = () => {
+  const { currentUserProfile } = useContext(UserContext);
+  const { role } = currentUserProfile;
+  const checkAuthorization = useCheckAuthorization();
+
+  const handleQuickTask = () => {
+    if (!checkAuthorization(role)) return;
     openModal(<CmsMediaStorage />);
   };
   return (
     <div style={{ marginTop: "2rem", border: "2px solid grey", width: "100%", height: 600, padding: "1rem" }}>
-      <div style={{ cursor: "pointer", border: "1px dotted blue", padding: "1rem" }} onClick={handleViewMediaStorage}>
+      <div style={{ cursor: "pointer", border: "1px dotted blue", padding: "1rem" }} onClick={handleQuickTask}>
         <p>Media Storage</p>
       </div>
       <p>User management - manage all users on the website - update, delete, add new users...</p>
@@ -21,4 +28,4 @@ const DashboardGridContent = () => {
   );
 };
 
-export default DashboardGridContent;
+export default AdminQuickTasksView;

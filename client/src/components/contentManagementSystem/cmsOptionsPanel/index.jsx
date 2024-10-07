@@ -5,12 +5,14 @@ import { useModal } from "../../../setup/context/modal.context";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
 import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
+import { UserContext } from "../../../setup/context/user.context";
+import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
 
 const CmsOptionsPanel = () => {
   const { openModal, closeModal } = useModal();
   const { selectedItems, setSelectedItems, selectAll } = useContext(CmsBulkActionContext);
   const { editableItemData } = useContext(CmsEditItemContext);
-
+  const checkAuthorization = useCheckAuthorization();
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   let role = queryParams.get("role");
@@ -25,18 +27,21 @@ const CmsOptionsPanel = () => {
     setSelectedItems: setSelectedItems,
   };
   const handleCreate = (event) => {
+    if (!checkAuthorization(role)) return;
     event.preventDefault();
     event.stopPropagation();
     openModal(<CmsForm formType="create" {...props} />);
   };
 
   const handleBulkAdd = (event) => {
+    if (!checkAuthorization(role)) return;
     event.preventDefault();
     event.stopPropagation();
     openModal(<CmsForm formType="bulkAdd" {...props} />);
   };
 
   const handleDelete = (event) => {
+    if (!checkAuthorization(role)) return;
     event.preventDefault();
     event.stopPropagation();
     openModal(<CmsForm formType="delete" {...props} />);

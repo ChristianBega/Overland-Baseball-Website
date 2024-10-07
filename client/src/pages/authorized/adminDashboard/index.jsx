@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { CmsCreateItemProvider } from "../../../setup/context/cmsCreate.context";
 import { CmsEditItemProvider } from "../../../setup/context/cmsEdit.context";
 import { CmsBulkActionProvider } from "../../../setup/context/cmsBulkActions.context";
-import AdminQuickTasksView from "./components/adminQuickTasksView/adminQuickTasks";
+import AdminQuickTasksView from "./components/adminQuickTasksView/adminQuickTasksView";
 import { MediaStorageProvider } from "../../../setup/context/cmsContext/mediaStorage";
 import CmsItemTableView from "../../../components/contentManagementSystem/cmsItemTableView";
 const AdminDashboardPage = () => {
