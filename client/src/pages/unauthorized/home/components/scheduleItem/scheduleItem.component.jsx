@@ -1,22 +1,36 @@
+// React and Material-UI imports
 import React from "react";
-import { TableRow, TableCell, Typography, Stack, Box, styled } from "@mui/material";
-import { useTheme } from "@mui/material";
-
-// Assets
-import overland from "../../../../../assets/homePage/teamLogos/overland.webp";
+import { Typography, Stack, Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+// Components
+import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+import CmsUploadItem from "../../../../../components/contentManagementSystem/cmsUploadItem/cmsUploadItem";
+import InputFieldComponent from "../../../../../components/inputFields/inputFields";
+// Styles
+import { StyledTableCell, StyledTableRow } from "../../../../../styles/index.styles";
+// Utility functions
 import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
 import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
-import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+// Assets
+import overland from "../../../../../assets/homePage/teamLogos/overland.webp";
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(even)": {
-    backgroundColor: "#f2f2f2",
-    boxShadow: 10,
+const LogoImage = styled(Box)(({ theme }) => ({
+  width: "65px",
+  height: "65px",
+  display: "flex",
+  objectFit: "contain",
+  borderRadius: "50%",
+  margin: "auto",
+  "&.logo-image-square": {
+    borderRadius: "0",
+  },
+  "&.logo-image-opponent": {
+    margin: "auto 1.5rem auto 0",
   },
 }));
 
-export default function ScheduleItem({ data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true }) {
-  const theme = useTheme();
+export default function ScheduleItem({ ...props }) {
+  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true } = props;
   const currentData = isEditable ? editableData : data;
   const { date, time, location, opponent, opponentIcon } = currentData;
 
@@ -26,56 +40,73 @@ export default function ScheduleItem({ data, isEditable, editableData, handleCha
 
   const content = (
     <>
-      <TableCell
-        className="table-cell"
-        sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, flex: "1 0 10%", textAlign: "center" }}
+      <StyledTableCell
+        className={`table-cell-dark ${isEditable ? "isEditable" : ""}`}
+        sx={{
+          flex: "1 0 10%",
+        }}
       >
         {isEditable ? (
-          <input onChange={handleChange("date")} type="date" value={formatDate(date)}></input>
+          <InputFieldComponent cssProps={{ color: "#fff" }} label="Date" onChange={handleChange("date")} type="date" value={formatDate(date)} />
         ) : (
           <Typography component="p">{date}</Typography>
         )}
         {isEditable ? (
-          <input onChange={handleChange("time")} type="time" value={convertTo24HourFormat(time)}></input>
+          <InputFieldComponent
+            cssProps={{ color: "#fff" }}
+            label="Time"
+            onChange={handleChange("time")}
+            type="time"
+            value={convertTo24HourFormat(time)}
+          />
         ) : (
           <Typography component="p">{time}</Typography>
         )}
-      </TableCell>
-      <TableCell sx={{ flex: "2 0 25%" }}>
-        <Box component="img" src={overland} sx={{ maxWidth: "65px", display: "flex", margin: "auto" }}></Box>
-      </TableCell>
-      <TableCell sx={{ flex: "0 0 10%", fontFamily: "'Lilita One', cursive", fontSize: { xs: 18, md: 22, textAlign: "center" } }}>
+      </StyledTableCell>
+      <StyledTableCell sx={{ flex: "2 0 25%" }}>
+        <LogoImage component="img" src={overland} />
+      </StyledTableCell>
+      <StyledTableCell className="special-symbol-style" sx={{ flex: "0 0 10%" }}>
         {location !== "Overland High" ? "@" : "Vs"}
-      </TableCell>
-      <TableCell sx={{ flex: "2 0 25%" }}>
+      </StyledTableCell>
+      <StyledTableCell className={`table-cell ${isEditable ? "isEditable" : ""}`}>
         {isEditable ? (
-          <input onChange={handleChange("opponentIcon")} type="text" value={opponentIcon}></input>
+          <Box className={"center-flex-row"}>
+            <LogoImage className="logo-image-opponent" component="img" src={opponentIcon} />
+            <Stack direction="column">
+              <CmsUploadItem
+                label="Opponent Icon"
+                placeholderTextfield="Enter your url from a cdn..."
+                onChange={handleChange("opponentIcon")}
+                value={opponentIcon}
+              />
+            </Stack>
+          </Box>
         ) : (
-          <Box component="img" src={opponentIcon} sx={{ maxWidth: "55px", display: "flex", margin: "auto", borderRadius: "50%" }}></Box>
+          <LogoImage component="img" src={opponentIcon} />
         )}
-      </TableCell>
-      <TableCell
+      </StyledTableCell>
+      <StyledTableCell
+        className={`${isEditable ? "isEditable" : ""}`}
         sx={{
           flex: "3 0 30%",
-          textAlign: "center",
-          [theme.breakpoints.only("xs")]: {
-            display: "none",
-          },
+          textAlign: !isEditable ? "center" : "left",
         }}
       >
         <Stack>
           {isEditable ? (
-            <input onChange={handleChange("opponent")} type="text" value={opponent}></input>
+            <InputFieldComponent label="Opponent Name" onChange={handleChange("opponent")} type="text" value={opponent} />
           ) : (
             <Typography component="span">Opponent: {opponent}</Typography>
           )}
           {isEditable ? (
-            <input onChange={handleChange("location")} type="text" value={location}></input>
+            <InputFieldComponent label="Game Location" onChange={handleChange("location")} type="text" value={location} />
           ) : (
             <Typography component="span">Location: {location}</Typography>
           )}
         </Stack>
-      </TableCell>
+      </StyledTableCell>
+      {!isEditable ? <StyledTableCell>{null}</StyledTableCell> : null}
     </>
   );
 

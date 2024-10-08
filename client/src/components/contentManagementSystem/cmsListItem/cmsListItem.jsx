@@ -18,21 +18,33 @@
 // 6. undo feature for the user to undo their changes. last for 30 seconds.
 
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Typography, TableRow, TableCell } from "@mui/material";
+import { Box, Button, Typography, TableRow, TableCell, styled } from "@mui/material";
 import ScheduleItem from "../../../pages/unauthorized/home/components/scheduleItem/scheduleItem.component";
 import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
 import { UserContext } from "../../../setup/context/user.context";
 import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
 import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
 
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveAsIcon from "@mui/icons-material/SaveAs";
-import CloseIcon from "@mui/icons-material/Close";
+// import EditIcon from "@mui/icons-material/Edit";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import SaveAsIcon from "@mui/icons-material/SaveAs";
+// import CloseIcon from "@mui/icons-material/Close";
 import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
+import InputFieldComponent from "../../inputFields/inputFields";
+import { Delete as DeleteIcon, Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  padding: theme.spacing(1),
+  textAlign: "center",
+  padding: 0,
+  height: "100px",
+  "&.delete-button-cell": {
+    width: "50px",
+  },
+}));
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();
@@ -120,59 +132,80 @@ const CmsListItem = ({ values, id }) => {
 
   return (
     <>
-      <TableRow>
-        <TableCell padding="checkbox">
-          {/* when i complete a bulk delete, the checkbox needs to be reset to unchecked */}
-          <input
-            disabled={cmsOperationStatus.loading || cmsOperationStatus.success || editableItemData}
+      <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
+        {/* Checkbox for selecting the item */}
+        <StyledTableCell padding="checkbox">
+          <InputFieldComponent
             type="checkbox"
+            disabled={cmsOperationStatus.loading || cmsOperationStatus.success || editableItemData}
             checked={isItemSelected}
             onChange={() => handleCheckboxChange({ id, ...values[0] })}
+            inputProps={{ "aria-label": "select item checkbox" }}
           />
-        </TableCell>
+        </StyledTableCell>
+
+        {/* Admin-only Delete button when editing */}
         {isEditing && role === "admin" && (
-          <TableCell>
-            <Button
+          <StyledTableCell className="delete-button-cell">
+            <div
               onClick={handleDeleteItem}
               color="error"
-              sx={{ border: "1px solid red", height: "70px", padding: 0, backgroundColor: "red" }}
               type="button"
               disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
+              aria-label="delete item"
+              style={{
+                height: "100%",
+                width: "100%",
+                backgroundColor: "red",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+              }}
             >
               <DeleteIcon />
-            </Button>
-          </TableCell>
+            </div>
+          </StyledTableCell>
         )}
-        <TableCell>{renderEditableCmsItem()}</TableCell>
+
+        {/* Editable content */}
+        {renderEditableCmsItem()}
+
+        {/* Action buttons (Edit, Save, Cancel) */}
         <TableCell>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {!isEditing && role === "admin" && (
               <Button
-                // if a user selects and item and it is not the current item they are editing, then the edit button should be disabled
-                // disableEditButton
                 disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
                 onClick={handleEditClick}
                 sx={{ border: "1px solid red", padding: 0 }}
                 type="button"
+                aria-label="edit item"
               >
                 <EditIcon />
               </Button>
             )}
+
             {isEditing && (
               <>
+                {/* Save Button */}
                 <Button
                   disabled={!checkForEditChanges() || cmsOperationStatus.loading || cmsOperationStatus.success}
                   onClick={handleUpdateItem}
                   sx={{ border: "1px solid red", padding: 0 }}
                   type="button"
+                  aria-label="save changes"
                 >
-                  <SaveAsIcon />
+                  <SaveIcon />
                 </Button>
+
+                {/* Cancel Button */}
                 <Button
                   disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
                   onClick={cancelEditing}
                   sx={{ border: "1px solid red", padding: 0 }}
                   type="button"
+                  aria-label="cancel editing"
                 >
                   <CloseIcon />
                 </Button>

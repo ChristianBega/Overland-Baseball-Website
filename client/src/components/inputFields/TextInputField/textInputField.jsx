@@ -1,12 +1,17 @@
-import { InputLabel, TextField } from "@mui/material";
+import { InputLabel, styled, TextField } from "@mui/material";
 import React from "react";
 
+const StyledTextField = styled(TextField)({
+  width: "100%",
+});
 const TextInputField = ({ ...props }) => {
-  const { label, ...rest } = props;
+  const { label, cssProps, ...rest } = props;
   return (
     <>
-      <InputLabel htmlFor={props.name}>{label}</InputLabel>
-      <TextField type="text" {...rest} />
+      <InputLabel sx={{ ...cssProps, fontSize: "14px", marginBottom: "4px" }} htmlFor={props.name}>
+        {label}
+      </InputLabel>
+      <StyledTextField type="text" {...rest} />
     </>
   );
 };

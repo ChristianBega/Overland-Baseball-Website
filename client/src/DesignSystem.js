@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import shadows from "@mui/material/styles/shadows";
 // https://mui.com/material-ui/customization/theme-components/
 
 export const mainTheme = createTheme({
@@ -98,8 +99,21 @@ export const mainTheme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
+          "& .MuiInputBase-root": {
+            border: "1px solid transparent",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            border: "none",
+          },
           input: {
+            border: "1px solid red",
             color: "#283F76",
+            padding: "4px 8px",
+            margin: "0px",
+            fontSize: "14px",
+          },
+          "& input[type='date'], & input[type='time'], & input[type='datetime-local']": {
+            backgroundColor: "#130320 ",
           },
         },
       },
