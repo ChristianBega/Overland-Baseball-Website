@@ -10,7 +10,7 @@ import AuthorizedRoutes from "./setup/routes/authorized/authorized.routes";
 import Navigation from "./components/navigation/navigation.component";
 import FooterNavigation from "./components/navigation/footer/footerNavigation.component";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient();
 function App() {
   const { currentUserProfile } = useContext(UserContext);
@@ -32,7 +32,7 @@ function App() {
           <FooterNavigation />
         </Router>
       </ThemeProvider>
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   );
 }

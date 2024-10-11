@@ -106,7 +106,7 @@ export default function ScheduleItem({ ...props }) {
           )}
         </Stack>
       </StyledTableCell>
-      {!isEditable ? <StyledTableCell>{null}</StyledTableCell> : null}
+      {/* {!isEditable ? <StyledTableCell>{null}</StyledTableCell> : null} */}
     </>
   );
 

@@ -18,7 +18,7 @@
 // 6. undo feature for the user to undo their changes. last for 30 seconds.
 
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Typography, TableRow, TableCell, styled } from "@mui/material";
+import { Box, Button, Typography, TableRow, TableCell, styled, Table } from "@mui/material";
 import ScheduleItem from "../../../pages/unauthorized/home/components/scheduleItem/scheduleItem.component";
 import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
 import { UserContext } from "../../../setup/context/user.context";
@@ -143,7 +143,6 @@ const CmsListItem = ({ values, id }) => {
             inputProps={{ "aria-label": "select item checkbox" }}
           />
         </StyledTableCell>
-
         {/* Admin-only Delete button when editing */}
         {isEditing && role === "admin" && (
           <StyledTableCell className="delete-button-cell">
@@ -170,7 +169,7 @@ const CmsListItem = ({ values, id }) => {
 
         {/* Editable content */}
         {renderEditableCmsItem()}
-
+        {!isEditing && editableItemData && <TableCell></TableCell>}
         {/* Action buttons (Edit, Save, Cancel) */}
         <TableCell>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
