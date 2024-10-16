@@ -18,7 +18,6 @@ export const generateTableHeaders = (displayData, columnOrder, additionalHeaders
 
   orderedHeaders.forEach((itemA, indexA) => {
     if (groupedHeaders.has(itemA.header)) return;
-
     if (itemA.groupWith) {
       const itemBIndex = orderedHeaders.findIndex((itemB) => itemB.header === itemA.groupWith);
 
@@ -70,15 +69,15 @@ export const tableHeadersMap = {
   },
   roster: {
     columnOrder: [
-      { header: "delete", layout: "single" },
-      { header: "position", layout: "single" },
-      { header: "height", layout: "single" },
-      { header: "weight", layout: "single" },
-      { header: "handed", layout: "single" },
-      { header: "number", layout: "single" },
-      { header: "name", layout: "single" },
-      { header: "year", layout: "single" },
-      { header: "yearAbbr", layout: "single" },
+      { header: "delete", layout: "single", className: "table-header-cell-narrow" },
+      { header: "position", layout: "grouped", groupWith: "height", group: "a", className: "table-header-cell-normal" },
+      { header: "height", layout: "grouped", groupWith: "position", group: "a" },
+      { header: "weight", layout: "grouped", groupWith: "handed", group: "a" },
+      { header: "handed", layout: "grouped", groupWith: "weight", group: "a" },
+      { header: "number", layout: "grouped", groupWith: "name", group: "a" },
+      { header: "name", layout: "grouped", groupWith: "number", group: "a" },
+      { header: "year", layout: "grouped", groupWith: "yearAbbr" },
+      { header: "yearAbbr", layout: "grouped", groupWith: "year" },
       { header: "edit", layout: "single" },
     ],
     additionalEditUiHeaders: [
@@ -88,3 +87,9 @@ export const tableHeadersMap = {
     additionalUiHeaders: [{ header: "teamIcon", layout: "single" }],
   },
 };
+
+// Crate a tableHeader component
+// that takes in the table headers from the tableHeadersMap
+// and returns a table header component
+// this way we don't need to include the edit, delete, etc in the tablesHeaderMap and instead create it as a component
+// this way we don't

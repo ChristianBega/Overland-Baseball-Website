@@ -71,7 +71,7 @@ export default function ScheduleItem({ ...props }) {
       </StyledTableCell>
       <StyledTableCell className={`table-cell ${isEditable ? "isEditable" : ""}`}>
         {isEditable ? (
-          <Box className={"center-flex-row"}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <LogoImage className="logo-image-opponent" component="img" src={opponentIcon} />
             <Stack direction="column">
               <CmsUploadItem

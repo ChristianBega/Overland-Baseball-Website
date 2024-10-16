@@ -35,16 +35,18 @@ import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.cont
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
 import InputFieldComponent from "../../inputFields/inputFields";
 import { Delete as DeleteIcon, Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
+import { StyledTableCell } from "../../../styles/index.styles";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  padding: theme.spacing(1),
-  textAlign: "center",
-  padding: 0,
-  height: "100px",
-  "&.delete-button-cell": {
-    width: "50px",
-  },
-}));
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   padding: theme.spacing(1),
+//   textAlign: "center",
+//   padding: 0,
+//   height: "100px",
+//   "&.delete-button-cell": {
+//     width: "50px",
+//     border: "3px solid green",
+//   },
+// }));
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();
@@ -134,7 +136,7 @@ const CmsListItem = ({ values, id }) => {
     <>
       <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
         {/* Checkbox for selecting the item */}
-        <StyledTableCell padding="checkbox">
+        <StyledTableCell className="table-cell-cms-list-item" padding="checkbox">
           <InputFieldComponent
             type="checkbox"
             disabled={cmsOperationStatus.loading || cmsOperationStatus.success || editableItemData}
@@ -145,7 +147,8 @@ const CmsListItem = ({ values, id }) => {
         </StyledTableCell>
         {/* Admin-only Delete button when editing */}
         {isEditing && role === "admin" && (
-          <StyledTableCell className="delete-button-cell">
+          // 
+          <StyledTableCell className="table-cell-cms-list-item delete-button-cell ">
             <div
               onClick={handleDeleteItem}
               color="error"
@@ -169,9 +172,9 @@ const CmsListItem = ({ values, id }) => {
 
         {/* Editable content */}
         {renderEditableCmsItem()}
-        {!isEditing && editableItemData && <TableCell></TableCell>}
+        {!isEditing && editableItemData && <StyledTableCell className="table-cell-cms-list-item">{null}</StyledTableCell>}
         {/* Action buttons (Edit, Save, Cancel) */}
-        <TableCell>
+        <StyledTableCell className="table-cell-cms-list-item">
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {!isEditing && role === "admin" && (
               <Button
@@ -211,7 +214,7 @@ const CmsListItem = ({ values, id }) => {
               </>
             )}
           </Box>
-        </TableCell>
+        </StyledTableCell>
       </TableRow>
     </>
   );

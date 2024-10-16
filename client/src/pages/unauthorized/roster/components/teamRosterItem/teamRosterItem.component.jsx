@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
 import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+import { StyledTableCell } from "../../../../../styles/index.styles";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-type-of(even)": {
@@ -42,10 +43,10 @@ export default function TeamRoosterItem({ data, isEditable, editableData, handle
 
   const content = (
     <>
-      <TableCell
-        sx={{ pl: 0, pr: 2, border: "none", flex: "1 1 90px", display: "flex", justifyContent: "center", alignItems: "center" }}
-        component="th"
-        scope="row"
+      <StyledTableCell
+      // sx={{ pl: 0, pr: 2, border: "none", flex: "1 1 90px", display: "flex", justifyContent: "center", alignItems: "center" }}
+      // component="th"
+      // scope="row"
       >
         {isEditable ? (
           <Stack>
@@ -56,8 +57,9 @@ export default function TeamRoosterItem({ data, isEditable, editableData, handle
           // <input onChange={handleChange("image")} type="file" accept="image/*" />
           <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "110px" }}></Box>
         )}
-      </TableCell>
-      <TableCell sx={{ border: "none", px: 0, flex: "3 0 62%" }} component="th" scope="row">
+      </StyledTableCell>
+      {/*  sx={{ border: "none", px: 0, flex: "3 0 62%" }} component="th" scope="row" */}
+      <StyledTableCell>
         <Stack direction="row" gap={1}>
           {isEditable ? (
             <>
@@ -105,18 +107,18 @@ export default function TeamRoosterItem({ data, isEditable, editableData, handle
             )}
           </Stack>
         </Box>
-      </TableCell>
-      <TableCell
-        sx={{ p: 2, border: "none", flex: "1 0 15%", display: "flex", justifyContent: "flex-start", alignItems: "end" }}
-        component="th"
-        scope="row"
+      </StyledTableCell>
+      <StyledTableCell
+      // sx={{ p: 2, border: "none", flex: "1 0 15%", display: "flex", justifyContent: "flex-start", alignItems: "end" }}
+      // component="th"
+      // scope="row"
       >
         {isEditable ? null : (
           <Typography typography={{ xs: "bodyTextLg" }} sx={{ display: "inline-block", mb: 4 }}>
             {!isMobile_XS ? year : yearAbbr}
           </Typography>
         )}
-      </TableCell>
+      </StyledTableCell>
     </>
   );
 
