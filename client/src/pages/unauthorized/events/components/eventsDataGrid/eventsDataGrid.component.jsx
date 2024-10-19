@@ -1,15 +1,31 @@
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import EventItems from "../eventItems/eventItems.component";
-import { eventData } from "../../../../../websiteData/events.data";
 import { useTheme } from "@emotion/react";
+import { useRealtimeData } from "../../../../../hooks/useRealtimeData";
 
 export default function Events() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { data, isLoading, error } = useRealtimeData("events");
+
+  //! update this status with our custom status component
+  if (isLoading) {
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <Typography variant="h6" color="error">
+          {error ? "Error with real-time updates" : "Error fetching/caching the data"}
+        </Typography>
+      </div>
+    );
+  }
 
   const filterDate = new Date("2023-01-01");
-  const filteredAndSortedEvents = eventData.filter((event) => new Date(event.date) >= filterDate).sort((a, b) => new Date(a.date) - new Date(b.date));
+  const filteredAndSortedEvents = data.filter((event) => new Date(event.date) >= filterDate).sort((a, b) => new Date(a.date) - new Date(b.date));
   return (
     <Grid item xs={12}>
       <Typography typography="h1" component="h1" sx={{ mb: theme.spacing(8) }}>

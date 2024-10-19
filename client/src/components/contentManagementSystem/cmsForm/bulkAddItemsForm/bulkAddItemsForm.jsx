@@ -3,9 +3,10 @@ import React, { useState } from "react";
 
 import { processCsvUpload } from "./helpers/processCsvUpload";
 import scheduleExpectedDataStructure from "./data/schedule.config.json";
+import eventExpectedDataStructure from "./data/event.config.json";
 import { bulkAddToFirebase } from "../../../../setup/utils/firebase/addItem";
 import FormStatusIndicator from "../../../statusIndicators/formStatusIndicator";
-
+import rosterExpectedDataStructure from "./data/roster.config.json";
 const BulkAddItemsForm = ({ ...props }) => {
   const { uid, cmsItemType, closeModal, role, setSelectedItems } = props;
 
@@ -18,10 +19,11 @@ const BulkAddItemsForm = ({ ...props }) => {
 
   const expectedCvsDataStructure = {
     schedule: scheduleExpectedDataStructure,
-    // roster : "",
+    events: eventExpectedDataStructure,
+    roster: rosterExpectedDataStructure,
   };
   const handleCsvUpload = (e) => {
-    processCsvUpload(e, setCsvData, expectedCvsDataStructure);
+    processCsvUpload(e, setCsvData, expectedCvsDataStructure, cmsItemType);
     setCurrentStep(1);
   };
 

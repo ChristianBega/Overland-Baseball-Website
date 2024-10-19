@@ -16,13 +16,7 @@ export default function EventItems({ ...props }) {
   const theme = useTheme();
 
   const currentData = isEditable ? editableData : data;
-  const { eventName, location, date, time } = currentData || {
-    eventName: "123",
-    location: "321",
-    date: "123",
-    time: "321",
-    description: "123",
-  };
+  const { eventName, location, date, time } = currentData;
 
   if (isLoading || isError || isSuccess) {
     return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
@@ -40,6 +34,7 @@ export default function EventItems({ ...props }) {
 
   const content = (
     <>
+      {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
       <StyledTableCell isCmsItem={isCmsItem} className={`table-cell-accent table-header-cell-wide ${!isEditable ? "table-cell-center" : ""}`}>
         {isEditable ? (
           <>

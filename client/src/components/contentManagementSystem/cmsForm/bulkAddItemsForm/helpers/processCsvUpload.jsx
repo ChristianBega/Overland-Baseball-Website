@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 
-export const processCsvUpload = (event, setCsvData, expectedCsvDataStructure) => {
+export const processCsvUpload = (event, setCsvData, expectedCsvDataStructure, cmsItemType) => {
   event.preventDefault();
 
   const file = event.target.files[0];
@@ -9,7 +9,7 @@ export const processCsvUpload = (event, setCsvData, expectedCsvDataStructure) =>
     header: true,
     skipEmptyLines: true,
     complete: (results) => {
-      const expectedHeaders = Object.keys(expectedCsvDataStructure.schedule);
+      const expectedHeaders = Object.keys(expectedCsvDataStructure[cmsItemType]);
       const csvHeaders = results.meta.fields;
       // Check if all expected headers are present in the CSV
       const missingHeaders = expectedHeaders.filter((header) => !csvHeaders.includes(header));

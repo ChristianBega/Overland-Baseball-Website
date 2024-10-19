@@ -1,0 +1,38 @@
+[
+  {
+    "name": "eventName",
+    "label": "Event Name",
+    "placeholder": "Enter event name here...",
+    "type": "text",
+    "rules": {
+      "required": "Event name is required *"
+    }
+  },
+  {
+    "name": "location",
+    "label": "Location",
+    "placeholder": "Enter location here...",
+    "type": "text",
+    "rules": {
+      "required": "Location is required *"
+    }
+  },
+  {
+    "name": "date",
+    "label": "Date",
+    "placeholder": "Enter date here...",
+    "type": "date",
+    "rules": {
+      "required": "Date is required *"
+    }
+  },
+  {
+    "name": "time",
+    "label": "Time",
+    "placeholder": "Enter time here...",
+    "type": "time",
+    "rules": {
+      "required": "Time is required *"
+    }
+  }
+]

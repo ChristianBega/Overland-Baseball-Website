@@ -41,7 +41,17 @@ const StyledTableCellContent = styled(Box)({
   width: "100%",
 });
 
-export default function TeamRoosterItem({ data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true }) {
+export default function TeamRoosterItem({
+  data,
+  isEditable,
+  editableData,
+  handleChange,
+  isLoading,
+  isError,
+  isSuccess,
+  renderAsRow = true,
+  isCmsItem,
+}) {
   const theme = useTheme();
   const currentData = isEditable ? editableData : data;
   const { position, height, weight, handed, number, name, year, yearAbbr, playerImage } = currentData;
@@ -54,7 +64,7 @@ export default function TeamRoosterItem({ data, isEditable, editableData, handle
   const content = (
     <>
       {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
-      <StyledTableCell className={"table-header-cell-narrow"} sx={{ width: !isEditable && "50%" }}>
+      <StyledTableCell isCmsItem={isCmsItem} className={"table-header-cell-narrow"} sx={{ width: !isEditable && "50%" }}>
         {isEditable ? (
           <Stack direction="row" gap={2} justifyContent="center" alignItems="center">
             <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "90px" }}></Box>
@@ -72,7 +82,7 @@ export default function TeamRoosterItem({ data, isEditable, editableData, handle
         )}
       </StyledTableCell>
 
-      <StyledTableCell className={"table-header-cell-extra-wide"} sx={{ width: !isEditable ? "35%" : "50%" }}>
+      <StyledTableCell isCmsItem={isCmsItem} className={"table-header-cell-extra-wide"} sx={{ width: !isEditable ? "35%" : "50%" }}>
         {isEditable ? (
           <Stack direction="row">
             <div>
@@ -127,7 +137,7 @@ export default function TeamRoosterItem({ data, isEditable, editableData, handle
         </Box>
       </StyledTableCell>
 
-      <StyledTableCell>
+      <StyledTableCell isCmsItem={isCmsItem}>
         {isEditable ? (
           <Stack>
             <InputFieldComponent label="Year" onChange={handleChange("year")} type="text" value={year} />

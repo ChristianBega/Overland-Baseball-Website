@@ -30,7 +30,7 @@ const LogoImage = styled(Box)(({ theme }) => ({
 }));
 
 export default function ScheduleItem({ ...props }) {
-  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true } = props;
+  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, isCmsItem, renderAsRow = true } = props;
   const currentData = isEditable ? editableData : data;
   const { date, time, location, opponent, opponentIcon } = currentData;
 
@@ -42,6 +42,7 @@ export default function ScheduleItem({ ...props }) {
     <>
       {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
       <StyledTableCell
+        isCmsItem={isCmsItem}
         className={`table-cell-dark ${isEditable ? "isEditable" : ""}`}
         sx={{
           flex: "1 0 10%",
@@ -65,15 +66,15 @@ export default function ScheduleItem({ ...props }) {
         )}
       </StyledTableCell>
 
-      <StyledTableCell sx={{ flex: "2 0 25%" }}>
+      <StyledTableCell isCmsItem={isCmsItem} sx={{ flex: "2 0 25%" }}>
         <LogoImage component="img" src={overland} />
       </StyledTableCell>
 
-      <StyledTableCell className="special-symbol-style" sx={{ flex: "0 0 10%" }}>
+      <StyledTableCell isCmsItem={isCmsItem} className="special-symbol-style" sx={{ flex: "0 0 10%" }}>
         {location !== "Overland High" ? "@" : "Vs"}
       </StyledTableCell>
 
-      <StyledTableCell className={`table-cell ${isEditable ? "isEditable" : ""}`}>
+      <StyledTableCell isCmsItem={isCmsItem} className={`table-cell ${isEditable ? "isEditable" : ""}`}>
         {isEditable ? (
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <LogoImage className="logo-image-opponent" component="img" src={opponentIcon} />
@@ -92,6 +93,7 @@ export default function ScheduleItem({ ...props }) {
       </StyledTableCell>
 
       <StyledTableCell
+        isCmsItem={isCmsItem}
         className={`${isEditable ? "isEditable" : ""}`}
         sx={{
           flex: "3 0 30%",

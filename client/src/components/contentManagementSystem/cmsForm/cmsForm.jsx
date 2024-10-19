@@ -18,7 +18,7 @@ const CmsForm = ({ formType, ...props }) => {
   return (
     <Box>
       <Stack alignItems={"center"} direction="row" justifyContent="space-between">
-        <h2> Form</h2>
+        <h2>Form</h2>
         <Button onClick={closeModal}>X</Button>
       </Stack>
       <Suspense fallback={<div>Loading...</div>}>

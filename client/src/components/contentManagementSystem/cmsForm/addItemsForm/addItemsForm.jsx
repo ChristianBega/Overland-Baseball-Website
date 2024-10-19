@@ -1,11 +1,13 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import scheduleItemInputFieldsConfig from "./data/addScheduleItem.config.json";
-import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
 import { addCMSItem } from "../../../../setup/utils/firebase/addItem";
 import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../inputFields/inputFields";
+// Configs
+import scheduleItemInputFieldsConfig from "./data/addScheduleItem.config.json";
+import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
+import eventsItemInputFieldsConfig from "./data/addEventItem.config.json";
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
@@ -14,7 +16,7 @@ const AddItemsForm = ({ ...props }) => {
   const inputFieldsConfig = {
     schedule: scheduleItemInputFieldsConfig,
     roster: rosterItemInputFieldsConfig,
-    // events: eventsItemInputFieldsConfig,
+    events: eventsItemInputFieldsConfig,
     // quickLinks: quickLinksItemInputFieldsConfig,
     // sponsors: scheduleItemInputFieldsConfig,
     // documents: documentsItemInputFieldsConfig,
