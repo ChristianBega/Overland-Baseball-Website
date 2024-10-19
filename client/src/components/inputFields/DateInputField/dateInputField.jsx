@@ -8,6 +8,7 @@ const defaultDateInputFieldStyles = {
   padding: "4px 8px",
   margin: "0px",
   fontSize: "14px",
+  // backgroundColor: "transparent",
   "&:hover": {
     cursor: "pointer",
   },

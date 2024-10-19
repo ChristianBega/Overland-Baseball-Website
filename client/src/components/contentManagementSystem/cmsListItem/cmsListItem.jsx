@@ -25,10 +25,6 @@ import { UserContext } from "../../../setup/context/user.context";
 import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
 import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
 
-// import EditIcon from "@mui/icons-material/Edit";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import SaveAsIcon from "@mui/icons-material/SaveAs";
-// import CloseIcon from "@mui/icons-material/Close";
 import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
@@ -36,19 +32,10 @@ import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthori
 import InputFieldComponent from "../../inputFields/inputFields";
 import { Delete as DeleteIcon, Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
 import { StyledTableCell } from "../../../styles/index.styles";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   padding: theme.spacing(1),
-//   textAlign: "center",
-//   padding: 0,
-//   height: "100px",
-//   "&.delete-button-cell": {
-//     width: "50px",
-//     border: "3px solid green",
-//   },
-// }));
+import EventItems from "../../../pages/unauthorized/events/components/eventItems/eventItems.component";
 
 const CmsListItem = ({ values, id }) => {
+  console.log("values", values);
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   const checkAuthorization = useCheckAuthorization();
@@ -120,11 +107,13 @@ const CmsListItem = ({ values, id }) => {
       isLoading: isEditing && cmsOperationStatus.loading,
       isError: isEditing && cmsOperationStatus.error,
       isSuccess: isEditing && cmsOperationStatus.success,
+      isCmsItem: true,
+      renderAsRow: false,
     };
-
     const editableCmsItemsMap = {
-      schedule: values.map((value, index) => <ScheduleItem key={index} data={value} renderAsRow={false} {...props} />),
-      roster: values.map((value, index) => <TeamRoosterItem key={index} data={value} renderAsRow={false} {...props} />),
+      schedule: values.map((value, index) => <ScheduleItem key={index + id} data={value} {...props} />),
+      roster: values.map((value, index) => <TeamRoosterItem key={index + id} data={value} {...props} />),
+      events: values.map((value, index) => <EventItems key={index + id} data={value} {...props} />),
     };
 
     return editableCmsItemsMap[type];

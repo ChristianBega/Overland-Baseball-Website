@@ -91,7 +91,7 @@ export const mainTheme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: {
-          padding: 12,
+          padding: "1rem",
           color: "#091F40",
         },
       },

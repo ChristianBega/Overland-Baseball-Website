@@ -10,7 +10,6 @@ export default function Events() {
 
   const filterDate = new Date("2023-01-01");
   const filteredAndSortedEvents = eventData.filter((event) => new Date(event.date) >= filterDate).sort((a, b) => new Date(a.date) - new Date(b.date));
-
   return (
     <Grid item xs={12}>
       <Typography typography="h1" component="h1" sx={{ mb: theme.spacing(8) }}>
@@ -56,7 +55,7 @@ export default function Events() {
           </TableHead>
           <TableBody>
             {filteredAndSortedEvents.map((event, index) => (
-              <EventItems isMobile={isMobile} key={index} event={event} />
+              <EventItems isMobile={isMobile} key={index} data={event} />
             ))}
           </TableBody>
         </Table>

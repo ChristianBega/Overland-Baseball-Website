@@ -7,38 +7,7 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export const StyledTableCell2 = styled(TableCell)(({ theme }) => ({
-  "&.isEditable": {
-    textAlign: "left",
-    "input": {
-      display: "block",
-      width: "100%",
-    },
-  },
-  "&.table-cell-center": {
-    textAlign: "center",
-  },
-  "&.table-cell-dark": {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.text.primary,
-  },
-  "&.special-symbol-style": {
-    fontFamily: "'Lilita One', cursive",
-    fontSize: 18,
-    textAlign: "center",
-    [theme.breakpoints.up("md")]: {
-      fontSize: 22,
-    },
-  },
-  "&.center-flex-row": {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-}));
-
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
   "&.table-cell-center": {
     textAlign: "center",
   },
@@ -48,7 +17,6 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   "&.table-header-cell-narrow": {
     width: "5%",
-    // backgroundColor: "green !important",
   },
   "&.table-header-cell-normal": {
     width: "15%",
@@ -61,6 +29,10 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   "&.table-cell-dark": {
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.text.primary,
+  },
+  "&.table-cell-accent": {
+    backgroundColor: theme.palette.secondary.main,
     color: theme.palette.text.primary,
   },
   "&.isEditable": {
@@ -77,7 +49,7 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   "&.table-cell-cms-list-item": {
     textAlign: "center",
-    height: "100px",
+    // height: "100px",
   },
   "&.special-symbol-style": {
     fontFamily: "'Lilita One', cursive",
@@ -87,4 +59,10 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
       fontSize: 22,
     },
   },
+  ...(isCmsItem && {
+    padding: ".5rem",
+  }),
+  ...(!isCmsItem && {
+    padding: "1.5rem",
+  }),
 }));

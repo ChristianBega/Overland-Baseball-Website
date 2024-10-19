@@ -1,104 +1,118 @@
+import React from "react";
 import { useTheme } from "@emotion/react";
-import styled from "@emotion/styled";
-import { IconButton, TableCell, TableRow, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import InputFieldComponent from "../../../../../components/inputFields/inputFields";
 import VolunteerModal from "../../../../../components/modals/volunteerModal.component";
+import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+import { StyledTableCell, StyledTableRow } from "../../../../../styles/index.styles";
+import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
+import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-type-of(even)": {
-    backgroundColor: "#f2f2f2",
-    boxShadow: 10,
-    minHeight: "50px",
-  },
-}));
-
-export default function EventItems({ event, isMobile }) {
-  // extra data from event object : description, extraInformation
-  const { eventName, location, date, time } = event;
-  const [currentEventData, setCurrentEventData] = useState({ event: "", date: "", time: "" });
-  const [open, setOpen] = useState(false);
+export default function EventItems({ ...props }) {
+  const { data, isMobile, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
+  const [open, setOpen] = React.useState(false);
+  const [currentEventData, setCurrentEventData] = React.useState({ event: "", date: "", time: "" });
   const theme = useTheme();
+
+  const currentData = isEditable ? editableData : data;
+  const { eventName, location, date, time } = currentData || {
+    eventName: "123",
+    location: "321",
+    date: "123",
+    time: "321",
+    description: "123",
+  };
+
+  if (isLoading || isError || isSuccess) {
+    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  }
+
   const handleOpen = (event) => {
-    let currentEvent = event.currentTarget.parentElement.parentElement.getAttribute("datatype-event");
-    let currentDate = event.currentTarget.parentElement.parentElement.getAttribute("datatype-date");
-    let currentTime = event.currentTarget.parentElement.parentElement.getAttribute("datatype-time");
+    let currentEvent = event.currentTarget.closest("[data-event]").getAttribute("data-event");
+    let currentDate = event.currentTarget.closest("[data-date]").getAttribute("data-date");
+    let currentTime = event.currentTarget.closest("[data-time]").getAttribute("data-time");
     setCurrentEventData({ event: currentEvent, date: currentDate, time: currentTime });
     setOpen(true);
   };
 
   const handleClose = () => setOpen(false);
 
-  return (
-    <StyledTableRow id="table-row" datatype-event={eventName} datatype-date={date} datatype-time={time}>
-      <TableCell
-        sx={{
-          minHeight: "100vh",
-          flex: "1 0 20%",
-          fontWeight: "bold",
-          textAlign: "center",
-          backgroundColor: theme.palette.secondary.main,
-          color: theme.palette.text.primary,
-          fontSize: { sm: "14px", md: "1rem" },
-        }}
-      >
-        {date}
-        <Typography component="span" sx={{ fontSize: { xs: "12px", md: "1rem" }, display: { xs: "block", md: "inline" }, pl: { md: 2 } }}>
-          {time}
-        </Typography>
-      </TableCell>
-
-      {isMobile && (
-        <TableCell sx={{ flex: "3 0 60%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-          <Typography>{location}</Typography>
+  const content = (
+    <>
+      <StyledTableCell isCmsItem={isCmsItem} className={`table-cell-accent table-header-cell-wide ${!isEditable ? "table-cell-center" : ""}`}>
+        {isEditable ? (
           <>
-            <IconButton onClick={handleOpen} size="medium" style={{ color: "gray" }}>
-              <AppRegistrationIcon fontSize="small" />
-            </IconButton>
-            <VolunteerModal
-              open={open}
-              handleClose={handleClose}
-              currentEventData={currentEventData}
-              setCurrentEventData={setCurrentEventData}
-              datatypeRegistration="events"
+            <InputFieldComponent cssProps={{ color: "#fff" }} label="Date" onChange={handleChange("date")} type="date" value={formatDate(date)} />
+            <InputFieldComponent
+              cssProps={{ color: "#fff" }}
+              label="Time"
+              onChange={handleChange("time")}
+              type="time"
+              value={convertTo24HourFormat(time)}
             />
           </>
-        </TableCell>
-      )}
+        ) : (
+          <Stack direction="row" justifyContent="center" gap={4}>
+            <Typography component="p" variant="body1">
+              {date}
+            </Typography>
+            <Typography component="p" variant="body1">
+              {time}
+            </Typography>
+          </Stack>
+        )}
+      </StyledTableCell>
+
+      <StyledTableCell isCmsItem={isCmsItem} className="table-header-cell-extra-wide">
+        {isEditable ? (
+          <InputFieldComponent label="Location" onChange={handleChange("location")} type="text" value={location} />
+        ) : (
+          <Typography>{location}</Typography>
+        )}
+      </StyledTableCell>
 
       {!isMobile && (
-        <>
-          <TableCell sx={{ flex: "3 0 60%" }}>
-            <Typography>{location}</Typography>
-          </TableCell>
-          <TableCell
-            sx={{
-              minHeight: { sm: "70px", md: "65px" },
-              display: "flex",
-              gap: ".5rem",
-              alignItems: "center",
-              flex: "1 0 20%",
-              fontWeight: "bold",
-              backgroundColor: theme.palette.primary.light,
-              color: theme.palette.text.primary,
-            }}
-          >
-            <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
-              <AppRegistrationIcon fontSize="small" />
-            </IconButton>
-            <VolunteerModal
-              open={open}
-              handleClose={handleClose}
-              currentEventData={currentEventData}
-              setCurrentEventData={setCurrentEventData}
-              datatypeRegistration="events"
+        <StyledTableCell isCmsItem={isCmsItem} className={`table-header-cell-normal table-cell-dark ${!isEditable ? "table-cell-center" : ""}`}>
+          {isEditable ? (
+            <InputFieldComponent
+              inputTextColor="#fff"
+              cssProps={{ color: "#fff" }}
+              label="Event Name"
+              onChange={handleChange("eventName")}
+              type="text"
+              value={eventName}
             />
-            <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
-              {eventName}
-            </Typography>
-          </TableCell>
-        </>
+          ) : (
+            <>
+              {!isCmsItem && (
+                <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
+                  <AppRegistrationIcon fontSize="small" />
+                </IconButton>
+              )}
+              <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
+                {eventName}
+              </Typography>
+            </>
+          )}
+        </StyledTableCell>
       )}
+
+      <VolunteerModal
+        open={open}
+        handleClose={handleClose}
+        currentEventData={currentEventData}
+        setCurrentEventData={setCurrentEventData}
+        datatypeRegistration="events"
+      />
+    </>
+  );
+
+  return renderAsRow ? (
+    <StyledTableRow data-event={eventName} data-date={date} data-time={time}>
+      {content}
     </StyledTableRow>
+  ) : (
+    content
   );
 }
