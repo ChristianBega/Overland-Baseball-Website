@@ -124,7 +124,7 @@ const CmsListItem = ({ values, id }) => {
 
     const editableCmsItemsMap = {
       schedule: values.map((value, index) => <ScheduleItem key={index} data={value} renderAsRow={false} {...props} />),
-      roster: values.map((value, index) => <TeamRoosterItem key={index} data={value} renderAsRow={true} {...props} />),
+      roster: values.map((value, index) => <TeamRoosterItem key={index} data={value} renderAsRow={false} {...props} />),
     };
 
     return editableCmsItemsMap[type];
@@ -147,8 +147,8 @@ const CmsListItem = ({ values, id }) => {
         </StyledTableCell>
         {/* Admin-only Delete button when editing */}
         {isEditing && role === "admin" && (
-          // 
-          <StyledTableCell className="table-cell-cms-list-item delete-button-cell ">
+          //
+          <StyledTableCell className="delete-button-cell">
             <div
               onClick={handleDeleteItem}
               color="error"
@@ -157,8 +157,7 @@ const CmsListItem = ({ values, id }) => {
               aria-label="delete item"
               style={{
                 height: "100%",
-                width: "100%",
-                backgroundColor: "red",
+                // width: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -172,9 +171,9 @@ const CmsListItem = ({ values, id }) => {
 
         {/* Editable content */}
         {renderEditableCmsItem()}
-        {!isEditing && editableItemData && <StyledTableCell className="table-cell-cms-list-item">{null}</StyledTableCell>}
+        {/* {!isEditing && editableItemData && <StyledTableCell className="table-cell-cms-list-item">{null}</StyledTableCell>} */}
         {/* Action buttons (Edit, Save, Cancel) */}
-        <StyledTableCell className="table-cell-cms-list-item">
+        <StyledTableCell className="table-header-cell-narrow">
           <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {!isEditing && role === "admin" && (
               <Button

@@ -56,6 +56,9 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   "&.table-header-cell-wide": {
     width: "20%",
   },
+  "&.table-header-cell-extra-wide": {
+    minWidth: "30%",
+  },
   "&.table-cell-dark": {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.text.primary,
@@ -68,8 +71,9 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
   },
   "&.delete-button-cell": {
-    maxWidth: "50px !important",
+    minWidth: "50px !important",
     padding: "0",
+    backgroundColor: "red",
   },
   "&.table-cell-cms-list-item": {
     textAlign: "center",

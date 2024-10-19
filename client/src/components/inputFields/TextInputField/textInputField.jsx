@@ -8,7 +8,7 @@ const TextInputField = ({ ...props }) => {
   const { label, cssProps, ...rest } = props;
   return (
     <>
-      <InputLabel sx={{ ...cssProps, fontSize: "14px", marginBottom: "4px" }} htmlFor={props.name}>
+      <InputLabel sx={{ ...cssProps, fontSize: "14px" }} htmlFor={props.name}>
         {label}
       </InputLabel>
       <StyledTextField type="text" {...rest} />

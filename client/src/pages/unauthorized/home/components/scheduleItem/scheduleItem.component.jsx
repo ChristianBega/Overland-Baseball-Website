@@ -40,6 +40,7 @@ export default function ScheduleItem({ ...props }) {
 
   const content = (
     <>
+      {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
       <StyledTableCell
         className={`table-cell-dark ${isEditable ? "isEditable" : ""}`}
         sx={{
@@ -63,12 +64,15 @@ export default function ScheduleItem({ ...props }) {
           <Typography component="p">{time}</Typography>
         )}
       </StyledTableCell>
+
       <StyledTableCell sx={{ flex: "2 0 25%" }}>
         <LogoImage component="img" src={overland} />
       </StyledTableCell>
+
       <StyledTableCell className="special-symbol-style" sx={{ flex: "0 0 10%" }}>
         {location !== "Overland High" ? "@" : "Vs"}
       </StyledTableCell>
+
       <StyledTableCell className={`table-cell ${isEditable ? "isEditable" : ""}`}>
         {isEditable ? (
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -86,6 +90,7 @@ export default function ScheduleItem({ ...props }) {
           <LogoImage component="img" src={opponentIcon} />
         )}
       </StyledTableCell>
+
       <StyledTableCell
         className={`${isEditable ? "isEditable" : ""}`}
         sx={{

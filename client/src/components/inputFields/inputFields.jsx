@@ -8,6 +8,7 @@ const inputComponents = {
   date: lazy(() => import("./DateInputField/dateInputField")),
   time: lazy(() => import("./TimeInputField/timeInputField")),
   checkbox: lazy(() => import("./CheckBoxField/checkBoxField")),
+  numeric: lazy(() => import("./Numeric/numericInputField")),
 
   // Add more input types as needed
 };
