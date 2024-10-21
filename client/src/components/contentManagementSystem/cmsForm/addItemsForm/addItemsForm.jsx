@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { addCMSItem } from "../../../../setup/utils/firebase/addItem";
 import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
@@ -8,10 +8,14 @@ import InputFieldComponent from "../../../inputFields/inputFields";
 import scheduleItemInputFieldsConfig from "./data/addScheduleItem.config.json";
 import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
 import eventsItemInputFieldsConfig from "./data/addEventItem.config.json";
+import documentsItemInputFieldsConfig from "./data/addDocument.config.json";
+import CmsUploadItem from "../../cmsUploadItem/cmsUploadItem";
+import { handleUploadFile } from "../../../../setup/utils/firebase/uploadFile";
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   const inputFieldsConfig = {
     schedule: scheduleItemInputFieldsConfig,
@@ -19,7 +23,7 @@ const AddItemsForm = ({ ...props }) => {
     events: eventsItemInputFieldsConfig,
     // quickLinks: quickLinksItemInputFieldsConfig,
     // sponsors: scheduleItemInputFieldsConfig,
-    // documents: documentsItemInputFieldsConfig,
+    documents: documentsItemInputFieldsConfig,
   };
 
   const {
@@ -27,26 +31,39 @@ const AddItemsForm = ({ ...props }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      home: false,
-      away: false,
-    },
-  });
+  } = useForm();
 
   const handleAdd = async (data) => {
     // so when i click to create, i should be seeing this realtime data update....
     setStatusMessage("Loading...");
     try {
-      const result = await addCMSItem(uid, role, data, cmsItemType);
+      let result;
+      if (cmsItemType === "documents") {
+        result = await handleUploadFile(
+          data.documentFile,
+          uid,
+          (progress) => {
+            setProgress(progress);
+          },
+          () => {},
+          cmsItemType
+        );
+      } else {
+        result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+          setProgress(progress);
+        });
+        // // handleUploadFile(file, uid, setProgress, onCancel, cmsItemType);
+      }
       if (result.success === true) {
-        // setStatus("success");
         setStatusMessage(result.message);
         reset();
         setTimeout(() => {
           closeModal();
         }, 2000);
         setSelectedItems([]);
+      } else {
+        setStatusMessage(result.error);
+        alert(result.error);
       }
     } catch (error) {
       console.error("Failed to add schedule item:", error);
@@ -75,15 +92,26 @@ const AddItemsForm = ({ ...props }) => {
           rules={rules}
           render={({ field }) => (
             <Box mb={2}>
-              <InputFieldComponent
-                type={type}
-                label={label}
-                placeholder={placeholder}
-                fullWidth
-                error={Boolean(errors[name])}
-                helperText={errors[name]?.message}
-                {...field}
-              />
+              {type === "file" ? (
+                <CmsUploadItem
+                  label={label}
+                  placeholderTextfield={placeholder}
+                  value={field.value?.file || field.value}
+                  error={Boolean(errors[name])}
+                  helperText={errors[name]?.message}
+                  {...field}
+                />
+              ) : (
+                <InputFieldComponent
+                  type={type}
+                  label={label}
+                  placeholder={placeholder}
+                  fullWidth
+                  error={Boolean(errors[name])}
+                  helperText={errors[name]?.message}
+                  {...field}
+                />
+              )}
             </Box>
           )}
         />

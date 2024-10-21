@@ -17,6 +17,7 @@ const StyledDataBox = styled(Box)(({ theme }) => ({
 }));
 
 export default function Form({ currentEventData, handleClose, datatypeRegistration, currentSeason, setCurrentEventData, setCurrentSeason }) {
+  console.log("currentEventData", currentEventData);
   const [success, setSuccess] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -48,7 +49,6 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
       document.getElementById("success").scrollIntoView();
     }
   }, [success]);
-
   return (
     <>
       <div style={{ padding: "1rem" }}>
@@ -87,9 +87,9 @@ export default function Form({ currentEventData, handleClose, datatypeRegistrati
             <PlaceIcon />
             <Typography sx={{ fontSize: { xs: "12px", md: "1rem" } }}>
               {datatypeRegistration === "volunteer"
-                ? currentEventData?.event
+                ? currentEventData?.event || currentEventData?.eventName
                 : datatypeRegistration === "events"
-                ? currentEventData?.event
+                ? currentEventData?.eventName || currentEventData?.event
                 : datatypeRegistration === "boosters club"
                 ? currentEventData?.eventName || currentEventData?.event
                 : null}

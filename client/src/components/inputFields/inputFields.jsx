@@ -9,7 +9,8 @@ const inputComponents = {
   time: lazy(() => import("./TimeInputField/timeInputField")),
   checkbox: lazy(() => import("./CheckBoxField/checkBoxField")),
   numeric: lazy(() => import("./Numeric/numericInputField")),
-
+  textarea: lazy(() => import("./TextAreaInputField/textAreaInputField")),
+  file: lazy(() => import("./FileInputField/fileInputField")),
   // Add more input types as needed
 };
 

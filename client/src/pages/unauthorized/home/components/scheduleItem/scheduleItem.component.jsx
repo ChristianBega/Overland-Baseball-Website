@@ -30,7 +30,7 @@ const LogoImage = styled(Box)(({ theme }) => ({
 }));
 
 export default function ScheduleItem({ ...props }) {
-  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, isCmsItem, renderAsRow = true } = props;
+  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const currentData = isEditable ? editableData : data;
   const { date, time, location, opponent, opponentIcon } = currentData;
 

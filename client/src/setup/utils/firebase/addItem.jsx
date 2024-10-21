@@ -2,16 +2,47 @@ import { doc, setDoc, writeBatch, collection, serverTimestamp } from "firebase/f
 
 import { db } from "./index.firebase";
 import { v4 as uuidv4 } from "uuid";
+import { handleUploadFile } from "./uploadFile";
 
-export const addCMSItem = async (userUid, role, data, type) => {
+export const addCMSItem = async (userUid, role, data, type, setProgress) => {
   if (!userUid || role !== "admin") return;
   const docId = uuidv4();
   const cmsItemDocRef = doc(db, `${type}`, docId);
+
+  // let uploadFileResponse;
+  // let extraDocumentsFields;
+
+  // // ! run checks in here for file sizes, valid file types, etc... remove that logic from the "handleMediaChange"...
+
+  // if (type === "documents" && data.documentFile instanceof File) {
+  //   const { name, size, type: fileType } = data.documentFile;
+  //   const result = await handleUploadFile(
+  //     data.documentFile,
+  //     userUid,
+  //     setProgress,
+  //     (cancelFn) => {
+  //       console.log("cancel test");
+  //     },
+  //     type
+  //   );
+  //   console.log("results", result);
+  //   extraDocumentsFields = {
+  //     addedByUserUid: userUid,
+  //     url: result.url,
+  //     fileName: name,
+  //     fileSize: size,
+  //     fileType: fileType,
+  //   };
+  //   uploadFileResponse = result;
+  // }
+
   try {
     await setDoc(cmsItemDocRef, {
+      createdAt: serverTimestamp(),
       id: docId,
-      addedByUserUid: userUid,
+      createdByUserUid: userUid,
       ...data,
+      // ...(type === "documents" && extraDocumentsFields),
     });
     return { success: true, id: cmsItemDocRef.id, message: "Created Item successfully!" };
   } catch (error) {

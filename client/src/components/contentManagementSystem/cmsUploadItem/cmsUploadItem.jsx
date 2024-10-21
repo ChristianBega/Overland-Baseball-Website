@@ -1,7 +1,9 @@
 import { Button, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
 import InputFieldComponent from "../../inputFields/inputFields";
+import FileInputField from "../../inputFields/FileInputField/fileInputField";
+
 const ButtonStyles = {
   width: "100px",
   height: "25px",
@@ -21,10 +23,21 @@ const ButtonStyles = {
     backgroundColor: "grey",
   },
 };
+
 const CmsUploadItem = ({ onChange, value, placeholderTextfield, label }) => {
   const [uploadType, setUploadType] = useState("url");
+
+  useEffect(() => {
+    // Reset the value when the upload type changes
+    onChange("");
+  }, [uploadType]);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    onChange(file); // Pass the File object to the parent
+  };
+
   return (
-    // <Stack direction="column" spacing={2} sx={{ height: "112px", border: "1px solid red", display: "flex", justifyContent: "center" }}>
     <>
       <Stack direction="row" sx={{ height: "56px", alignItems: "center" }}>
         <Button
@@ -38,7 +51,6 @@ const CmsUploadItem = ({ onChange, value, placeholderTextfield, label }) => {
           <Typography sx={{ fontSize: 12 }}>New Url</Typography>
         </Button>
         <Button
-          disabled
           type="button"
           aria-label="new file"
           className={`right-btn ${uploadType === "file" ? "isActive" : "isInactive"}`}
@@ -49,13 +61,12 @@ const CmsUploadItem = ({ onChange, value, placeholderTextfield, label }) => {
           <Typography sx={{ fontSize: 12 }}>New File</Typography>
         </Button>
       </Stack>
-      {uploadType && uploadType === "url" ? (
+      {uploadType === "url" ? (
         <InputFieldComponent onChange={onChange} value={value} placeholder={placeholderTextfield} label={`${label} Url`} type="text" />
       ) : (
-        <input type="file" />
+        <InputFieldComponent onChange={handleFileChange} value={value} placeholder={placeholderTextfield} label={`${label} File`} type="file" />
       )}
     </>
-    // </Stack>
   );
 };
 

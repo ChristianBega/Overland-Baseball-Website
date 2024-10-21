@@ -35,7 +35,6 @@ import { StyledTableCell } from "../../../styles/index.styles";
 import EventItems from "../../../pages/unauthorized/events/components/eventItems/eventItems.component";
 
 const CmsListItem = ({ values, id }) => {
-  console.log("values", values);
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
   const checkAuthorization = useCheckAuthorization();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
@@ -12,7 +12,12 @@ import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/conver
 export default function EventItems({ ...props }) {
   const { data, isMobile, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const [open, setOpen] = React.useState(false);
-  const [currentEventData, setCurrentEventData] = React.useState({ event: "", date: "", time: "" });
+  const [currentEventData, setCurrentEventData] = React.useState({
+    eventName: "",
+    location: "",
+    date: "",
+    time: "",
+  });
   const theme = useTheme();
 
   const currentData = isEditable ? editableData : data;

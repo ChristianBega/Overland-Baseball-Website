@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useRef, useState } from "react";
 import MediaMenu from "../mediaMenu/mediaMenu";
 import MediaPreviewManager from "../mediaPreviewManager/mediaPreviewManager";
 import { UserContext } from "../../../../../setup/context/user.context";
-import { handleUploadImage } from "../../../../../setup/utils/firebase/uploadImage";
+import { handleUploadFile } from "../../../../../setup/utils/firebase/uploadFile";
 import { scrollTo } from "../../../../../setup/utils/helpers/scrollTo";
 
 const AddNewItem = () => {
@@ -35,7 +35,20 @@ const AddNewItem = () => {
   const handleMediaChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const validTypes = ["image/png", "image/webp", "image/jpeg"];
+      const validTypes = [
+        "image/png",
+        "image/webp",
+        "image/jpeg",
+        "image/jpg",
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/csv",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "text/plain",
+        "application/zip",
+      ];
       const maxSizeInMB = 5;
       const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
 
@@ -68,7 +81,7 @@ const AddNewItem = () => {
     setProgress(0);
 
     try {
-      const response = await handleUploadImage(
+      const response = await handleUploadFile(
         file,
         uid,
         (progress) => {
@@ -125,7 +138,7 @@ const AddNewItem = () => {
         handleClose={handleClose}
         handleAddNewMediaItem={handleAddNewMediaItem}
         fileInputRef={fileInputRef}
-        handleMediaChange={handleMediaChange}
+        handleMediaChange={(e) => handleMediaChange(e, setFile, setPreview, fileInputRef, handleClose)}
       />
       <MediaPreviewManager
         preview={preview}

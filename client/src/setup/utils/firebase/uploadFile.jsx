@@ -2,7 +2,7 @@ import { storage, db } from "./index.firebase";
 import { ref, uploadBytesResumable, getDownloadURL, getStorage, uploadBytes, deleteObject } from "firebase/storage";
 import { doc, setDoc, serverTimestamp, collection } from "firebase/firestore";
 
-export const handleUploadImage = (file, userUid, setProgress, onCancel) => {
+export const handleUploadFile = (file, userUid, setProgress, onCancel, fileType = "mediaStorage") => {
   return new Promise((resolve, reject) => {
     try {
       if (!file) {
@@ -16,17 +16,13 @@ export const handleUploadImage = (file, userUid, setProgress, onCancel) => {
         return;
       }
 
-      const imageRef = ref(storage, `mediaStorage/${file.name}`);
-      const uploadTask = uploadBytesResumable(imageRef, file);
+      const fileRef = ref(storage, `${fileType}/${file.name}`);
+      const uploadTask = uploadBytesResumable(fileRef, file);
 
       onCancel(() => {
         uploadTask.cancel();
         reject(new Error("Upload cancelled"));
       });
-
-      setTimeout(() => {
-        console.log("waiting for cancel... 1, 2, 3...");
-      }, 4000);
 
       uploadTask.on(
         "state_changed",
@@ -61,7 +57,7 @@ export const handleUploadImage = (file, userUid, setProgress, onCancel) => {
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-          const cmsItemDocRef = doc(collection(db, "mediaStorage"));
+          const cmsItemDocRef = doc(collection(db, fileType));
           const docId = cmsItemDocRef.id;
 
           await setDoc(cmsItemDocRef, {
@@ -74,7 +70,7 @@ export const handleUploadImage = (file, userUid, setProgress, onCancel) => {
             fileType: file.type,
           });
 
-          resolve({ success: true, message: "Uploaded image successfully", url: downloadURL });
+          resolve({ success: true, message: "Uploaded file successfully", url: downloadURL });
         }
       );
 

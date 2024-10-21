@@ -1,0 +1,29 @@
+[
+  {
+    "name": "documentTitle",
+    "label": "Document Title",
+    "type": "text",
+    "placeholder": "Enter document title...",
+    "rules": {
+      "required": "Document title is required *"
+    }
+  },
+  {
+    "name": "documentDescription",
+    "label": "Description",
+    "type": "textarea",
+    "placeholder": "Enter document description...",
+    "rules": {
+      "required": "Description is required *"
+    }
+  },
+  {
+    "name": "documentFile",
+    "label": "Upload Document",
+    "type": "file",
+    "accept": ".pdf,.doc,.docx,.jpg,.jpeg,.png,.csv,.xls,.xlsx,.txt,.zip",
+    "rules": {
+      "required": "Document file is required *"
+    }
+  }
+]
