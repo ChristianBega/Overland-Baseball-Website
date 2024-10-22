@@ -21,6 +21,7 @@
     "name": "documentFile",
     "label": "Upload Document",
     "type": "file",
+    "placeholder": "This should be a dropdown for the media library",
     "accept": ".pdf,.doc,.docx,.jpg,.jpeg,.png,.csv,.xls,.xlsx,.txt,.zip",
     "rules": {
       "required": "Document file is required *"

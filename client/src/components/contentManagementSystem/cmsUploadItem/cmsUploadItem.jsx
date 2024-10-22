@@ -2,7 +2,6 @@ import { Button, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
 import InputFieldComponent from "../../inputFields/inputFields";
-import FileInputField from "../../inputFields/FileInputField/fileInputField";
 
 const ButtonStyles = {
   width: "100px",

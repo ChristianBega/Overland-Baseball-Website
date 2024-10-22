@@ -1,16 +1,17 @@
 import { Box, Button } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { addCMSItem } from "../../../../setup/utils/firebase/addItem";
+// Components
 import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../inputFields/inputFields";
+// Utils
+import { handleUploadFile } from "../../../../setup/utils/firebase/uploadFile";
+import { addCMSItem } from "../../../../setup/utils/firebase/addItem";
 // Configs
 import scheduleItemInputFieldsConfig from "./data/addScheduleItem.config.json";
 import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
 import eventsItemInputFieldsConfig from "./data/addEventItem.config.json";
 import documentsItemInputFieldsConfig from "./data/addDocument.config.json";
-import CmsUploadItem from "../../cmsUploadItem/cmsUploadItem";
-import { handleUploadFile } from "../../../../setup/utils/firebase/uploadFile";
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
@@ -21,24 +22,25 @@ const AddItemsForm = ({ ...props }) => {
     schedule: scheduleItemInputFieldsConfig,
     roster: rosterItemInputFieldsConfig,
     events: eventsItemInputFieldsConfig,
+    documents: documentsItemInputFieldsConfig,
     // quickLinks: quickLinksItemInputFieldsConfig,
     // sponsors: scheduleItemInputFieldsConfig,
-    documents: documentsItemInputFieldsConfig,
   };
 
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const handleAdd = async (data) => {
-    // so when i click to create, i should be seeing this realtime data update....
     setStatusMessage("Loading...");
     try {
       let result;
       if (cmsItemType === "documents") {
+        //& handle upload file with handle both uploading to the database and the storage
         result = await handleUploadFile(
           data.documentFile,
           uid,
@@ -49,6 +51,8 @@ const AddItemsForm = ({ ...props }) => {
           cmsItemType
         );
       } else {
+        //& addCmsItem is for non storage items, they will be directly uploaded to there respective collections using their cmsItemType
+
         result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
           setProgress(progress);
         });
@@ -71,7 +75,10 @@ const AddItemsForm = ({ ...props }) => {
     }
   };
 
-  // Reset status
+  const handleFileChange = (file) => {
+    setValue("documentFile", file); // Manually set the file object
+  };
+
   useEffect(() => {
     if (status === "success" || status === "error") {
       const timer = setTimeout(() => {
@@ -84,6 +91,7 @@ const AddItemsForm = ({ ...props }) => {
   return (
     <Box component="form" onSubmit={handleSubmit(handleAdd)}>
       <FormStatusIndicator statusMessage={statusMessage} />
+      {/* Add Cms Loading Status Indicator for state - a) progress */}
       {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules }, index) => (
         <Controller
           key={index + name}
@@ -92,26 +100,17 @@ const AddItemsForm = ({ ...props }) => {
           rules={rules}
           render={({ field }) => (
             <Box mb={2}>
-              {type === "file" ? (
-                <CmsUploadItem
-                  label={label}
-                  placeholderTextfield={placeholder}
-                  value={field.value?.file || field.value}
-                  error={Boolean(errors[name])}
-                  helperText={errors[name]?.message}
-                  {...field}
-                />
-              ) : (
-                <InputFieldComponent
-                  type={type}
-                  label={label}
-                  placeholder={placeholder}
-                  fullWidth
-                  error={Boolean(errors[name])}
-                  helperText={errors[name]?.message}
-                  {...field}
-                />
-              )}
+              <InputFieldComponent
+                onChange={type === "file" ? handleFileChange : field.onChange}
+                type={type}
+                label={label}
+                placeholder={placeholder}
+                fullWidth
+                value={type === "file" ? undefined : field.value}
+                error={Boolean(errors[name])}
+                helperText={errors[name]?.message}
+                {...field}
+              />
             </Box>
           )}
         />
@@ -125,6 +124,13 @@ const AddItemsForm = ({ ...props }) => {
 
 export default AddItemsForm;
 
+// ! ideas
 // turn location input field into a dropdown menu with a list of locations
 // turn opponent Icon input into dropdown menu with a list of icons OR upload your own
 // turn opponent type input into dropdown menu with a list of types OR upload your own
+
+// ! Other fields for uploading files
+// url: downloadURL,
+// fileName: file.name,
+// fileSize: file.size,
+// fileType: file.type,
