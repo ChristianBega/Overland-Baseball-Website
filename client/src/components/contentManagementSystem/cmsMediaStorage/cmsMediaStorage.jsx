@@ -13,6 +13,7 @@ const CmsMediaStorage = () => {
   const [viewMode, setViewMode] = useState("grid");
 
   const fileViewProps = { displayData, isLoading, error };
+  console.log(displayData);
   return (
     <div id="media-storage-container" style={{ position: "relative", minHeight: "100vh" }}>
       <Stack alignItems={"center"} direction="row" justifyContent="space-between">

@@ -1,16 +1,13 @@
 import React from "react";
-import { Button, Card, CardActions, CardContent, Grid, Link, Stack, Typography } from "@mui/material";
+import { Card, CardActions, CardContent, Grid, Link, Stack, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
-// PDFs
-import codeOfConduct from "../../../../../websiteData/documents/codeOfConduct.pdf";
-import parentPlayer from "../../../../../websiteData/documents/parentPlayer.pdf";
-import teamLetter from "../../../../../websiteData/documents/teamLetter.pdf";
-import newsLetterOct2024 from "../../../../../websiteData/documents/newsLetterOct2024.pdf";
-
 import styled from "@emotion/styled";
+import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+import InputFieldComponent from "../../../../../components/inputFields/inputFields";
 
-// Icons
-import DownloadIcon from "@mui/icons-material/Download";
+import { StyledTableCell, StyledTableRow } from "../../../../../styles/index.styles";
+import { formatServerTimestamp } from "../../../../../setup/utils/helpers/formatDate";
+import { formatFileSize } from "../../../../../setup/utils/helpers/formatFileSize";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   textAlign: "center",
@@ -26,19 +23,53 @@ const StyledLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
   color: "#fff",
 }));
-export default function DocumentCard({ data, index }) {
-  console.log(data);
+
+export default function DocumentCard({ ...props }, index) {
+  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem, isCard } = props;
   const theme = useTheme();
-  return (
+  const currentData = isEditable ? editableData : data;
+  if (isLoading || isError || isSuccess) {
+    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  }
+
+  const editableContent = (
+    <React.Fragment key={currentData?.id}>
+      {isEditable ? (
+        <>
+          {/* <InputFieldComponent label="Replace With New File" onChange={handleChange("")} type="file" value={currentData?.documentLink} /> */}
+          <InputFieldComponent
+            // helperText="Please Do Not Include The File Extension (Ex. .pdf, .docx, .jpg, etc.)"
+            label="File Name"
+            onChange={handleChange("fileName")}
+            type="text"
+            value={currentData?.fileName}
+          />
+        </>
+      ) : (
+        <Typography component="h2" variant="h6" color={theme.palette.primary.main}>
+          {currentData?.fileName}
+        </Typography>
+      )}
+      {isCmsItem && (
+        <Stack direction="row" gap={2} marginTop={2}>
+          <Typography variant="body1" component="p">
+            Uploaded: {formatServerTimestamp(currentData?.createdAt)}
+          </Typography>
+
+          <Typography variant="body1" component="p">
+            File Size: {formatFileSize(currentData?.fileSize)}
+          </Typography>
+        </Stack>
+      )}
+    </React.Fragment>
+  );
+
+  const cardContent = (
     <Grid id="document-grid-item" item xs={12} sm={6}>
       <StyledCard elevation={8}>
-        <CardContent>
-          <Typography variant="h5" color={theme.palette.primary.main}>
-            {data?.documentName}
-          </Typography>
-        </CardContent>
+        <CardContent>{editableContent}</CardContent>
         <CardActions sx={{ display: "flex", flexDirection: "column", gap: 4, mt: 5 }}>
-          <Link href={data?.documentLink} target="_blank" rel="noopener noreferrer" sx={{ height: "100%", width: "100%", textDecoration: "none" }}>
+          <Link href={currentData?.url} target="_blank" rel="noopener noreferrer" sx={{ height: "100%", width: "100%", textDecoration: "none" }}>
             <Typography
               typography="p"
               component="p"
@@ -54,42 +85,19 @@ export default function DocumentCard({ data, index }) {
               <u>Read more</u>
             </Typography>
           </Link>
-          <Button sx={{ maxWidth: "50%", margin: "auto", p: 0 }}>
-            {index === 0 && (
-              <StyledLink href={parentPlayer} download={parentPlayer}>
-                <Stack direction="row" gap={2}>
-                  <DownloadIcon />
-                  <Typography>Download</Typography>
-                </Stack>
-              </StyledLink>
-            )}
-            {index === 1 && (
-              <StyledLink href={codeOfConduct} download={codeOfConduct}>
-                <Stack direction="row" gap={2}>
-                  <DownloadIcon />
-                  <Typography>Download</Typography>
-                </Stack>
-              </StyledLink>
-            )}
-            {index === 2 && (
-              <StyledLink href={teamLetter} download={teamLetter}>
-                <Stack direction="row" gap={2}>
-                  <DownloadIcon />
-                  <Typography>Download</Typography>
-                </Stack>
-              </StyledLink>
-            )}
-            {index === 3 && (
-              <StyledLink href={newsLetterOct2024} download={newsLetterOct2024}>
-                <Stack direction="row" gap={2}>
-                  <DownloadIcon />
-                  <Typography>Download</Typography>
-                </Stack>
-              </StyledLink>
-            )}
-          </Button>
         </CardActions>
       </StyledCard>
     </Grid>
+  );
+
+  return isCard ? (
+    cardContent
+  ) : renderAsRow ? (
+    <StyledTableRow>{editableContent}</StyledTableRow>
+  ) : (
+    <>
+      {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
+      <StyledTableCell>{editableContent}</StyledTableCell>
+    </>
   );
 }

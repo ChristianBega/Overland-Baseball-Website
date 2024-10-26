@@ -22,7 +22,7 @@ import { Box, Button, Typography, TableRow, TableCell, styled, Table } from "@mu
 import ScheduleItem from "../../../pages/unauthorized/home/components/scheduleItem/scheduleItem.component";
 import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
 import { UserContext } from "../../../setup/context/user.context";
-import { deleteCMSItem } from "../../../setup/utils/firebase/deleteItem";
+import { deleteCMSItem, deleteItemFromStorage } from "../../../setup/utils/firebase/deleteItem";
 import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
 
 import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
@@ -33,6 +33,8 @@ import InputFieldComponent from "../../inputFields/inputFields";
 import { Delete as DeleteIcon, Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
 import { StyledTableCell } from "../../../styles/index.styles";
 import EventItems from "../../../pages/unauthorized/events/components/eventItems/eventItems.component";
+import DocumentCard from "../../../pages/authorized/documents/components/documentCard/documentCard.component";
+import { handleSaveRename } from "../cmsMediaStorage/components/fileMenuOptions/fileMenuOptions";
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();
@@ -45,6 +47,7 @@ const CmsListItem = ({ values, id }) => {
   const {
     editableItemId,
     editableItemData,
+    editableItemDataOriginalCopy,
     startEditing,
     cancelEditing,
     checkForEditChanges,
@@ -63,9 +66,23 @@ const CmsListItem = ({ values, id }) => {
 
     try {
       const { uid } = currentUserProfile;
-      await updateCMSItem(uid, role, id, editableItemData, type);
+      if (type === "documents") {
+        console.log("editableItemData.fileName", editableItemData.fileName);
+        const test = await handleSaveRename(
+          uid,
+          role,
+          editableItemDataOriginalCopy,
+          editableItemData.fileName.split(".")[0],
+          editableItemData.fileName.split(".")[1],
+          () => {},
+          () => {},
+          type
+        );
+        console.log("test", test);
+      } else {
+        await updateCMSItem(uid, role, id, editableItemData, type);
+      }
       setCmsOperationStatus({ type: "update", loading: false, error: null, success: true });
-
       setTimeout(() => {
         setCmsOperationStatus({ type: "update", loading: false, error: null, success: false });
         cancelEditing();
@@ -79,6 +96,11 @@ const CmsListItem = ({ values, id }) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       const { uid } = currentUserProfile;
       await deleteCMSItem(uid, role, id, type);
+      alert("Item deleted successfully from database");
+      if (type === "documents") {
+        await deleteItemFromStorage(uid, role, values[0].url);
+        alert("Item deleted successfully from storage");
+      }
       cancelEditing();
       // after you delete an item, it seems like i need to reset the state to because their is an alert preventing me from deleting the next item.
     }
@@ -89,7 +111,7 @@ const CmsListItem = ({ values, id }) => {
   };
   const handleChange = (field) => (event) => {
     if (!checkAuthorization(role)) return;
-    const value = event.target.value;
+    const value = event?.target?.value;
     updateEditableItemData(field, value);
   };
   //! needs to be moved to cmsEdit.context
@@ -113,6 +135,7 @@ const CmsListItem = ({ values, id }) => {
       schedule: values.map((value, index) => <ScheduleItem key={index + id} data={value} {...props} />),
       roster: values.map((value, index) => <TeamRoosterItem key={index + id} data={value} {...props} />),
       events: values.map((value, index) => <EventItems key={index + id} data={value} {...props} />),
+      documents: values.map((value, index) => <DocumentCard isCard={false} key={index + id} data={value} {...props} />),
     };
 
     return editableCmsItemsMap[type];

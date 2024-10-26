@@ -10,10 +10,14 @@ export const CmsEditItemContext = createContext({
   checkForEditChanges: () => {},
   cmsOperationStatus: { type: null, loading: false, error: null, success: false },
   setCmsOperationStatus: () => {},
+  setEditableItemDataOriginalCopy: () => {},
+  editableItemDataOriginalCopy: null,
 });
 
 export const CmsEditItemProvider = ({ children }) => {
   const [editableItemId, setEditableItemId] = useState(null);
+  const [editableItemDataOriginalCopy, setEditableItemDataOriginalCopy] = useState(null);
+
   const [editableItemData, setEditableItemData] = useState(null);
   const [originalItemData, setOriginalItemData] = useState(null);
   const [cmsOperationStatus, setCmsOperationStatus] = useState({ type: null, loading: false, error: null, success: false });
@@ -33,12 +37,14 @@ export const CmsEditItemProvider = ({ children }) => {
     }
     setEditableItemId(itemId);
     setEditableItemData(itemData);
+    setEditableItemDataOriginalCopy(itemData);
     setOriginalItemData(itemData);
   };
 
   const cancelEditing = () => {
     setEditableItemId(null);
     setEditableItemData(null);
+    setEditableItemDataOriginalCopy(null);
     setOriginalItemData(null);
   };
 
@@ -62,6 +68,7 @@ export const CmsEditItemProvider = ({ children }) => {
     checkForEditChanges,
     cmsOperationStatus,
     setCmsOperationStatus,
+    editableItemDataOriginalCopy,
   };
 
   return <CmsEditItemContext.Provider value={contextValue}>{children}</CmsEditItemContext.Provider>;

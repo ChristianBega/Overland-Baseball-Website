@@ -96,15 +96,15 @@ export const getDownloadableUrl = async (filePath) => {
   }
 };
 
-export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, newFileNameWithExt) => {
+export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, newFileNameWithExt, cmsType) => {
   if (!userUid || role !== "admin") return { success: false, message: "Unauthorized or invalid user data" };
 
   try {
     // 1. Reference to the original file in Firebase Storage
-    const oldFileRef = ref(storage, `mediaStorage/${originalFileNameWithExt}`);
+    const oldFileRef = ref(storage, `${cmsType}/${originalFileNameWithExt}`);
 
     // 2. Reference to the new file path
-    const newFileRef = ref(storage, `mediaStorage/${newFileNameWithExt}`);
+    const newFileRef = ref(storage, `${cmsType}/${newFileNameWithExt}`);
 
     // 3. Copy the file by uploading to the new location
     const oldFileSnapshot = await getDownloadURL(oldFileRef);
@@ -126,3 +126,4 @@ export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, 
     return { success: false, error };
   }
 };
+

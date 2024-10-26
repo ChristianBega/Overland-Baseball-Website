@@ -50,3 +50,21 @@ export const deleteItemFromStorage = async (userUid, role, imagePath) => {
     return { success: false, error: "Error deleting image. Check the console for more details." };
   }
 };
+
+export const bulkDeleteItemsFromStorage = async (userUid, role, fileNames, cmsItemType) => {
+  if (!userUid || role !== "admin") return;
+  const storage = getStorage();
+
+  try {
+    const deletePromises = fileNames.map((fileName) => {
+      const fileRef = ref(storage, `${cmsItemType}/${fileName}`);
+      return deleteObject(fileRef);
+    });
+
+    await Promise.all(deletePromises);
+    return { success: true, message: "All images deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting images:", error);
+    return { success: false, error: "Error deleting images. Check the console for more details." };
+  }
+};

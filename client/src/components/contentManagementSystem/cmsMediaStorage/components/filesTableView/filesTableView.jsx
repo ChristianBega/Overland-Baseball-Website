@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import FileMenuOptions from "../fileMenuOptions/fileMenuOptions";
 import PreviewIcon from "@mui/icons-material/Preview";
 import InputFieldComponent from "../../../../inputFields/inputFields";
+import { formatFileSize } from "../../../../../setup/utils/helpers/formatFileSize";
+import { formatServerTimestamp } from "../../../../../setup/utils/helpers/formatDate";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   textAlign: "center",
   "& > *": {
@@ -18,20 +20,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const FilesTableView = ({ displayData, isLoading, error }) => {
   const [selectedItems, setSelectedItems] = useState([]);
-  const formatDate = (timestamp) => {
-    if (timestamp && timestamp.seconds) {
-      return new Date(timestamp.seconds * 1000).toLocaleString();
-    }
-    return "N/A";
-  };
-
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-  };
 
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelected) => {
@@ -111,7 +99,7 @@ const FilesTableView = ({ displayData, isLoading, error }) => {
                   <img src={row.url} alt={row.fileName} style={{ height: "50px", width: "50px" }} />
                 </TableCell>
                 <TableCell>{row.fileName}</TableCell>
-                <TableCell>{formatDate(row.createdAt)}</TableCell>
+                <TableCell>{formatServerTimestamp(row.createdAt)}</TableCell>
                 <TableCell>{formatFileSize(row.fileSize)}</TableCell>
                 <TableCell>{row.fileType}</TableCell>
                 <TableCell>

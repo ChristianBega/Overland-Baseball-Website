@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
-import { bulkDeleteFromFirebase } from "../../../../setup/utils/firebase/deleteItem";
+import { bulkDeleteFromFirebase, bulkDeleteItemsFromStorage } from "../../../../setup/utils/firebase/deleteItem";
 import FormStatusIndicator from "../../../statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../inputFields/inputFields";
 
@@ -22,14 +22,35 @@ const DeleteItemsForm = ({ ...props }) => {
     setStatusMessage("Loading...");
     // Filter out the ids from selectedItems
     const itemIdsToDelete = selectedItems.map((item) => item.id);
+    const fileNamesToDelete = selectedItems.map((item) => item.fileName);
+
     try {
-      const result = await bulkDeleteFromFirebase(uid, role, cmsItemType, itemIdsToDelete, setProgress);
-      if (result.success === true) {
-        setStatusMessage(result.message);
+      // const result = await bulkDeleteFromFirebase(uid, role, cmsItemType, itemIdsToDelete, setProgress);
+      // if (result.success === true) {
+      //   setStatusMessage(result.message);
+      //   setTimeout(() => {
+      //     closeModal();
+      //   }, 2000);
+      //   setSelectedItems([]);
+      // }
+      const deletePromises = [bulkDeleteFromFirebase(uid, role, cmsItemType, itemIdsToDelete, setProgress)];
+
+      // Conditionally add the storage deletion promise
+      if (cmsItemType === "documents" || cmsItemType === "mediaStorage") {
+        deletePromises.push(bulkDeleteItemsFromStorage(uid, role, fileNamesToDelete, cmsItemType));
+      }
+
+      const results = await Promise.all(deletePromises);
+
+      const allSuccess = results.every((result) => result.success);
+      if (allSuccess) {
+        setStatusMessage("Items deleted successfully");
         setTimeout(() => {
           closeModal();
         }, 2000);
         setSelectedItems([]);
+      } else {
+        setStatusMessage("Error during deletion. Check the console for more details.");
       }
     } catch (error) {
       setStatusMessage("Error during bulk delete. Check the console for more details.");
