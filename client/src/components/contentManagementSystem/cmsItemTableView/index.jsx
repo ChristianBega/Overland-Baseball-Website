@@ -18,11 +18,11 @@ import CmsListItem from "../cmsListItem/cmsListItem";
 import CmsOptionsPanel from "../cmsOptionsPanel";
 import { useTheme } from "@emotion/react";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
-import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
+import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkActions.context";
 import InputFieldComponent from "../../inputFields/inputFields";
-import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
-import { generateTableHeaders, tableHeadersMap } from "./helpers/generateTableHeaders";
-import { convertToTitleCase } from "../../../setup/utils/helpers/convertText";
+import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
+// import { generateTableHeaders, tableHeadersMap } from "./helpers/generateTableHeaders";
+// import { convertToTitleCase } from "../../../setup/utils/helpers/convertText";
 import { StyledTableCell } from "../../../styles/index.styles";
 import CmsTableViewHeader from "./components/cmsTableViewHeader/cmsTableViewHeader";
 

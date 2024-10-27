@@ -20,14 +20,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Button, Typography, TableRow, TableCell, styled, Table } from "@mui/material";
 import ScheduleItem from "../../../pages/unauthorized/home/components/scheduleItem/scheduleItem.component";
-import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
+import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
 import { UserContext } from "../../../setup/context/user.context";
 import { deleteCMSItem, deleteItemFromStorage } from "../../../setup/utils/firebase/deleteItem";
 import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
 
 import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
+import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkActions.context";
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
 import InputFieldComponent from "../../inputFields/inputFields";
 import { Delete as DeleteIcon, Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
@@ -59,6 +59,7 @@ const CmsListItem = ({ values, id }) => {
 
   //! needs to be moved to cmsEdit.context
   const isEditing = editableItemId === id;
+
   const handleUpdateItem = async () => {
     if (!checkAuthorization(role)) return;
     setCmsOperationStatus({ type: "update cms", loading: true, error: null, success: false });
@@ -140,7 +141,6 @@ const CmsListItem = ({ values, id }) => {
 
   const isItemSelected = selectedItems.some((item) => item.id === id);
 
-  console.log("editableItemData", editableItemData);
   return (
     <>
       <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>

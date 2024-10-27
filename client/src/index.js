@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./setup/context/authentication.context";
 import { UserProvider } from "./setup/context/user.context";
-import { CmsProvider } from "./setup/context/cms.context";
+import { CmsProvider } from "./setup/context/cmsContext/cms.context";
 import { ModalProvider } from "./setup/context/modal.context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

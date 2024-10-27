@@ -3,9 +3,8 @@ import CmsForm from "../cmsForm/cmsForm";
 import { useContext } from "react";
 import { useModal } from "../../../setup/context/modal.context";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import { CmsBulkActionContext } from "../../../setup/context/cmsBulkActions.context";
-import { CmsEditItemContext } from "../../../setup/context/cmsEdit.context";
-import { UserContext } from "../../../setup/context/user.context";
+import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkActions.context";
+import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
 
 const CmsOptionsPanel = () => {
