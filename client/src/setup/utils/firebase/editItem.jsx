@@ -13,6 +13,11 @@ import { db } from "./index.firebase"; // Import your db config
 
 export const updateCMSItem = async (userUid, role, docId, data, type) => {
   if (!userUid || role !== "admin") return { success: false, message: "Unauthorized or invalid user data" };
+  console.log("userUid", userUid);
+  console.log("role", role);
+  console.log("docId", docId);
+  console.log("data", data);
+  console.log("type", type);
   const cmsItemDocRef = doc(db, type, docId);
   try {
     await updateDoc(cmsItemDocRef, data);

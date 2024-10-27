@@ -78,14 +78,14 @@ export default function ScheduleItem({ ...props }) {
         {isEditable ? (
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <LogoImage className="logo-image-opponent" component="img" src={opponentIcon} />
-            <Stack direction="column">
+            {/* <Stack direction="column">
               <CmsUploadItem
                 label="Opponent Icon"
                 placeholderTextfield="Enter your url from a cdn..."
                 onChange={handleChange("opponentIcon")}
                 value={opponentIcon}
               />
-            </Stack>
+            </Stack> */}
           </Box>
         ) : (
           <LogoImage component="img" src={opponentIcon} />

@@ -55,7 +55,6 @@ const CmsListItem = ({ values, id }) => {
     cmsOperationStatus,
     setCmsOperationStatus,
   } = useContext(CmsEditItemContext);
-  // cms bulk action context
   const { selectedItems, handleCheckboxChange } = useContext(CmsBulkActionContext);
 
   //! needs to be moved to cmsEdit.context
@@ -67,7 +66,6 @@ const CmsListItem = ({ values, id }) => {
     try {
       const { uid } = currentUserProfile;
       if (type === "documents") {
-        console.log("editableItemData.fileName", editableItemData.fileName);
         const test = await handleSaveRename(
           uid,
           role,
@@ -78,7 +76,6 @@ const CmsListItem = ({ values, id }) => {
           () => {},
           type
         );
-        console.log("test", test);
       } else {
         await updateCMSItem(uid, role, id, editableItemData, type);
       }
@@ -143,6 +140,7 @@ const CmsListItem = ({ values, id }) => {
 
   const isItemSelected = selectedItems.some((item) => item.id === id);
 
+  console.log("editableItemData", editableItemData);
   return (
     <>
       <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>

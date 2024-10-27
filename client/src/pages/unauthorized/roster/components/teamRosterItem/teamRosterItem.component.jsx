@@ -69,12 +69,12 @@ export default function TeamRoosterItem({
           <Stack direction="row" gap={2} justifyContent="center" alignItems="center">
             <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "90px" }}></Box>
             <div>
-              <CmsUploadItem
+              {/* <CmsUploadItem
                 label="Player Image"
                 placeholderTextfield="Enter your url from a cdn..."
                 onChange={handleChange("playerImage")}
                 value={playerImage}
-              />
+              /> */}
             </div>
           </Stack>
         ) : (
