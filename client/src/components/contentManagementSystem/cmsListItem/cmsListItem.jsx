@@ -17,104 +17,34 @@
 // 2. add a history of the changes to the item.
 // 6. undo feature for the user to undo their changes. last for 30 seconds.
 
-import React, { useContext, useEffect, useState } from "react";
-import { Box, Button, Typography, TableRow, TableCell, styled, Table } from "@mui/material";
+import React, { useContext } from "react";
+import { Typography, TableRow } from "@mui/material";
 import ScheduleItem from "../../../pages/unauthorized/home/components/scheduleItem/scheduleItem.component";
 import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
 import { UserContext } from "../../../setup/context/user.context";
-import { deleteCMSItem, deleteItemFromStorage } from "../../../setup/utils/firebase/deleteItem";
-import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
-
 import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkActions.context";
-import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
-import InputFieldComponent from "../../inputFields/inputFields";
-import { Delete as DeleteIcon, Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
-import { StyledTableCell } from "../../../styles/index.styles";
 import EventItems from "../../../pages/unauthorized/events/components/eventItems/eventItems.component";
 import DocumentCard from "../../../pages/authorized/documents/components/documentCard/documentCard.component";
-import { handleSaveRename } from "../cmsMediaStorage/components/fileMenuOptions/fileMenuOptions";
+import ActionButtonsCell from "./components/ActionsButtonCell/actionButtonCell";
+import CheckboxCell from "./components/CheckboxCell/checkboxCell";
+import DeleteButtonCell from "./components/DeleteButtonCell/deleteButtonCell";
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();
   let type = queryParams.get("type");
-  const checkAuthorization = useCheckAuthorization();
-  // user context
   const { currentUserProfile } = useContext(UserContext);
+  const { editableItemId, editableItemData, handleFieldChange, cmsOperationStatus } = useContext(CmsEditItemContext);
+  const { selectedItems } = useContext(CmsBulkActionContext);
   const { role } = currentUserProfile;
-  // cms edit context
-  const {
-    editableItemId,
-    editableItemData,
-    editableItemDataOriginalCopy,
-    startEditing,
-    cancelEditing,
-    checkForEditChanges,
-    updateEditableItemData,
-    cmsOperationStatus,
-    setCmsOperationStatus,
-  } = useContext(CmsEditItemContext);
-  const { selectedItems, handleCheckboxChange } = useContext(CmsBulkActionContext);
-
-  //! needs to be moved to cmsEdit.context
   const isEditing = editableItemId === id;
-
-  const handleUpdateItem = async () => {
-    if (!checkAuthorization(role)) return;
-    setCmsOperationStatus({ type: "update cms", loading: true, error: null, success: false });
-
-    try {
-      const { uid } = currentUserProfile;
-      if (type === "documents") {
-        const test = await handleSaveRename(
-          uid,
-          role,
-          editableItemDataOriginalCopy,
-          editableItemData.fileName.split(".")[0],
-          editableItemData.fileName.split(".")[1],
-          () => {},
-          () => {},
-          type
-        );
-      } else {
-        await updateCMSItem(uid, role, id, editableItemData, type);
-      }
-      setCmsOperationStatus({ type: "update", loading: false, error: null, success: true });
-      setTimeout(() => {
-        setCmsOperationStatus({ type: "update", loading: false, error: null, success: false });
-        cancelEditing();
-      }, 3000);
-    } catch (error) {
-      setCmsOperationStatus({ type: "update", loading: false, error: error.message, success: false });
-    }
+  const isItemSelected = selectedItems.some((item) => item.id === id);
+  const commonTableCellProps = {
+    id: id,
+    values: values,
+    type: type,
   };
-  const handleDeleteItem = async () => {
-    if (!checkAuthorization(role)) return;
-    if (window.confirm("Are you sure you want to delete this item?")) {
-      const { uid } = currentUserProfile;
-      await deleteCMSItem(uid, role, id, type);
-      alert("Item deleted successfully from database");
-      if (type === "documents") {
-        await deleteItemFromStorage(uid, role, values[0].url);
-        alert("Item deleted successfully from storage");
-      }
-      cancelEditing();
-      // after you delete an item, it seems like i need to reset the state to because their is an alert preventing me from deleting the next item.
-    }
-  };
-  const handleEditClick = () => {
-    if (!checkAuthorization(role)) return;
-    startEditing(id, values[0]);
-  };
-  const handleChange = (field) => (event) => {
-    if (!checkAuthorization(role)) return;
-    const value = event?.target?.value;
-    updateEditableItemData(field, value);
-  };
-  //! needs to be moved to cmsEdit.context
-
-  // Renders the editable fields during edit mode
   const renderEditableCmsItem = () => {
     if (!values || values.length === 0) {
       return <Typography>No content available</Typography>;
@@ -122,7 +52,8 @@ const CmsListItem = ({ values, id }) => {
     const props = {
       isEditable: isEditing,
       editableData: editableItemData,
-      handleChange: handleChange,
+      //* I can conditionally render in different handleFileChanges specific for files, images, etc if needed
+      handleChange: handleFieldChange,
       isLoading: isEditing && cmsOperationStatus.loading,
       isError: isEditing && cmsOperationStatus.error,
       isSuccess: isEditing && cmsOperationStatus.success,
@@ -139,90 +70,13 @@ const CmsListItem = ({ values, id }) => {
     return editableCmsItemsMap[type];
   };
 
-  const isItemSelected = selectedItems.some((item) => item.id === id);
-
   return (
     <>
       <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
-        {/* Checkbox for selecting the item */}
-        <StyledTableCell className="table-cell-cms-list-item" padding="checkbox">
-          <InputFieldComponent
-            type="checkbox"
-            disabled={cmsOperationStatus.loading || cmsOperationStatus.success || editableItemData}
-            checked={isItemSelected}
-            onChange={() => handleCheckboxChange({ id, ...values[0] })}
-            inputProps={{ "aria-label": "select item checkbox" }}
-          />
-        </StyledTableCell>
-        {/* Admin-only Delete button when editing */}
-        {isEditing && role === "admin" && (
-          //
-          <StyledTableCell className="delete-button-cell">
-            <div
-              onClick={handleDeleteItem}
-              color="error"
-              type="button"
-              disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
-              aria-label="delete item"
-              style={{
-                height: "100%",
-                // width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "white",
-              }}
-            >
-              <DeleteIcon />
-            </div>
-          </StyledTableCell>
-        )}
-
-        {/* Editable content */}
+        <CheckboxCell isSelected={isItemSelected} {...commonTableCellProps} />
+        {isEditing && role === "admin" && <DeleteButtonCell {...commonTableCellProps} />}
         {renderEditableCmsItem()}
-        {/* {!isEditing && editableItemData && <StyledTableCell className="table-cell-cms-list-item">{null}</StyledTableCell>} */}
-        {/* Action buttons (Edit, Save, Cancel) */}
-        <StyledTableCell className="table-header-cell-narrow">
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {!isEditing && role === "admin" && (
-              <Button
-                disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
-                onClick={handleEditClick}
-                sx={{ border: "1px solid red", padding: 0 }}
-                type="button"
-                aria-label="edit item"
-              >
-                <EditIcon />
-              </Button>
-            )}
-
-            {isEditing && (
-              <>
-                {/* Save Button */}
-                <Button
-                  disabled={!checkForEditChanges() || cmsOperationStatus.loading || cmsOperationStatus.success}
-                  onClick={handleUpdateItem}
-                  sx={{ border: "1px solid red", padding: 0 }}
-                  type="button"
-                  aria-label="save changes"
-                >
-                  <SaveIcon />
-                </Button>
-
-                {/* Cancel Button */}
-                <Button
-                  disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
-                  onClick={cancelEditing}
-                  sx={{ border: "1px solid red", padding: 0 }}
-                  type="button"
-                  aria-label="cancel editing"
-                >
-                  <CloseIcon />
-                </Button>
-              </>
-            )}
-          </Box>
-        </StyledTableCell>
+        <ActionButtonsCell isEditing={isEditing} {...commonTableCellProps} />
       </TableRow>
     </>
   );

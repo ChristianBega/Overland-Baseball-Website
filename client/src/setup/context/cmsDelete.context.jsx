@@ -1,32 +1,33 @@
-// import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
+import { useCheckAuthorization } from "../utils/helpers/checkAuthorization";
+import { deleteCMSItem, deleteItemFromStorage } from "../utils/firebase/deleteItem";
+import { UserContext } from "./user.context";
 
-// export const CmsDeleteItemContext = createContext({
-//   // editableItems: {},
-//   // toggleEditMode: () => {},
-// });
+export const CmsDeleteItemContext = createContext({
+  handleDeleteItem: () => {},
+});
 
-// export const CmsDeleteItemProvider = ({ children }) => {
-//   // const [editableItems, setDeleteableItems] = useState({});
-//   // console.log(editableItems);
-//   // const toggleDeleteMode = (itemId) => {
-//   //   setDeleteableItems((prevDeleteableItems) => ({
-//   //     ...prevDeleteableItems,
-//   //     [itemId]: !prevDeleteableItems[itemId],
-//   //   }));
-//   // };
-//   // const removeDeleteableItem = (itemId) => {
-//   //   setDeleteableItems((prevDeleteableItems) => {
-//   //     const newState = { ...prevDeleteableItems };
-//   //     delete newState[itemId];
-//   //     return newState;
-//   //   });
-//   // };
+export const CmsDeleteItemProvider = ({ children }) => {
+  const { currentUserProfile } = useContext(UserContext);
+  const checkAuthorization = useCheckAuthorization();
 
-//   const contextValue = {
-//     // editableItems,
-//     // toggleDeleteMode,
-//     // removeDeleteableItem,
-//   };
+  const handleDeleteItem = async (id, type, values, handleCancelEditing) => {
+    const { role, uid } = currentUserProfile;
+    if (!checkAuthorization(role)) return;
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      await deleteCMSItem(uid, role, id, type);
+      alert("Item deleted successfully from database");
+      if (type === "documents") {
+        await deleteItemFromStorage(uid, role, values[0].url);
+        alert("Item deleted successfully from storage");
+      }
+      handleCancelEditing();
+    }
+  };
 
-//   return <CmsDeleteItemContext.Provider value={contextValue}>{children}</CmsDeleteItemContext.Provider>;
-// };
+  const contextValue = {
+    handleDeleteItem,
+  };
+
+  return <CmsDeleteItemContext.Provider value={contextValue}>{children}</CmsDeleteItemContext.Provider>;
+};
