@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CmsEditItemContext } from "../../../../../setup/context/cmsContext/cmsEdit.context";
 import { StyledTableCell } from "../../../../../styles/index.styles";
 import { Delete as DeleteIcon } from "@mui/icons-material";
-import { CmsDeleteItemContext } from "../../../../../setup/context/cmsDelete.context";
+import { CmsDeleteItemContext } from "../../../../../setup/context/cmsContext/cmsDelete.context";
 
 const DeleteButtonCell = ({ id, type, values }) => {
   const { cmsOperationStatus, handleCancelEditing } = useContext(CmsEditItemContext);

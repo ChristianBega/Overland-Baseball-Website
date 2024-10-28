@@ -3,14 +3,14 @@ import { Container, Grid } from "@mui/material";
 import { UserContext } from "../../../setup/context/user.context";
 import DashboardSideBarMenu from "./components/dashboardSideBarMenu";
 import { useNavigate } from "react-router-dom";
-import { CmsCreateItemProvider } from "../../../setup/context/cmsCreate.context";
+import { CmsCreateItemProvider } from "../../../setup/context/cmsContext/cmsCreate.context";
 import { CmsEditItemProvider } from "../../../setup/context/cmsContext/cmsEdit.context";
 import { CmsBulkActionProvider } from "../../../setup/context/cmsContext/cmsBulkActions.context";
 import AdminQuickTasksView from "./components/adminQuickTasksView/adminQuickTasksView";
 import { MediaStorageProvider } from "../../../setup/context/cmsContext/mediaStorage";
 import CmsItemTableView from "../../../components/contentManagementSystem/cmsItemTableView";
 import { CmsContext } from "../../../setup/context/cmsContext/cms.context";
-import { CmsDeleteItemProvider } from "../../../setup/context/cmsDelete.context";
+import { CmsDeleteItemProvider } from "../../../setup/context/cmsContext/cmsDelete.context";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 

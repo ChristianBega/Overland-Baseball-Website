@@ -7,13 +7,14 @@ export const addCMSItem = async (userUid, role, data, type) => {
   if (!userUid || role !== "admin") return;
   const docId = uuidv4();
   const cmsItemDocRef = doc(db, `${type}`, docId);
-
+  const filteredData = Object.fromEntries(Object.entries(data).filter(([_, value]) => value !== undefined && value !== null && value !== ""));
   try {
     await setDoc(cmsItemDocRef, {
       createdAt: serverTimestamp(),
       id: docId,
       createdByUserUid: userUid,
-      ...data,
+      ...filteredData,
+      // ...data,
     });
     return { success: true, id: cmsItemDocRef.id, message: "Created Item successfully!" };
   } catch (error) {
