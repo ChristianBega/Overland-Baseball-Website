@@ -75,7 +75,10 @@ const AddItemsForm = ({ ...props }) => {
     }
   };
 
+  // ! this works but doesn't log???, i should be manually setting the value, but im not sure this is event working, and if this isn't working, then something under the hood with react-hook-form is handling this.... need to look into this more
   const handleFileChange = (file) => {
+    console.log("line 79 - file", file);
+    console.log("line 79 - typeof file", typeof file);
     setValue("documentFile", file); // Manually set the file object
   };
 

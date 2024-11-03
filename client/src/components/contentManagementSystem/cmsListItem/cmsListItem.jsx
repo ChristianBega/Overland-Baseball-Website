@@ -52,7 +52,6 @@ const CmsListItem = ({ values, id }) => {
     const props = {
       isEditable: isEditing,
       editableData: editableItemData,
-      //* I can conditionally render in different handleFileChanges specific for files, images, etc if needed
       handleChange: handleFieldChange,
       isLoading: isEditing && cmsOperationStatus.loading,
       isError: isEditing && cmsOperationStatus.error,

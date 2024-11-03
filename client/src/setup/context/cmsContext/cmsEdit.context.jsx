@@ -4,6 +4,7 @@ import { useCheckAuthorization } from "../../utils/helpers/checkAuthorization";
 import { handleSaveRename } from "../../../components/contentManagementSystem/cmsMediaStorage/components/fileMenuOptions/fileMenuOptions";
 import { updateCMSItem } from "../../utils/firebase/editItem";
 import { UserContext } from "../user.context";
+import { handleUploadFile } from "../../utils/firebase/uploadFile";
 
 export const CmsEditItemContext = createContext({
   editableItemId: null,
@@ -18,6 +19,9 @@ export const CmsEditItemContext = createContext({
   setEditableItemDataOriginalCopy: () => {},
   editableItemDataOriginalCopy: null,
   handleSaveAndUpdateItem: () => {},
+  handleFieldChangeWithFiles: () => {},
+  setUploadType: () => {},
+  uploadType: "url",
 });
 
 export const CmsEditItemProvider = ({ children }) => {
@@ -30,7 +34,7 @@ export const CmsEditItemProvider = ({ children }) => {
   const [editableItemData, setEditableItemData] = useState(null);
   const [originalItemData, setOriginalItemData] = useState(null);
   const [cmsOperationStatus, setCmsOperationStatus] = useState({ type: null, loading: false, error: null, success: false });
-
+  const [uploadType, setUploadType] = useState("url"); //! used for cmsUploadItem component to track toggle mode
   // Reset editing state when URL changes
   useEffect(() => {
     handleCancelEditing();
@@ -55,9 +59,12 @@ export const CmsEditItemProvider = ({ children }) => {
     setOriginalItemData(null);
   };
 
-  const handleSaveAndUpdateItem = async (type, id) => {
+  const handleSaveAndUpdateItem = async (type, id, uploadType) => {
     if (!checkAuthorization(role)) return;
+
     setCmsOperationStatus({ type: "update cms", loading: true, error: null, success: false });
+    console.log("uploadType", uploadType);
+    console.log("type", type);
     try {
       const { uid } = currentUserProfile;
       if (type === "documents") {
@@ -71,9 +78,32 @@ export const CmsEditItemProvider = ({ children }) => {
           () => {},
           type
         );
-      } else {
-        await updateCMSItem(uid, role, id, editableItemData, type);
+
+        // if schedule and no
       }
+
+      if (type === "schedule") {
+        if (uploadType === "file") {
+          const { url } = await handleUploadFile(
+            editableItemData.opponentIcon,
+            uid,
+            () => {},
+            () => {},
+            "schedule",
+            "opponentIcon"
+          );
+          const updatedDataWithOpponentIconUrl = {
+            ...editableItemData,
+            opponentIcon: url,
+          };
+          await updateCMSItem(uid, role, id, updatedDataWithOpponentIconUrl, type);
+        } else {
+          // if uploadType is url then we need to update the editableItemData.opponentIcon with the url to firebase database.
+          await updateCMSItem(uid, role, id, editableItemData, type);
+        }
+      }
+      //! await updateCMSItem(uid, role, id, editableItemData, type);
+
       setCmsOperationStatus({ type: "update", loading: false, error: null, success: true });
       setTimeout(() => {
         setCmsOperationStatus({ type: "update", loading: false, error: null, success: false });
@@ -83,26 +113,25 @@ export const CmsEditItemProvider = ({ children }) => {
       setCmsOperationStatus({ type: "update", loading: false, error: error.message, success: false });
     }
   };
-
-  // const handleEditableDataChange = (field, value) => {
-  //   setEditableItemData((prevData) => ({
-  //     ...prevData,
-  //     [field]: value,
-  //   }));
-  // };
-
-  // const handleFieldChange = (field) => (event) => {
-  //   if (!checkAuthorization(role)) return;
-  //   const value = event?.target?.value;
-  //   handleEditableDataChange(field, value);
-  // };
   const handleFieldChange = (field) => (event) => {
     if (!checkAuthorization(role)) return;
-    const value = event?.target?.value;
-    setEditableItemData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
+
+    // Extract the file from the event
+    if (event?.target?.type === "file") {
+      const file = event.target.files[0];
+      if (file) {
+        setEditableItemData((prevData) => ({
+          ...prevData,
+          [field]: file,
+        }));
+      }
+    } else {
+      const value = event?.target?.value;
+      setEditableItemData((prevData) => ({
+        ...prevData,
+        [field]: value,
+      }));
+    }
   };
 
   const checkForEditChanges = () => {
@@ -114,13 +143,15 @@ export const CmsEditItemProvider = ({ children }) => {
     editableItemData,
     handleStartEditing,
     handleCancelEditing,
-    // handleEditableDataChange,
     handleFieldChange,
     checkForEditChanges,
     cmsOperationStatus,
     setCmsOperationStatus,
     editableItemDataOriginalCopy,
     handleSaveAndUpdateItem,
+    handleFieldChangeWithFiles: () => {},
+    setUploadType,
+    uploadType,
   };
 
   return <CmsEditItemContext.Provider value={contextValue}>{children}</CmsEditItemContext.Provider>;

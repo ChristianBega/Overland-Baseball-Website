@@ -2,7 +2,7 @@ import { storage, db } from "./index.firebase";
 import { ref, uploadBytesResumable, getDownloadURL, getStorage, uploadBytes, deleteObject } from "firebase/storage";
 import { doc, setDoc, serverTimestamp, collection } from "firebase/firestore";
 
-export const handleUploadFile = (file, userUid, setProgress, onCancel, fileType = "mediaStorage") => {
+export const handleUploadFile = (file, userUid, setProgress, onCancel, mainDirectoryName = "mediaStorage", subDirectoryName = "") => {
   return new Promise((resolve, reject) => {
     try {
       if (!file) {
@@ -16,7 +16,7 @@ export const handleUploadFile = (file, userUid, setProgress, onCancel, fileType 
         return;
       }
 
-      const fileRef = ref(storage, `${fileType}/${file.name}`);
+      const fileRef = ref(storage, `${mainDirectoryName}/${subDirectoryName ? subDirectoryName + "/" : ""}${file.name}`);
       const uploadTask = uploadBytesResumable(fileRef, file);
 
       onCancel(() => {
@@ -57,7 +57,7 @@ export const handleUploadFile = (file, userUid, setProgress, onCancel, fileType 
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-          const cmsItemDocRef = doc(collection(db, fileType));
+          const cmsItemDocRef = doc(collection(db, subDirectoryName ? subDirectoryName : mainDirectoryName));
           const docId = cmsItemDocRef.id;
 
           await setDoc(cmsItemDocRef, {
@@ -126,4 +126,3 @@ export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, 
     return { success: false, error };
   }
 };
-

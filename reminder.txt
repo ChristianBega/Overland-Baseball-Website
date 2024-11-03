@@ -1,0 +1,56 @@
+I'm currently working on the schedule page, and I'm trying to figure out how to handle how to 
+handle uploading an image to a schedule for the opponent icon.
+
+
+I'm thinking instead of storing the file object as the opponent icon i should store the url of the image in the database.
+this way i can upload new images from ths schedule to a storage called schedule/opponentIcons/<newImage>. 
+
+
+If i do it this way, I can then have the text field option in the upLoadCmsItem component become a drop down of all images from the specific storage.
+
+I can pass the following to the uploadCmsItem component:
+
+pass the cms type 
+pass the specific path ex - 1. <cmsType>/<OpponentIcons>/<fileName>, ex - 2. <cmsType>/<SomethingElse>/<fileName>
+
+....... to be continued
+
+
+
+
+but this will turn the cmsUploadItem into a little component that can handle all our 
+1. creating of new files and organizing them in the storage
+2. displaying all the files in the storage as a drop down in the cmsUploadItem component for specific usages across the cms
+
+MAYBE?
+3. renaming of new files
+4. deleting of new files
+
+
+
+
+
+
+
+NEW - 
+
+1. Store the opponentIcon on the schedule cmsItem as a url always
+2. When editing the schedule cmsItem the opponentIcon field allows the user to toggle between uploading a new image or selecting an existing image from the storage via the CmsUploadItem
+3. If the uploadType is set to url then directly update the opponentIcon field with the url
+4. If the uploadType is set to file then 
+
+a) we need to upload the file to the firebase database 
+b) we need to update the opponentIcon field with the url of the uploaded file
+
+
+Questions - 
+
+1. how can i pass the cmsUploadItem uploadType to the parent component, i will need to use this state in the upload process to firebase/storage? - will probably need to a) create context to pass state up, b) call back function to update state???
+
+Problems - 
+1. i need to be able to tell my handleSaveAndUpdateItem function if the uploadType is url or file, so i know which process to go through in the updateCMSItem function, because normally it would just update the database in the case the opponentIcon field as what ever value was captured during the editing process. But we need to be able to handle uploading the a) new url or b) upload new file, return url, update with new url
+
+
+
+Solutions - 
+1. what if i were to move the uploadType state from the cmsUploadItem into the cmsEditItem context, then i could just call the handleSaveAndUpdateItem function from the context and not have to pass the uploadType down to it.

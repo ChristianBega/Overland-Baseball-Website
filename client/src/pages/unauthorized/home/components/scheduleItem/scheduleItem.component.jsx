@@ -34,6 +34,7 @@ export default function ScheduleItem({ ...props }) {
   const currentData = isEditable ? editableData : data;
   const { date, time, location, opponent, opponentIcon } = currentData;
 
+  console.log(editableData);
   if (isLoading || isError || isSuccess) {
     return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
   }
@@ -78,14 +79,15 @@ export default function ScheduleItem({ ...props }) {
         {isEditable ? (
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <LogoImage className="logo-image-opponent" component="img" src={opponentIcon} />
-            {/* <Stack direction="column">
+            <Stack direction="column">
               <CmsUploadItem
                 label="Opponent Icon"
                 placeholderTextfield="Enter your url from a cdn..."
                 onChange={handleChange("opponentIcon")}
                 value={opponentIcon}
+                cmsItemType="opponentIcon"
               />
-            </Stack> */}
+            </Stack>
           </Box>
         ) : (
           <LogoImage component="img" src={opponentIcon} />

@@ -1,7 +1,9 @@
-import { Button, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
 import InputFieldComponent from "../../inputFields/inputFields";
+import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
+import { useRealtimeData } from "../../../hooks/useRealtimeData";
 
 const ButtonStyles = {
   width: "100px",
@@ -23,18 +25,15 @@ const ButtonStyles = {
   },
 };
 
-const CmsUploadItem = ({ onChange, value, placeholderTextfield, label }) => {
-  const [uploadType, setUploadType] = useState("url");
+const CmsUploadItem = ({ onChange, value, placeholderTextfield, label, cmsItemType }) => {
+  // const [uploadType, setUploadType] = useState("url");
+  const { uploadType, setUploadType } = useContext(CmsEditItemContext);
+  const { data: displayData, isLoading, error } = useRealtimeData(cmsItemType);
 
-  useEffect(() => {
-    // Reset the value when the upload type changes
-    onChange("");
-  }, [uploadType]);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    onChange(file); // Pass the File object to the parent
-  };
+  // useEffect(() => {
+  //   // Reset the value when the upload type changes
+  //   onChange("");
+  // }, [uploadType]);
 
   return (
     <>
@@ -61,9 +60,18 @@ const CmsUploadItem = ({ onChange, value, placeholderTextfield, label }) => {
         </Button>
       </Stack>
       {uploadType === "url" ? (
-        <InputFieldComponent onChange={onChange} value={value} placeholder={placeholderTextfield} label={`${label} Url`} type="text" />
+        <FormControl fullWidth>
+          <InputLabel id="url-select-label">{`${label} Url`}</InputLabel>
+          <Select labelId="url-select-label" value={value} label={`${label} Url`} onChange={onChange}>
+            {displayData?.map((item) => (
+              <MenuItem sx={{ color: "black" }} value={item.url} key={item.id}>
+                {item.fileName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       ) : (
-        <InputFieldComponent onChange={handleFileChange} value={value} placeholder={placeholderTextfield} label={`${label} File`} type="file" />
+        <InputFieldComponent onChange={onChange} value={value} placeholder={placeholderTextfield} label={`${label} File`} type="file" />
       )}
     </>
   );
