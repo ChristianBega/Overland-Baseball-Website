@@ -34,7 +34,6 @@ export default function ScheduleItem({ ...props }) {
   const currentData = isEditable ? editableData : data;
   const { date, time, location, opponent, opponentIcon } = currentData;
 
-  console.log(editableData);
   if (isLoading || isError || isSuccess) {
     return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
   }

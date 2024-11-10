@@ -28,9 +28,10 @@
   },
   {
     "name": "opponentIcon",
-    "label": "Opponent Icon URL",
+    "label": "Opponent Icon",
     "placeholder": "Enter opponent icon URL here...",
-    "type": "text",
+    "type": "cmsUploadItem",
+    "cmsType": "opponentIcon",
     "rules": {
       "pattern": {
         "value": "^(http[s]?:\\/\\/)?([^\\/\\s]+\\/)(.*)$",
@@ -49,14 +50,9 @@
   },
   {
     "name": "home",
-    "label": "Home Game",
-    "type": "checkbox",
-    "rules": {}
-  },
-  {
-    "name": "away",
-    "label": "Away Game",
-    "type": "checkbox",
+    "label": "Home Or Away",
+    "type": "toggleSwitch",
+    "optionLabels": ["Away", "Home"],
     "rules": {}
   }
 ]

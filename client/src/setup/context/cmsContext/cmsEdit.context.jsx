@@ -39,7 +39,6 @@ export const CmsEditItemProvider = ({ children }) => {
   useEffect(() => {
     handleCancelEditing();
   }, [location.search]);
-
   const handleStartEditing = (itemId, itemData) => {
     if (!checkAuthorization(role)) return;
     if (editableItemId && editableItemId !== itemId) {
@@ -51,20 +50,17 @@ export const CmsEditItemProvider = ({ children }) => {
     setEditableItemDataOriginalCopy(itemData);
     setOriginalItemData(itemData);
   };
-
   const handleCancelEditing = () => {
     setEditableItemId(null);
     setEditableItemData(null);
     setEditableItemDataOriginalCopy(null);
     setOriginalItemData(null);
   };
-
   const handleSaveAndUpdateItem = async (type, id, uploadType) => {
     if (!checkAuthorization(role)) return;
 
     setCmsOperationStatus({ type: "update cms", loading: true, error: null, success: false });
-    console.log("uploadType", uploadType);
-    console.log("type", type);
+
     try {
       const { uid } = currentUserProfile;
       if (type === "documents") {
@@ -113,6 +109,7 @@ export const CmsEditItemProvider = ({ children }) => {
       setCmsOperationStatus({ type: "update", loading: false, error: error.message, success: false });
     }
   };
+
   const handleFieldChange = (field) => (event) => {
     if (!checkAuthorization(role)) return;
 
@@ -133,7 +130,6 @@ export const CmsEditItemProvider = ({ children }) => {
       }));
     }
   };
-
   const checkForEditChanges = () => {
     return JSON.stringify(editableItemData) !== JSON.stringify(originalItemData);
   };

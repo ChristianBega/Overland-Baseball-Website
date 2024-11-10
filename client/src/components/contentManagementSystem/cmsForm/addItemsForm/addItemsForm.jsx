@@ -12,11 +12,13 @@ import scheduleItemInputFieldsConfig from "./data/addScheduleItem.config.json";
 import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
 import eventsItemInputFieldsConfig from "./data/addEventItem.config.json";
 import documentsItemInputFieldsConfig from "./data/addDocument.config.json";
+import CmsUploadItem from "../../cmsUploadItem/cmsUploadItem";
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [localUploadType, setLocalUploadType] = useState("url");
 
   const inputFieldsConfig = {
     schedule: scheduleItemInputFieldsConfig,
@@ -50,13 +52,33 @@ const AddItemsForm = ({ ...props }) => {
           () => {},
           cmsItemType
         );
+      } else if (cmsItemType === "schedule") {
+        if (localUploadType === "file") {
+          const { url } = await handleUploadFile(
+            data.opponentIcon,
+            uid,
+            () => {},
+            () => {},
+            "schedule",
+            "opponentIcon"
+          );
+          const updatedDataWithOpponentIconUrl = {
+            ...data,
+            opponentIcon: url,
+          };
+          result = await addCMSItem(uid, role, updatedDataWithOpponentIconUrl, cmsItemType, (progress) => {
+            setProgress(progress);
+          });
+        } else {
+          result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+            setProgress(progress);
+          });
+        }
       } else {
         //& addCmsItem is for non storage items, they will be directly uploaded to there respective collections using their cmsItemType
-
         result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
           setProgress(progress);
         });
-        // // handleUploadFile(file, uid, setProgress, onCancel, cmsItemType);
       }
       if (result.success === true) {
         setStatusMessage(result.message);
@@ -90,12 +112,11 @@ const AddItemsForm = ({ ...props }) => {
       return () => clearTimeout(timer);
     }
   }, [status]);
-
   return (
     <Box component="form" onSubmit={handleSubmit(handleAdd)}>
       <FormStatusIndicator statusMessage={statusMessage} />
       {/* Add Cms Loading Status Indicator for state - a) progress */}
-      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules }, index) => (
+      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules, cmsType, optionLabels }, index) => (
         <Controller
           key={index + name}
           name={name}
@@ -103,17 +124,38 @@ const AddItemsForm = ({ ...props }) => {
           rules={rules}
           render={({ field }) => (
             <Box mb={2}>
-              <InputFieldComponent
-                onChange={type === "file" ? handleFileChange : field.onChange}
-                type={type}
-                label={label}
-                placeholder={placeholder}
-                fullWidth
-                value={type === "file" ? undefined : field.value}
-                error={Boolean(errors[name])}
-                helperText={errors[name]?.message}
-                {...field}
-              />
+              {type === "cmsUploadItem" ? (
+                <CmsUploadItem
+                  cmsItemType={cmsType}
+                  onChange={(field) => (event) => {
+                    console.log("line 148 - field", field);
+                    console.log("line 148 - event", event);
+                    field.onChange(event.target.files[0]);
+                  }}
+                  // onChange={field.onChange}
+                  label={label}
+                  placeholderTextfield={placeholder}
+                  value={field.value}
+                  {...field}
+                  cmsUploadName={name}
+                  parentElement={"addItemsForm"}
+                  localUploadType={localUploadType}
+                  setLocalUploadType={setLocalUploadType}
+                />
+              ) : (
+                <InputFieldComponent
+                  onChange={type === "file" ? handleFileChange : field.onChange}
+                  type={type}
+                  label={label}
+                  placeholder={placeholder}
+                  fullWidth
+                  value={type === "file" ? undefined : field.value}
+                  error={Boolean(errors[name])}
+                  helperText={errors[name]?.message}
+                  {...field}
+                  optionLabels={optionLabels}
+                />
+              )}
             </Box>
           )}
         />
@@ -126,11 +168,6 @@ const AddItemsForm = ({ ...props }) => {
 };
 
 export default AddItemsForm;
-
-// ! ideas
-// turn location input field into a dropdown menu with a list of locations
-// turn opponent Icon input into dropdown menu with a list of icons OR upload your own
-// turn opponent type input into dropdown menu with a list of types OR upload your own
 
 // ! Other fields for uploading files
 // url: downloadURL,

@@ -32,10 +32,10 @@ export const handleUploadFile = (file, userUid, setProgress, onCancel, mainDirec
 
           switch (snapshot.state) {
             case "paused":
-              console.log("Upload is paused");
+              console.log("LINE 3 ------ utils/firebase/uploadFile.jsx", "Upload is paused");
               break;
             case "running":
-              console.log("Upload is running");
+              console.log("LINE 3 ------ utils/firebase/uploadFile.jsx", "Upload is running");
               break;
           }
         },

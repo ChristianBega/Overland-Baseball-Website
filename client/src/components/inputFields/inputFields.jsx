@@ -11,6 +11,7 @@ const inputComponents = {
   numeric: lazy(() => import("./Numeric/numericInputField")),
   textarea: lazy(() => import("./TextAreaInputField/textAreaInputField")),
   file: lazy(() => import("./FileInputField/fileInputField")),
+  toggleSwitch: lazy(() => import("./ToggleSwitchInputField/toggleSwitchInputField")),
   // Add more input types as needed
 };
 

@@ -1,10 +1,11 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext,  } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
 import InputFieldComponent from "../../inputFields/inputFields";
 import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 
+// & Im going to want to write down some context information on why we use localUploadType and contextUploadType.....
 const ButtonStyles = {
   width: "100px",
   height: "25px",
@@ -25,16 +26,28 @@ const ButtonStyles = {
   },
 };
 
-const CmsUploadItem = ({ onChange, value, placeholderTextfield, label, cmsItemType }) => {
-  // const [uploadType, setUploadType] = useState("url");
-  const { uploadType, setUploadType } = useContext(CmsEditItemContext);
+const CmsUploadItem = ({
+  onChange,
+  value,
+  placeholderTextfield,
+  label,
+  cmsItemType,
+  parentElement,
+  localUploadType = "url",
+  setLocalUploadType,
+  cmsUploadName,
+}) => {
+  // const [localUploadType, setLocalUploadType] = useState("url");
+  const { uploadType: contextUploadType, setUploadType: setContextUploadType } = useContext(CmsEditItemContext);
   const { data: displayData, isLoading, error } = useRealtimeData(cmsItemType);
 
-  // useEffect(() => {
-  //   // Reset the value when the upload type changes
-  //   onChange("");
-  // }, [uploadType]);
+  // Determine which uploadType to use
+  const uploadType = parentElement === "addItemsForm" ? localUploadType : contextUploadType;
+  const setUploadType = parentElement === "addItemsForm" ? setLocalUploadType : setContextUploadType;
 
+  const handleChangeTest = (field) => (event) => {
+    onChange(event.target.files[0]);
+  };
   return (
     <>
       <Stack direction="row" sx={{ height: "56px", alignItems: "center" }}>
@@ -45,8 +58,8 @@ const CmsUploadItem = ({ onChange, value, placeholderTextfield, label, cmsItemTy
           sx={{ ...ButtonStyles }}
           onClick={() => setUploadType("url")}
         >
-          <AddIcon sx={{ fontSize: 16 }} />
-          <Typography sx={{ fontSize: 12 }}>New Url</Typography>
+          <AddIcon sx={{ fontSize: 16, color: "white" }} />
+          <Typography sx={{ fontSize: 12, color: "white" }}>New Url</Typography>
         </Button>
         <Button
           type="button"
@@ -55,8 +68,8 @@ const CmsUploadItem = ({ onChange, value, placeholderTextfield, label, cmsItemTy
           sx={{ ...ButtonStyles }}
           onClick={() => setUploadType("file")}
         >
-          <AddIcon sx={{ fontSize: 16 }} />
-          <Typography sx={{ fontSize: 12 }}>New File</Typography>
+          <AddIcon sx={{ fontSize: 16, color: "white" }} />
+          <Typography sx={{ fontSize: 12, color: "white" }}>New File</Typography>
         </Button>
       </Stack>
       {uploadType === "url" ? (
@@ -71,7 +84,13 @@ const CmsUploadItem = ({ onChange, value, placeholderTextfield, label, cmsItemTy
           </Select>
         </FormControl>
       ) : (
-        <InputFieldComponent onChange={onChange} value={value} placeholder={placeholderTextfield} label={`${label} File`} type="file" />
+        <InputFieldComponent
+          onChange={localUploadType === "file" ? handleChangeTest(cmsUploadName) : onChange}
+          value={value}
+          placeholder={placeholderTextfield}
+          label={`${label} File`}
+          type="file"
+        />
       )}
     </>
   );
