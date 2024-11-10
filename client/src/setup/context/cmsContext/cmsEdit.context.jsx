@@ -98,6 +98,27 @@ export const CmsEditItemProvider = ({ children }) => {
           await updateCMSItem(uid, role, id, editableItemData, type);
         }
       }
+      if (type === "roster") {
+        if (uploadType === "file") {
+          console.log("editableItemData", editableItemData);
+          const { url } = await handleUploadFile(
+            editableItemData.playerImage,
+            uid,
+            () => {},
+            () => {},
+            "roster",
+            "playerImage"
+          );
+          const updatedDataWithPlayerImageUrl = {
+            ...editableItemData,
+            playerImage: url,
+          };
+          await updateCMSItem(uid, role, id, updatedDataWithPlayerImageUrl, type);
+        } else {
+          // if uploadType is url then we need to update the editableItemData.opponentIcon with the url to firebase database.
+          await updateCMSItem(uid, role, id, editableItemData, type);
+        }
+      }
       //! await updateCMSItem(uid, role, id, editableItemData, type);
 
       setCmsOperationStatus({ type: "update", loading: false, error: null, success: true });

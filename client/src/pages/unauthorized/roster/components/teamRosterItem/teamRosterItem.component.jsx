@@ -67,18 +67,19 @@ export default function TeamRoosterItem({
       <StyledTableCell isCmsItem={isCmsItem} className={"table-header-cell-narrow"} sx={{ width: !isEditable && "50%" }}>
         {isEditable ? (
           <Stack direction="row" gap={2} justifyContent="center" alignItems="center">
-            <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "90px" }}></Box>
+            <Box component="img" src={playerImage || PlaceHolderImage} sx={{ width: { xs: "50px", sm: "70px" }, height: "80px" }}></Box>
             <div>
-              {/* <CmsUploadItem
+              <CmsUploadItem
                 label="Player Image"
                 placeholderTextfield="Enter your url from a cdn..."
                 onChange={handleChange("playerImage")}
                 value={playerImage}
-              /> */}
+                cmsItemType="playerImage"
+              />
             </div>
           </Stack>
         ) : (
-          <Box component="img" src={PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "90px" }}></Box>
+          <Box component="img" src={playerImage || PlaceHolderImage} sx={{ width: { xs: "70px", sm: "90px" }, height: "90px" }}></Box>
         )}
       </StyledTableCell>
 

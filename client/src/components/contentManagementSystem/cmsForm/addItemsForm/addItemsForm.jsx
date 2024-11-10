@@ -38,6 +38,8 @@ const AddItemsForm = ({ ...props }) => {
   } = useForm();
 
   const handleAdd = async (data) => {
+    console.log("line 41 - data", data);
+    //! refactor how we handle checking the cmsItemType to conditionally handle specific edge cases for adding items. use switch statement or if else or handleAddLogicMap.
     setStatusMessage("Loading...");
     try {
       let result;
@@ -52,7 +54,8 @@ const AddItemsForm = ({ ...props }) => {
           () => {},
           cmsItemType
         );
-      } else if (cmsItemType === "schedule") {
+      }
+      if (cmsItemType === "schedule") {
         if (localUploadType === "file") {
           const { url } = await handleUploadFile(
             data.opponentIcon,
@@ -67,6 +70,30 @@ const AddItemsForm = ({ ...props }) => {
             opponentIcon: url,
           };
           result = await addCMSItem(uid, role, updatedDataWithOpponentIconUrl, cmsItemType, (progress) => {
+            setProgress(progress);
+          });
+        } else {
+          result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+            setProgress(progress);
+          });
+        }
+      }
+      if (cmsItemType === "roster") {
+        console.log("line 82 - data", data);
+        if (localUploadType === "file") {
+          const { url } = await handleUploadFile(
+            data.playerImage,
+            uid,
+            () => {},
+            () => {},
+            "roster",
+            "playerImage"
+          );
+          const updatedDataWithPlayerImageUrl = {
+            ...data,
+            playerImage: url,
+          };
+          result = await addCMSItem(uid, role, updatedDataWithPlayerImageUrl, cmsItemType, (progress) => {
             setProgress(progress);
           });
         } else {

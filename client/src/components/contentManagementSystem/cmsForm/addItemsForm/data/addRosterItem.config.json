@@ -9,17 +9,24 @@
     }
   },
   {
+    "name": "playerImage",
+    "label": "Player Image",
+    "placeholder": "Enter player image URL here...",
+    "type": "cmsUploadItem",
+    "cmsType": "playerImage"
+  },
+  {
     "name": "number",
     "label": "Players Jersey Number",
     "placeholder": "Enter number here...",
-    "type": "text",
+    "type": "numeric",
     "rules": {
       "required": "Number is required *"
     }
   },
   {
     "name": "position",
-    "label": "Position",
+    "label": "Position (drop down)",
     "placeholder": "Enter position here...",
     "type": "text",
     "rules": {
@@ -39,14 +46,16 @@
     "name": "weight",
     "label": "Weight",
     "placeholder": "Enter weight here...",
-    "type": "text",
+    "type": "numeric",
+    "min": 80,
+    "max": 400,
     "rules": {
       "required": "Weight is required *"
     }
   },
   {
     "name": "handed",
-    "label": "Handed",
+    "label": "Handed (drop down)",
     "placeholder": "Enter handed (Left or Right) here...",
     "type": "text",
     "rules": {
@@ -55,7 +64,7 @@
   },
   {
     "name": "year",
-    "label": "Year",
+    "label": "Year (drop down)",
     "placeholder": "Enter year here...",
     "type": "text",
     "rules": {
@@ -64,7 +73,7 @@
   },
   {
     "name": "yearAbbr",
-    "label": "Year Abbreviation",
+    "label": "Year Abbreviation (drop down)",
     "placeholder": "Enter year abbreviation (Sr. Jr. So. Fr.) here...",
     "type": "text",
     "rules": {
