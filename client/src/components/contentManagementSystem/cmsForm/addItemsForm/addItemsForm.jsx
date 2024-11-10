@@ -79,7 +79,6 @@ const AddItemsForm = ({ ...props }) => {
         }
       }
       if (cmsItemType === "roster") {
-        console.log("line 82 - data", data);
         if (localUploadType === "file") {
           const { url } = await handleUploadFile(
             data.playerImage,

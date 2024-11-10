@@ -96,33 +96,27 @@ export const getDownloadableUrl = async (filePath) => {
   }
 };
 
-export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, newFileNameWithExt, cmsType) => {
+export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, newFileNameWithExt, cmsType, mainDirectoryName) => {
   if (!userUid || role !== "admin") return { success: false, message: "Unauthorized or invalid user data" };
 
   try {
     // 1. Reference to the original file in Firebase Storage
-    const oldFileRef = ref(storage, `${cmsType}/${originalFileNameWithExt}`);
-
+    const oldFileRef = ref(storage, `${mainDirectoryName ? `${mainDirectoryName}/` : ""}${cmsType}/${originalFileNameWithExt}`);
     // 2. Reference to the new file path
-    const newFileRef = ref(storage, `${cmsType}/${newFileNameWithExt}`);
-
+    const newFileRef = ref(storage, `${mainDirectoryName ? `${mainDirectoryName}/` : ""}${cmsType}/${newFileNameWithExt}`);
     // 3. Copy the file by uploading to the new location
     const oldFileSnapshot = await getDownloadURL(oldFileRef);
     const fileResponse = await fetch(oldFileSnapshot);
     const fileBlob = await fileResponse.blob();
-
     await uploadBytes(newFileRef, fileBlob);
-
     // 4. Get the new download URL
     const newDownloadURL = await getDownloadURL(newFileRef);
-
     // 5. Delete the original file from Storage
     await deleteObject(oldFileRef);
-
     // Return the new download URL
     return { success: true, newDownloadURL };
   } catch (error) {
     console.error("Error renaming file in Firebase Storage: ", error);
     return { success: false, error };
   }
-};
+};    

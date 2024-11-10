@@ -3,16 +3,18 @@ import { useModal } from "../../../../../setup/context/modal.context";
 import CmsMediaStorage from "../../../../../components/contentManagementSystem/cmsMediaStorage/cmsMediaStorage";
 import { useCheckAuthorization } from "../../../../../setup/utils/helpers/checkAuthorization";
 import { UserContext } from "../../../../../setup/context/user.context";
+import { useTheme } from "@emotion/react";
 
 const AdminQuickTasksView = () => {
   const { openModal } = useModal();
+  const { theme } = useTheme();
   const { currentUserProfile } = useContext(UserContext);
   const { role } = currentUserProfile;
   const checkAuthorization = useCheckAuthorization();
 
   const handleQuickTask = () => {
     if (!checkAuthorization(role)) return;
-    openModal(<CmsMediaStorage />);
+    openModal(<CmsMediaStorage />, "mediaStorage");
   };
   return (
     <div style={{ marginTop: "2rem", border: "2px solid grey", width: "100%", height: 600, padding: "1rem" }}>

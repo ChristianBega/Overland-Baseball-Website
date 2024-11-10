@@ -1,5 +1,5 @@
 import { Button, Stack } from "@mui/material";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import FilesGridView from "./components/filesGridView/filesGridView";
 import FilesTableView from "./components/filesTableView/filesTableView";
 import FileViewToggle from "./components/fileViewToggle/fileViewToggle";
@@ -7,23 +7,48 @@ import AddNewItem from "./components/addNewItem/addNewItem";
 import { useModal } from "../../../setup/context/modal.context";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import InputFieldComponent from "../../inputFields/inputFields";
+import DirectoryExplorer from "./components/directoryExplorer/directoryExplorer";
 const CmsMediaStorage = () => {
   const { closeModal } = useModal();
-  const { data: displayData, isLoading, error } = useRealtimeData("mediaStorage");
   const [viewMode, setViewMode] = useState("grid");
+  const [selectedSubDirectory, setSelectedSubDirectory] = useState("mediaStorage");
+  const { data: mediaStorageData = [], isLoading: mediaStorageLoading, error: mediaStorageError } = useRealtimeData("mediaStorage");
+  const { data: scheduleData = [], isLoading: scheduleLoading, error: scheduleError } = useRealtimeData("opponentIcon");
+  const { data: rosterData = [], isLoading: rosterLoading, error: rosterError } = useRealtimeData("playerImage");
+  const { data: documentsData = [], isLoading: documentsLoading, error: documentsError } = useRealtimeData("documents");
 
-  const fileViewProps = { displayData, isLoading, error };
-  console.log(displayData);
+  const isLoading = mediaStorageLoading || scheduleLoading || rosterLoading || documentsLoading;
+  const error = mediaStorageError || scheduleError || rosterError || documentsError;
+
+  const currentDirectoryData = useMemo(() => {
+    if (isLoading) return [];
+    switch (selectedSubDirectory) {
+      case "opponentIcon":
+        return scheduleData;
+      case "playerImage":
+        return rosterData;
+      case "documents":
+        return documentsData;
+      case "mediaStorage":
+        return mediaStorageData;
+      default:
+        return [...mediaStorageData, ...scheduleData, ...rosterData, ...documentsData];
+    }
+  }, [selectedSubDirectory, scheduleData, rosterData, documentsData, mediaStorageData, isLoading]);
+  const directoryMap = {
+    opponentIcon: "schedule",
+    playerImage: "roster",
+  };
+  const mainDirectoryName = directoryMap[selectedSubDirectory];
+  const fileViewProps = { displayData: currentDirectoryData, isLoading, error, selectedSubDirectory, mainDirectoryName };
+
   return (
     <div id="media-storage-container" style={{ position: "relative", minHeight: "100vh" }}>
       <Stack alignItems={"center"} direction="row" justifyContent="space-between">
         <h2>Media Storage</h2>
         <Button onClick={closeModal}>X</Button>
       </Stack>
-      {/* + new button for creating new file and folder (eventually folder) */}
       <AddNewItem />
-      {/* search bar with filter options */}
-      {/* grid view & list view toggle buttons  */}
       <Stack sx={{ marginBlock: "2rem" }} direction="row" spacing={2} alignItems="center">
         <div style={{ width: "100%" }}>
           <InputFieldComponent
@@ -38,9 +63,8 @@ const CmsMediaStorage = () => {
         </div>
         <FileViewToggle currentView={viewMode} onViewChange={setViewMode} />
       </Stack>
-      {/* files section that displays each file an options menu to delete, download, rename, move to folder, get link, etc...  */}
+      <DirectoryExplorer selectedSubDirectory={selectedSubDirectory} setSelectedSubDirectory={setSelectedSubDirectory} />
       {viewMode === "grid" ? <FilesGridView {...fileViewProps} /> : <FilesTableView {...fileViewProps} />}
-      {/* pagination with previous and next buttons, and page number buttons  1-5, page selection dropdown, and total pages */}
     </div>
   );
 };

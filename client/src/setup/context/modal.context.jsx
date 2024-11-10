@@ -16,9 +16,11 @@ export const ModalProvider = ({ children }) => {
   const [modalContent, setModalContent] = useState([]);
   const [preview, setPreview] = useState(null); // Image preview state
   const [file, setFile] = useState(null); // File state
+  const [modalType, setModalType] = useState(null);
 
-  const openModal = (content) => {
+  const openModal = (content, modalType) => {
     setModalContent((prevStack) => [...prevStack, content]);
+    setModalType(modalType);
   };
 
   const closeModal = () => {
@@ -41,7 +43,7 @@ export const ModalProvider = ({ children }) => {
       <ModalContext.Provider value={{ openModal, closeModal, closeAllModals, preview, setPreview, file, setFile }}>
         {children}
         {modalContent.map((content, index) => (
-          <ModalComponent key={index} isOpen={true} onToggle={() => closeModal()} zIndex={1000 + index}>
+          <ModalComponent modalType={modalType} key={index} isOpen={true} onToggle={() => closeModal()} zIndex={1000 + index}>
             {content}
           </ModalComponent>
         ))}
