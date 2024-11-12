@@ -29,21 +29,21 @@ const CmsOptionsPanel = () => {
     if (!checkAuthorization(role)) return;
     event.preventDefault();
     event.stopPropagation();
-    openModal(<CmsForm formType="create" {...props} />);
+    openModal(<CmsForm formType="create" {...props} />, "cmsFormCreate");
   };
 
   const handleBulkAdd = (event) => {
     if (!checkAuthorization(role)) return;
     event.preventDefault();
     event.stopPropagation();
-    openModal(<CmsForm formType="bulkAdd" {...props} />);
+    openModal(<CmsForm formType="bulkAdd" {...props} />, "cmsFormBulkAdd");
   };
 
   const handleDelete = (event) => {
     if (!checkAuthorization(role)) return;
     event.preventDefault();
     event.stopPropagation();
-    openModal(<CmsForm formType="delete" {...props} />);
+    openModal(<CmsForm formType="delete" {...props} />, "cmsFormBulkDelete");
   };
 
   return (

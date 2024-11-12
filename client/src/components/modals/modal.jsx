@@ -1,7 +1,10 @@
 import React from "react";
 import { Modal, Box, styled } from "@mui/material";
 
-const StyledModalContainer = styled(Box)(({ theme, modalType }) => ({
+
+
+
+const StyledModalContainer = styled(Box)(({ theme, modalType, isCmsForm }) => ({
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -11,11 +14,11 @@ const StyledModalContainer = styled(Box)(({ theme, modalType }) => ({
   boxShadow: 24,
   padding: "1rem",
   maxHeight: "90%",
-  maxWidth: modalType === "mediaStorage" ? "800px" : "500px",
+  maxWidth: modalType === "mediaStorage" ? "800px" : isCmsForm ? "1000px" : "500px",
   overflow: "auto",
   width: "90%",
   [theme.breakpoints.up("md")]: {
-    width: modalType === "mediaStorage" ? "80%" : "50%",
+    width: modalType === "mediaStorage" ? "80%" : isCmsForm ? "90%" : "50%",
   },
 }));
 
@@ -29,9 +32,12 @@ const StyledModal = styled(Modal)(({ theme }) => ({
 }));
 
 const ModalComponent = ({ isOpen, onToggle, children, modalType }) => {
+  const isCmsForm = modalType === "cmsFormCreate" || modalType === "cmsFormBulkAdd" || modalType === "cmsFormBulkDelete";
   return (
     <StyledModal open={isOpen} onClose={onToggle}>
-      <StyledModalContainer modalType={modalType}>{children}</StyledModalContainer>
+      <StyledModalContainer modalType={modalType} isCmsForm={isCmsForm}>
+        {children}
+      </StyledModalContainer>
     </StyledModal>
   );
 };

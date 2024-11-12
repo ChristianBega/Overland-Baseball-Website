@@ -1,8 +1,10 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, TableRow } from "@mui/material";
 import React, { useState } from "react";
 import { bulkDeleteFromFirebase, bulkDeleteItemsFromStorage } from "../../../../setup/utils/firebase/deleteItem";
 import FormStatusIndicator from "../../../statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../inputFields/inputFields";
+import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
+import { StyledTableCell } from "../../../../styles/index.styles";
 
 const DeleteItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, selectedItems, setSelectedItems } = props;
@@ -61,38 +63,42 @@ const DeleteItemsForm = ({ ...props }) => {
   const handleInputChange = (event) => {
     setInputValueConfirmDelete(event.target.value);
   };
+  const allKeys = Array.from(new Set(selectedItems.flatMap((item) => Object.keys(item))));
+
+  // Filter out unwanted keys
+  const filteredKeys = allKeys.filter((key) => !["createdAt", "addedByUserUid", "createdByUserUid", "id"].includes(key));
   return (
     <Box component="form">
       <FormStatusIndicator statusMessage={statusMessage} progress={progress} />
       <p>Are you sure you want to delete the selected items?</p>
-      <p style={{ color: "red" }}>Please type "Confirm Delete" to delete</p>
-      <table style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            {Object.keys(selectedItems[0] || {})
-              .filter((key) => !["createdAt", "addedByUserUid", "id"].includes(key))
-              .map((key) => (
-                <th key={key}>
-                  <p style={{ textAlign: "left" }}>{key}</p>
-                </th>
+      <TableContainer sx={{ maxHeight: "400px", overflow: "auto", marginBlock: "2rem" }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {filteredKeys.map((key) => (
+                <StyledTableCell isCmsItem={true} className="table-header-cell table-header-cell-narrow" key={key}>
+                  <p>{key}</p>
+                </StyledTableCell>
               ))}
-          </tr>
-        </thead>
-        <tbody>
-          {selectedItems.map((row, index) => (
-            <tr key={index}>
-              {Object.entries(row)
-                .filter(([key]) => !["createdAt", "addedByUserUid", "id"].includes(key))
-                .map(([key, value], i) => (
-                  <td key={i}>{value}</td>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {/* Render rows */}
+            {selectedItems.map((row, index) => (
+              <TableRow key={index}>
+                {filteredKeys.map((key) => (
+                  <StyledTableCell isCmsItem={true} className="table-cell" sx={{ maxWidth: "200px" }} key={key}>
+                    {row[key] || ""}
+                  </StyledTableCell>
                 ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <p style={{ color: "red" }}>Please type "Confirm Delete" to delete</p>
       <InputFieldComponent type="text" placeholder=" Type 'Confirm Delete' here..." value={inputValueConfirmDelete} onChange={handleInputChange} />
-
-      <Button disabled={!confirmDeleteIsTrue} onClick={handleDeleteItems} variant="contained" color="primary">
+      <Button sx={{ marginTop: "2rem" }} disabled={!confirmDeleteIsTrue} onClick={handleDeleteItems} variant="contained" color="primary">
         Confirm Delete
       </Button>
     </Box>
