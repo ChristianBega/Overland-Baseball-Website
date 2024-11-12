@@ -6,16 +6,18 @@ import { InputLabel } from "@mui/material";
 // }));
 
 const FileInputField = ({ ...props }) => {
-  const { label, cssProps, value, onChange, ...rest } = props;
-  // const handleFileChange = (e) => {
-  //   onChange(e); // Pass the raw event
-  // };
+  const { label, cssProps, value, onChange, name, type, cmsUploadItem, ...rest } = props;
+
+  const handleChangeTest = (event) => {
+    onChange(event.target.files[0]);
+  };
+
   return (
     <>
       <InputLabel sx={{ ...cssProps, fontSize: "14px" }} htmlFor={props.name}>
         {label}
       </InputLabel>
-      <input type="file" {...rest} onChange={onChange} />
+      <input type="file" {...rest} onChange={cmsUploadItem ? onChange : handleChangeTest} />
     </>
   );
 };

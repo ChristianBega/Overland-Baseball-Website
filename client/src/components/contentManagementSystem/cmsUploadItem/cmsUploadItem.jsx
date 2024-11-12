@@ -1,5 +1,5 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
-import React, { useContext,  } from "react";
+import React, { useContext } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
 import InputFieldComponent from "../../inputFields/inputFields";
 import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
@@ -90,6 +90,7 @@ const CmsUploadItem = ({
           placeholder={placeholderTextfield}
           label={`${label} File`}
           type="file"
+          cmsUploadItem={true}
         />
       )}
     </>

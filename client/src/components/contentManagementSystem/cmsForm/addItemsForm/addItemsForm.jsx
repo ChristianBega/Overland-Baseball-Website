@@ -33,79 +33,87 @@ const AddItemsForm = ({ ...props }) => {
     control,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = useForm();
 
   const handleAdd = async (data) => {
-    console.log("line 41 - data", data);
     //! refactor how we handle checking the cmsItemType to conditionally handle specific edge cases for adding items. use switch statement or if else or handleAddLogicMap.
     setStatusMessage("Loading...");
     try {
+      console.log("cmsItemType", cmsItemType);
       let result;
-      if (cmsItemType === "documents") {
-        //& handle upload file with handle both uploading to the database and the storage
-        result = await handleUploadFile(
-          data.documentFile,
-          uid,
-          (progress) => {
-            setProgress(progress);
-          },
-          () => {},
-          cmsItemType
-        );
-      }
-      if (cmsItemType === "schedule") {
-        if (localUploadType === "file") {
-          const { url } = await handleUploadFile(
-            data.opponentIcon,
+
+      switch (cmsItemType) {
+        case "documents":
+          result = await handleUploadFile(
+            data.documentFile,
             uid,
+            (progress) => {
+              setProgress(progress);
+            },
             () => {},
-            () => {},
-            "schedule",
-            "opponentIcon"
+            cmsItemType
           );
-          const updatedDataWithOpponentIconUrl = {
-            ...data,
-            opponentIcon: url,
-          };
-          result = await addCMSItem(uid, role, updatedDataWithOpponentIconUrl, cmsItemType, (progress) => {
-            setProgress(progress);
-          });
-        } else {
+          break;
+        case "schedule":
+          if (localUploadType === "file") {
+            const { url } = await handleUploadFile(
+              data.opponentIcon,
+              uid,
+              () => {},
+              () => {},
+              "schedule",
+              "opponentIcon"
+            );
+            const updatedDataWithOpponentIconUrl = {
+              ...data,
+              opponentIcon: url,
+            };
+            result = await addCMSItem(uid, role, updatedDataWithOpponentIconUrl, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          } else {
+            result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          }
+          break;
+        case "roster":
+          if (localUploadType === "file") {
+            const { url } = await handleUploadFile(
+              data.playerImage,
+              uid,
+              () => {},
+              () => {},
+              "roster",
+              "playerImage"
+            );
+            const updatedDataWithPlayerImageUrl = {
+              ...data,
+              playerImage: url,
+            };
+            result = await addCMSItem(uid, role, updatedDataWithPlayerImageUrl, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          } else {
+            console.log(
+              "line 104 ________________",
+              "fired while cmsItemType was",
+              cmsItemType,
+              "was expected to be : anything but : documents, roster, schedule "
+            );
+            result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          }
+          break;
+        default:
           result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
             setProgress(progress);
           });
-        }
+          break;
       }
-      if (cmsItemType === "roster") {
-        if (localUploadType === "file") {
-          const { url } = await handleUploadFile(
-            data.playerImage,
-            uid,
-            () => {},
-            () => {},
-            "roster",
-            "playerImage"
-          );
-          const updatedDataWithPlayerImageUrl = {
-            ...data,
-            playerImage: url,
-          };
-          result = await addCMSItem(uid, role, updatedDataWithPlayerImageUrl, cmsItemType, (progress) => {
-            setProgress(progress);
-          });
-        } else {
-          result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
-            setProgress(progress);
-          });
-        }
-      } else {
-        //& addCmsItem is for non storage items, they will be directly uploaded to there respective collections using their cmsItemType
-        result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
-          setProgress(progress);
-        });
-      }
+
       if (result.success === true) {
         setStatusMessage(result.message);
         reset();
@@ -121,13 +129,6 @@ const AddItemsForm = ({ ...props }) => {
       console.error("Failed to add schedule item:", error);
       setStatusMessage("Error during add. Check the console for more details.");
     }
-  };
-
-  // ! this works but doesn't log???, i should be manually setting the value, but im not sure this is event working, and if this isn't working, then something under the hood with react-hook-form is handling this.... need to look into this more
-  const handleFileChange = (file) => {
-    console.log("line 79 - file", file);
-    console.log("line 79 - typeof file", typeof file);
-    setValue("documentFile", file); // Manually set the file object
   };
 
   useEffect(() => {
@@ -154,8 +155,6 @@ const AddItemsForm = ({ ...props }) => {
                 <CmsUploadItem
                   cmsItemType={cmsType}
                   onChange={(field) => (event) => {
-                    console.log("line 148 - field", field);
-                    console.log("line 148 - event", event);
                     field.onChange(event.target.files[0]);
                   }}
                   // onChange={field.onChange}
@@ -170,12 +169,12 @@ const AddItemsForm = ({ ...props }) => {
                 />
               ) : (
                 <InputFieldComponent
-                  onChange={type === "file" ? handleFileChange : field.onChange}
                   type={type}
                   label={label}
                   placeholder={placeholder}
                   fullWidth
-                  value={type === "file" ? undefined : field.value}
+                  value={field.value}
+                  onChange={field.onChange}
                   error={Boolean(errors[name])}
                   helperText={errors[name]?.message}
                   {...field}

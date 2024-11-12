@@ -59,7 +59,6 @@ export const handleUploadFile = (file, userUid, setProgress, onCancel, mainDirec
 
           const cmsItemDocRef = doc(collection(db, subDirectoryName ? subDirectoryName : mainDirectoryName));
           const docId = cmsItemDocRef.id;
-
           await setDoc(cmsItemDocRef, {
             id: docId,
             createdAt: serverTimestamp(),
@@ -119,4 +118,4 @@ export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, 
     console.error("Error renaming file in Firebase Storage: ", error);
     return { success: false, error };
   }
-};    
+};
