@@ -1,4 +1,4 @@
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { Box, Button, Step, StepLabel, Stepper, Table, TableBody, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useState } from "react";
 
 import { processCsvUpload } from "./helpers/processCsvUpload";
@@ -7,14 +7,15 @@ import eventExpectedDataStructure from "./data/event.config.json";
 import { bulkAddToFirebase } from "../../../../setup/utils/firebase/addItem";
 import FormStatusIndicator from "../../../statusIndicators/formStatusIndicator";
 import rosterExpectedDataStructure from "./data/roster.config.json";
+import { StyledTableCell } from "../../../../styles/index.styles";
+import InputFieldComponent from "../../../inputFields/inputFields";
+
 const BulkAddItemsForm = ({ ...props }) => {
   const { uid, cmsItemType, closeModal, role, setSelectedItems } = props;
 
   const steps = ["Upload CSV", "Confirm Data", "Upload Progress"];
   const [csvData, setCsvData] = useState([]);
-  const [progress, setProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
-  const [status, setStatus] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
 
   const expectedCvsDataStructure = {
@@ -31,7 +32,7 @@ const BulkAddItemsForm = ({ ...props }) => {
     setCurrentStep(2);
     setStatusMessage("Loading...");
     try {
-      const result = await bulkAddToFirebase(uid, role, cmsItemType, csvData, setProgress);
+      const result = await bulkAddToFirebase(uid, role, cmsItemType, csvData);
       if (result.success === true) {
         setStatusMessage(result.message);
         setTimeout(() => {
@@ -45,7 +46,6 @@ const BulkAddItemsForm = ({ ...props }) => {
       alert("Error during bulk add. Check the console for more details.");
     }
   };
-
   return (
     <Box component="form">
       <Stepper activeStep={currentStep}>
@@ -57,40 +57,47 @@ const BulkAddItemsForm = ({ ...props }) => {
       </Stepper>
 
       {currentStep === 0 && (
-        <>
-          <input type="file" accept=".csv" onChange={handleCsvUpload} />
-        </>
+        <Box sx={{ marginBlock: "2rem" }}>
+          {/* <input type="file" accept=".csv" onChange={handleCsvUpload} /> */}
+          <InputFieldComponent type="file" accept=".csv" onChange={handleCsvUpload} cmsUploadItem={true} />
+        </Box>
       )}
 
       {currentStep === 1 && (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                {Object.keys(csvData[0] || {}).map((key) => (
-                  <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {csvData.map((row, index) => (
-                <tr key={index}>
-                  {Object.values(row).map((value, i) => (
-                    <td key={i}>{value}</td>
+        <Box>
+          <TableContainer sx={{ maxHeight: "400px", overflow: "auto", marginBlock: "2rem" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {Object.keys(csvData[0] || {}).map((key) => (
+                    <StyledTableCell isCmsItem={true} className="table-header-cell table-header-cell-narrow" key={key}>
+                      <p>{key}</p>
+                    </StyledTableCell>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button onClick={handleConfirmData}>Confirm Data</button>
-        </div>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {csvData.map((row, index) => (
+                  <TableRow key={index}>
+                    {Object.values(row).map((value, i) => (
+                      <StyledTableCell isCmsItem={true} className="table-cell" sx={{ maxWidth: "200px" }} key={i}>
+                        {value}
+                      </StyledTableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Button variant="contained" color="primary" onClick={handleConfirmData}>
+            Confirm Data
+          </Button>
+        </Box>
       )}
 
       {currentStep === 2 && (
         <div>
-          <FormStatusIndicator statusMessage={statusMessage} progress={progress} />
-          <p>Progress: {progress}%</p>
-          <progress value={progress} max="100"></progress>
+          <FormStatusIndicator statusMessage={statusMessage} />
         </div>
       )}
     </Box>

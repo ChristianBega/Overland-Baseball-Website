@@ -23,7 +23,7 @@ export const addCMSItem = async (userUid, role, data, type) => {
   }
 };
 
-export const bulkAddToFirebase = async (userUid, role, type, csvData, setProgress) => {
+export const bulkAddToFirebase = async (userUid, role, type, csvData) => {
   if (!userUid || role !== "admin") return;
   const batch = writeBatch(db);
   const collectionRef = collection(db, `${type}`);
@@ -38,9 +38,6 @@ export const bulkAddToFirebase = async (userUid, role, type, csvData, setProgres
         createdAt: serverTimestamp(),
       };
       batch.set(docRef, documentData);
-
-      // Update progress
-      setProgress(((i + 1) / csvData.length) * 100);
     }
 
     // Commit the batch
