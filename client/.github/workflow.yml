@@ -1,0 +1,94 @@
+name: Deploy to AWS S3 (Development)
+
+on:
+  push:
+    branches:
+      - main
+      - development
+    paths-ignore:
+      - public/sitemap.xml
+jobs:
+  # Uncomment this when we want to use the sitemap
+  # generate-sitemap:
+  #   runs-on: ubuntu-latest
+
+  #   permissions:
+  #     contents: write # Ensures the workflow has write access to the repository contents
+
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
+  #       with:
+  #         token: ${{ secrets.GH_TOKEN }}
+
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: "20"
+
+  #     - name: Install Dependencies
+  #       run: npm install
+
+  #     - name: Generate Sitemap
+
+  #       run: node generate-sitemap.jsx
+
+  #     - name: Commit and Push Sitemap
+  #       run: |
+  #         git config --global user.name "github-actions[bot]"
+  #         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+  #         git add public/sitemap.xml
+  #         git commit -m "Update sitemap.xml"
+  #         git push
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    # Uncomment this when we want to use the sitemap
+    # needs: generate-sitemap
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Install Node.js and NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            npm run build
+          elif [ "${{ github.ref }}" == "refs/heads/development" ]; then
+            npm run build:dev
+          fi
+        env:
+          CI: false
+          REACT_APP_SERVICE_ID: ${{ secrets.REACT_APP_SERVICE_ID }}
+          REACT_APP_TEMPLATE_ID_REGISTER: ${{ secrets.REACT_APP_TEMPLATE_ID_REGISTER }}
+          REACT_APP_TEMPLATE_ID_VOLUNTEER: ${{ secrets.REACT_APP_TEMPLATE_ID_VOLUNTEER }}
+          REACT_APP_TEMPLATE_PARAMS: ${{ secrets.REACT_APP_TEMPLATE_PARAMS }}
+          REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+          REACT_APP_AUTH_DOMAIN: ${{ secrets.REACT_APP_AUTH_DOMAIN }}
+          REACT_APP_PROJECT_ID: ${{ secrets.REACT_APP_PROJECT_ID }}
+          REACT_APP_STORAGE_BUCKET: ${{ secrets.REACT_APP_STORAGE_BUCKET }}
+          REACT_APP_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
+          REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
+      - name: Deploy to S3
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            aws s3 sync build/ s3://www.overlandbaseball.com
+          elif [ "${{ github.ref }}" == "refs/heads/development" ]; then
+            aws s3 sync build/ s3://www.development.overlandbaseball.com
+          fi
