@@ -32,3 +32,48 @@ generate-sitemap:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+
+
+  # Uncomment this when we want to use the sitemap
+  # generate-sitemap:
+  #   runs-on: ubuntu-latest
+
+  #   permissions:
+  #     contents: write # Ensures the workflow has write access to the repository contents
+
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
+  #       with:
+  #         token: ${{ secrets.GH_TOKEN }}
+
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: "20"
+
+  #     - name: Install Dependencies
+  #       run: npm install
+
+  #     - name: Generate Sitemap
+
+  #       run: node generate-sitemap.jsx
+
+  #     - name: Commit and Push Sitemap
+  #       run: |
+  #         git config --global user.name "github-actions[bot]"
+  #         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+  #         git add public/sitemap.xml
+  #         git commit -m "Update sitemap.xml"
+  #         git push
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+
+
+
+line 13-14
+
+    # Uncomment this when we want to use the sitemap
+    # needs: generate-sitemap
