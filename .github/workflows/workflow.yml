@@ -28,7 +28,7 @@ jobs:
           node-version: "20"
 
       - name: Install Client Dependencies
-        run: npm installClient
+        run: npm run installClient
 
       - name: Build Project
         run: |
