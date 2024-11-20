@@ -52,7 +52,7 @@ jobs:
       - name: Deploy to S3
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            aws s3 sync build/ s3://overland-baseball
+            aws s3 sync client/build/ s3://overland-baseball
           elif [ "${{ github.ref }}" == "refs/heads/development" ]; then
-            aws s3 sync build/ s3://development.overlandbaseball.com
+            aws s3 sync client/build/ s3://development.overlandbaseball.com
           fi
