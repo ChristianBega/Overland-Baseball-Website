@@ -6,7 +6,7 @@ on:
       - main
       - development
     paths-ignore:
-      - public/sitemap.xml
+      - client/public/sitemap.xml
 jobs:
   # Uncomment this when we want to use the sitemap
   # generate-sitemap:
