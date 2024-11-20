@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd client && npm run build",
+    "installClient": "cd client && npm install",
+    "build:dev": "REACT_APP_CUSTOM_ENV=development cd client && npm run build",
     "start": "cd client && npm run start"
   },
   "repository": {
