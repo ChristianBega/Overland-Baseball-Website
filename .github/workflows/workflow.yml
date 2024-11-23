@@ -1,0 +1,58 @@
+name: Deploy to AWS S3 (Development)
+
+on:
+  push:
+    branches:
+      - main
+      - development
+    paths-ignore:
+      - client/public/sitemap.xml
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials000
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Install Node.js and NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install Client Dependencies
+        run: npm run installClient
+
+      - name: Build Project
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            npm run build
+          elif [ "${{ github.ref }}" == "refs/heads/development" ]; then
+            npm run build:dev
+          fi
+        env:
+          CI: false
+          REACT_APP_SERVICE_ID: ${{ secrets.REACT_APP_SERVICE_ID }}
+          REACT_APP_TEMPLATE_ID_REGISTER: ${{ secrets.REACT_APP_TEMPLATE_ID_REGISTER }}
+          REACT_APP_TEMPLATE_ID_VOLUNTEER: ${{ secrets.REACT_APP_TEMPLATE_ID_VOLUNTEER }}
+          REACT_APP_TEMPLATE_PARAMS: ${{ secrets.REACT_APP_TEMPLATE_PARAMS }}
+          REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+          REACT_APP_AUTH_DOMAIN: ${{ secrets.REACT_APP_AUTH_DOMAIN }}
+          REACT_APP_PROJECT_ID: ${{ secrets.REACT_APP_PROJECT_ID }}
+          REACT_APP_STORAGE_BUCKET: ${{ secrets.REACT_APP_STORAGE_BUCKET }}
+          REACT_APP_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
+          REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
+      - name: Deploy to S3
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            aws s3 sync client/build/ s3://overland-baseball
+          elif [ "${{ github.ref }}" == "refs/heads/development" ]; then
+            aws s3 sync client/build/ s3://development.overlandbaseball.com
+          fi
