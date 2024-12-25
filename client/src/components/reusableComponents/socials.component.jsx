@@ -48,7 +48,7 @@ export default function Socials({ dataTypeDevice }) {
     <>
       {dataTypeDevice === "mobile" && (
         <Box sx={{ my: 20 }}>
-          <Typography sx={{ color: theme.palette.primary.light }} typography="h5" textAlign="center">
+          <Typography typography="h5" textAlign="center">
             Follow us
           </Typography>
           <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>

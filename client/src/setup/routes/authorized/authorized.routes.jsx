@@ -14,6 +14,7 @@ import AuthenticationPage from "../../../pages/unauthorized/authentication/authe
 import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwordReset.page";
 import Page404 from "../../../pages/404/404.page";
 import AdminDashboardPage from "../../../pages/authorized/adminDashboard";
+import ThemeShowcase from "../../../pages/themeShowcase/themeShowcase";
 
 export default function AuthorizedRoutes() {
   const location = useLocation();
@@ -35,6 +36,7 @@ export default function AuthorizedRoutes() {
         <Route path="/authentication/sign-up" element={<AuthenticationPage />}></Route>
         <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>
         <Route path="/dashboard" element={<AdminDashboardPage />}></Route>
+        <Route path="/theme-showcase" element={<ThemeShowcase />}></Route>
       </Routes>
     </AnimatePresence>
   );

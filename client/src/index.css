@@ -27,3 +27,41 @@ body::-webkit-scrollbar {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* fonts */
+@font-face {
+  font-family: "Anuphan";
+  src: url("./fonts/Anuphan-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Anuphan";
+  src: url("./fonts/Anuphan-Thin.ttf") format("truetype");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "Anuphan";
+  src: url("./fonts/Anuphan-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+}
+@font-face {
+  font-family: "Anuphan";
+  src: url("./fonts/Anuphan-Light.ttf") format("truetype");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Anuphan";
+  src: url("./fonts/Anuphan-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Anuphan";
+  src: url("./fonts/Anuphan-Medium.ttf") format("truetype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Anuphan";
+  src: url("./fonts/Anuphan-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -10,12 +10,13 @@ import NavigationListItems from "./navigationListItems.component";
 //Logo
 import OverlandLogo from "./logo.component";
 import Account from "./account.component";
+import { ThemeToggleContext } from "../../setup/context/components/themeToggler.context";
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
   display: "flex",
   justifyContent: "space-between",
   color: theme.palette.text.primary,
-  background: theme.palette.primary.main,
+  background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
   [theme.breakpoints.up("lg")]: {
     display: "none",
   },
@@ -33,6 +34,7 @@ const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
 
 export default function MobileNavigation() {
   const [openMenu, setOpenMenu] = useState(false);
+  const { currentTheme } = useContext(ThemeToggleContext);
 
   const handleOpen = () => {
     setOpenMenu(true);
@@ -43,7 +45,7 @@ export default function MobileNavigation() {
 
   return (
     <>
-      <StyledToolbar>
+      <StyledToolbar currentTheme={currentTheme}>
         <IconButton onClick={handleOpen} size="large" edge="start" color="inherit" aria-label="menu">
           <MenuIcon fontSize="large" />
         </IconButton>

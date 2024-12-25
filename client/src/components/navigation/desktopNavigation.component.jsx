@@ -6,21 +6,25 @@ import { styled } from "@mui/material/styles";
 import NavigationListItems from "./navigationListItems.component";
 import OverlandLogo from "./logo.component";
 import Account from "./account.component";
+import { useContext } from "react";
+import { ThemeToggleContext } from "../../setup/context/components/themeToggler.context";
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
   display: "none",
   justifyContent: "space-between",
   color: theme.palette.text.primary,
-  background: theme.palette.primary.main,
+  background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
+
   [theme.breakpoints.up("lg")]: {
     display: "flex",
     padding: theme.spacing(5, 10),
   },
 }));
 export default function DesktopNavigation() {
+  const { currentTheme } = useContext(ThemeToggleContext);
   return (
     <>
-      <StyledToolbar>
+      <StyledToolbar currentTheme={currentTheme}>
         <OverlandLogo />
         <NavigationListItems />
         <Account />

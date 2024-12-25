@@ -1,0 +1,6 @@
+I want to make an index.theme.jsx file that will export all the themes.
+
+i want to use the index.theme to take in props from our theme toggle (future feature), and based on the props (dark theme, light theme, colorblind theme, etc), it will override the default theme with  the prop (if it exists). 
+
+
+

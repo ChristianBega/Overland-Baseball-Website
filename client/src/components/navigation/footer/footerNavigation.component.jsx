@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BottomNavigation, Grid, useMediaQuery } from "@mui/material";
 
 // Components
@@ -9,20 +9,22 @@ import Socials from "../../reusableComponents/socials.component";
 import Copyright from "./copyright.component";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
+import { ThemeToggleContext } from "../../../setup/context/components/themeToggler.context";
 
-const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
+const StyledBottomNavigation = styled(BottomNavigation)(({ theme, currentTheme }) => ({
   padding: theme.spacing(6),
-  color: theme.palette.text.primary,
-  background: theme.palette.primary.main,
+  color: theme.palette.text.secondary,
+  background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
   height: "100%",
 }));
 
 export default function FooterNavigation() {
+  const { currentTheme } = useContext(ThemeToggleContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <StyledBottomNavigation>
+    <StyledBottomNavigation currentTheme={currentTheme}>
       <Grid container spacing={2} sx={{ display: "flex", justifyContent: "center" }}>
         <OverlandLogo />
         {isMobile && (

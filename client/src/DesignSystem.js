@@ -248,7 +248,7 @@ export const mainTheme = createTheme({
       display: "flex",
       gap: ".1rem",
     },
-
+    // !
     linkText: {
       color: "#21c067",
       ":hover": {
@@ -258,7 +258,7 @@ export const mainTheme = createTheme({
       },
       ":focus-visible": "",
     },
-
+    // !
     linkTextDesktop: {
       color: "#21c067",
       fontFamily: "Work Sans",
@@ -274,6 +274,7 @@ export const mainTheme = createTheme({
       ":focus-visible": "",
       transition: "all .3s ease-In-Out",
     },
+    // !
     linkTextMobile: {
       textDecoration: "none !important",
       color: "#283F76",

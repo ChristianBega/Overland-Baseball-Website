@@ -2,6 +2,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { mainTheme } from "./DesignSystem";
 import { ThemeProvider } from "@mui/material";
 import { UserContext } from "./setup/context/user.context";
+import { ThemeToggleContext, ThemeToggleProvider } from "./setup/context/components/themeToggler.context.jsx";
 import { useContext } from "react";
 
 // Animation Route - for adding animations with framer motion.
@@ -14,9 +15,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 function App() {
   const { currentUserProfile } = useContext(UserContext);
+  // 1. use the themeToggle context to get the currentTheme
+  const { currentTheme } = useContext(ThemeToggleContext);
+
+  // pass currentTheme to the mainTheme (aka - index.theme.jsx)
+  // the index.theme.jsx will return the theme based on the currentTheme by checking it against a themeMap object.
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={mainTheme}>
+      {/* <ThemeProvider theme={mainTheme}> */}
+      <ThemeToggleProvider theme={currentTheme}>
         <Router>
           <Navigation />
           {currentUserProfile?.role === "admin" ||
@@ -31,7 +38,8 @@ function App() {
           {/* Error with "react does not recognize show label" - can't find it but somewhere in footer */}
           <FooterNavigation />
         </Router>
-      </ThemeProvider>
+      </ThemeToggleProvider>
+      {/* </ThemeProvider> */}
       {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   );

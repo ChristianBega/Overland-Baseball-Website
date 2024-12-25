@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -7,17 +7,21 @@ import { AuthProvider } from "./setup/context/authentication.context";
 import { UserProvider } from "./setup/context/user.context";
 import { CmsProvider } from "./setup/context/cmsContext/cms.context";
 import { ModalProvider } from "./setup/context/modal.context";
+import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <QueryClientProvider client={queryClient}>
   <React.StrictMode>
     <AuthProvider>
       <UserProvider>
-        <CmsProvider>
-          <ModalProvider>
-            <App />
-          </ModalProvider>
-        </CmsProvider>
+        <ThemeToggleProvider>
+          <CmsProvider>
+            <ModalProvider>
+              <App />
+            </ModalProvider>
+          </CmsProvider>
+        </ThemeToggleProvider>
       </UserProvider>
     </AuthProvider>
   </React.StrictMode>
