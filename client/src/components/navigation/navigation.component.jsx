@@ -6,7 +6,7 @@ import MobileNavigation from "./mobileNavigation.component";
 // import { useContext } from "react";
 // import { UserContext } from "../../setup/context/user.context";
 
-function HideOnScroll(props) {
+const HideOnScroll = (props) => {
   const { children, window } = props;
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
@@ -17,14 +17,13 @@ function HideOnScroll(props) {
       {children}
     </Slide>
   );
-}
+};
 
 export default function Navigation(props) {
   // const { currentUserProfile } = useContext(UserContext);
-
   return (
     <HideOnScroll {...props}>
-      <AppBar id="navigation" position="sticky" component="nav">
+      <AppBar sx={{ border: "1px solid red" }} id="navigation" position="sticky" component="nav">
         <MobileNavigation />
         <DesktopNavigation />
       </AppBar>

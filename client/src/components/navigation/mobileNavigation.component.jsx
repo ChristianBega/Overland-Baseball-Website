@@ -11,6 +11,7 @@ import NavigationListItems from "./navigationListItems.component";
 import OverlandLogo from "./logo.component";
 import Account from "./account.component";
 import { ThemeToggleContext } from "../../setup/context/components/themeToggler.context";
+import { useTheme } from "@emotion/react";
 
 const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
   display: "flex",
@@ -21,7 +22,7 @@ const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
     display: "none",
   },
   [theme.breakpoints.down("lg")]: {
-    padding: theme.spacing(4, 8),
+    padding: theme.spacing(2),
   },
 }));
 const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
@@ -35,6 +36,7 @@ const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
 export default function MobileNavigation() {
   const [openMenu, setOpenMenu] = useState(false);
   const { currentTheme } = useContext(ThemeToggleContext);
+  const theme = useTheme();
 
   const handleOpen = () => {
     setOpenMenu(true);
@@ -46,8 +48,8 @@ export default function MobileNavigation() {
   return (
     <>
       <StyledToolbar currentTheme={currentTheme}>
-        <IconButton onClick={handleOpen} size="large" edge="start" color="inherit" aria-label="menu">
-          <MenuIcon fontSize="large" />
+        <IconButton onClick={handleOpen} size="large" edge="start" aria-label="menu">
+          <MenuIcon sx={{ color: theme.palette.text.secondary }} fontSize="large" />
         </IconButton>
         <StyledDrawerMenu open={openMenu} anchor={"left"} onClose={handleClose}>
           <IconButton sx={{ display: "block" }} onClick={handleClose} color="primary.main" aria-label="exit menu">

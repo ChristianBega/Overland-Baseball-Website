@@ -14,10 +14,9 @@ const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
   justifyContent: "space-between",
   color: theme.palette.text.primary,
   background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
-
   [theme.breakpoints.up("lg")]: {
     display: "flex",
-    padding: theme.spacing(5, 10),
+    padding: theme.spacing(2, 4),
   },
 }));
 export default function DesktopNavigation() {

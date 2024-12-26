@@ -13,7 +13,7 @@ import SportsIcon from "@mui/icons-material/Sports";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 // Components
 import Socials from "../reusableComponents/socials.component";
-import ContactUs from "./footer/contactUs.component";
+import ContactUs from "../footer/contactUs.component";
 import { useContext } from "react";
 import { UserContext } from "../../setup/context/user.context";
 

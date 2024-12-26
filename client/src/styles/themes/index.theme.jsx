@@ -219,7 +219,21 @@ export const defaultTheme = {
     //     },
     //   },
     // },
-
+    MuiList: {
+      styleOverrides: {
+        root: {
+          // paddingInline: "1rem",
+          padding: "0",
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          padding: "0",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -449,6 +463,21 @@ export const defaultTheme = {
     },
 
     MuiIconButton: {
+      variants: [
+        {
+          props: { variant: "square" },
+          style: {
+            maxWidth: "40px",
+            borderRadius: "6px",
+            display: "block",
+            "&:hover": {
+              cursor: "pointer",
+              transform: "scale(1.1)",
+            },
+            transition: "all .3s ease-in-out",
+          },
+        },
+      ],
       styleOverrides: {
         root: {
           ":hover": {
@@ -459,6 +488,7 @@ export const defaultTheme = {
           // ":focus-visible": "",
           transition: "all .3s ease-In-Out",
         },
+
         sizeSmall: {
           padding: "8px 8px",
           "& svg": {
@@ -475,7 +505,7 @@ export const defaultTheme = {
         },
         sizeLarge: {
           "& svg": {
-            fontSize: "1.4rem",
+            fontSize: "1.8rem",
           },
           // backgroundColor: "green",
         },
@@ -499,10 +529,10 @@ export const defaultTheme = {
           textDecoration: "none",
           fontFamily: "Work Sans",
           lineHeight: "22px",
-          fontSize: "28px",
+          fontSize: "24px",
           ":hover": {
             cursor: "pointer",
-            transform: "scale(1.1)",
+            // transform: "scale(1.1)",
           },
           transition: "all .3s ease-in-out",
           "@media (min-width: 1200px)": {

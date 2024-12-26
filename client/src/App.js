@@ -1,6 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import { mainTheme } from "./DesignSystem";
-import { ThemeProvider } from "@mui/material";
+// import { mainTheme } from "./DesignSystem";
+// import { ThemeProvider } from "@mui/material";
 import { UserContext } from "./setup/context/user.context";
 import { ThemeToggleContext, ThemeToggleProvider } from "./setup/context/components/themeToggler.context.jsx";
 import { useContext } from "react";
@@ -8,8 +8,8 @@ import { useContext } from "react";
 // Animation Route - for adding animations with framer motion.
 import UnauthorizedRoutes from "./setup/routes/unauthorized/unauthorized.routes";
 import AuthorizedRoutes from "./setup/routes/authorized/authorized.routes";
-import Navigation from "./components/navigation/navigation.component";
-import FooterNavigation from "./components/navigation/footer/footerNavigation.component";
+import Navigation from "./components/navigation/newNavigation";
+import FooterNavigation from "./components/footer/footerNavigation.component";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient();

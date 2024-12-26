@@ -4,7 +4,7 @@ import { Button, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../setup/context/authentication.context";
 import { signOutUser } from "../../setup/utils/firebase/authentication";
-
+import LogoutIcon from "@mui/icons-material/Logout";
 export default function Account() {
   const { isAuthorized } = useContext(AuthContext);
 
@@ -16,17 +16,21 @@ export default function Account() {
 
   return (
     <>
-      <IconButton sx={{ color: "#fff" }}>
+      <>
         {isAuthorized ? (
-          <Button size="sm" onClick={handleUserSignOut}>
-            Sign Out
-          </Button>
+          <IconButton size="large">
+            <LogoutIcon />
+          </IconButton>
         ) : (
-          <Link to="/authentication/sign-in" style={{ color: "#fff" }}>
-            <AccountCircleIcon fontSize="large" />
-          </Link>
+          // <Button variant="contained" color="secondary" size="sm" onClick={handleUserSignOut}>
+          //   Sign Out
+          // </Button>
+          <IconButton size="large">
+            <AccountCircleIcon color="secondary" />
+            <Link to="/authentication/sign-in" style={{ color: "#fff" }}></Link>
+          </IconButton>
         )}
-      </IconButton>
+      </>
     </>
   );
 }

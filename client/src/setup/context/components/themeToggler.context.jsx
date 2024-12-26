@@ -30,8 +30,6 @@ export const ThemeToggleProvider = ({ children }) => {
 
   // 1. the muiContainer component from the default theme is being overridden by the dark theme.... the dark theme doesn't contain the standard muiContainer component styles because nothing changed and ideally i would like the default theme style to apply....
   const theme = createTheme(merge({}, defaultTheme, themeMap[currentTheme]));
-  const test = createTheme();
-  console.log(test);
   const globalStyles = (
     <GlobalStyles
       styles={{

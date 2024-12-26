@@ -19,16 +19,19 @@ export const UserProvider = ({ children }) => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
+        setCurrentUserObject(user);
+      } else {
+        setCurrentUserObject(null);
+        setCurrentUserProfile(null);
       }
-      setCurrentUserObject(user);
     });
     return unsubscribe;
   }, []);
 
   useEffect(() => {
     const getCurrentUserProfileData = async () => {
-      if (isAuthorized && auth.currentUser.uid) {
-        const userProfile = await getCurrentUserProfile(auth.currentUser.uid, setCurrentUserProfile);
+      if (isAuthorized && auth.currentUser?.uid) {
+        const userProfile = await getCurrentUserProfile(auth.currentUser.uid);
         setCurrentUserProfile(userProfile);
       }
     };
