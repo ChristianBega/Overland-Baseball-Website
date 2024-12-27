@@ -109,6 +109,7 @@ export const defaultTheme = {
       },
     },
     h5: {
+      marginBottom: ".5rem",
       fontFamily: "Anuphan, serif",
       fontSize: "1rem", // 16px
       letterSpacing: ".05rem",
@@ -481,33 +482,31 @@ export const defaultTheme = {
       styleOverrides: {
         root: {
           ":hover": {
-            // background: "rgba(255,255,255,.2)",
             cursor: "pointer",
             transform: "scale(1.1)",
+            "& svg": {
+              filter: "drop-shadow(0px 0px 10px #00ff2fce)",
+              transition: "all .3s ease-In-Out",
+            },
           },
-          // ":focus-visible": "",
           transition: "all .3s ease-In-Out",
         },
-
         sizeSmall: {
           padding: "8px 8px",
           "& svg": {
-            fontSize: "1.2rem",
+            fontSize: "1.3rem",
           },
-          // backgroundColor: "red",
         },
         sizeMedium: {
           padding: "10px 10px",
           "& svg": {
             fontSize: "1.3rem",
           },
-          // backgroundColor: "blue",
         },
         sizeLarge: {
           "& svg": {
             fontSize: "1.8rem",
           },
-          // backgroundColor: "green",
         },
       },
     },
@@ -532,7 +531,12 @@ export const defaultTheme = {
           fontSize: "24px",
           ":hover": {
             cursor: "pointer",
-            // transform: "scale(1.1)",
+            color: "#00ff2fce",
+            filter: "drop-shadow(0px 0px 10px #00ff2fce)",
+            "& svg": {
+              filter: "drop-shadow(0px 0px 10px #00ff2fce)",
+            },
+            // transform: "scale(1.01)",
           },
           transition: "all .3s ease-in-out",
           "@media (min-width: 1200px)": {

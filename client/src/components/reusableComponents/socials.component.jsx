@@ -1,6 +1,6 @@
 import React from "react";
 // MUI components
-import { Box, Link, Typography, useTheme } from "@mui/material";
+import { Box, Grid, IconButton, Link, Typography, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 // Icons
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -10,6 +10,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import styled from "@emotion/styled";
 // Images
 import OverlandLogo from "../../assets/overlandLogo_3.webp";
+import useMediaQueries from "../../setup/utils/helpers/useMediaQueries.utils";
 const socialData = [
   {
     linkName: "twitter",
@@ -32,18 +33,19 @@ const socialData = [
   //   socialIcon: <YouTubeIcon />,
   // },
 ];
-const SocialLink = styled(Link)(({ theme }) => ({
-  "&:hover": {
-    cursor: "pointer",
-    scale: "1.3",
-    transition: ".3s all ease-in-out",
-    color: theme.palette.secondary.light,
-    boxShadow: 10,
-  },
-}));
+// const SocialLink = styled(Link)(({ theme }) => ({
+//   "&:hover": {
+//     cursor: "pointer",
+//     scale: "1.3",
+//     transition: ".3s all ease-in-out",
+//     // color: theme.palette.secondary.light,
+//     boxShadow: 10,
+//   },
+// }));
 
 export default function Socials({ dataTypeDevice }) {
   const theme = useTheme();
+  const { isSm, isMd } = useMediaQueries();
   return (
     <>
       {dataTypeDevice === "mobile" && (
@@ -53,7 +55,8 @@ export default function Socials({ dataTypeDevice }) {
           </Typography>
           <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>
             {socialData.map((social) => (
-              <SocialLink
+              <IconButton
+                component="a"
                 sx={{ color: theme.palette.accent.accentOne }}
                 key={social.linkName}
                 href={`https://${social.linkUrl}`}
@@ -61,7 +64,7 @@ export default function Socials({ dataTypeDevice }) {
                 rel="noopener noreferrer"
               >
                 {social.socialIcon}
-              </SocialLink>
+              </IconButton>
             ))}
 
             <Box
@@ -73,30 +76,32 @@ export default function Socials({ dataTypeDevice }) {
         </Box>
       )}
       {dataTypeDevice === "footer" && (
-        <Box sx={{ mt: 0 }}>
-          <Typography sx={{ color: theme.palette.text.primary }} typography="h5" textAlign="center">
+        <Grid item xs={12} md={4} order={isMd ? 1 : 2}>
+          <Typography component="h2" variant="h4" textAlign="center" fontWeight="bold" mb={1}>
             Follow us
           </Typography>
-          <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>
+          <Stack direction="row" spacing={1} justifyContent="center">
             {socialData.map((social) => (
-              <SocialLink
-                sx={{ color: theme.palette.secondary.main }}
+              <IconButton
+                size={isSm ? "large" : "medium"}
+                component="a"
                 key={social.linkName}
                 href={`https://${social.linkUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                sx={{ color: theme.palette.secondary.main }}
               >
                 {social.socialIcon}
-              </SocialLink>
+              </IconButton>
             ))}
 
-            <Box
+            {/* <Box
               component="img"
               src={OverlandLogo}
               sx={{ zIndex: "-100", opacity: ".2", minWidth: "300px", position: "absolute", top: "-95px" }}
-            ></Box>
+            ></Box> */}
           </Stack>
-        </Box>
+        </Grid>
       )}
       {!dataTypeDevice && (
         <Box sx={{ my: 10 }}>
@@ -105,7 +110,8 @@ export default function Socials({ dataTypeDevice }) {
           </Typography>
           <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>
             {socialData.map((social) => (
-              <SocialLink
+              <IconButton
+                component="a"
                 sx={{ color: theme.palette.accent.accentOne }}
                 key={social.linkName}
                 href={`https://${social.linkUrl}`}
@@ -113,7 +119,7 @@ export default function Socials({ dataTypeDevice }) {
                 rel="noopener noreferrer"
               >
                 {social.socialIcon}
-              </SocialLink>
+              </IconButton>
             ))}
             <Box
               component="img"

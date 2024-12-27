@@ -17,7 +17,7 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { StyledDrawerMenu } from "../../styles/index.styles";
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
 import Socials from "../../../reusableComponents/socials.component";
-import ContactUs from "../../../footer/contactUs.component";
+import ContactUs from "../../../footer/components/conactUs/contactUs.component";
 const menuItems = [
   { label: "Home", url: "/", icon: <HomeIcon fontSize="large" /> },
   { label: "Roster", url: "/roster", icon: <FormatListNumberedIcon fontSize="large" /> },

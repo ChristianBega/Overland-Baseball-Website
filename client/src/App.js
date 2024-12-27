@@ -8,9 +8,9 @@ import { useContext } from "react";
 // Animation Route - for adding animations with framer motion.
 import UnauthorizedRoutes from "./setup/routes/unauthorized/unauthorized.routes";
 import AuthorizedRoutes from "./setup/routes/authorized/authorized.routes";
-import Navigation from "./components/navigation/newNavigation";
-import FooterNavigation from "./components/footer/footerNavigation.component";
+import Navigation from "./components/navigation/navigation.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import FooterNavigation from "./components/footer/newFooterNavigation.component.jsx";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient();
 function App() {
