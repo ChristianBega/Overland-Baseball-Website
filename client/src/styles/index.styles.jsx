@@ -1,5 +1,6 @@
 import { styled, TableCell, TableRow } from "@mui/material";
 
+// Table Styles
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(even)": {
     backgroundColor: "#f2f2f2",

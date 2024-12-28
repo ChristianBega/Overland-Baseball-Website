@@ -1,20 +1,21 @@
-import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+// import styled from "@emotion/styled";
+// import { Box } from "@mui/material";
 
-export const StyledHeroSection = styled(Box)(({ backgroundImage }) => ({
-  backgroundImage: `url(${backgroundImage})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center top",
-  textAlign: "center",
-  color: "#fff",
-  padding: "2rem 1rem",
-  height: "550px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-}));
+// // export const StyledHeroSection = styled(Box)(({ backgroundImage }) => ({}));
 
 export const styles = {
+  section: {
+    backgroundSize: "cover",
+    backgroundPosition: "center top",
+    textAlign: "center",
+    color: "#fff",
+    padding: "2rem 1rem",
+    height: "550px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+
   box: {
     position: "relative",
     margin: "0 auto",

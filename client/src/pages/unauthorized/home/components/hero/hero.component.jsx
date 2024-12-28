@@ -1,17 +1,19 @@
 import React from "react";
 import { useTheme } from "@emotion/react";
+// Components
+import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 // MUI
 import { Box, Button, Stack, Typography } from "@mui/material";
 // Assets
 import OverlandLogo from "../../../../../assets/homePage/hero/hero-bg-temp.svg";
 import OverlandLogo1 from "../../../../../assets/logos/overland-logo-1.svg";
 // Styles
-import { StyledHeroSection, styles } from "./hero.styles";
+import { styles } from "./hero.styles";
 
 const Hero = () => {
   const theme = useTheme();
   return (
-    <StyledHeroSection id="hero" aria-label="Hero Section" component="section" backgroundImage={OverlandLogo}>
+    <SectionLayout id="hero" aria-label="Hero Section" component="section" sx={{ backgroundImage: `url(${OverlandLogo})`, ...styles.section }}>
       <Box sx={styles.box}>
         <Typography
           sx={{
@@ -39,7 +41,7 @@ const Hero = () => {
           Get In Contact With Us
         </Button>
       </Stack>
-    </StyledHeroSection>
+    </SectionLayout>
   );
 };
 

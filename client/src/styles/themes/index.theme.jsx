@@ -49,7 +49,7 @@ export const defaultTheme = {
       fontFamily: "Anuphan, serif",
       textTransform: "uppercase",
       letterSpacing: ".2rem",
-      fontSize: "2rem", // 32px
+      fontSize: "2.25rem", // 36px
       lineHeight: "2.5rem",
       // marginBlock: "2rem",
       "@media (min-width: 600px)": {
@@ -66,7 +66,8 @@ export const defaultTheme = {
       textTransform: "uppercase",
       fontFamily: "Anuphan, serif",
       letterSpacing: ".2rem",
-      fontSize: "1.875rem", // 30px
+      fontSize: "2rem", // 30px
+      marginBottom: "1.375rem",
       // marginBlock: "1rem",
       "@media (min-width: 600px)": {
         fontSize: "2.25rem", // 36px
@@ -140,9 +141,9 @@ export const defaultTheme = {
     p: {
       fontWeight: "400",
       fontFamily: "Work Sans",
-      letterSpacing: ".07rem",
       fontSize: "16px",
       lineHeight: "24px",
+      marginBottom: "1.25rem",
       "@media (min-width: 600px)": {
         lineHeight: "24px",
       },
@@ -151,24 +152,6 @@ export const defaultTheme = {
         lineHeight: "28px",
       },
     },
-    // body2: {
-    //   fontFamily: "Work Sans",
-    //   fontSize: "14px",
-    //   lineHeight: "20px",
-    //   "@media (min-width: 900px)": {
-    //     fontSize: "16px",
-    //     lineHeight: "24px",
-    //   },
-    // },
-    // p: {
-    //   display: "inline",
-    //   fontSize: "14px",
-    //   lineHeight: "20px",
-    //   "@media (min-width: 900px)": {
-    //     fontSize: "18px",
-    //     lineHeight: "26px",
-    //   },
-    // },
     small: {
       fontSize: "12px",
       display: "flex",
@@ -523,6 +506,28 @@ export const defaultTheme = {
     },
 
     MuiLink: {
+      variants: [
+        {
+          props: { variant: "highlighted" },
+          style: {
+            cursor: "pointer",
+            fontWeight: "500",
+            textDecoration: "underline",
+            fontFamily: "Work Sans",
+            letterSpacing: ".07rem",
+            fontSize: "16px",
+            lineHeight: "24px",
+            marginBottom: "1.25rem",
+            "@media (min-width: 600px)": {
+              lineHeight: "24px",
+            },
+            "@media (min-width: 900px)": {
+              fontSize: "18px",
+              lineHeight: "28px",
+            },
+          },
+        },
+      ],
       styleOverrides: {
         root: {
           color: "#4CBB17",

@@ -1,96 +1,44 @@
+// import { newsData } from "../../../../../websiteData/home.data";
 import React from "react";
-import { newsData } from "../../../../../websiteData/home.data";
-import { Grid, Typography, Box, Link, styled } from "@mui/material";
-import { HashLink } from "react-router-hash-link";
-import Socials from "../../../../../components/reusableComponents/socials.component";
 import { useTheme } from "@emotion/react";
+// Mui
+import { Grid, Typography } from "@mui/material";
+// Components
+import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+// Utils & Helpers
+import findKeyWordsAndHighlight from "../../../../../setup/utils/helpers/findKeyWordsAndHighLight";
+
 export default function News() {
-  const { newsOne, newsLink, newsTwo } = newsData[0];
   const theme = useTheme();
+  // ! this data will be moved to the websiteData folder and mimic the cms structure we want. we will need to refactor later.
+  const text = "Stay tuned for exciting news about our upcoming games, fundraisers, useful links, and all other events.";
+  const keywords = [
+    { keyword: "upcoming games", url: "/games", type: "RouterLink" },
+    { keyword: "fundraisers", url: "/#hero-section", type: "HashLink" },
+    { keyword: "useful links", url: "/#links", type: "MuiLink" },
+    { keyword: "all other events", url: "https://example.com/events", type: "MuiLink" },
+  ];
+  const options = { color: theme.palette.secondary.main };
 
-  const StyledTextBox = styled(Box)(({ theme }) => ({
-    minHeight: "300px",
-    padding: theme.spacing(4),
-    [theme.breakpoints.up("md")]: {
-      minHeight: "400px",
-    },
-  }));
-  const StyledSocialBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: theme.spacing(4),
-  }));
-  const StyledHashLink = styled(HashLink)(({ theme }) => ({
-    textDecoration: "underline",
-    color: "#21c067",
-    transition: "all .3s ease-In-Out",
-    "&:hover": {
-      cursor: "pointer",
-      color: "#007f3b",
-    },
-  }));
-  const StyledLink = styled(Link)(({ theme }) => ({
-    textDecoration: "underline",
-    color: "#21c067",
-    transition: "all .3s ease-In-Out",
-    "&:hover": {
-      cursor: "pointer",
-      color: "#007f3b",
-    },
-  }));
-
-  const renderLink = (name, pathname, linkType) =>
-    linkType === "href" ? (
-      <StyledLink href={pathname}>{name}</StyledLink>
-    ) : (
-      <StyledHashLink to={pathname} state={{ name: name }}>
-        {name}
-      </StyledHashLink>
-    );
-  const renderSpan = (char) => (
-    <Typography typography="span" component="span">
-      {char}
-    </Typography>
-  );
+  const highlightedText = findKeyWordsAndHighlight(text, keywords, options);
 
   return (
     <Grid item xs={12} md={12} lg={6} sx={{ position: "relative" }}>
-      <StyledTextBox>
-        <Typography typography="h1" component="h1">
-          Blazer's News
+      <SectionLayout id="news-section" aria-label="News Section">
+        <Typography typography="h2" component="h2">
+          Blazer News
         </Typography>
         <Typography typography="p" component="p">
-          {newsOne}
+          Welcome to the official site of Overland Baseball in Aurora, Colorado! At Overland, we’re dedicated to building strong, skilled players
+          through a focus on fundamentals, targeted training, and continuous improvement. Our Trailblazers Baseball program is rapidly growing and is
+          designed to support athletes ages 13-18 who are eager to elevate their game.
         </Typography>
-        {newsLink?.map(({ name, pathname, linkType }, index) => {
-          return (
-            <Typography typography="p" component="p" key={index}>
-              {index + 1 === newsLink.length ? (
-                <>
-                  &nbsp;
-                  {renderSpan("and")}
-                  &nbsp;
-                  {renderLink(name, pathname, linkType)}
-                  {renderSpan(".")}
-                </>
-              ) : (
-                <>
-                  &nbsp;
-                  {renderLink(name, pathname, linkType)}
-                  {renderSpan(",")}
-                </>
-              )}
-            </Typography>
-          );
-        })}
-        <Typography typography="p" component="p" sx={{ display: "block", mt: theme.spacing(4) }}>
-          {newsTwo}
-        </Typography>
-        <StyledSocialBox>
+        <Typography component="p">{highlightedText}</Typography>
+      </SectionLayout>
+
+      {/* <StyledSocialBox>
           <Socials />
-        </StyledSocialBox>
-      </StyledTextBox>
+        </StyledSocialBox> */}
     </Grid>
   );
 }
