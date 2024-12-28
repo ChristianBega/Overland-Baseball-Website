@@ -14,6 +14,7 @@ export const defaultTheme = {
     accent: {
       accentOne: "rgba(9,31,64,.8)",
       accentTwo: "rgba(0,154,78,.5)",
+      accentThree: "#003584",
     },
     text: {
       primary: "#1d1d1d",
@@ -45,7 +46,6 @@ export const defaultTheme = {
   typography: {
     fontFamily: "Work Sans",
     h1: {
-      fontWeight: "600",
       fontFamily: "Anuphan, serif",
       textTransform: "uppercase",
       letterSpacing: ".2rem",
@@ -138,11 +138,12 @@ export const defaultTheme = {
       },
     },
     p: {
+      fontWeight: "400",
       fontFamily: "Work Sans",
-      fontSize: "14px",
+      letterSpacing: ".07rem",
+      fontSize: "16px",
       lineHeight: "24px",
       "@media (min-width: 600px)": {
-        fontSize: "16px",
         lineHeight: "24px",
       },
       "@media (min-width: 900px)": {

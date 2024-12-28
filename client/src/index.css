@@ -65,3 +65,9 @@ body::-webkit-scrollbar {
   src: url("./fonts/Anuphan-SemiBold.ttf") format("truetype");
   font-weight: 600;
 }
+
+@font-face {
+  font-family: "Varsity Regular";
+  src: url("./fonts/varsity_regular.ttf") format("truetype");
+  font-weight: 400;
+}
