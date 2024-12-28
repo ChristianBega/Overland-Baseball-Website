@@ -1,22 +1,17 @@
-import { AppBar, Slide, Toolbar, useScrollTrigger } from "@mui/material";
-import { styled } from "@mui/system";
+// React and Hooks
 import React from "react";
-import useMediaQueries from "../../setup/utils/helpers/useMediaQueries.utils";
+import { useScrollTrigger } from "@mui/material";
+// Material UI Components
+import { AppBar, Slide } from "@mui/material";
+// Components
 import OverlandLogo from "./logo.component";
 import Account from "./components/account/account";
 import NavigationMenu from "./components/navigationMenu/navigationMenu";
+// Custom Hooks
+import useMediaQueries from "../../setup/utils/helpers/useMediaQueries.utils";
+// Styles
+import { StyledToolbar } from "./styles/index.styles";
 
-const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
-  display: "flex",
-  justifyContent: "space-between",
-  color: theme.palette.text.primary,
-  background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
-
-  padding: theme.spacing(2, 2),
-  [theme.breakpoints.up("lg")]: {
-    padding: theme.spacing(2, 4),
-  },
-}));
 
 const HideOnScroll = (props) => {
   const { children, window } = props;
@@ -48,4 +43,3 @@ const Navigation = (props) => {
 };
 
 export default Navigation;
- 

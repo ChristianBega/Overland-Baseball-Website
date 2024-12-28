@@ -1,26 +1,33 @@
-import { Link } from "react-router-dom";
-// Image assets
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+// Assets
 import Logo from "../../assets/overlandLogo2.webp";
+// MUI components
+import { Box, Link } from "@mui/material";
 
-import { Box } from "@mui/material";
+const styles = {
+  linkBox: {
+    display: "flex",
+    alignItems: "center",
+    columnGap: 4,
+    cursor: "pointer",
+    "&:hover": {
+      cursor: "pointer",
+      scale: "1.1",
+      transition: ".3s all ease-in-out",
+    },
+  },
+  imageBox: {
+    height: "75px",
+    width: "auto",
+  },
+};
 
 export default function OverlandLogo() {
   return (
-    <Link to="/">
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          columnGap: 4,
-          cursor: "pointer",
-          "&:hover": {
-            cursor: "pointer",
-            scale: "1.1",
-            transition: ".3s all ease-in-out",
-          },
-        }}
-      >
-        <Box component="img" sx={{ height: "75px", width: "auto" }} src={Logo}></Box>
+    <Link component={RouterLink} to="/">
+      <Box sx={styles.linkBox}>
+        <Box component="img" sx={styles.imageBox} src={Logo} />
       </Box>
     </Link>
   );

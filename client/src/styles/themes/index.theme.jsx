@@ -528,7 +528,15 @@ export const defaultTheme = {
           textDecoration: "none",
           fontFamily: "Work Sans",
           lineHeight: "22px",
-          fontSize: "24px",
+          fontSize: "22px",
+          "&.normal-shadow": {
+            ":hover": {
+              filter: "drop-shadow(0px 0px 10px #fff)",
+              "& svg": {
+                filter: "drop-shadow(0px 0px 10px #fff)",
+              },
+            },
+          },
           ":hover": {
             cursor: "pointer",
             color: "#00ff2fce",

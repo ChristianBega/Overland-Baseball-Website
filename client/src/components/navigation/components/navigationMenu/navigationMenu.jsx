@@ -1,12 +1,7 @@
-import { Box, Drawer, Grid, IconButton, styled } from "@mui/material";
 import React, { useState } from "react";
-import NavigationListItems from "../navigationListItems/navigationListItems";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-// import { ThemeToggleContext } from "../../../../setup/context/components/themeToggler.context";
-// import { useTheme } from "@emotion/react";
-// Icons
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import EventIcon from "@mui/icons-material/Event";
@@ -14,10 +9,14 @@ import TopicIcon from "@mui/icons-material/Topic";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SportsIcon from "@mui/icons-material/Sports";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+// MUI components
+import { Box, IconButton } from "@mui/material";
+// Components
 import { StyledDrawerMenu } from "../../styles/index.styles";
+import NavigationListItems from "../navigationListItems/navigationListItems";
+// Utils
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
-import Socials from "../../../reusableComponents/socials.component";
-import ContactUs from "../../../footer/components/conactUs/contactUs.component";
+
 const menuItems = [
   { label: "Home", url: "/", icon: <HomeIcon fontSize="large" /> },
   { label: "Roster", url: "/roster", icon: <FormatListNumberedIcon fontSize="large" /> },
@@ -26,21 +25,19 @@ const menuItems = [
   { label: "Documents", url: "/documents", icon: <TopicIcon fontSize="large" /> },
   { label: "Alumni", url: "/alumni", icon: <GroupsIcon fontSize="large" /> },
   { label: "Dashboard", url: "/dashboard", icon: <AdminPanelSettingsIcon fontSize="large" /> },
-
   // { label: "Sponsors", url: "/sponsors" },
 ];
-// const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
-//   background: "rgba(0, 0, 0, 0.7)",
-//   width: "100%",
-//   [theme.breakpoints.up("md")]: {
-//     width: "30%",
-//   },
-// }));
+
+const styles = {
+  box: {
+    marginBlock: "2rem",
+    textAlign: "center",
+  },
+};
+
 const NavigationMenu = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const { isLg, isMd } = useMediaQueries();
-  // const { currentTheme } = useContext(ThemeToggleContext);
-  // const theme = useTheme();
+  const { isLg } = useMediaQueries();
 
   const handleOpen = () => {
     setOpenMenu(true);
@@ -63,15 +60,7 @@ const NavigationMenu = () => {
             </IconButton>
 
             <NavigationListItems menuItems={menuItems} handleClose={handleClose} navListType="navigation-menu" />
-            <Box sx={{ marginBlock: "2rem", textAlign: "center" }}>
-              {!isLg && (
-                <>
-                  {/* <Socials dataTypeDevice="mobile" /> */}
-                  **contact details here**
-                  {/* <ContactUs /> */}
-                </>
-              )}
-            </Box>
+            <Box sx={styles.box}>{!isLg && <>**contact details here**</>}</Box>
           </StyledDrawerMenu>
         </>
       )}
