@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Rockies Fundraiser",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "image": "cardImgOne",
+    "cta": [
+      {
+        "date": {
+          "date": "09/27/24"
+        },
+        "location": {
+          "location": "Overland"
+        }
+      }
+    ]
+  },
+  {
+    "title": "Field Clean Up",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "image": "cardImgTwo",
+    "cta": [
+      {
+        "date": {
+          "date": "12/03/24"
+        },
+        "location": {
+          "location": "Overland"
+        }
+      }
+    ]
+  },
+  {
+    "title": "Spring Tryouts",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "image": "cardImgThree",
+    "cta": [
+      {
+        "date": {
+          "date": "03/09/25"
+        },
+        "location": {
+          "location": "Overland"
+        }
+      }
+    ]
+  },
+  {
+    "title": "IHOP Fundraiser",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "image": "cardImgFour",
+    "cta": [
+      {
+        "date": {
+          "date": "03/12/25"
+        },
+        "location": {
+          "location": "TBD"
+        }
+      }
+    ]
+  }
+]

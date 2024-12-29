@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Box } from "@mui/material";
 
 const defaultSectionStyles = {
-  marginBlock: "5.3125rem",
+  marginTop: "5.3125rem",
 };
 
 const SectionLayout = ({ id, ariaLabel, children, ...rest }) => {

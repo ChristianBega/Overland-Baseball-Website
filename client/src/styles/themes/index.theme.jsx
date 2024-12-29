@@ -230,6 +230,7 @@ export const defaultTheme = {
           borderRadius: "8px",
           letterSpacing: ".025rem",
           textTransform: "capitalize",
+          fontFamily: "Work Sans",
         },
         outlinedPrimary: {
           "&:hover": {
@@ -278,6 +279,29 @@ export const defaultTheme = {
           padding: "1rem",
           height: "24px",
           width: "24px",
+        },
+        sizeCard: {
+          padding: "4px 10px",
+          maxWidth: "150px",
+          fontWeight: "300",
+          fontSize: "14px",
+          lineHeight: "18px",
+          "& svg": {
+            fontSize: "14px",
+          },
+          "@media (min-width: 600px)": {
+            fontSize: "14px",
+            "& svg": {
+              fontSize: "1rem",
+              color: "red",
+            },
+          },
+          "@media (min-width: 800px)": {
+            fontSize: "16px",
+            "& svg": {
+              fontSize: "1.2rem",
+            },
+          },
         },
       },
     },
@@ -555,6 +579,74 @@ export const defaultTheme = {
           transition: "all .3s ease-in-out",
           "@media (min-width: 1200px)": {
             fontSize: "18px",
+          },
+        },
+      },
+    },
+    MuiCard: {
+      variants: [
+        {
+          props: { variant: "events-main" },
+          style: {
+            height: "250px",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "radial-gradient(circle, #d9d9d932 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
+              opacity: 0.5,
+            },
+          },
+        },
+        {
+          props: { variant: "events-secondary" },
+          style: {
+            height: "150px",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "radial-gradient(circle, #d9d9d932 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
+              opacity: 0.5,
+            },
+          },
+        },
+      ],
+      styleOverrides: {
+        root: {
+          boxShadow: "0px 0px 5px 0px #626262ab",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          position: "relative",
+          padding: "1rem",
+          borderRadius: "12px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        },
+      },
+    },
+    MuiCardActionArea: {
+      styleOverrides: {
+        root: {
+          gap: ".5rem",
+          display: "flex",
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          "&:last-child": {
+            paddingBottom: 0,
           },
         },
       },
