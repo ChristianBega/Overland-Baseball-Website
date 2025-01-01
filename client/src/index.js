@@ -8,6 +8,7 @@ import { UserProvider } from "./setup/context/user.context";
 import { CmsProvider } from "./setup/context/cmsContext/cms.context";
 import { ModalProvider } from "./setup/context/modal.context";
 import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
+import { DateNavigatorProvider } from "./pages/unauthorized/home/components/schedule/components/dateNavigator/dateNavigator.context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,7 +19,9 @@ root.render(
         <ThemeToggleProvider>
           <CmsProvider>
             <ModalProvider>
-              <App />
+              <DateNavigatorProvider>
+                <App />
+              </DateNavigatorProvider>
             </ModalProvider>
           </CmsProvider>
         </ThemeToggleProvider>

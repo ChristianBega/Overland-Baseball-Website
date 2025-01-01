@@ -1,6 +1,6 @@
 import React from "react";
 // MUI
-import { Button, Card, CardActionArea, CardContent, Grid, styled, Typography } from "@mui/material";
+import { Button, Card, CardActionArea, CardContent, Grid, Stack, styled, Typography } from "@mui/material";
 // Icons
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -22,14 +22,14 @@ const EventCard = ({ card, index }) => {
   return (
     <Grid item xs={12}>
       <Card key={card.title} variant={index === 0 ? "events-main" : "events-secondary"} sx={{ backgroundImage: `url(${card?.image})` }}>
-        <CardActionArea spacing={2} sx={{ justifyContent: "flex-end", zIndex: 1 }}>
+        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end", zIndex: 1 }}>
           {card.cta.map((cta, index) => (
             <React.Fragment key={index}>
               {Object.entries(cta).map(([key, value]) => (
                 <Button
                   key={key}
                   variant="contained"
-                  color="secondary"
+                  color="secondary"  
                   size="card"
                   startIcon={key === "date" ? <CalendarMonthIcon /> : <LocationOnIcon />}
                 >
@@ -38,7 +38,7 @@ const EventCard = ({ card, index }) => {
               ))}
             </React.Fragment>
           ))}
-        </CardActionArea>
+        </Stack>
         <CardContent sx={{ color: "#fff", zIndex: 1 }}>
           <Typography variant="h3" component="h3" gutterBottom={index === 0 ? true : false}>
             {card.title}

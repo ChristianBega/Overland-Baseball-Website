@@ -19,7 +19,7 @@
 
 import React, { useContext } from "react";
 import { Typography, TableRow } from "@mui/material";
-import ScheduleItem from "../../../pages/unauthorized/home/components/scheduleItem/scheduleItem.component";
+import ScheduleItem from "../../../pages/unauthorized/home/components/schedule/components/scheduleItem/scheduleItem.component";
 import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
 import { UserContext } from "../../../setup/context/user.context";
 import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";

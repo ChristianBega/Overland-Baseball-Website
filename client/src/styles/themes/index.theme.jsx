@@ -152,6 +152,7 @@ export const defaultTheme = {
         lineHeight: "28px",
       },
     },
+
     small: {
       fontSize: "12px",
       display: "flex",
@@ -178,6 +179,15 @@ export const defaultTheme = {
       fontFamily: "Work Sans",
       fontSize: "14px",
       lineHeight: "24px",
+    },
+
+    ellipsis: {
+      fontSize: "12px",
+      gap: ".1rem",
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      maxWidth: "80px",
     },
 
     input: {
@@ -615,6 +625,20 @@ export const defaultTheme = {
               background: "radial-gradient(circle, #d9d9d932 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
               opacity: 0.5,
             },
+          },
+        },
+        {
+          props: { variant: "schedule-view-only" },
+          style: {
+            marginTop: "0 !important",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "10px",
+            gap: "0",
+            "&:not(:first-child)": { marginTop: "2rem" },
+            borderRadius: "4px",
           },
         },
       ],

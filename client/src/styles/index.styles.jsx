@@ -1,4 +1,4 @@
-import { styled, TableCell, TableRow } from "@mui/material";
+import { Box, styled, TableCell, TableRow } from "@mui/material";
 
 // Table Styles
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -66,4 +66,20 @@ export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
   ...(!isCmsItem && {
     padding: "1.5rem",
   }),
+}));
+
+// Logos
+export const LogoImage = styled(Box)(({ theme }) => ({
+  width: "65px",
+  height: "65px",
+  display: "flex",
+  objectFit: "contain",
+  borderRadius: "50%",
+  margin: "auto",
+  "&.logo-image-square": {
+    borderRadius: "0",
+  },
+  "&.logo-image-opponent": {
+    margin: "auto 1.5rem auto 0",
+  },
 }));

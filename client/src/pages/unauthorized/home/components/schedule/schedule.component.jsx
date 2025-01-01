@@ -1,14 +1,21 @@
-import React from "react";
-import { Paper, Grid, TableContainer, Table, Typography, TableBody } from "@mui/material";
 import { useTheme } from "@emotion/react";
-
+import React from "react";
+// MUI
+import { Grid, Typography, Box, Stack } from "@mui/material";
 // Components
-import ScheduleItem from "../scheduleItem/scheduleItem.component";
+import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import ScheduleItem from "./components/scheduleItem/scheduleItem.component";
+// import DateNavigator from "./components/dateNavigator/dateNavigator.component";
+// Hooks
 import { useRealtimeData } from "../../../../../hooks/useRealtimeData";
+// Icons
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function Schedule() {
   const theme = useTheme();
   const { data, isLoading, error } = useRealtimeData("schedule");
+  // ! - if the date is in the past, we want to not show it??
+  // ! - but, if the user is using the dateNavigator, and they are on a past date, we want to show it??
   const sortByDate = (data) => data?.sort((a, b) => new Date(a.date) - new Date(b.date));
   const sortedData = data ? sortByDate([...data]) : [];
 
@@ -28,19 +35,34 @@ export default function Schedule() {
   }
 
   return (
-    <Grid id="schedule" item xs={12} mt={{ xs: 5, sm: 15 }}>
-      <Typography typography="h2" component="h2" sx={{ textAlign: "center", color: theme.palette.primary.main, mb: 10 }}>
-        Spring 2023 Schedule
-      </Typography>
-      <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-        <Table aria-label="schedule table">
-          <TableBody>
-            {sortedData?.map((gameData, index) => (
-              <ScheduleItem data={gameData} key={index} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <Grid item xs={12}>
+      <SectionLayout>
+        <Typography variant="h2" component="h2">
+          Schedule
+        </Typography>
+        {/* <DateNavigator events={sortedData} /> */}
+        <Box
+          sx={{
+            padding: ".5rem",
+            maxHeight: "425px",
+            overflowY: "auto",
+            scrollbarWidth: "none",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+        >
+          {sortedData.map((gameData, index) => (
+            <ScheduleItem data={gameData} key={index} />
+          ))}
+        </Box>
+        <Stack direction="column" alignItems="center" justifyContent="center" mt={2}>
+          <Typography component="span" variant="span" sx={{ color: theme.palette.secondary.main }}>
+            Continue Scrolling
+          </Typography>
+          <KeyboardArrowDownIcon sx={{ color: theme.palette.secondary.main }} />
+        </Stack>
+      </SectionLayout>
     </Grid>
   );
 }

@@ -10,3 +10,10 @@ export const formatServerTimestamp = (timestamp) => {
   }
   return "N/A";
 };
+
+// create function to take any date format and return the string  ex- Thursday, January 2, 2025
+export const formatDateString = (dateString) => {
+  if (!dateString) return;
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+};

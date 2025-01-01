@@ -1,44 +1,20 @@
-// React and Material-UI imports
 import React from "react";
-import { Typography, Stack, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
+// MUI
+import { Box, Stack, Typography } from "@mui/material";
 // Components
-import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
-import CmsUploadItem from "../../../../../components/contentManagementSystem/cmsUploadItem/cmsUploadItem";
-import InputFieldComponent from "../../../../../components/inputFields/inputFields";
-// Styles
-import { StyledTableCell, StyledTableRow } from "../../../../../styles/index.styles";
-// Utility functions
-import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
-import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
+import InputFieldComponent from "../../../../../../../../../components/inputFields/inputFields";
+import CmsUploadItem from "../../../../../../../../../components/contentManagementSystem/cmsUploadItem/cmsUploadItem";
+import { LogoImage, StyledTableCell } from "../../../../../../../../../styles/index.styles";
+// Utils & Helpers
+import { formatDate } from "../../../../../../../../../setup/utils/helpers/formatDate";
+import { convertTo24HourFormat } from "../../../../../../../../../setup/utils/helpers/convertTo24HourFormat";
 // Assets
-import overland from "../../../../../assets/homePage/teamLogos/overland.webp";
+import overland from "../../../../../../../../../assets/homePage/teamLogos/overland.webp";
 
-const LogoImage = styled(Box)(({ theme }) => ({
-  width: "65px",
-  height: "65px",
-  display: "flex",
-  objectFit: "contain",
-  borderRadius: "50%",
-  margin: "auto",
-  "&.logo-image-square": {
-    borderRadius: "0",
-  },
-  "&.logo-image-opponent": {
-    margin: "auto 1.5rem auto 0",
-  },
-}));
-
-export default function ScheduleItem({ ...props }) {
-  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
-  const currentData = isEditable ? editableData : data;
-  const { date, time, location, opponent, opponentIcon } = currentData;
-
-  if (isLoading || isError || isSuccess) {
-    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
-  }
-
-  const content = (
+const ScheduleContentEditable = ({ ...props }) => {
+  const { isEditable, editableData, handleChange, isCmsItem } = props;
+  const { date, time, location, opponent, opponentIcon } = props.data;
+  return (
     <>
       {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
       <StyledTableCell
@@ -117,6 +93,6 @@ export default function ScheduleItem({ ...props }) {
       {/* {!isEditable ? <StyledTableCell>{null}</StyledTableCell> : null} */}
     </>
   );
+};
 
-  return renderAsRow ? <StyledTableRow>{content}</StyledTableRow> : content;
-}
+export default ScheduleContentEditable;
