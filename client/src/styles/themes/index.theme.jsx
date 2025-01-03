@@ -382,8 +382,10 @@ export const defaultTheme = {
     MuiInputBase: {
       styleOverrides: {
         root: {
-          minWidth: "400px",
-          maxHeight: "35px",
+          minWidth: "300px",
+          width: "100%",
+          // maxWidth: "400px",
+          // maxHeight: "35px",
           fontSize: "14px",
           padding: "0",
 
@@ -403,6 +405,13 @@ export const defaultTheme = {
               paddingTop: "8px",
               paddingLeft: "8px",
               paddingBottom: "8px",
+            },
+            "&.MuiInputBase-inputMultiline": {
+              paddingTop: "8px",
+              paddingLeft: "8px",
+              paddingBottom: "8px",
+              // maxHeight: "100px",
+              border: "1px solid red",
             },
           },
         },

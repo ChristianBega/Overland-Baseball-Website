@@ -1,54 +1,49 @@
+import React, { useEffect, useState } from "react";
+// Framer Motion
+import { AnimatePresence } from "framer-motion";
+// MUI
 import { Grid } from "@mui/material";
-import React from "react";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+// Components
+import SectionLayout from "../reusableComponents/sectionLayout/sectionLayout.component";
+// Data
 import { sponsorData } from "../../websiteData/sponsors.data";
+import { StyledImageContainer, StyledSponsorImage } from "./sponsors.styles";
 
-const responsive = {
-  0: { items: 1 },
-  568: { items: 2 },
-  1024: { items: 3 },
-};
+const ImageSlider = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-const renderImage = () => {
-  return sponsorData.map(({ companyName, imageUrl }, index) => {
-    return (
-      <picture>
-        <img
-          loading="lazy"
-          fetchpriority="low"
-          key={index}
-          srcSet={`
-            ${imageUrl?.small} 1x,
-            ${imageUrl?.medium} 2x,
-          `}
-          src={imageUrl.small}
-          style={{ display: "flex", margin: "auto", minHeight: "300px", maxWidth: "325px" }}
-          alt={companyName}
-          data-value={index + 1}
-        />
-      </picture>
-    );
-  });
-};
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % sponsorData.length);
+    }, 3000);
 
-export default function Sponsors() {
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <>
-      <Grid item xs={12} mt={15}>
-        <AliceCarousel
-          autoPlay
-          disableDotsControls
-          mouseTracking
-          items={renderImage()}
-          responsive={responsive}
-          controlsStrategy="alternate"
-          infinite
-          autoPlayStrategy="none"
-          autoPlayInterval={1000}
-          animationDuration={3000}
-        />
-      </Grid>
-    </>
+    <Grid item xs={12}>
+      <SectionLayout id="sponsors-section" aria-label="Sponsors Section">
+        <StyledImageContainer>
+          <AnimatePresence>
+            {sponsorData.map(
+              ({ companyName, imageUrl }, index) =>
+                index === currentImageIndex && (
+                  <StyledSponsorImage
+                    key={index + companyName}
+                    imageUrl={imageUrl}
+                    alt={companyName}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1 }}
+                  />
+                )
+            )}
+          </AnimatePresence>
+        </StyledImageContainer>
+      </SectionLayout>
+    </Grid>
   );
-}
+};
+
+export default ImageSlider;

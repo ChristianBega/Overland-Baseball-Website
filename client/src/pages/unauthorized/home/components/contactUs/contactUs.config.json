@@ -1,0 +1,46 @@
+[
+  {
+    "name": "fullName",
+    "label": "Full Name",
+    "type": "text",
+    "placeholder": "Enter your full name...",
+    "rules": {
+      "required": "Full name is required *"
+    }
+  },
+  {
+    "name": "email",
+    "label": "Email",
+    "type": "email",
+    "placeholder": "Enter your email...",
+    "rules": {
+      "required": "Email is required *",
+      "pattern": {
+        "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        "message": "Invalid email address"
+      }
+    }
+  },
+  {
+    "name": "phone",
+    "label": "Phone",
+    "type": "tel",
+    "placeholder": "Enter your phone number...",
+    "rules": {
+      "required": "Phone number is required *",
+      "pattern": {
+        "value": "^\\+?[0-9]{10,15}$",
+        "message": "Invalid phone number"
+      }
+    }
+  },
+  {
+    "name": "message",
+    "label": "Message",
+    "type": "textarea",
+    "placeholder": "Enter your message...",
+    "rules": {
+      "required": "Message is required *"
+    }
+  }
+]

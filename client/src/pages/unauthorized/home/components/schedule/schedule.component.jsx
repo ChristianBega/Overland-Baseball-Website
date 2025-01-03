@@ -36,7 +36,7 @@ export default function Schedule() {
 
   return (
     <Grid item xs={12}>
-      <SectionLayout>
+      <SectionLayout id="schedule-section" aria-label="Schedule Section">
         <Typography variant="h2" component="h2">
           Schedule
         </Typography>
