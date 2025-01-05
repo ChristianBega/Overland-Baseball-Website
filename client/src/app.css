@@ -1,0 +1,28 @@
+.ellipsisText {
+  position: relative;
+  max-height: 4em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  text-overflow: ellipsis;
+  background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0.4));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* Start of Selection */
+.ellipsisText-2 {
+  max-height: 1.2em;
+  max-width: 181px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  text-overflow: ellipsis;
+  position: relative;
+  white-space: nowrap; /* Ensures text doesn't wrap */
+}
+/* End of Selection */

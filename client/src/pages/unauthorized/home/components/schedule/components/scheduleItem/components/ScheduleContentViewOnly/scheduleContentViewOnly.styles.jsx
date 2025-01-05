@@ -1,34 +1,42 @@
 import { styled } from "@mui/material/styles";
-import { Box, Link, Stack, Typography } from "@mui/material";
+import { Box, Link, Stack } from "@mui/material";
 
-export const StyledDateBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center",
-  padding: ".5rem",
-  height: "82px",
-  minWidth: "90px",
-  borderRadius: "4px",
-  boxShadow: "0px 0px 5px 0px #626262ab",
+export const StyledScheduleItemContainer = styled(Box)(({ theme }) => ({
+  width: "100%",
   backgroundColor: theme.palette.secondary.main,
+  display: "flex",
+  alignItems: "center",
+  padding: ".5rem",
+  borderRadius: "4px",
+  "&:hover": {
+    transition: "all .3s ease-in-out",
+    backgroundColor: `${theme.palette.primary.main}`,
+    cursor: "pointer",
+  },
 }));
 
 export const StyledLogoStack = styled(Stack)({
-  width: "100%",
-  paddingInline: "1rem",
+  paddingInline: ".5rem",
 });
 
-export const StyledInfoLink = styled(Link)({
-  display: "flex",
-  alignItems: "center",
-  marginBottom: 0,
-  width: "50%",
+export const StyledDateStack = styled(Stack)({
+  direction: "column",
   justifyContent: "center",
+  alignItems: "center",
+  height: "65px",
+  minWidth: "110px",
+  borderRight: "1px solid hsl(0, 0%, 90%)",
+  padding: "0.5rem",
+  color: "#fff",
 });
 
-export const StyledInfoTypography = styled(Typography)({
+export const StyledLocationLink = styled(Link)({
+  color: "#fff",
+  fontSize: "12px",
   display: "flex",
   alignItems: "center",
   gap: ".25rem",
+  marginBottom: 0,
+  width: "100%",
+  justifyContent: "center",
 });

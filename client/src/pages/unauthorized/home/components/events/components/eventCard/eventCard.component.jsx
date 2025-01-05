@@ -9,6 +9,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 // Helpers & Utils
 import { formatDateTimeForCalendar } from "../../../../../../../setup/utils/helpers/formatDate";
 
+// ! move this logic into a handleNavigatingToCalendarOrMap func
 const handleEventButtonClick = (event) => {
   const eventValue = event.currentTarget.getAttribute("data-eventValue");
   const eventTitle = event.currentTarget.getAttribute("data-eventTitle");

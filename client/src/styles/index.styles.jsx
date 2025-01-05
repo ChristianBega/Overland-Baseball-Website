@@ -75,7 +75,7 @@ export const LogoImage = styled(Box)(({ theme }) => ({
   display: "flex",
   objectFit: "contain",
   borderRadius: "50%",
-  margin: "auto",
+  // margin: "auto",
   "&.logo-image-square": {
     borderRadius: "0",
   },

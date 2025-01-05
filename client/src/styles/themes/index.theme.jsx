@@ -648,6 +648,13 @@ export const defaultTheme = {
             gap: "0",
             "&:not(:first-child)": { marginTop: "2rem" },
             borderRadius: "4px",
+            "&:hover": {
+              cursor: "pointer",
+              "& #schedule-item-container": {
+                transition: "all .3s ease-in-out",
+                backgroundColor: "primary.main",
+              },
+            },
           },
         },
       ],
