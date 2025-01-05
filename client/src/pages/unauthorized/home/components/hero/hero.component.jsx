@@ -1,5 +1,7 @@
 import React from "react";
 import { useTheme } from "@emotion/react";
+import { Link as RouterLink } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 // Components
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 // MUI
@@ -34,10 +36,10 @@ const Hero = () => {
         Find game schedules, events & news, and ways to support our players. Start exploring below!
       </Typography>
       <Stack spacing={2} mt={4} sx={styles.stack}>
-        <Button variant="contained" color="secondary">
+        <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up">
           Sign Up For Blazer Update
         </Button>
-        <Button variant="outlined" color="secondary">
+        <Button variant="outlined" color="secondary" component={HashLink} to="/#contact-us-section">
           Get In Contact With Us
         </Button>
       </Stack>

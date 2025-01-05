@@ -292,7 +292,7 @@ export const defaultTheme = {
         },
         sizeCard: {
           padding: "4px 10px",
-          maxWidth: "150px",
+          maxWidth: "160px",
           fontWeight: "300",
           fontSize: "14px",
           lineHeight: "18px",

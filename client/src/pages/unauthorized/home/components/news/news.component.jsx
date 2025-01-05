@@ -11,12 +11,12 @@ import findKeyWordsAndHighlight from "../../../../../setup/utils/helpers/findKey
 export default function News() {
   const theme = useTheme();
   // ! this data will be moved to the websiteData folder and mimic the cms structure we want. we will need to refactor later.
-  const text = "Stay tuned for exciting news about our upcoming games, fundraisers, useful links, and all other events.";
+  const text = "Stay tuned for exciting news about our fundraisers, upcoming games, and all other events.";
   const keywords = [
-    { keyword: "upcoming games", url: "/games", type: "RouterLink" },
-    { keyword: "fundraisers", url: "/#hero-section", type: "HashLink" },
-    { keyword: "useful links", url: "/#links", type: "MuiLink" },
-    { keyword: "all other events", url: "https://example.com/events", type: "MuiLink" },
+    { keyword: "upcoming games", url: "/#schedule-section", type: "HashLink" },
+    { keyword: "fundraisers", url: "/#events-section", type: "HashLink" },
+    // { keyword: "useful links", url: "/#links", type: "HashLink" },
+    { keyword: "all other events", url: "/events", type: "RouterLink" },
   ];
   const options = { color: theme.palette.secondary.main };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from "@emotion/react";
 // MUI
 import { Grid, Typography } from "@mui/material";
@@ -29,6 +29,7 @@ const events = cardMockData.map((event) => ({
 
 const Events = () => {
   const theme = useTheme();
+  const [selectedCardIndex, setSelectedCardIndex] = useState(0);
 
   const text =
     "Support your Overland Trailblazer baseball program by attending our upcoming events. We have lots happening in our community including fundraisers, team activities, and more. Check out all our events here and sign up!";
@@ -47,7 +48,7 @@ const Events = () => {
         </Typography>
         <Grid container rowSpacing={4}>
           {events.map((card, index) => (
-            <EventCard card={card} index={index} />
+            <EventCard key={index} card={card} index={index} selectedCardIndex={selectedCardIndex} setSelectedCardIndex={setSelectedCardIndex} />
           ))}
         </Grid>
       </SectionLayout>
