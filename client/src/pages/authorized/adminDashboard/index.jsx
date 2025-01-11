@@ -25,7 +25,7 @@ const AdminDashboardPage = () => {
 
   return (
     <Container sx={{ display: "flex", justifyContent: " center" }}>
-      {currentUserProfile.role !== "admin" ? null : (
+      {currentUserProfile.role !== "admin" && currentUserProfile.role !== "coach" ? null : (
         <Grid id="dashboard-main-grid" container maxWidth="lg">
           <DashboardSideBarMenu />
           <CmsBulkActionProvider>

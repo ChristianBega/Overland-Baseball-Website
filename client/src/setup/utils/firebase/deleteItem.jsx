@@ -4,7 +4,8 @@ import { db } from "./index.firebase";
 import { deleteObject, getStorage, ref } from "firebase/storage";
 
 export const deleteCMSItem = async (userUid, role, docId, type) => {
-  if (!userUid || role !== "admin") return;
+  if (!userUid || (role !== "admin" && role !== "coach")) return;
+
   const cmsItemDocRef = doc(db, `${type}`, docId);
 
   try {
@@ -17,7 +18,8 @@ export const deleteCMSItem = async (userUid, role, docId, type) => {
 };
 
 export const bulkDeleteFromFirebase = async (userUid, role, type, idsToDelete, setProgress) => {
-  if (!userUid || role !== "admin") return;
+  if (!userUid || (role !== "admin" && role !== "coach")) return;
+
   const batch = writeBatch(db);
 
   try {
@@ -37,7 +39,8 @@ export const bulkDeleteFromFirebase = async (userUid, role, type, idsToDelete, s
 };
 
 export const deleteItemFromStorage = async (userUid, role, imagePath) => {
-  if (!userUid || role !== "admin") return;
+  if (!userUid || (role !== "admin" && role !== "coach")) return;
+
   const storage = getStorage();
   const imageRef = ref(storage, imagePath);
 
@@ -52,7 +55,8 @@ export const deleteItemFromStorage = async (userUid, role, imagePath) => {
 };
 
 export const bulkDeleteItemsFromStorage = async (userUid, role, fileNames, cmsItemType) => {
-  if (!userUid || role !== "admin") return;
+  if (!userUid || (role !== "admin" && role !== "coach")) return;
+
   const storage = getStorage();
 
   try {

@@ -12,7 +12,7 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
   return (
     <StyledTableCell className="table-header-cell-narrow">
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        {!isEditing && role === "admin" && (
+        {!isEditing && (role === "admin" || role === "coach") && (
           <Button
             disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
             onClick={() => handleStartEditing(id, values[0])}

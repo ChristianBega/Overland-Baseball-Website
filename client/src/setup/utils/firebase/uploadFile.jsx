@@ -96,7 +96,7 @@ export const getDownloadableUrl = async (filePath) => {
 };
 
 export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, newFileNameWithExt, cmsType, mainDirectoryName) => {
-  if (!userUid || role !== "admin") return { success: false, message: "Unauthorized or invalid user data" };
+  if (!userUid || (role !== "admin" && role !== "coach")) return { success: false, message: "Unauthorized or invalid user data" };
 
   try {
     // 1. Reference to the original file in Firebase Storage

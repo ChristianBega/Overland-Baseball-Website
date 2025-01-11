@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext } from "react";
 import { useCheckAuthorization } from "../../utils/helpers/checkAuthorization";
 import { deleteCMSItem, deleteItemFromStorage } from "../../utils/firebase/deleteItem";
 import { UserContext } from "../user.context";

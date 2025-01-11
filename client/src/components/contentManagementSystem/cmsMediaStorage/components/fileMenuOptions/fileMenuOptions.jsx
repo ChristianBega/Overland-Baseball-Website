@@ -115,7 +115,7 @@ const FileMenuOptions = ({ file, selectedSubDirectory, mainDirectoryName }) => {
   };
 
   const handleDeleteItem = async () => {
-    if (role !== "admin") return;
+    if (role !== "admin" && role !== "coach") return;
     if (window.confirm("Are you sure you want to delete this item?")) {
       await deleteCMSItem(uid, role, file.id, selectedSubDirectory);
       await deleteItemFromStorage(uid, role, file.url);

@@ -73,7 +73,7 @@ const CmsListItem = ({ values, id }) => {
     <>
       <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
         <CheckboxCell isSelected={isItemSelected} {...commonTableCellProps} />
-        {isEditing && role === "admin" && <DeleteButtonCell {...commonTableCellProps} />}
+        {isEditing && (role === "admin" || role === "coach") && <DeleteButtonCell {...commonTableCellProps} />}
         {renderEditableCmsItem()}
         <ActionButtonsCell isEditing={isEditing} {...commonTableCellProps} />
       </TableRow>

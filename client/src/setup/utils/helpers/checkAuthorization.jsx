@@ -4,7 +4,7 @@ export const useCheckAuthorization = () => {
   const navigate = useNavigate();
 
   const checkAuthorization = (role) => {
-    if (role !== "admin") {
+    if (role !== "admin" && role !== "coach") {
       alert("You are not authorized to edit this item");
       navigate("/");
       return false;

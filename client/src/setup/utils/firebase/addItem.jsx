@@ -4,7 +4,8 @@ import { db } from "./index.firebase";
 import { v4 as uuidv4 } from "uuid";
 
 export const addCMSItem = async (userUid, role, data, type) => {
-  if (!userUid || role !== "admin") return;
+  if (!userUid || (role !== "admin" && role !== "coach")) return;
+
   const docId = uuidv4();
   const cmsItemDocRef = doc(db, `${type}`, docId);
   const filteredData = Object.fromEntries(Object.entries(data).filter(([_, value]) => value !== undefined && value !== null && value !== ""));
@@ -24,7 +25,8 @@ export const addCMSItem = async (userUid, role, data, type) => {
 };
 
 export const bulkAddToFirebase = async (userUid, role, type, csvData) => {
-  if (!userUid || role !== "admin") return;
+  if (!userUid || (role !== "admin" && role !== "coach")) return;
+
   const batch = writeBatch(db);
   const collectionRef = collection(db, `${type}`);
   try {
