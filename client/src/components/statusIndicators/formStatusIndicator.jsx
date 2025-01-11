@@ -1,27 +1,34 @@
 import React from "react";
-import { Box, CircularProgress, Alert } from "@mui/material";
+// Mui
+import { Box, CircularProgress, Typography, Stack } from "@mui/material";
+// Icons
+import ErrorIcon from "@mui/icons-material/Error";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { StyledFormStatusIndicatorContainer } from "./formStatusIndicator.styles";
 
-const FormStatusIndicator = ({ statusMessage }) => {
+const FormStatusIndicator = ({ statusMessage, statusCode, loading, error }) => {
   return (
-    <>
-      {statusMessage && <p>{statusMessage}</p>}
-      {/* {statusMessage === "Loading..." && (
-        <Box display="flex" justifyContent="center" my={2}>
+    <StyledFormStatusIndicatorContainer>
+      {statusCode && statusMessage && (
+        <Stack direction="row" spacing={1}>
+          <CheckCircleIcon />
+          <Typography variant="body1">{statusMessage}</Typography>
+        </Stack>
+      )}
+      {loading && (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
           <CircularProgress />
-          <p>{progress}%</p>
         </Box>
       )}
-      {status === "success" && (
-        <Alert severity="success" sx={{ mb: 2 }}>
-          Success!
-        </Alert>
+      {error && (
+        <Stack direction="row" spacing={1}>
+          <ErrorIcon />
+          <Typography variant="body1" color="error">
+            Error: {error.message} || {error.response.data.message}
+          </Typography>
+        </Stack>
       )}
-      {status === "error" && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          Failed! Please try again.
-        </Alert>
-      )} */}
-    </>
+    </StyledFormStatusIndicatorContainer>
   );
 };
 

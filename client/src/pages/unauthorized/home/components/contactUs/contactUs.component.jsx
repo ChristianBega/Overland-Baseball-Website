@@ -1,23 +1,30 @@
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
 // Mui
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Box, Button } from "@mui/material";
 // Components
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 import InputFieldComponent from "../../../../../components/inputFields/inputFields";
-import { Controller, useForm } from "react-hook-form";
-import { Box, Button } from "@mui/material";
-// Config
+import FormStatusIndicator from "../../../../../components/statusIndicators/formStatusIndicator";
+// config
 import contactUsConfig from "./contactUs.config.json";
+// hooks
+import useEmailService from "../../../../../hooks/useEmailServices";
 
 export default function ContactUs() {
+  const { sendEmail, response, loading, error } = useEmailService(process.env.REACT_APP_AWS_API_BASE_URL_DEV);
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await sendEmail(data);
+    } catch (error) {
+      console.error("Error submitting form:", error.response ? error.response.data : error.message);
+    }
   };
 
   return (
@@ -56,7 +63,9 @@ export default function ContactUs() {
               </Grid>
             ))}
           </Grid>
-
+          {(loading || error || response) && (
+            <FormStatusIndicator statusMessage={response?.data?.message} statusCode={response?.status} loading={loading} error={error} />
+          )}
           <Button type="submit" variant="contained" color="secondary" fullWidth>
             Submit
           </Button>
