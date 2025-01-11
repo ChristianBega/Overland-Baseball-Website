@@ -139,6 +139,7 @@ const AddItemsForm = ({ ...props }) => {
       return () => clearTimeout(timer);
     }
   }, [status]);
+  
   return (
     <Box component="form" onSubmit={handleSubmit(handleAdd)}>
       <FormStatusIndicator statusMessage={statusMessage} />
@@ -185,7 +186,14 @@ const AddItemsForm = ({ ...props }) => {
           )}
         />
       ))}
-      <Button type="submit" variant="contained" color="primary">
+      <Button
+        type="submit"
+        variant="contained"
+        color="secondary"
+        aria-label={`create ${cmsItemType} item`}
+        id={`create-${cmsItemType}-cms-item-button`}
+        sx={{ width: "100%" }}
+      >
         Create
       </Button>
     </Box>

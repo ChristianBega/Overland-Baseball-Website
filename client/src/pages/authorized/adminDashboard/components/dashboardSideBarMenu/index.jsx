@@ -1,7 +1,7 @@
 import React, { useRef, useContext } from "react";
 import { useTheme } from "@emotion/react";
 // Material UI components and icons
-import { Grid, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import EventIcon from "@mui/icons-material/Event";
@@ -9,7 +9,7 @@ import TopicIcon from "@mui/icons-material/Topic";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 // Custom components and styles
-import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList } from "./index.styles";
+import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, StyledMenuDropDownButton, StyledSliderMenu, StyledMenuList } from "./index.styles";
 import MenuItemComponent from "./components/menuItem";
 // State Management
 import { CmsContext } from "../../../../../setup/context/cmsContext/cms.context";
@@ -53,17 +53,17 @@ const DashboardSideBarMenu = () => {
   return (
     <Grid item xs={12} lg={12}>
       <MenuWrapper id="menu-wrapper" onBlur={handleBlur} tabIndex={-1} ref={menuRef}>
-        <SliderButton id="slider-btn" onClick={toggleMenu} theme={theme} isOpen={isOpen}>
-          <IconBox>
+        <StyledMenuDropDownButton id="menu-dropdown-button" onClick={toggleMenu} isOpen={isOpen}>
+          <Stack direction="row" alignItems="center">
             {currentItem?.icon}
             <Typography component="span" sx={{ ml: "1rem", display: "flex", alignItems: "center" }}>
               {currentItem ? <>{currentItem.linkName.toUpperCase()}</> : "Please Select An Option To Edit"}
             </Typography>
-          </IconBox>
+          </Stack>
           <ArrowDropDownIcon sx={{ transform: isOpen ? "rotate(180deg)" : "none" }} />
-        </SliderButton>
-        <SliderMenu id="slider-menu" initial={false} animate={isOpen ? "open" : "closed"} variants={containerVariants}>
-          <MenuList theme={theme} isOpen={isOpen}>
+        </StyledMenuDropDownButton>
+        <StyledSliderMenu id="slider-menu" initial={false} animate={isOpen ? "open" : "closed"} variants={containerVariants}>
+          <StyledMenuList isOpen={isOpen}>
             {menuListItems.map((item, index) => (
               <MenuItemComponent
                 item={item}
@@ -74,8 +74,8 @@ const DashboardSideBarMenu = () => {
                 hoveredIndex={hoveredIndex}
               />
             ))}
-          </MenuList>
-        </SliderMenu>
+          </StyledMenuList>
+        </StyledSliderMenu>
       </MenuWrapper>
     </Grid>
   );

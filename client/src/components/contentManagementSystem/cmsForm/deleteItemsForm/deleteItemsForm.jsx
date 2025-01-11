@@ -98,7 +98,15 @@ const DeleteItemsForm = ({ ...props }) => {
       </TableContainer>
       <p style={{ color: "red" }}>Please type "Confirm Delete" to delete</p>
       <InputFieldComponent type="text" placeholder=" Type 'Confirm Delete' here..." value={inputValueConfirmDelete} onChange={handleInputChange} />
-      <Button sx={{ marginTop: "2rem" }} disabled={!confirmDeleteIsTrue} onClick={handleDeleteItems} variant="contained" color="primary">
+      <Button
+        sx={{ marginTop: "2rem" }}
+        disabled={!confirmDeleteIsTrue}
+        onClick={handleDeleteItems}
+        variant="contained"
+        color="secondary"
+        id={`confirm-delete-${cmsItemType}-button`}
+        aria-label={`confirm delete ${cmsItemType} button`}
+      >
         Confirm Delete
       </Button>
     </Box>

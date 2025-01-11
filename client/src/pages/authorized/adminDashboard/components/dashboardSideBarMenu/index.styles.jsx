@@ -6,7 +6,7 @@ export const MenuWrapper = styled(Box)({
   width: "100%",
 });
 
-export const SliderButton = styled(Button)(({ theme, isOpen }) => ({
+export const StyledMenuDropDownButton = styled(Button)(({ theme, isOpen }) => ({
   width: "100%",
   position: isOpen ? "absolute" : "relative",
   top: 0,
@@ -17,6 +17,8 @@ export const SliderButton = styled(Button)(({ theme, isOpen }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   backgroundColor: theme.palette.secondary.main,
+  padding: "1rem !important",
+  color: theme.palette.text.secondary2,
   "&:hover": {
     backgroundColor: theme.palette.secondary.main,
   },
@@ -27,23 +29,23 @@ export const IconBox = styled(Box)({
   alignItems: "center",
 });
 
-export const SliderMenu = styled(motion.section)({
-  width: "100%",
-  height: "100%",
-  textAlign: "center",
+export const StyledSliderMenu = styled(motion.div)({
+  // width: "100%",
+  // height: "100%",
+  // // textAlign: "center",
   overflowY: "scroll",
 });
 
-export const MenuList = styled(List)(({ theme, isOpen }) => ({
+export const StyledMenuList = styled(List)(({ theme, isOpen }) => ({
   padding: 0,
-  marginTop: isOpen ? "48px" : 0,
+  marginTop: isOpen ? "56px" : 0,
   display: "flex",
   flexDirection: "column",
   height: "100%",
   backgroundColor: theme.palette.primary.main,
 }));
 
-export const MenuItem = styled(ListItem)({
+export const StyledMenuItem = styled(ListItem)({
   color: "#fff",
   display: "flex",
   justifyContent: "flex-start",

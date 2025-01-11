@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 
 const CmsForm = ({ formType, ...props }) => {
   const { closeModal } = props;
@@ -18,8 +18,12 @@ const CmsForm = ({ formType, ...props }) => {
   return (
     <Box>
       <Stack alignItems={"center"} direction="row" justifyContent="space-between">
-        <h2>{formType} Form</h2>
-        <Button onClick={closeModal}>X</Button>
+        <Typography variant="h2" component="h2">
+          {formType} Form
+        </Typography>
+        <Button aria-label="close form" id={`close-form-button`} variant="contained" color="secondary" size="circle" onClick={closeModal}>
+          X
+        </Button>
       </Stack>
       <Suspense fallback={<div>Loading...</div>}>
         <FormComponent {...props} />

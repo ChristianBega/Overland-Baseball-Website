@@ -1,8 +1,12 @@
-import { Button } from "@mui/material";
 import React, { useCallback, useContext, useRef, useState } from "react";
+// MUI
+import { Button, Stack } from "@mui/material";
+// Components
 import MediaMenu from "../mediaMenu/mediaMenu";
 import MediaPreviewManager from "../mediaPreviewManager/mediaPreviewManager";
+// Context
 import { UserContext } from "../../../../../setup/context/user.context";
+// Utils & Helpers
 import { handleUploadFile } from "../../../../../setup/utils/firebase/uploadFile";
 import { scrollTo } from "../../../../../setup/utils/helpers/scrollTo";
 
@@ -128,8 +132,8 @@ const AddNewItem = () => {
   }, [cancelUpload]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginBlock: "2rem" }}>
-      <Button id="add-new-media-item-button" onClick={handleClick} variant="contained">
+    <Stack direction="column" alignItems="flex-end" mb={4}>
+      <Button aria-label="add new media item" id="add-new-media-item-button" onClick={handleClick} variant="contained" size="large" color="secondary">
         + New
       </Button>
       <MediaMenu
@@ -152,7 +156,7 @@ const AddNewItem = () => {
         handleCancelUpload={handleCancelUpload}
         isUploading={!!cancelUpload}
       />
-    </div>
+    </Stack>
   );
 };
 

@@ -1,6 +1,12 @@
-import { Button, Stack } from "@mui/material";
 import React from "react";
+// MUI
+import { Button, Stack, Typography } from "@mui/material";
+// Helpers
+import { convertToTitleCase } from "../../../../../setup/utils/helpers/convertText";
+// Icons
 import FolderIcon from "@mui/icons-material/Folder";
+import { StyledDirectoryButton, StyledDirectoryButtonContainer } from "./directoryExplorer.styles";
+
 const DirectoryExplorer = ({ selectedSubDirectory, setSelectedSubDirectory }) => {
   const directories = ["mediaStorage", "opponentIcon", "playerImage", "documents"];
   const handleSelectDirectory = (directory) => {
@@ -8,51 +14,26 @@ const DirectoryExplorer = ({ selectedSubDirectory, setSelectedSubDirectory }) =>
   };
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" sx={{ marginBlock: "2rem" }} gap={"2rem"}>
-      <Button variant="outlined" color="primary" onClick={() => handleSelectDirectory("view all")}>
+      <Button variant="contained" color="secondary" id="view-all-button" aria-label="view all" onClick={() => handleSelectDirectory("view all")}>
         View All
       </Button>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        spacing={2}
-        sx={{
-          maxWidth: "80%",
-          overflowX: "auto",
-          "&::-webkit-scrollbar": {
-            height: "6px",
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "#f1f1f1",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            background: "#888",
-            borderRadius: "3px",
-          },
-          "&::-webkit-scrollbar-thumb:hover": {
-            background: "#555",
-          },
-        }}
-      >
-        {directories.map((directory) => (
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={1}
-            sx={{
-              border: selectedSubDirectory === directory ? "1px solid #000" : "1px solid transparent",
-              padding: ".5rem .8rem",
-              borderRadius: "8px",
-              flex: "1",
-              cursor: "pointer",
-            }}
+      <StyledDirectoryButtonContainer direction="row" alignItems="center" justifyContent="center" spacing={2}>
+        {directories.map((directory, index) => (
+          <StyledDirectoryButton
+            key={index}
+            selectedSubDirectory={selectedSubDirectory}
+            directory={directory}
+            variant="outlined"
+            color="secondary"
+            id={`directory-button-${directory}`}
+            aria-label={`directory-button-${directory}`}
             onClick={() => handleSelectDirectory(directory)}
           >
-            <FolderIcon />
-            <p>{directory}</p>
-          </Stack>
+            <FolderIcon sx={{ fontSize: "1rem", marginRight: ".25rem" }} />
+            <Typography variant="small">{convertToTitleCase(directory)}</Typography>
+          </StyledDirectoryButton>
         ))}
-      </Stack>
+      </StyledDirectoryButtonContainer>
     </Stack>
   );
 };

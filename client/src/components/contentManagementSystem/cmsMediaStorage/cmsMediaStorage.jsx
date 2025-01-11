@@ -1,14 +1,22 @@
-import { Button, Stack } from "@mui/material";
 import { useState, useMemo } from "react";
+// MUI
+import { Button, Stack, Typography } from "@mui/material";
+// Components
 import FilesGridView from "./components/filesGridView/filesGridView";
 import FilesTableView from "./components/filesTableView/filesTableView";
 import FileViewToggle from "./components/fileViewToggle/fileViewToggle";
 import AddNewItem from "./components/addNewItem/addNewItem";
-import { useModal } from "../../../setup/context/modal.context";
-import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import InputFieldComponent from "../../inputFields/inputFields";
 import DirectoryExplorer from "./components/directoryExplorer/directoryExplorer";
+// Context
+import { useModal } from "../../../setup/context/modal.context";
+// Utils & Helpers
+import { useRealtimeData } from "../../../hooks/useRealtimeData";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+// icons
+import { Close as CloseIcon } from "@mui/icons-material";
 const CmsMediaStorage = () => {
+  const { isMd } = useMediaQueries();
   const { closeModal } = useModal();
   const [viewMode, setViewMode] = useState("grid");
   const [selectedSubDirectory, setSelectedSubDirectory] = useState("mediaStorage");
@@ -44,23 +52,32 @@ const CmsMediaStorage = () => {
 
   return (
     <div id="media-storage-container" style={{ position: "relative", minHeight: "100vh" }}>
-      <Stack alignItems={"center"} direction="row" justifyContent="space-between">
-        <h2>Media Storage</h2>
-        <Button onClick={closeModal}>X</Button>
+      <Stack alignItems={"center"} direction="row" justifyContent="space-between" mb={4}>
+        <Typography variant="h2" component="h2" mb={0}>
+          Media Storage
+        </Typography>
+        <Button
+          aria-label="close media storage"
+          id="close-media-storage-button"
+          size="circle"
+          color="secondary"
+          variant="contained"
+          onClick={closeModal}
+        >
+          <CloseIcon />
+        </Button>
       </Stack>
       <AddNewItem />
-      <Stack sx={{ marginBlock: "2rem" }} direction="row" spacing={2} alignItems="center">
-        <div style={{ width: "100%" }}>
-          <InputFieldComponent
-            disabled
-            type="text"
-            placeholder="Search here..."
-            sx={{
-              width: "100%",
-              border: "1px dotted red",
-            }}
-          />
-        </div>
+      <Stack my={2} direction={isMd ? "row" : "column"} spacing={2} alignItems="space-between" justifyContent="space-between">
+        <InputFieldComponent
+          disabled
+          type="text"
+          placeholder="Search here..."
+          sx={{
+            width: "100%",
+            border: "1px dotted red",
+          }}
+        />
         <FileViewToggle currentView={viewMode} onViewChange={setViewMode} />
       </Stack>
       <DirectoryExplorer selectedSubDirectory={selectedSubDirectory} setSelectedSubDirectory={setSelectedSubDirectory} />

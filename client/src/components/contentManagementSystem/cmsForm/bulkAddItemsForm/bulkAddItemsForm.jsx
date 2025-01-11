@@ -89,7 +89,13 @@ const BulkAddItemsForm = ({ ...props }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Button variant="contained" color="primary" onClick={handleConfirmData}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleConfirmData}
+            id={`confirm-data-${cmsItemType}-button`}
+            aria-label={`confirm data ${cmsItemType} button`}
+          >
             Confirm Data
           </Button>
         </Box>

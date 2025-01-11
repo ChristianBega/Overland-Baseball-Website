@@ -14,9 +14,11 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {!isEditing && (role === "admin" || role === "coach") && (
           <Button
+            variant="contained"
+            color="secondary"
+            size="small"
             disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
             onClick={() => handleStartEditing(id, values[0])}
-            sx={{ border: "1px solid red", padding: 0 }}
             type="button"
             aria-label="edit item"
           >
@@ -26,9 +28,11 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
         {isEditing && (
           <>
             <Button
+              variant="contained"
+              color="secondary"
+              size="small"
               disabled={!checkForEditChanges() || cmsOperationStatus.loading || cmsOperationStatus.success}
               onClick={() => handleSaveAndUpdateItem(type, id, uploadType)}
-              sx={{ border: "1px solid red", padding: 0 }}
               type="button"
               aria-label="save changes"
             >
@@ -37,7 +41,9 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
             <Button
               disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
               onClick={handleCancelEditing}
-              sx={{ border: "1px solid red", padding: 0 }}
+              variant="contained"
+              color="secondary"
+              size="small"
               type="button"
               aria-label="cancel editing"
             >

@@ -30,11 +30,13 @@ export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
   },
   "&.table-cell-dark": {
     backgroundColor: theme.palette.primary.main,
-    color: theme.palette.text.primary,
+    color: "#fff",
+    // color: theme.palette.text.primary,
   },
   "&.table-cell-accent": {
     backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.text.primary,
+    color: "#fff",
+    // color: theme.palette.text.primary,
   },
   "&.isEditable": {
     textAlign: "left",
@@ -44,9 +46,7 @@ export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
     },
   },
   "&.delete-button-cell": {
-    minWidth: "50px !important",
     padding: "0",
-    backgroundColor: "red",
   },
   "&.table-cell-cms-list-item": {
     textAlign: "center",

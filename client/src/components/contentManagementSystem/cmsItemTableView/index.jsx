@@ -50,7 +50,7 @@ const CmsItemTableView = ({ currentItem }) => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell className="table-header-cell table-header-cell-narrow">
-                    <input
+                    <InputFieldComponent
                       disabled={editableItemData}
                       type="checkbox"
                       checked={displayData?.length > 0 ? displayData?.length === selectedItems?.length : selectedItems?.length > 0}

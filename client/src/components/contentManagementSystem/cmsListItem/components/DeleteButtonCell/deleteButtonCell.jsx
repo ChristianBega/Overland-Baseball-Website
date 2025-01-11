@@ -3,6 +3,7 @@ import { CmsEditItemContext } from "../../../../../setup/context/cmsContext/cmsE
 import { StyledTableCell } from "../../../../../styles/index.styles";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { CmsDeleteItemContext } from "../../../../../setup/context/cmsContext/cmsDelete.context";
+import { Button } from "@mui/material";
 
 const DeleteButtonCell = ({ id, type, values }) => {
   const { cmsOperationStatus, handleCancelEditing } = useContext(CmsEditItemContext);
@@ -10,22 +11,24 @@ const DeleteButtonCell = ({ id, type, values }) => {
 
   return (
     <StyledTableCell className="delete-button-cell">
-      <div
+      <Button
         onClick={() => handleDeleteItem(id, type, values, handleCancelEditing)}
         color="error"
-        type="button"
+        variant="contained"
+        size="small"
         disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
         aria-label="delete item"
-        style={{
-          height: "100%",
+        sx={{
+          height: "136px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           color: "white",
+          borderRadius: "0px",
         }}
       >
         <DeleteIcon />
-      </div>
+      </Button>
     </StyledTableCell>
   );
 };

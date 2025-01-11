@@ -6,8 +6,12 @@ const FileViewToggle = ({ currentView, onViewChange }) => {
   return (
     <Stack direction="row">
       <Button
+        aria-label="grid view"
         sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
         variant="contained"
+        size="medium"
+        id="grid-view-button"
+        color="secondary"
         onClick={() => onViewChange("grid")}
         disabled={currentView === "grid"}
       >
@@ -15,8 +19,12 @@ const FileViewToggle = ({ currentView, onViewChange }) => {
       </Button>
 
       <Button
+        aria-label="list view"
         sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
         variant="contained"
+        size="medium"
+        color="secondary"
+        id="list-view-button"
         onClick={() => onViewChange("list")}
         disabled={currentView === "list"}
       >

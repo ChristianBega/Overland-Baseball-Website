@@ -19,7 +19,8 @@ export const defaultTheme = {
     text: {
       primary: "#1d1d1d",
       secondary: "#ffffffa8",
-      // primary2: "hsl(0, 0%, 100%)",
+
+      secondary2: "hsl(0, 0%, 100%)",
       // secondary2: "hsl(0, 0%, 70%)",
       // disabled: "hsl(0, 0%, 50%)",
     },
@@ -477,6 +478,13 @@ export const defaultTheme = {
           top: "50%", // Center the dropdown icon
           transform: "translateY(-50%)",
         },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+        }),
       },
     },
     MuiInputAdornment: {

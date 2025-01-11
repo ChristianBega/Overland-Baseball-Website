@@ -1,14 +1,23 @@
-import { Button } from "@mui/material";
-import CmsForm from "../cmsForm/cmsForm";
 import { useContext } from "react";
+// Mui
+import { Button, Typography } from "@mui/material";
+// Components
+import CmsForm from "../cmsForm/cmsForm";
+// Context
 import { useModal } from "../../../setup/context/modal.context";
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkActions.context";
 import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
+import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkActions.context";
+// Helpers & Utils
+import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
-
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+// Icons
+import PlusIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import UploadIcon from "@mui/icons-material/Upload";
 const CmsOptionsPanel = () => {
   const { openModal, closeModal } = useModal();
+  const { isMd } = useMediaQueries();
   const { selectedItems, setSelectedItems, selectAll } = useContext(CmsBulkActionContext);
   const { editableItemData } = useContext(CmsEditItemContext);
   const checkAuthorization = useCheckAuthorization();
@@ -16,7 +25,6 @@ const CmsOptionsPanel = () => {
   let type = queryParams.get("type");
   let role = queryParams.get("role");
   let uid = queryParams.get("uid");
-
   const props = {
     cmsItemType: type,
     role: role,
@@ -48,14 +56,38 @@ const CmsOptionsPanel = () => {
 
   return (
     <div style={{ display: "flex", gap: "1rem" }}>
-      <Button disabled={editableItemData} onClick={handleCreate} sx={{ width: "100px", padding: "0rem" }}>
-        <span style={{ fontSize: "12px" }}>Create</span>
+      <Button
+        size={isMd ? "medium" : "small"}
+        variant="contained"
+        color="secondary"
+        disabled={editableItemData}
+        onClick={handleCreate}
+        aria-label={`create ${type} button`}
+        id={`cms-create-${type}-button`}
+      >
+        {isMd ? <Typography variant="small">Create</Typography> : <PlusIcon />}
       </Button>
-      <Button disabled={editableItemData} onClick={handleBulkAdd} sx={{ width: "100px", padding: "0rem" }}>
-        <span style={{ fontSize: "12px" }}>Bulk Add </span>
+      <Button
+        size={isMd ? "medium" : "small"}
+        variant="contained"
+        color="secondary"
+        disabled={editableItemData}
+        onClick={handleBulkAdd}
+        aria-label={`bulk add ${type} button`}
+        id={`cms-bulk-add-${type}-button`}
+      >
+        {isMd ? <Typography variant="small">Bulk Add </Typography> : <UploadIcon />}
       </Button>
-      <Button disabled={selectedItems.length === 0 || editableItemData} onClick={handleDelete} sx={{ width: "100px", padding: "0rem" }}>
-        <span style={{ fontSize: "12px" }}> Delete</span>
+      <Button
+        size={isMd ? "medium" : "small"}
+        variant="contained"
+        color="secondary"
+        disabled={selectedItems.length === 0 || editableItemData}
+        onClick={handleDelete}
+        aria-label={`delete ${type} button`}
+        id={`cms-delete-${type}-button`}
+      >
+        {isMd ? <Typography variant="small">Delete</Typography> : <DeleteIcon />}
       </Button>
     </div>
   );

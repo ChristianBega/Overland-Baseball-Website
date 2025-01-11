@@ -1,11 +1,14 @@
+// Framer Motion
 import { motion } from "framer-motion";
-import { IconBox, MenuItem } from "../index.styles";
 import { itemVariants } from "../../../../../../setup/framerAnimations/dashboardMenu";
+// Styles
+import { IconBox, StyledMenuItem } from "../index.styles";
+// MUI
 import { Typography } from "@mui/material";
 
 const MenuItemComponent = ({ item, index, handleSelectMenuItem, handleMouseEnter, handleMouseLeave, hoveredIndex }) => (
-  <MenuItem
-    component={motion.div}
+  <StyledMenuItem
+    component={motion.li}
     key={index}
     onClick={() => handleSelectMenuItem(item)}
     onMouseEnter={() => handleMouseEnter(index)}
@@ -17,7 +20,7 @@ const MenuItemComponent = ({ item, index, handleSelectMenuItem, handleMouseEnter
   >
     <IconBox sx={{ mr: "1rem" }}>{item.icon}</IconBox>
     <Typography>{item.linkName.charAt(0).toUpperCase() + item.linkName.slice(1)}</Typography>
-  </MenuItem>
+  </StyledMenuItem>
 );
 
 export default MenuItemComponent;
