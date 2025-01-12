@@ -25,6 +25,7 @@ import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.co
 // import { convertToTitleCase } from "../../../setup/utils/helpers/convertText";
 import { StyledTableCell } from "../../../styles/index.styles";
 import CmsTableViewHeader from "./components/cmsTableViewHeader/cmsTableViewHeader";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 
 const CmsItemTableView = ({ currentItem }) => {
   const theme = useTheme();
@@ -32,17 +33,17 @@ const CmsItemTableView = ({ currentItem }) => {
   const { editableItemData } = useContext(CmsEditItemContext);
   const { data: displayData, isLoading, error } = useRealtimeData(currentItem?.linkName?.toLowerCase());
   const currentMenuItemType = currentItem?.linkName || "";
-
+  const { isSm } = useMediaQueries();
   // const tableHeaders = ddisplayData;
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Grid item xs={12} lg={12}>
       <Box sx={{ marginTop: "2rem" }}>
-        <Stack direction={isMobile ? "column" : "row"} justifyContent="space-between" spacing={2} sx={{ marginBottom: "1rem", padding: "1rem" }}>
+        <Stack direction={isSm ? "row" : "column"} justifyContent="space-between" spacing={2} sx={{ marginBottom: "1rem" }}>
           <CmsOptionsPanel />
-          <InputFieldComponent type="text" placeholder="Search..." />
+          <InputFieldComponent type="text" placeholder="Search..." disabled />
         </Stack>
         <div>
           <TableContainer component={Paper} sx={{ maxHeight: 440 }}>

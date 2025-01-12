@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useCheckAuthorization } from "../../utils/helpers/checkAuthorization";
+// Components
 import { handleSaveRename } from "../../../components/contentManagementSystem/cmsMediaStorage/components/fileMenuOptions/fileMenuOptions";
+// Utils & Helpers
+import { useCheckAuthorization } from "../../utils/helpers/checkAuthorization";
 import { updateCMSItem } from "../../utils/firebase/editItem";
-import { UserContext } from "../user.context";
 import { handleUploadFile } from "../../utils/firebase/uploadFile";
+// Contexts
+import { UserContext } from "../user.context";
 
 export const CmsEditItemContext = createContext({
   editableItemId: null,
@@ -133,7 +136,6 @@ export const CmsEditItemProvider = ({ children }) => {
 
   const handleFieldChange = (field) => (event) => {
     if (!checkAuthorization(role)) return;
-
     // Extract the file from the event
     if (event?.target?.type === "file") {
       const file = event.target.files[0];
@@ -151,6 +153,7 @@ export const CmsEditItemProvider = ({ children }) => {
       }));
     }
   };
+
   const checkForEditChanges = () => {
     return JSON.stringify(editableItemData) !== JSON.stringify(originalItemData);
   };

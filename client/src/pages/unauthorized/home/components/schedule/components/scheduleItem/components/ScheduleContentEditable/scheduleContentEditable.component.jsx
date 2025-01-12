@@ -13,7 +13,7 @@ import overland from "../../../../../../../../../assets/homePage/teamLogos/overl
 
 const ScheduleContentEditable = ({ ...props }) => {
   const { isEditable, editableData, handleChange, isCmsItem } = props;
-  const { date, time, location, opponent, opponentIcon } = props.data;
+  const { date, time, location, opponent, opponentIcon } = editableData ?? props.data;
   return (
     <>
       {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}

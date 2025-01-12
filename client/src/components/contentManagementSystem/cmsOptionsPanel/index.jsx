@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // Mui
-import { Button, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 // Components
 import CmsForm from "../cmsForm/cmsForm";
 // Context
@@ -55,7 +55,7 @@ const CmsOptionsPanel = () => {
   };
 
   return (
-    <div style={{ display: "flex", gap: "1rem" }}>
+    <Stack direction="row" spacing={2}>
       <Button
         size={isMd ? "medium" : "small"}
         variant="contained"
@@ -89,7 +89,7 @@ const CmsOptionsPanel = () => {
       >
         {isMd ? <Typography variant="small">Delete</Typography> : <DeleteIcon />}
       </Button>
-    </div>
+    </Stack>
   );
 };
 

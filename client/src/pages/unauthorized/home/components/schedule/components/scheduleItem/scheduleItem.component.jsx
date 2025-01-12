@@ -27,10 +27,10 @@ export default function ScheduleItem({ ...props }) {
       {isEditable || isCmsItem ? (
         renderAsRow ? (
           <StyledTableRow>
-            <ScheduleContentEditable {...props} />
+            <ScheduleContentEditable {...props} {...currentData} />
           </StyledTableRow>
         ) : (
-          <ScheduleContentEditable {...props} />
+          <ScheduleContentEditable {...props} {...currentData} />
         )
       ) : (
         <ScheduleContentViewOnly theme={theme} {...props} formattedDateMonth={formattedDateMonth} formattedDateDay={formattedDateDay} />

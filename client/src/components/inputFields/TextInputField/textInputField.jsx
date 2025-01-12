@@ -7,6 +7,7 @@ const StyledTextField = styled(TextField)(({ inputTextColor }) => ({
 }));
 const TextInputField = ({ ...props }) => {
   // const { label, cssProps, ...rest } = props;
+  console.log("props", props);
   return (
     <>
       {/* <InputLabel sx={{ ...cssProps, fontSize: "14px" }} htmlFor={props.name}>
@@ -18,3 +19,6 @@ const TextInputField = ({ ...props }) => {
 };
 
 export default TextInputField;
+
+
+
