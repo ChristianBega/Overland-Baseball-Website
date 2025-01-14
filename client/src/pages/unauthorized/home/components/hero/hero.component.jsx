@@ -15,7 +15,13 @@ import { styles } from "./hero.styles";
 const Hero = () => {
   const theme = useTheme();
   return (
-    <SectionLayout id="hero" aria-label="Hero Section" component="section" sx={{ backgroundImage: `url(${OverlandLogo})`, ...styles.section }}>
+    <SectionLayout
+      marginZero={true}
+      id="hero"
+      aria-label="Hero Section"
+      component="section"
+      sx={{ backgroundImage: `url(${OverlandLogo})`, ...styles.section }}
+    >
       <Box sx={styles.box}>
         <Typography
           sx={{

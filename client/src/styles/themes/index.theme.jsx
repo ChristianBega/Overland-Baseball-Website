@@ -268,6 +268,13 @@ export const defaultTheme = {
             backgroundColor: "#4CBB17",
           },
         },
+        alternativeSignIn: {
+          border: "1px solid hsl(0, 0%, 90%)",
+          boxShadow: "inset 2px 4px 12px rgba(0, 0, 0, 0.25)",
+          // "&:hover": {
+          //   boxShadow: "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset",
+          // },
+        },
         sizeSmall: {
           fontSize: "14px",
           padding: "6px 12px",

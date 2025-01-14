@@ -1,21 +1,18 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+// React Hook Form
 import { Controller, useForm } from "react-hook-form";
-import signUpInputFields from "./signUpInputFields.config.json";
+// Components
+import AlternativeAuthCta from "../alternativeAuthCta/alternativeAuthCta";
+// MUI
+import { Button, Stack, TextField, Typography, Link as MuiLink } from "@mui/material";
+// Styles
+import { StyledForm } from "../../../../../styles/index.styles";
+// Utils & Hooks
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../../../../setup/utils/firebase/authentication";
-import { Link, useNavigate } from "react-router-dom";
-import FormHeader from "../formHeader/formHeader.component";
-import styled from "@emotion/styled";
-const StyledForm = styled("form")(({ theme }) => ({
-  minHeight: "800px",
-  maxWidth: "600px",
-  margin: "auto",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  gap: "1rem",
-  padding: "1rem",
-}));
+// Config
+import signUpInputFields from "./signUpInputFields.config.json";
+
 const SignUpForm = () => {
   const navigate = useNavigate();
   const {
@@ -57,35 +54,39 @@ const SignUpForm = () => {
 
   return (
     <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-up-form">
-      <FormHeader formHeaderContent={"Sign Up Form"} />
-
-      {signUpInputFields.map((config, index) => (
-        <Controller
-          required
-          key={index + config.name}
-          name={config.name}
-          control={control}
-          rules={config.rules}
-          render={({ field }) => (
-            <TextField
-              id={config.name}
-              placeHolder={config.placeholder}
-              type={config.type}
-              label={config.label}
-              error={errors[config.name]}
-              variant="outlined"
-              helperText={errors.player_name?.message}
-              {...field}
-            />
-          )}
-        />
-      ))}
-      {/* <Link to={"/authentication/password-reset"}>Forgot your password?</Link> */}
-      <Button id="sign-up-form" type="submit">
+      {/* <FormHeader formHeaderContent={"Sign Up Form"} /> */}
+      <Stack direction="column" spacing={2} id="input-field-container" my={2}>
+        {signUpInputFields.map((config, index) => (
+          <Controller
+            required
+            key={index + config.name}
+            name={config.name}
+            control={control}
+            rules={config.rules}
+            render={({ field }) => (
+              <TextField
+                id={config.name}
+                placeHolder={config.placeholder}
+                type={config.type}
+                label={config.label}
+                error={errors[config.name]}
+                variant="outlined"
+                helperText={errors.player_name?.message}
+                {...field}
+              />
+            )}
+          />
+        ))}
+      </Stack>
+      <Button variant="contained" color="secondary" id="sign-up-form" aria-label="Sign Up Form" type="submit" sx={{ mt: 2, mb: 4 }}>
         Sign Up
       </Button>
-      <Typography component="span">
-        Already have an account? <Link to={"/authentication/sign-in"}>Sign In</Link>
+      <AlternativeAuthCta />
+      <Typography component="span" textAlign="center">
+        Already have an account?{" "}
+        <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/sign-in"}>
+          Sign In
+        </MuiLink>
       </Typography>
     </StyledForm>
   );

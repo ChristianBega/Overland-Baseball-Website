@@ -1,8 +1,3 @@
-// import styled from "@emotion/styled";
-// import { Box } from "@mui/material";
-
-// // export const StyledHeroSection = styled(Box)(({ backgroundImage }) => ({}));
-
 export const styles = {
   section: {
     backgroundSize: "cover",

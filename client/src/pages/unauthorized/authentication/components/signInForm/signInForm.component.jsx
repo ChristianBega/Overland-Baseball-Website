@@ -1,22 +1,16 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+// Components
+import AlternativeAuthCta from "../alternativeAuthCta/alternativeAuthCta";
+// MUI
+import { Button, Stack, TextField, Typography, Link as MuiLink } from "@mui/material";
+// React Hook Form
 import { Controller, useForm } from "react-hook-form";
+// Config
 import signInInputFields from "./signInInputFields.config.json";
+// Utils & Hooks
 import { signInAuthWithEmailAndPassword } from "../../../../../setup/utils/firebase/authentication";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
-import FormHeader from "../formHeader/formHeader.component";
-
-const StyledForm = styled("form")(({ theme }) => ({
-  minHeight: "800px",
-  maxWidth: "600px",
-  margin: "auto",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  gap: "1rem",
-  padding: "1rem",
-}));
+import { StyledForm } from "../../../../../styles/index.styles";
 
 const SignInForm = () => {
   const navigate = useNavigate();
@@ -51,40 +45,43 @@ const SignInForm = () => {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-in-form">
-      <FormHeader formHeaderContent={"Sign In Form"} />
-      {signInInputFields.map((config, index) => (
-        <Controller
-          required
-          key={index + config.name}
-          name={config.name}
-          control={control}
-          rules={config.rules}
-          render={({ field }) => (
-            <TextField
-              id={config.name}
-              placeHolder={config.placeholder}
-              type={config.type}
-              label={config.label}
-              error={errors[config.name]}
-              variant="outlined"
-              helperText={errors.player_name?.message}
-              {...field}
-            />
-          )}
-        />
-      ))}
-      <Link to={"/authentication/password-reset"}>Forgot your password?</Link>
-      {/* <Stack>
-        <Button id="sign-up-form" type="submit">
-          Sign In With Google
-        </Button>
-      </Stack> */}
-      <Button id="sign-in-form" type="submit">
+    <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-in-form" aria-label="Sign In Form">
+      <Stack direction="column" spacing={2} id="input-field-container" my={2}>
+        {signInInputFields.map((config, index) => (
+          <Controller
+            required
+            key={index + config.name}
+            name={config.name}
+            control={control}
+            rules={config.rules}
+            render={({ field }) => (
+              <TextField
+                id={config.name}
+                placeHolder={config.placeholder}
+                type={config.type}
+                label={config.label}
+                error={errors[config.name]}
+                variant="outlined"
+                helperText={errors.player_name?.message}
+                {...field}
+              />
+            )}
+          />
+        ))}
+      </Stack>
+      <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/password-reset"} aria-label="Forgot Password Link">
+        Forgot your password?
+      </MuiLink>
+      <Button id="sign-in-form" type="submit" variant="contained" color="secondary" aria-label="Sign In Button" sx={{ mt: 2 }}>
         Sign In
       </Button>
-      <Typography component="span">
-        Don't have an account? <Link to={"/authentication/sign-up"}>Create Account</Link>
+      <AlternativeAuthCta />
+
+      <Typography component="span" variant="span" textAlign="center">
+        Don't have an account?{" "}
+        <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/sign-up"} aria-label="Create Account Link">
+          Register Now
+        </MuiLink>
       </Typography>
     </StyledForm>
   );

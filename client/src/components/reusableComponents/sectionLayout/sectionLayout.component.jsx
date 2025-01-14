@@ -3,10 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Box } from "@mui/material";
 
-const defaultSectionStyles = {
-  marginTop: "5.3125rem",
-};
-
 const SectionLayout = ({ id, ariaLabel, children, ...rest }) => {
   return (
     <Box
@@ -14,10 +10,10 @@ const SectionLayout = ({ id, ariaLabel, children, ...rest }) => {
       id={id}
       aria-label={ariaLabel}
       sx={{
-        ...defaultSectionStyles,
         ...rest.sx,
+        ...(rest?.marginBlock && { marginBlock: "5.3125rem !important" }),
+        ...(rest?.marginZero ? { marginTop: "0" } : { marginTop: "5.3125rem !important" }),
       }}
-      {...rest}
     >
       {children}
     </Box>

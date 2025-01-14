@@ -83,3 +83,10 @@ export const LogoImage = styled(Box)(({ theme }) => ({
     margin: "auto 1.5rem auto 0",
   },
 }));
+
+// Forms
+export const StyledForm = styled("form")(({ theme }) => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+}));
