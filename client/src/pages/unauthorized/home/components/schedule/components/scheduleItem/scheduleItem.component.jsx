@@ -13,7 +13,7 @@ export default function ScheduleItem({ ...props }) {
   const theme = useTheme();
   const { data, isEditable, editableData, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const currentData = isEditable ? editableData : data;
-  const { date } = currentData;
+  const { date } = currentData || {};
   const formattedDate = formatDateToLongString(date);
   const formattedDateMonth = formattedDate.split(" ")[0];
   const formattedDateDay = formattedDate.split(" ")[1];

@@ -7,6 +7,7 @@ const CmsForm = ({ formType, ...props }) => {
     create: React.lazy(() => import("./addItemsForm/addItemsForm")),
     bulkAdd: React.lazy(() => import("./bulkAddItemsForm/bulkAddItemsForm")),
     delete: React.lazy(() => import("./deleteItemsForm/deleteItemsForm")),
+    edit: React.lazy(() => import("./editItemsForm/editItemsForm")),
   };
 
   const FormComponent = formComponents[formType];

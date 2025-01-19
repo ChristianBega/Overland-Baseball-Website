@@ -6,29 +6,37 @@ import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { StyledFormStatusIndicatorContainer } from "./formStatusIndicator.styles";
 
-const FormStatusIndicator = ({ statusMessage, statusCode, loading, error }) => {
+const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, success }) => {
+  // console.log(statusMessage, statusCode, loading, error, success);
   return (
-    <StyledFormStatusIndicatorContainer>
-      {statusCode && statusMessage && (
-        <Stack direction="row" spacing={1}>
-          <CheckCircleIcon />
-          <Typography variant="body1">{statusMessage}</Typography>
-        </Stack>
+    <>
+      {(statusMessage || success || loading || error || success) && (
+        <StyledFormStatusIndicatorContainer>
+          {/*   */}
+          {((statusCode && statusMessage) || success) && (
+            <Stack direction="row" spacing={1}>
+              <CheckCircleIcon />
+              <Typography variant="body1" color="success">
+                {statusMessage}
+              </Typography>
+            </Stack>
+          )}
+          {loading && (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+              <CircularProgress />
+            </Box>
+          )}
+          {error && (
+            <Stack direction="row" spacing={1}>
+              <ErrorIcon />
+              <Typography variant="body1" color="error">
+                Error: {error.message} || {error.response.data.message}
+              </Typography>
+            </Stack>
+          )}
+        </StyledFormStatusIndicatorContainer>
       )}
-      {loading && (
-        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-          <CircularProgress />
-        </Box>
-      )}
-      {error && (
-        <Stack direction="row" spacing={1}>
-          <ErrorIcon />
-          <Typography variant="body1" color="error">
-            Error: {error.message} || {error.response.data.message}
-          </Typography>
-        </Stack>
-      )}
-    </StyledFormStatusIndicatorContainer>
+    </>
   );
 };
 

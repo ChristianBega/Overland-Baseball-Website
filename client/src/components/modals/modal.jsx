@@ -1,9 +1,6 @@
 import React from "react";
 import { Modal, Box, styled } from "@mui/material";
 
-
-
-
 const StyledModalContainer = styled(Box)(({ theme, modalType, isCmsForm }) => ({
   position: "absolute",
   top: "50%",
@@ -32,7 +29,8 @@ const StyledModal = styled(Modal)(({ theme }) => ({
 }));
 
 const ModalComponent = ({ isOpen, onToggle, children, modalType }) => {
-  const isCmsForm = modalType === "cmsFormCreate" || modalType === "cmsFormBulkAdd" || modalType === "cmsFormBulkDelete";
+  const isCmsForm =
+    modalType === "cmsFormCreate" || modalType === "cmsFormBulkAdd" || modalType === "cmsFormBulkDelete" || modalType === "cmsFormEditMobile";
   return (
     <StyledModal open={isOpen} onClose={onToggle}>
       <StyledModalContainer modalType={modalType} isCmsForm={isCmsForm}>

@@ -31,9 +31,11 @@ import { UserContext } from "../../../setup/context/user.context";
 import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkActions.context";
 // Utils & Helpers
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();
+  const { isLg } = useMediaQueries();
   let type = queryParams.get("type");
   const { currentUserProfile } = useContext(UserContext);
   const { editableItemId, editableItemData, handleFieldChange, cmsOperationStatus } = useContext(CmsEditItemContext);
@@ -41,7 +43,7 @@ const CmsListItem = ({ values, id }) => {
   const { role } = currentUserProfile;
   const isEditing = editableItemId === id;
   const isItemSelected = selectedItems.some((item) => item.id === id);
-
+  const isEditingNew = isEditing && isLg;
   const commonTableCellProps = {
     id: id,
     values: values,
@@ -75,12 +77,19 @@ const CmsListItem = ({ values, id }) => {
     <>
       <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
         <CheckboxCell isSelected={isItemSelected} {...commonTableCellProps} />
-        {isEditing && (role === "admin" || role === "coach") && <DeleteButtonCell {...commonTableCellProps} />}
+        {isEditingNew && (role === "admin" || role === "coach") && <DeleteButtonCell {...commonTableCellProps} />}
         {renderEditableCmsItem()}
+
         <ActionButtonsCell isEditing={isEditing} {...commonTableCellProps} />
       </TableRow>
     </>
   );
 };
-
 export default CmsListItem;
+
+{
+  /* if i close the modal with the X, it resets the state, and rests the editableItemData. So if i keep clicking it doesnt prefill the data. meaning the state is never set for the editableItemData. */
+}
+{
+  /* if i click off the modal and close it, thise doesn't reset the state, so when i reclick the edit button, it does prefill the data....  */
+}

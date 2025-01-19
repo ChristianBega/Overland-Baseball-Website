@@ -8,39 +8,44 @@ import { LogoImage, StyledTableCell } from "../../../../../../../../../styles/in
 // Utils & Helpers
 import { formatDate } from "../../../../../../../../../setup/utils/helpers/formatDate";
 import { convertTo24HourFormat } from "../../../../../../../../../setup/utils/helpers/convertTo24HourFormat";
+import useMediaQueries from "../../../../../../../../../setup/utils/helpers/useMediaQueries.utils";
 // Assets
 import overland from "../../../../../../../../../assets/homePage/teamLogos/overland.webp";
 
 const ScheduleContentEditable = ({ ...props }) => {
   const { isEditable, editableData, handleChange, isCmsItem } = props;
   const { date, time, location, opponent, opponentIcon } = editableData ?? props.data;
+  const { isSm, isLg, isMd } = useMediaQueries();
+  const isEditableNew = isEditable && isMd;
   return (
     <>
-      {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
-      <StyledTableCell
-        isCmsItem={isCmsItem}
-        className={`table-cell-dark ${isEditable ? "isEditable" : ""}`}
-        sx={{
-          flex: "1 0 10%",
-        }}
-      >
-        {isEditable ? (
-          <InputFieldComponent cssProps={{ color: "#fff" }} label="Date" onChange={handleChange("date")} type="date" value={formatDate(date)} />
-        ) : (
-          <Typography component="p">{date}</Typography>
-        )}
-        {isEditable ? (
-          <InputFieldComponent
-            cssProps={{ color: "#fff" }}
-            label="Time"
-            onChange={handleChange("time")}
-            type="time"
-            value={convertTo24HourFormat(time)}
-          />
-        ) : (
-          <Typography component="p">{time}</Typography>
-        )}
-      </StyledTableCell>
+      {!isEditableNew && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
+      {isSm && (
+        <StyledTableCell
+          isCmsItem={isCmsItem}
+          className={`table-cell-dark ${isEditableNew ? "isEditable" : ""}`}
+          sx={{
+            flex: "1 0 10%",
+          }}
+        >
+          {isEditableNew ? (
+            <InputFieldComponent cssProps={{ color: "#fff" }} label="Date" onChange={handleChange("date")} type="date" value={formatDate(date)} />
+          ) : (
+            <Typography component="p">{date}</Typography>
+          )}
+          {isEditableNew ? (
+            <InputFieldComponent
+              cssProps={{ color: "#fff" }}
+              label="Time"
+              onChange={handleChange("time")}
+              type="time"
+              value={convertTo24HourFormat(time)}
+            />
+          ) : (
+            <Typography component="p">{time}</Typography>
+          )}
+        </StyledTableCell>
+      )}
 
       <StyledTableCell isCmsItem={isCmsItem} sx={{ flex: "2 0 25%" }}>
         <LogoImage component="img" src={overland} />
@@ -50,8 +55,8 @@ const ScheduleContentEditable = ({ ...props }) => {
         {location !== "Overland High" ? "@" : "Vs"}
       </StyledTableCell>
 
-      <StyledTableCell isCmsItem={isCmsItem} className={`table-cell ${isEditable ? "isEditable" : ""}`}>
-        {isEditable ? (
+      <StyledTableCell isCmsItem={isCmsItem} className={`table-cell ${isEditableNew ? "isEditable" : ""}`}>
+        {isEditableNew ? (
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <LogoImage className="logo-image-opponent" component="img" src={opponentIcon} />
             <Stack direction="column">
@@ -68,28 +73,30 @@ const ScheduleContentEditable = ({ ...props }) => {
           <LogoImage component="img" src={opponentIcon} />
         )}
       </StyledTableCell>
+      {isSm && (
+        <StyledTableCell
+          isCmsItem={isCmsItem}
+          className={`${isEditableNew ? "isEditable" : ""}`}
+          sx={{
+            flex: "3 0 30%",
+            textAlign: !isEditableNew ? "center" : "left",
+          }}
+        >
+          <Stack>
+            {isEditableNew ? (
+              <InputFieldComponent label="Opponent Name" onChange={handleChange("opponent")} type="text" value={opponent} />
+            ) : (
+              <Typography component="span">Opponent: {opponent}</Typography>
+            )}
+            {isEditableNew ? (
+              <InputFieldComponent label="Game Location" onChange={handleChange("location")} type="text" value={location} />
+            ) : (
+              <Typography component="span">Location: {location}</Typography>
+            )}
+          </Stack>
+        </StyledTableCell>
+      )}
 
-      <StyledTableCell
-        isCmsItem={isCmsItem}
-        className={`${isEditable ? "isEditable" : ""}`}
-        sx={{
-          flex: "3 0 30%",
-          textAlign: !isEditable ? "center" : "left",
-        }}
-      >
-        <Stack>
-          {isEditable ? (
-            <InputFieldComponent label="Opponent Name" onChange={handleChange("opponent")} type="text" value={opponent} />
-          ) : (
-            <Typography component="span">Opponent: {opponent}</Typography>
-          )}
-          {isEditable ? (
-            <InputFieldComponent label="Game Location" onChange={handleChange("location")} type="text" value={location} />
-          ) : (
-            <Typography component="span">Location: {location}</Typography>
-          )}
-        </Stack>
-      </StyledTableCell>
       {/* {!isEditable ? <StyledTableCell>{null}</StyledTableCell> : null} */}
     </>
   );
