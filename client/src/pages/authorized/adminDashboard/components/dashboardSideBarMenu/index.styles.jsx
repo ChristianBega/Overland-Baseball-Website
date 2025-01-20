@@ -45,11 +45,12 @@ export const StyledMenuList = styled(List)(({ theme, isOpen }) => ({
   backgroundColor: theme.palette.primary.main,
 }));
 
-export const StyledMenuItem = styled(ListItem)({
+export const StyledMenuItem = styled(ListItem)(({ isDisabled }) => ({
   color: "#fff",
   display: "flex",
   justifyContent: "flex-start",
   alignItems: "center",
   padding: "1rem",
-  cursor: "pointer",
-});
+  opacity: isDisabled ? 0.5 : 1,
+  cursor: isDisabled ? "not-allowed" : "pointer",
+}));

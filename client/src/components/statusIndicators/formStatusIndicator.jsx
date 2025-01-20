@@ -7,13 +7,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { StyledFormStatusIndicatorContainer } from "./formStatusIndicator.styles";
 
 const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, success }) => {
-  // console.log(statusMessage, statusCode, loading, error, success);
   return (
     <>
       {(statusMessage || success || loading || error || success) && (
         <StyledFormStatusIndicatorContainer>
-          {/*   */}
-          {((statusCode && statusMessage) || success) && (
+          {((statusCode && statusMessage) || (success && statusMessage)) && (
             <Stack direction="row" spacing={1}>
               <CheckCircleIcon />
               <Typography variant="body1" color="success">

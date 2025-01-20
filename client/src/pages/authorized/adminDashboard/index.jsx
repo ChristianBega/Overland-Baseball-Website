@@ -11,6 +11,7 @@ import { MediaStorageProvider } from "../../../setup/context/cmsContext/mediaSto
 import CmsItemTableView from "../../../components/contentManagementSystem/cmsItemTableView";
 import { CmsContext } from "../../../setup/context/cmsContext/cms.context";
 import { CmsDeleteItemProvider } from "../../../setup/context/cmsContext/cmsDelete.context";
+import { ModalProvider } from "../../../setup/context/modal.context";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 
@@ -33,7 +34,9 @@ const AdminDashboardPage = () => {
               <CmsCreateItemProvider>
                 <CmsEditItemProvider>
                   <CmsDeleteItemProvider>
-                    {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
+                    <ModalProvider>
+                      {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
+                    </ModalProvider>
                   </CmsDeleteItemProvider>
                 </CmsEditItemProvider>
               </CmsCreateItemProvider>

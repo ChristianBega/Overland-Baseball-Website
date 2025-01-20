@@ -28,11 +28,17 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   },
 }));
 
-const ModalComponent = ({ isOpen, onToggle, children, modalType }) => {
+const ModalComponent = ({ isOpen, onToggle, children, modalType, onClose }) => {
   const isCmsForm =
     modalType === "cmsFormCreate" || modalType === "cmsFormBulkAdd" || modalType === "cmsFormBulkDelete" || modalType === "cmsFormEditMobile";
   return (
-    <StyledModal open={isOpen} onClose={onToggle}>
+    <StyledModal
+      open={isOpen}
+      onClose={() => {
+        onToggle();
+        if (onClose) onClose();
+      }}
+    >
       <StyledModalContainer modalType={modalType} isCmsForm={isCmsForm}>
         {children}
       </StyledModalContainer>

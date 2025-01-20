@@ -1,22 +1,27 @@
+// MUI
 import { Box, Button } from "@mui/material";
+// Styles
 import { StyledTableCell } from "../../../../../styles/index.styles";
+// Icons
 import { Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
+// Context
 import { useContext } from "react";
 import { CmsEditItemContext } from "../../../../../setup/context/cmsContext/cmsEdit.context";
 import { UserContext } from "../../../../../setup/context/user.context";
-import CmsForm from "../../../cmsForm/cmsForm";
 import { useModal } from "../../../../../setup/context/modal.context";
-// import { CmsBulkActionContext } from "../../../../../setup/context/cmsContext/cmsBulkActions.context";
-import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQueryParams";
+// Components
+import CmsForm from "../../../cmsForm/cmsForm";
+// Utils
 import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
+// Hooks
+import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQueryParams";
 const ActionButtonsCell = ({ isEditing, id, values, type }) => {
-  const { isLg, isMd } = useMediaQueries();
+  const { isMd } = useMediaQueries();
   const { openModal, closeModal } = useModal();
   const { currentUserProfile } = useContext(UserContext);
   const { role } = currentUserProfile;
   const { handleStartEditing, handleCancelEditing, checkForEditChanges, cmsOperationStatus, handleSaveAndUpdateItem, uploadType } =
     useContext(CmsEditItemContext);
-  // const { selectedItems, setSelectedItems, selectAll } = useContext(CmsBulkActionContext);
   const isEditingNew = isEditing && isMd;
 
   let queryParams = useUrlQueryParams();
@@ -27,26 +32,18 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
       cmsItemType: type,
       role: role,
       uid: uid,
+      editableItemData: values,
       closeModal: handleMobileCancelEditing,
-      // selectedItems: selectedItems,
-      // setSelectedItems: setSelectedItems,
-      // saveAndUpdateItem: handleSaveAndUpdateItem,
-      // cmsOperationStatus: cmsOperationStatus,
-      // uploadType: uploadType,
-      // handleChange: handleFieldChange,
     };
-    //! cmsEdit.context does not work outside of the admin dashboard, the modal provider lies outside of the admin dashboard, so when we pass the cmsEdit content to the Modal, it does not access the context properly....
-    // easiest solution is to create a local state to replace the cmsEdit.context????
+
     handleStartEditing(id, values[0]);
-    openModal(<CmsForm formType="edit" {...props} />, "cmsFormEditMobile");
+    openModal(<CmsForm formType="edit" {...props} />, "cmsFormEditMobile", handleMobileCancelEditing);
   };
 
   const handleMobileCancelEditing = () => {
-    closeModal();
     handleCancelEditing();
+    closeModal();
   };
-
-  // TODO: we need to add logic for when a user clicks out of the modal to do the same as the handleMobileCancelEditing. right now if i click off the modal the modal never closes and handleCancelEditing is never called. Which results in the user being stuck in edit mode.
 
   return (
     <StyledTableCell className="table-header-cell-narrow">

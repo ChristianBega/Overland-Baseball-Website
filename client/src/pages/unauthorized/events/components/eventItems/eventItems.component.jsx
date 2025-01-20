@@ -21,7 +21,7 @@ export default function EventItems({ ...props }) {
   const theme = useTheme();
 
   const currentData = isEditable ? editableData : data;
-  const { eventName, location, date, time } = currentData;
+  const { eventName, location, date, time } = currentData || {};
 
   if (isLoading || isError || isSuccess) {
     return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;

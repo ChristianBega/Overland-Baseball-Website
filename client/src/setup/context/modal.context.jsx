@@ -18,8 +18,8 @@ export const ModalProvider = ({ children }) => {
   const [file, setFile] = useState(null); // File state
   const [modalType, setModalType] = useState(null);
 
-  const openModal = (content, modalType) => {
-    setModalContent((prevStack) => [...prevStack, content]);
+  const openModal = (content, modalType, onClose) => {
+    setModalContent((prevStack) => [...prevStack, { content, onClose }]);
     setModalType(modalType);
   };
 
@@ -42,8 +42,8 @@ export const ModalProvider = ({ children }) => {
     <QueryClientProvider client={queryClient}>
       <ModalContext.Provider value={{ openModal, closeModal, closeAllModals, preview, setPreview, file, setFile }}>
         {children}
-        {modalContent.map((content, index) => (
-          <ModalComponent modalType={modalType} key={index} isOpen={true} onToggle={() => closeModal()} zIndex={1000 + index}>
+        {modalContent.map(({ content, onClose }, index) => (
+          <ModalComponent modalType={modalType} key={index} isOpen={true} onToggle={() => closeModal()} onClose={onClose} zIndex={1000 + index}>
             {content}
           </ModalComponent>
         ))}

@@ -54,7 +54,7 @@ export default function TeamRoosterItem({
 }) {
   const theme = useTheme();
   const currentData = isEditable ? editableData : data;
-  const { position, height, weight, handed, number, name, year, yearAbbr, playerImage } = currentData;
+  const { position, height, weight, handed, number, name, year, yearAbbr, playerImage } = currentData || {};
 
   const isMobile_XS = useMediaQuery(theme.breakpoints.only("xs"));
   if (isLoading || isError || isSuccess) {

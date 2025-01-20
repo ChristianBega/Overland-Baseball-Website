@@ -20,11 +20,11 @@ import { containerVariants } from "../../../../../setup/framerAnimations/dashboa
 import useMenuLogic from "./hooks/useMenuLogic";
 
 const menuListItems = [
-  { linkName: "dashboard", urlPath: "/", icon: <DashboardIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "schedule", urlPath: "/", icon: <DateRangeIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "roster", urlPath: "/", icon: <FormatListNumberedIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "events", urlPath: "/", icon: <EventIcon sx={{ fontSize: "20px" }} /> },
-  { linkName: "documents", urlPath: "/", icon: <TopicIcon sx={{ fontSize: "20px" }} /> },
+  { linkName: "dashboard", urlPath: "/", icon: <DashboardIcon sx={{ fontSize: "20px" }} />, disabled: false },
+  { linkName: "schedule", urlPath: "/", icon: <DateRangeIcon sx={{ fontSize: "20px" }} />, disabled: false },
+  { linkName: "roster", urlPath: "/", icon: <FormatListNumberedIcon sx={{ fontSize: "20px" }} />, disabled: false },
+  { linkName: "events", urlPath: "/", icon: <EventIcon sx={{ fontSize: "20px" }} />, disabled: false },
+  { linkName: "documents", urlPath: "/", icon: <TopicIcon sx={{ fontSize: "20px" }} />, disabled: true },
   // { linkName: "sponsors", urlPath: "/", icon: <VolunteerActivismIcon sx={{ fontSize: "20px" }} /> },
   // { linkName: "quick links", urlPath: "/", icon: <LinkIcon sx={{ fontSize: "20px" }} /> },
 ];
@@ -72,6 +72,7 @@ const DashboardSideBarMenu = () => {
                 handleMouseEnter={handleMouseEnter}
                 handleMouseLeave={handleMouseLeave}
                 hoveredIndex={hoveredIndex}
+                isDisabled={item.disabled}
               />
             ))}
           </StyledMenuList>
