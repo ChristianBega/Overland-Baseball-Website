@@ -9,6 +9,12 @@ export const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    "@media (min-width: 900px)": {
+      height: "750px",
+    },
+    "@media (min-width: 1200px)": {
+      height: "85vh",
+    },
   },
 
   box: {

@@ -22,33 +22,35 @@ const Hero = () => {
       component="section"
       sx={{ backgroundImage: `url(${OverlandLogo})`, ...styles.section }}
     >
-      <Box sx={styles.box}>
-        <Typography
-          sx={{
-            ...styles.typography,
-            filter: `drop-shadow(0px 0px 2px ${theme.palette.accent.accentThree})`,
-          }}
-          variant="h1"
-          component="h1"
-          gutterBottom
-        >
-          <span style={{ fontSize: "75%" }}>Overland</span> <br /> Trailblazers
-        </Typography>
+      <Box sx={{ maxWidth: 700, margin: "0 auto" }}>
+        <Box sx={styles.box}>
+          <Typography
+            sx={{
+              ...styles.typography,
+              filter: `drop-shadow(0px 0px 2px ${theme.palette.accent.accentThree})`,
+            }}
+            variant="h1"
+            component="h1"
+            gutterBottom
+          >
+            <span style={{ fontSize: "75%" }}>Overland</span> <br /> Trailblazers
+          </Typography>
 
-        <img src={OverlandLogo1} alt="Overland Trailblazers Logo" style={styles.image} />
+          <img src={OverlandLogo1} alt="Overland Trailblazers Logo" style={styles.image} />
+        </Box>
+        <Typography variant="body1" sx={styles.text}>
+          Welcome to the official site of the Overland Trailblazers Baseball Team! <br />
+          Find game schedules, events & news, and ways to support our players. Start exploring below!
+        </Typography>
+        <Stack spacing={2} mt={4} sx={styles.stack}>
+          <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up" size="large">
+            Sign Up For Blazer Update
+          </Button>
+          <Button variant="outlined" color="secondary" component={HashLink} to="/#contact-us-section" size="large">
+            Get In Contact With Us
+          </Button>
+        </Stack>
       </Box>
-      <Typography variant="body1" sx={styles.text}>
-        Welcome to the official site of the Overland Trailblazers Baseball Team! <br />
-        Find game schedules, events & news, and ways to support our players. Start exploring below!
-      </Typography>
-      <Stack spacing={2} mt={4} sx={styles.stack}>
-        <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up">
-          Sign Up For Blazer Update
-        </Button>
-        <Button variant="outlined" color="secondary" component={HashLink} to="/#contact-us-section">
-          Get In Contact With Us
-        </Button>
-      </Stack>
     </SectionLayout>
   );
 };
