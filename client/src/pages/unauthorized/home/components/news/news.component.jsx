@@ -48,10 +48,8 @@ export default function News() {
         </Grid>
       )}
     </>
+    /* <StyledSocialBox>
+            <Socials />
+          </StyledSocialBox> */
   );
-}
-{
-  /* <StyledSocialBox>
-          <Socials />
-        </StyledSocialBox> */
 }

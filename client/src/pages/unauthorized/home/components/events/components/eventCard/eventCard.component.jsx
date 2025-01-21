@@ -34,51 +34,53 @@ const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => 
   };
 
   return (
-    <Grid item xs={12}>
-      <Card
-        key={index}
-        variant={selectedCardIndex === index ? "events-main" : "events-secondary"}
-        sx={{ backgroundImage: `url(${card?.image})` }}
-        onClick={handleCardClick}
-      >
-        <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end", zIndex: 1 }}>
-          {card.cta.map((cta, index) => (
-            <React.Fragment key={index}>
-              {Object.entries(cta).map(([key, value]) => {
-                return (
-                  <Button
-                    data-startDateTime={card.startDateTime}
-                    data-endDateTime={card.endDateTime}
-                    data-eventTitle={card.title}
-                    data-eventDate={card.date}
-                    data-eventLocation={card.location.locationAddress}
-                    data-eventValue={JSON.stringify(value)}
-                    onClick={handleEventButtonClick}
-                    key={key}
-                    variant="contained"
-                    color="secondary"
-                    size="card"
-                    startIcon={key === "date" ? <CalendarMonthIcon /> : <LocationOnIcon />}
-                  >
-                    {key === "date" ? formatDateTimeForCalendar(value.startDateTime) : value.location}
-                  </Button>
-                );
-              })}
-            </React.Fragment>
-          ))}
-        </Stack>
-        <CardContent sx={{ color: "#fff", zIndex: 1 }}>
-          <Typography variant="h3" component="h3" gutterBottom={selectedCardIndex === index}>
-            {card.title}
-          </Typography>
-          {selectedCardIndex === index && (
-            <StyledDescriptionText cardType="main" variant="body2" component="p">
-              {card.description}
-            </StyledDescriptionText>
-          )}
-        </CardContent>
-      </Card>
-    </Grid>
+    <>
+      <Grid item xs={12} md={selectedCardIndex === index && 6}>
+        <Card
+          key={index}
+          variant={selectedCardIndex === index ? "events-main" : "events-secondary"}
+          sx={{ backgroundImage: `url(${card?.image})` }}
+          onClick={handleCardClick}
+        >
+          <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end", zIndex: 1 }}>
+            {card.cta.map((cta, index) => (
+              <React.Fragment key={index}>
+                {Object.entries(cta).map(([key, value]) => {
+                  return (
+                    <Button
+                      data-startDateTime={card.startDateTime}
+                      data-endDateTime={card.endDateTime}
+                      data-eventTitle={card.title}
+                      data-eventDate={card.date}
+                      data-eventLocation={card.location.locationAddress}
+                      data-eventValue={JSON.stringify(value)}
+                      onClick={handleEventButtonClick}
+                      key={key}
+                      variant="contained"
+                      color="secondary"
+                      size="card"
+                      startIcon={key === "date" ? <CalendarMonthIcon /> : <LocationOnIcon />}
+                    >
+                      {key === "date" ? formatDateTimeForCalendar(value.startDateTime) : value.location}
+                    </Button>
+                  );
+                })}
+              </React.Fragment>
+            ))}
+          </Stack>
+          <CardContent sx={{ color: "#fff", zIndex: 1 }}>
+            <Typography variant="h3" component="h3" gutterBottom={selectedCardIndex === index}>
+              {card.title}
+            </Typography>
+            {selectedCardIndex === index && (
+              <StyledDescriptionText cardType="main" variant="body2" component="p">
+                {card.description}
+              </StyledDescriptionText>
+            )}
+          </CardContent>
+        </Card>
+      </Grid>
+    </>
   );
 };
 

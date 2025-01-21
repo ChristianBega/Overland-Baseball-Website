@@ -15,6 +15,8 @@ import cardImgTwo from "../../../../../assets/homePage/events/card-img-2.svg";
 import cardImgThree from "../../../../../assets/homePage/events/card-img-3.svg";
 import cardImgFour from "../../../../../assets/homePage/events/card-img-4.svg";
 
+import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
+
 const images = {
   cardImgOne,
   cardImgTwo,
@@ -28,6 +30,7 @@ const events = cardMockData.map((event) => ({
 }));
 
 const Events = () => {
+  const { isMd } = useMediaQueries();
   const theme = useTheme();
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
 
@@ -46,10 +49,39 @@ const Events = () => {
         <Typography component="p" mb={4}>
           {highlightedText}
         </Typography>
-        <Grid container rowSpacing={4}>
-          {events.map((card, index) => (
-            <EventCard key={index} card={card} index={index} selectedCardIndex={selectedCardIndex} setSelectedCardIndex={setSelectedCardIndex} />
-          ))}
+        <Grid container rowSpacing={4} columnSpacing={2}>
+          {isMd ? (
+            <>
+              <EventCard
+                key={selectedCardIndex}
+                card={events[selectedCardIndex]}
+                index={selectedCardIndex}
+                selectedCardIndex={selectedCardIndex}
+                setSelectedCardIndex={setSelectedCardIndex}
+              />
+
+              <Grid item md={6}>
+                <Grid container rowSpacing={2}>
+                  {events.map((card, index) => {
+                    if (index !== selectedCardIndex) {
+                      return (
+                        <Grid item xs={12} key={index}>
+                          <EventCard card={card} index={index} selectedCardIndex={selectedCardIndex} setSelectedCardIndex={setSelectedCardIndex} />
+                        </Grid>
+                      );
+                    }
+                    return null;
+                  })}
+                </Grid>
+              </Grid>
+            </>
+          ) : (
+            <>
+              {events.map((card, index) => (
+                <EventCard key={index} card={card} index={index} selectedCardIndex={selectedCardIndex} setSelectedCardIndex={setSelectedCardIndex} />
+              ))}
+            </>
+          )}
         </Grid>
       </SectionLayout>
     </Grid>

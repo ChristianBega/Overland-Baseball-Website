@@ -300,7 +300,7 @@ export const defaultTheme = {
         },
         sizeCard: {
           padding: "4px 10px",
-          maxWidth: "160px",
+          maxWidth: "180px",
           fontWeight: "300",
           fontSize: "14px",
           lineHeight: "18px",
@@ -311,10 +311,11 @@ export const defaultTheme = {
             fontSize: "14px",
             "& svg": {
               fontSize: "1rem",
-              color: "red",
             },
           },
-          "@media (min-width: 800px)": {
+          "@media (min-width: 900px)": {
+            maxWidth: "190px",
+            padding: "8px 14px",
             fontSize: "16px",
             "& svg": {
               fontSize: "1.2rem",
@@ -633,6 +634,9 @@ export const defaultTheme = {
               background: "radial-gradient(circle, #d9d9d932 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
               opacity: 0.5,
             },
+            "@media (min-width: 900px)": {
+              height: "100%",
+            },
           },
         },
         {
@@ -648,6 +652,14 @@ export const defaultTheme = {
               height: "100%",
               background: "radial-gradient(circle, #d9d9d932 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
               opacity: 0.5,
+            },
+            "@media (min-width: 900px)": {
+              minHeight: "125px",
+              height: "100%",
+            },
+            "@media (min-width: 1200px)": {
+              minHeight: "150px",
+              height: "100%",
             },
           },
         },
