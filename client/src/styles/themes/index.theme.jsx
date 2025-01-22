@@ -315,7 +315,7 @@ export const defaultTheme = {
           },
           "@media (min-width: 900px)": {
             maxWidth: "190px",
-            padding: "8px 14px",
+            // padding: "8px 12px",
             fontSize: "16px",
             "& svg": {
               fontSize: "1.2rem",
@@ -636,6 +636,7 @@ export const defaultTheme = {
             },
             "@media (min-width: 900px)": {
               height: "100%",
+              padding: "1.5rem",
             },
           },
         },
@@ -654,11 +655,12 @@ export const defaultTheme = {
               opacity: 0.5,
             },
             "@media (min-width: 900px)": {
-              minHeight: "125px",
+              minHeight: "135px",
               height: "100%",
+              padding: "1rem",
             },
             "@media (min-width: 1200px)": {
-              minHeight: "150px",
+              // minHeight: "135px",
               height: "100%",
             },
           },

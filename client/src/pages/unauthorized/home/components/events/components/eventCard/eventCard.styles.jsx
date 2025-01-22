@@ -11,4 +11,8 @@ export const StyledDescriptionText = styled(Typography)(({ theme }) => ({
   background: "linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0.4))",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
+  "@media (min-width: 900px)": {
+    maxHeight: "6em",
+    WebkitLineClamp: 6,
+  },
 }));
