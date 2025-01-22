@@ -6,14 +6,19 @@ import { LogoImage } from "../../../../../../../../../styles/index.styles";
 import overland from "../../../../../../../../../assets/overlandLogo2.webp";
 // Icons
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Groups3Icon from "@mui/icons-material/Groups3";
 // Styles
 import { StyledLogoStack, StyledScheduleItemContainer, StyledDateStack, StyledLocationLink } from "./scheduleContentViewOnly.styles";
 import { formatDateString } from "../../../../../../../../../setup/utils/helpers/formatDate";
 import { convertTo12HourFormat } from "../../../../../../../../../setup/utils/helpers/convertTo24HourFormat";
+import useMediaQueries from "../../../../../../../../../setup/utils/helpers/useMediaQueries.utils";
 
+const logoStyles = { width: { sm: "65px", xs: "50px" }, height: { sm: "65px", xs: "50px" } };
+const logoDividerStyles = { color: "#fff" };
 const ScheduleContentViewOnly = ({ ...props }) => {
   const { formattedDateMonth, formattedDateDay } = props;
-  const { time, location, opponentIcon, home, date } = props.data;
+  const { time, location, opponentIcon, home, date, opponent } = props.data;
+  const { isSm, isMd } = useMediaQueries();
   // ! move this logic into a handleNavigatingToCalendarOrMap func
   const handleScheduleItemClick = (event) => {
     if (event.currentTarget.id === "schedule-location") {
@@ -50,16 +55,41 @@ const ScheduleContentViewOnly = ({ ...props }) => {
               {convertTo12HourFormat(time)}
             </Typography>
           </StyledDateStack>
-          <Stack justifyContent="center" alignItems="center" sx={{ width: "100%" }}>
-            <StyledLogoStack direction="row" alignItems="center" spacing={2} mb={1}>
-              <LogoImage component="img" src={overland} sx={{ width: "50px", height: "50px" }} />
-              {home ? <p style={{ color: "#fff" }}>@</p> : <p style={{ color: "#fff" }}>VS</p>}
-              <LogoImage component="img" src={opponentIcon} sx={{ width: "50px", height: "50px" }} />
+          <Stack
+            direction={isSm ? "row" : "column"}
+            justifyContent={isSm ? "space-evenly" : "flex-start"}
+            alignItems={"center"}
+            sx={{ width: "100%" }}
+          >
+            <StyledLogoStack direction="row" alignItems="center" spacing={isMd ? 4 : 3} mb={1}>
+              <LogoImage component="img" src={overland} sx={logoStyles} />
+              {home ? (
+                <Typography variant="h5" component="span" sx={logoDividerStyles}>
+                  @
+                </Typography>
+              ) : (
+                <Typography variant="h5" component="span" sx={logoDividerStyles}>
+                  VS
+                </Typography>
+              )}
+              <LogoImage component="img" src={opponentIcon} sx={logoStyles} />
             </StyledLogoStack>
-            <Stack alignItems="center" sx={{ textAlign: "center", width: "90%" }}>
-              <StyledLocationLink id={"schedule-location"} onClick={handleScheduleItemClick} className="ellipsisText-2" variant="highlighted">
-                <LocationOnIcon sx={{ fontSize: "14px" }} /> {location}
+            <Stack alignItems="center" sx={{ textAlign: "center", width: isSm ? "auto" : "90%" }}>
+              <StyledLocationLink
+                id={"schedule-location"}
+                onClick={handleScheduleItemClick}
+                className={!isSm && "ellipsisText-2"}
+                variant="highlighted"
+              >
+                {isMd ? "Location:" : <LocationOnIcon sx={{ fontSize: { xs: "1rem", md: "1.2rem" } }} />}
+                {location}
               </StyledLocationLink>
+
+              {isSm && (
+                <Typography variant="body1" component="span" sx={{ color: "#fff", display: "flex", alignItems: "center", gap: ".25rem" }}>
+                  {isMd ? "Opponent Name:" : <Groups3Icon sx={{ fontSize: { sm: "1rem", md: "1.2rem" } }} />} {opponent}
+                </Typography>
+              )}
             </Stack>
           </Stack>
         </StyledScheduleItemContainer>

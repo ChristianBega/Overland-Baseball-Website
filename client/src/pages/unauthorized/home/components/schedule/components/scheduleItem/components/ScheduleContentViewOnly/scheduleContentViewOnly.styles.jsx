@@ -19,18 +19,24 @@ export const StyledLogoStack = styled(Stack)({
   paddingInline: ".5rem",
 });
 
-export const StyledDateStack = styled(Stack)({
+export const StyledDateStack = styled(Stack)(({ theme }) => ({
   direction: "column",
   justifyContent: "center",
   alignItems: "center",
   height: "65px",
-  minWidth: "110px",
+  minWidth: "115px",
   borderRight: "1px solid hsl(0, 0%, 90%)",
   padding: "0.5rem",
   color: "#fff",
-});
+  [theme.breakpoints.up("sm")]: {
+    minWidth: "125px",
+  },
+  [theme.breakpoints.up("md")]: {
+    minWidth: "165px",
+  },
+}));
 
-export const StyledLocationLink = styled(Link)({
+export const StyledLocationLink = styled(Link)(({ theme }) => ({
   color: "#fff",
   fontSize: "12px",
   display: "flex",
@@ -39,4 +45,7 @@ export const StyledLocationLink = styled(Link)({
   marginBottom: 0,
   width: "100%",
   justifyContent: "center",
-});
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "16px",
+  },
+}));

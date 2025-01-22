@@ -581,7 +581,7 @@ export const defaultTheme = {
               lineHeight: "24px",
             },
             "@media (min-width: 900px)": {
-              fontSize: "18px",
+              fontSize: "16px",
               lineHeight: "28px",
             },
           },
