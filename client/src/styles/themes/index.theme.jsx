@@ -36,14 +36,16 @@ export const defaultTheme = {
     values: {
       xs: 0,
       sm: 600,
+      tablet: 768,
       md: 900,
+      laptop: 1024,
       lg: 1200,
       xl: 1400,
       xxl: 1600,
       xxxl: 1800,
       xxxxl: 2000,
     },
-  },
+  },  
   typography: {
     fontFamily: "Work Sans",
     h1: {
