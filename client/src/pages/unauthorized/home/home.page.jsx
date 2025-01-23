@@ -6,7 +6,7 @@ import News from "./components/news/news.component";
 import Events from "./components/events/events.components";
 import Schedule from "./components/schedule/schedule.component";
 import ContactUs from "./components/contactUs/contactUs.component";
-import Sponsors from "../../../components/sponsors/sponsors.component";
+// import Sponsors from "../../../components/sponsors/sponsors.component";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 
 const HomePage = () => {
@@ -20,7 +20,7 @@ const HomePage = () => {
           <Events />
           <Schedule />
           <ContactUs />
-          <Sponsors />
+          {/* <Sponsors /> */}
         </Grid>
       </Container>
     </>

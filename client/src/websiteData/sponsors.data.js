@@ -25,4 +25,10 @@ export const sponsorData = [
   { imageUrl: { small: securitySm, medium: securityMd }, companyName: "Security Service Federal Credit Union" },
   { imageUrl: { small: usbankSm, medium: usbankMd }, companyName: "Us Bank" },
   { imageUrl: { small: zynexSm, medium: zynexMd }, companyName: "Zynex medical" },
+  { imageUrl: { small: casaSm, medium: casaMd }, companyName: "Casa Gutierrez Mexican Food" },
+  { imageUrl: { small: kenSm, medium: kenMd }, companyName: "Ken's Auto service" },
+  { imageUrl: { small: maddiosSm, medium: maddiosMd }, companyName: "Uncle Maddio's pizza" },
+  { imageUrl: { small: securitySm, medium: securityMd }, companyName: "Security Service Federal Credit Union" },
+  { imageUrl: { small: usbankSm, medium: usbankMd }, companyName: "Us Bank" },
+  { imageUrl: { small: zynexSm, medium: zynexMd }, companyName: "Zynex medical" },
 ];

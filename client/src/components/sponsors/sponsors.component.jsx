@@ -8,15 +8,16 @@ import SectionLayout from "../reusableComponents/sectionLayout/sectionLayout.com
 // Data
 import { sponsorData } from "../../websiteData/sponsors.data";
 import { StyledImageContainer, StyledSponsorImage } from "./sponsors.styles";
+import useMediaQueries from "../../setup/utils/helpers/useMediaQueries.utils";
 
 const ImageSlider = () => {
+  const { isSm, isMd, isLg, isXl } = useMediaQueries();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % sponsorData.length);
     }, 3000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -25,20 +26,17 @@ const ImageSlider = () => {
       <SectionLayout id="sponsors-section" aria-label="Sponsors Section">
         <StyledImageContainer>
           <AnimatePresence>
-            {sponsorData.map(
-              ({ companyName, imageUrl }, index) =>
-                index === currentImageIndex && (
-                  <StyledSponsorImage
-                    key={index + companyName}
-                    imageUrl={imageUrl}
-                    alt={companyName}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1 }}
-                  />
-                )
-            )}
+            {sponsorData.map(({ companyName, imageUrl }, index) => (
+              <StyledSponsorImage
+                src={imageUrl.small}
+                alt={companyName}
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
+              />
+            ))}
           </AnimatePresence>
         </StyledImageContainer>
       </SectionLayout>

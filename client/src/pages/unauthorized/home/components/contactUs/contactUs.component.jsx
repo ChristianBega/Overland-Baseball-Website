@@ -31,7 +31,7 @@ export default function ContactUs() {
 
   return (
     <Grid item xs={12}>
-      <SectionLayout id="contact-us-section" aria-label="Contact Us Section">
+      <SectionLayout id="contact-us-section" aria-label="Contact Us Section" marginBlock={true}>
         <Grid container id="contact-us-form-grid" columnSpacing={isLg ? 6 : 4}>
           <Grid item xs={12} md={6}>
             <Typography variant="h2" component="h2">

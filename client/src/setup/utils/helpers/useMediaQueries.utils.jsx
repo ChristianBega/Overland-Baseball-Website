@@ -10,7 +10,13 @@ const useMediaQueries = () => {
   const isSm = useMediaQuery(theme.breakpoints.up("sm"), {
     defaultMatches: true,
   });
+  const isTablet = useMediaQuery(theme.breakpoints.up("tablet"), {
+    defaultMatches: true,
+  });
   const isMd = useMediaQuery(theme.breakpoints.up("md"), {
+    defaultMatches: true,
+  });
+  const isLaptop = useMediaQuery(theme.breakpoints.up("laptop"), {
     defaultMatches: true,
   });
   const isLg = useMediaQuery(theme.breakpoints.up("lg"), {
@@ -19,7 +25,6 @@ const useMediaQueries = () => {
   const isXl = useMediaQuery(theme.breakpoints.up("xl"), {
     defaultMatches: true,
   });
-
   const isSmDown = useMediaQuery(theme.breakpoints.down("sm"), {
     defaultMatches: true,
   });
@@ -33,7 +38,9 @@ const useMediaQueries = () => {
   return {
     isXs,
     isSm,
+    isTablet,
     isMd,
+    isLaptop,
     isLg,
     isXl,
     isSmDown,
