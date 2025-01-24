@@ -35,7 +35,7 @@ const Events = () => {
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
 
   const text =
-    "Support your Overland Trailblazer baseball program by attending our upcoming events. We have lots happening in our community including fundraisers, team activities, and more. Check out all our events here and sign up!";
+    "Help support your Overland Trailblazer baseball program by attending our upcoming events. We have lots happening in our community including fundraisers, team activities, and more. Check out all our events here and sign up!";
   const keywords = [{ keyword: "all our events here and sign up!", url: "/events", type: "RouterLink" }];
   const options = { color: theme.palette.secondary.main };
 
@@ -46,7 +46,8 @@ const Events = () => {
         <Typography typography="h2" component="h2">
           Events
         </Typography>
-        <Typography component="p" mb={4}>
+        <Typography component="p" typography="p"></Typography>
+        <Typography component="p" typography="p">
           {highlightedText}
         </Typography>
         <Grid container rowSpacing={4} columnSpacing={2}>

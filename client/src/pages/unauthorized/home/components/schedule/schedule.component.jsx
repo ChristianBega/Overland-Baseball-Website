@@ -50,6 +50,9 @@ export default function Schedule() {
             "&::-webkit-scrollbar": {
               display: "none",
             },
+            [theme.breakpoints.up("md")]: {
+              maxHeight: "525px",
+            },
           }}
         >
           {sortedData.map((gameData, index) => (

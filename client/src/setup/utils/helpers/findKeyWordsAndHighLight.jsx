@@ -1,5 +1,5 @@
 import React from "react";
-import { Link as MuiLink } from "@mui/material";
+import { Link as MuiLink, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
@@ -42,7 +42,9 @@ function findKeyWordsAndHighlight(text, keywords, options) {
 
         return (
           <MuiLink key={index} component={ComponentType} to={url} href={type === "MuiLink" ? url : undefined} style={{ color }} variant="highlighted">
-            {part}
+            <Typography component="p" typography="p" sx={{ display: "inline" }}>
+              {part}
+            </Typography>
           </MuiLink>
         );
       }

@@ -37,7 +37,7 @@ export default function ContactUs() {
             <Typography variant="h2" component="h2">
               Contact Us
             </Typography>
-            <Typography variant="body1" component="p" mb={4}>
+            <Typography typography="p" component="p">
               Whether you're a player interested in our baseball program, a parent or student looking to volunteer, or a business wanting to support
               our student-athletes – we want to hear from you. Contact us today to learn how to become part of the Trailblazer family.
             </Typography>

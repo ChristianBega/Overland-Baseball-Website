@@ -32,12 +32,14 @@ export default function News() {
           <Typography typography="h2" component="h2">
             Blazer News
           </Typography>
-          <Typography typography="p" component="p">
+          <Typography component="p" typography="p">
             Welcome to the official site of Overland Baseball in Aurora, Colorado! At Overland, we’re dedicated to building strong, skilled players
             through a focus on fundamentals, targeted training, and continuous improvement. Our Trailblazers Baseball program is rapidly growing and
             is designed to support athletes ages 13-18 who are eager to elevate their game.
           </Typography>
-          <Typography component="p">{highlightedText}</Typography>
+          <Typography component="p" typography="p">
+            {highlightedText}
+          </Typography>
         </SectionLayout>
       </Grid>
       {isMd && (
