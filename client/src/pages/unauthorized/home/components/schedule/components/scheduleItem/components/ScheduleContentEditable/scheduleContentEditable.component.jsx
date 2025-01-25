@@ -73,7 +73,7 @@ const ScheduleContentEditable = ({ ...props }) => {
           <LogoImage component="img" src={opponentIcon} />
         )}
       </StyledTableCell>
-      {isSm && (
+      {isMd && (
         <StyledTableCell
           isCmsItem={isCmsItem}
           className={`${isEditableNew ? "isEditable" : ""}`}
