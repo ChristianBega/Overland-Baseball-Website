@@ -3,13 +3,15 @@ import { StyledTableCell } from "../../../../../styles/index.styles";
 import InputFieldComponent from "../../../../inputFields/inputFields";
 import { CmsEditItemContext } from "../../../../../setup/context/cmsContext/cmsEdit.context";
 import { CmsBulkActionContext } from "../../../../../setup/context/cmsContext/cmsBulkActions.context";
+import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
 
 const CheckboxCell = ({ isSelected, onChange, isDisabled, id, values }) => {
+  const { isSm } = useMediaQueries();
   const { cmsOperationStatus, editableItemData } = useContext(CmsEditItemContext);
   const { selectedItems, handleCheckboxChange } = useContext(CmsBulkActionContext);
 
   return (
-    <StyledTableCell className="table-cell-cms-list-item" padding="checkbox">
+    <StyledTableCell className={`table-cell-cms-list-item ${isSm ? "table-header-cell-narrow" : ""}`}>
       <InputFieldComponent
         type="checkbox"
         isDisabled={cmsOperationStatus.loading || cmsOperationStatus.success || editableItemData}

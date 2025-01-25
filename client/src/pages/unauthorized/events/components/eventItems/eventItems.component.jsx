@@ -8,9 +8,11 @@ import CmsOperationStatus from "../../../../../components/contentManagementSyste
 import { StyledTableCell, StyledTableRow } from "../../../../../styles/index.styles";
 import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
 import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
+import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
 
 export default function EventItems({ ...props }) {
-  const { data, isMobile, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
+  const { isSm, isMd } = useMediaQueries();
+  const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const [open, setOpen] = React.useState(false);
   const [currentEventData, setCurrentEventData] = React.useState({
     eventName: "",
@@ -53,7 +55,7 @@ export default function EventItems({ ...props }) {
             />
           </>
         ) : (
-          <Stack direction="row" justifyContent="center" gap={4}>
+          <Stack direction="column" justifyContent="center" gap={1}>
             <Typography component="p" variant="body1">
               {date}
             </Typography>
@@ -64,39 +66,39 @@ export default function EventItems({ ...props }) {
         )}
       </StyledTableCell>
 
-      <StyledTableCell isCmsItem={isCmsItem} className="table-header-cell-extra-wide">
-        {isEditable ? (
-          <InputFieldComponent label="Location" onChange={handleChange("location")} type="text" value={location} />
-        ) : (
-          <Typography>{location}</Typography>
-        )}
-      </StyledTableCell>
-
-      {!isMobile && (
-        <StyledTableCell isCmsItem={isCmsItem} className={`table-header-cell-normal table-cell-dark ${!isEditable ? "table-cell-center" : ""}`}>
+      {isMd && (
+        <StyledTableCell isCmsItem={isCmsItem} className="table-header-cell-extra-wide">
           {isEditable ? (
-            <InputFieldComponent
-              inputTextColor="#fff"
-              cssProps={{ color: "#fff" }}
-              label="Event Name"
-              onChange={handleChange("eventName")}
-              type="text"
-              value={eventName}
-            />
+            <InputFieldComponent label="Location" onChange={handleChange("location")} type="text" value={location} />
           ) : (
-            <>
-              {!isCmsItem && (
-                <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
-                  <AppRegistrationIcon fontSize="small" />
-                </IconButton>
-              )}
-              <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
-                {eventName}
-              </Typography>
-            </>
+            <Typography>{location}</Typography>
           )}
         </StyledTableCell>
       )}
+
+      <StyledTableCell isCmsItem={isCmsItem} className={`table-header-cell-normal table-cell-dark ${!isEditable ? "table-cell-center" : ""}`}>
+        {isEditable ? (
+          <InputFieldComponent
+            inputTextColor="#fff"
+            cssProps={{ color: "#fff" }}
+            label="Event Name"
+            onChange={handleChange("eventName")}
+            type="text"
+            value={eventName}
+          />
+        ) : (
+          <>
+            {!isCmsItem && (
+              <IconButton onClick={handleOpen} size="medium" style={{ color: theme.palette.text.primary }}>
+                <AppRegistrationIcon fontSize="small" />
+              </IconButton>
+            )}
+            <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
+              {eventName}
+            </Typography>
+          </>
+        )}
+      </StyledTableCell>
 
       <VolunteerModal
         open={open}

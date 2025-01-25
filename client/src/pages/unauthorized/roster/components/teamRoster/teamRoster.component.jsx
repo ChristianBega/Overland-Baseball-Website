@@ -47,7 +47,7 @@ export default function TeamRoster({ currentTeam }) {
           <Table aria-label="roster table">
             <TableBody>
               {currentRoster.map((rosterItem, index) => (
-                <TeamRosterItem data={rosterItem} key={index} />
+                <TeamRosterItem data={rosterItem} key={index}  />
               ))}
             </TableBody>
           </Table>

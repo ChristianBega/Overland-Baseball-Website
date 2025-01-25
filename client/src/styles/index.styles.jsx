@@ -19,6 +19,9 @@ export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
   "&.table-header-cell-narrow": {
     width: "5%",
   },
+  "&.table-header-cell-narrow-extra": {
+    width: "10%",
+  },
   "&.table-header-cell-normal": {
     width: "15%",
   },
