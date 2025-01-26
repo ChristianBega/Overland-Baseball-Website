@@ -93,7 +93,7 @@ export default function TeamRoosterItem({
         )}
       </StyledTableCell>
 
-      <StyledTableCell isCmsItem={isCmsItem} className="table-header-cell-narrow">
+      <StyledTableCell isCmsItem={isCmsItem}>
         {isEditable ? (
           <Stack direction="row">
             <div>
@@ -156,7 +156,7 @@ export default function TeamRoosterItem({
         </Box>
       </StyledTableCell>
 
-      {isMd && (
+      {isSm && (
         <StyledTableCell isCmsItem={isCmsItem}>
           {isEditable ? (
             <Stack>
