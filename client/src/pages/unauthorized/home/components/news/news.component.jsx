@@ -2,13 +2,13 @@
 import React from "react";
 import { useTheme } from "@emotion/react";
 // Mui
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 // Components
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 // Utils & Helpers
 import findKeyWordsAndHighlight from "../../../../../setup/utils/helpers/findKeyWordsAndHighLight";
 import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
-import TEMP_IMAGE from "../../../../../assets/placeholder.png";
+import NewsImageSlider from "./components/newsImageSlider.component";
 
 export default function News() {
   const theme = useTheme();
@@ -18,7 +18,6 @@ export default function News() {
   const keywords = [
     { keyword: "upcoming games", url: "/#schedule-section", type: "HashLink" },
     { keyword: "fundraisers", url: "/#events-section", type: "HashLink" },
-    // { keyword: "useful links", url: "/#links", type: "HashLink" },
     { keyword: "all other events", url: "/events", type: "RouterLink" },
   ];
   const options = { color: theme.palette.secondary.main };
@@ -45,7 +44,7 @@ export default function News() {
       {isMd && (
         <Grid item xs={12} md={5} lg={6}>
           <SectionLayout id="news-section-image-slider" aria-label="News Section Image Slider">
-            <Box component="img" src={TEMP_IMAGE} sx={{ border: "1px solid red", width: "100%", maxHeight: "350px" }}></Box>
+            <NewsImageSlider />
           </SectionLayout>
         </Grid>
       )}
