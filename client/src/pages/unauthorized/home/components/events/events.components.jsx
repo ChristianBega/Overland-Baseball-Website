@@ -41,7 +41,7 @@ const Events = () => {
 
   const highlightedText = findKeyWordsAndHighlight(text, keywords, options);
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} sx={{ minHeight: { md: "815px", lg: "745px" } }}>
       <SectionLayout id="events-section" aria-label="Events Section">
         <Typography typography="h2" component="h2">
           Events
@@ -50,7 +50,7 @@ const Events = () => {
         <Typography component="p" typography="p">
           {highlightedText}
         </Typography>
-        <Grid container rowSpacing={4} columnSpacing={2}>
+        <Grid container rowSpacing={4} columnSpacing={4}>
           {isMd ? (
             <>
               <EventCard

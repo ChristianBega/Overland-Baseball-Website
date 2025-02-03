@@ -1,6 +1,6 @@
 import { styled, Typography } from "@mui/material";
 
-export const StyledDescriptionText = styled(Typography)(({ theme }) => ({
+export const StyledDescriptionText = styled(Typography)(({ theme, color }) => ({
   position: "relative",
   maxHeight: "4em",
   overflow: "hidden",
@@ -8,7 +8,7 @@ export const StyledDescriptionText = styled(Typography)(({ theme }) => ({
   WebkitBoxOrient: "vertical",
   WebkitLineClamp: 3,
   textOverflow: "ellipsis",
-  background: "linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0.4))",
+  background: `linear-gradient(to bottom, ${color || "#fff"}, rgba(255, 255, 255, 0.4))`,
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   "@media (min-width: 900px)": {

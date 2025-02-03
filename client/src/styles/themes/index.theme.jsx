@@ -45,7 +45,7 @@ export const defaultTheme = {
       xxxl: 1800,
       xxxxl: 2000,
     },
-  },  
+  },
   typography: {
     fontFamily: "Work Sans",
     h1: {
@@ -318,9 +318,9 @@ export const defaultTheme = {
           "@media (min-width: 900px)": {
             maxWidth: "190px",
             // padding: "8px 12px",
-            fontSize: "16px",
+            fontSize: "12px",
             "& svg": {
-              fontSize: "1.2rem",
+              fontSize: "1rem",
             },
           },
         },
@@ -639,6 +639,7 @@ export const defaultTheme = {
             "@media (min-width: 900px)": {
               height: "100%",
               padding: "1.5rem",
+              maxHeight: "300px",
             },
           },
         },
@@ -660,6 +661,7 @@ export const defaultTheme = {
               minHeight: "135px",
               height: "100%",
               padding: "1rem",
+              minWidth: "150px",
             },
             "@media (min-width: 1200px)": {
               // minHeight: "135px",

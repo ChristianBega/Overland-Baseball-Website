@@ -17,10 +17,10 @@ const NewsImageSlider = () => {
     <Box sx={{ position: "relative", width: "100%", height: { xs: "345px" } }}>
       <AnimatePresence>
         <motion.img
-          key={imageSliderData[currentIndex]}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -100 }}
+          key={imageSliderData[currentIndex].imageUrl.original}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 1 }}
           style={{
             position: "absolute",
@@ -45,3 +45,5 @@ const NewsImageSlider = () => {
 };
 
 export default NewsImageSlider;
+
+// TODO: While in view animate, if not then stop the animation.
