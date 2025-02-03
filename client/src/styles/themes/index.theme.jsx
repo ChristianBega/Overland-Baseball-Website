@@ -661,7 +661,7 @@ export const defaultTheme = {
               minHeight: "135px",
               height: "100%",
               padding: "1rem",
-              minWidth: "150px",
+              minWidth: "125px",
             },
             "@media (min-width: 1200px)": {
               // minHeight: "135px",

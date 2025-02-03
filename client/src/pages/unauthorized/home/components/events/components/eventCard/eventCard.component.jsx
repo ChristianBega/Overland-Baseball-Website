@@ -74,16 +74,12 @@ const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => 
       md={selectedCardIndex === index && 6}
       sx={{
         display: { md: selectedCardIndex !== index && "flex" },
-        "&:hover": { cursor: "pointer", transform: selectedCardIndex == index ? "scale(1.01)" : "scale(1)" },
+        "&:hover": { cursor: "pointer", transform: selectedCardIndex !== index ? "scale(1.01)" : "scale(1)" },
         transition: "all .3s ease-in-out",
       }}
+      onClick={handleCardClick}
     >
-      <Card
-        key={index}
-        variant={selectedCardIndex === index ? "events-main" : "events-secondary"}
-        sx={{ backgroundImage: `url(${card?.image})` }}
-        onClick={handleCardClick}
-      >
+      <Card key={index} variant={selectedCardIndex === index ? "events-main" : "events-secondary"} sx={{ backgroundImage: `url(${card?.image})` }}>
         {!isMd && <EventCardCtas card={card} />}
         {!isMd && (
           <CardContent sx={{ color: "#fff", zIndex: 1 }}>
@@ -113,9 +109,6 @@ const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => 
               <Typography cardType="main" variant="body2" component="p" color="#000">
                 {card.description}
               </Typography>
-              <Button variant="contained" color="secondary" size="medium" endIcon={<RightArrowIcon />}>
-                Sign Up Now!
-              </Button>
             </Stack>
           ) : (
             <StyledDescriptionText cardType="main" variant="body2" component="p" color="#000">

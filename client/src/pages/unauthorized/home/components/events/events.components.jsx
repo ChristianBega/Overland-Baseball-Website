@@ -47,7 +47,7 @@ const Events = () => {
           Events
         </Typography>
         <Typography component="p" typography="p"></Typography>
-        <Typography component="p" typography="p">
+        <Typography component="p" typography="p" marginBottom={isMd ? 4 : 0}>
           {highlightedText}
         </Typography>
         <Grid container rowSpacing={4} columnSpacing={4}>
