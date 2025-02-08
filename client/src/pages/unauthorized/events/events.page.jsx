@@ -4,7 +4,7 @@ import React from "react";
 // import { motion } from "framer-motion";
 // import { containerVariants } from "../../../setup/framerAnimations/transitions";
 // Components
-import Events from "./components/eventsDataGrid/eventsDataGrid.component";
+import EventsView from "./components/eventsView/eventsView";
 import PlayerEvent from "./components/playerEvent/playerEvent.component";
 // import Fundraisers from "./components/fundraisers/fundraisers.component";
 // import Tryouts from "./components/tryouts/tryouts.component";
@@ -33,7 +33,7 @@ export default function EventsPage() {
       {/* maxWidth="lg" rowSpacing={isMobile ? 12 : 32} */}
 
       <Grid container id="events-main-grid" columnSpacing={isLg ? 6 : 4}>
-        <Events />
+        <EventsView />
         <PlayerEvent playerEventType="youth program" />
         <PlayerEvent playerEventType="work outs" />
         <PlayerEvent playerEventType="try outs" />

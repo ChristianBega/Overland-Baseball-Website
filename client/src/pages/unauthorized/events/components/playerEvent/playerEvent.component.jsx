@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, List, ListItem, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
@@ -12,15 +11,10 @@ import youthProgramImage from "../../../../../assets/eventsPage/youthProgramImag
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useTheme } from "@emotion/react";
-// todo : turn youthProgram into a general component for playerEvents - which are player specific events displayed in a section defined in our figma.
-// todo : pass in a type prop : playerEventType = workouts, tryouts, youth program....
 
-// todo : we need to store playerEvents in the firebase database and allow the user to edit all values within the playerEvent object
-// todo : data will look like the data in the youProgramData just not js objects but instead firebase collection data
 const iconStyles = {
   fontSize: "1rem",
 };
@@ -132,7 +126,11 @@ export default function PlayerEvent({ isMobile, playerEventType, rowReverse }) {
     </Grid>
   );
 }
+// todo : turn youthProgram into a general component for playerEvents - which are player specific events displayed in a section defined in our figma.
+// todo : pass in a type prop : playerEventType = workouts, tryouts, youth program....
 
+// todo : we need to store playerEvents in the firebase database and allow the user to edit all values within the playerEvent object
+// todo : data will look like the data in the youProgramData just not js objects but instead firebase collection data
 /* <StyledInfoBox> */
 /* <PlayerEvents currentEventData={currentEventData} /> */
 

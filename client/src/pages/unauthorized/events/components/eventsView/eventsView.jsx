@@ -36,6 +36,7 @@ export default function Events() {
         </Typography>
         <Box sx={{ border: "1px solid red", height: { xs: "400px", md: "600px" } }}>
           <iframe
+            title="Overland BaseballEvents Calendar"
             src="https://calendar.google.com/calendar/embed?src=overlandbaseballofficial%40gmail.com&ctz=America%2FDenver"
             style={{ border: 0, width: "100%", height: "100%" }}
             frameborder="0"
@@ -46,8 +47,7 @@ export default function Events() {
   );
 }
 
-{
-  /* <TableContainer component={Paper} sx={{ color: "#000", maxHeight: 440 }}>
+/* <TableContainer component={Paper} sx={{ color: "#000", maxHeight: 440 }}>
   <Table stickyHeader aria-label="simple table">
     <TableHead>
       <TableRow>
@@ -92,4 +92,3 @@ export default function Events() {
     </TableBody>
   </Table>
 </TableContainer> */
-}
