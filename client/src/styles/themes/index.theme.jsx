@@ -23,10 +23,12 @@ export const defaultTheme = {
       secondary2: "hsl(0, 0%, 100%)",
       // secondary2: "hsl(0, 0%, 70%)",
       // disabled: "hsl(0, 0%, 50%)",
+      grey: "#666666",
     },
     borders: {
       primary: "#c3c1c1a0",
     },
+
     background: {
       default: "#ffffff",
       paper: "#ffffff",
@@ -245,6 +247,7 @@ export const defaultTheme = {
           textTransform: "capitalize",
           fontFamily: "Work Sans",
         },
+
         outlinedPrimary: {
           "&:hover": {
             boxShadow: "0px 0px 10px 0px #1642a885",
@@ -277,8 +280,26 @@ export const defaultTheme = {
           //   boxShadow: "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset",
           // },
         },
+        pillShapeActive: {
+          color: "#fff !important",
+          backgroundColor: "#4CBB17",
+          border: "1px solid #4CBB17",
+          borderRadius: "50px",
+          "&:hover": {
+            backgroundColor: "#4bbb176e",
+            border: "1px solid #4bbb178e",
+          },
+        },
+        pillShapeInactive: {
+          color: "#666666 !important",
+          backgroundColor: "#fff",
+          border: "1px solid transparent",
+          borderRadius: "50px",
+        },
         sizeSmall: {
           fontSize: "14px",
+
+
           padding: "6px 12px",
           maxWidth: "100px",
         },
@@ -350,7 +371,6 @@ export const defaultTheme = {
         },
       },
     },
-
     MuiInputLabel: {
       styleOverrides: {
         root: {
@@ -389,7 +409,6 @@ export const defaultTheme = {
         },
       },
     },
-
     MuiInputBase: {
       styleOverrides: {
         root: {
@@ -507,7 +526,6 @@ export const defaultTheme = {
         },
       },
     },
-
     MuiIconButton: {
       variants: [
         {
@@ -565,7 +583,6 @@ export const defaultTheme = {
         },
       },
     },
-
     MuiLink: {
       variants: [
         {
@@ -721,6 +738,28 @@ export const defaultTheme = {
           "&:last-child": {
             paddingBottom: 0,
           },
+        },
+      },
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          // borderRadius: "12px",
+          border: "1px solid #c3c1c1a0",
+          "&:before": {
+            display: "none",
+          },
+          "&.Mui-expanded:last-of-type": {
+            marginBottom: "2rem",
+          },
+        },
+      },
+    },
+
+    MuiExpanded: {
+      styleOverrides: {
+        root: {
+          marginBottom: "2rem",
         },
       },
     },
