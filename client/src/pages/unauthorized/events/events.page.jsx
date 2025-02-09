@@ -36,7 +36,7 @@ export default function EventsPage() {
       <Grid container id="events-main-grid" columnSpacing={isLg ? 6 : 4}>
         <EventsView />
         <PlayerEvent playerEventType="youth program" />
-        <PlayerEvent playerEventType="work outs" />
+        <PlayerEvent playerEventType="work outs" rowReverse />
         <PlayerEvent playerEventType="try outs" />
 
         {/* {isMobile && <YouthProgramSlider isMobile={isMobile} />}

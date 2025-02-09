@@ -8,6 +8,7 @@ import { eventData } from "../../../../../websiteData/events.data";
 import FundraiserModal from "../../../../../components/modals/fundraiserModal.component";
 import fundraisersCardData from "../../../../../websiteData/events/fundraiser.data.json";
 import BentoLayout from "../../../../../components/reusableComponents/bentoLayout/bentoLayout.component";
+import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
   height: "100%",
@@ -45,9 +46,13 @@ export default function Fundraisers() {
   };
   const handleClose = () => setOpen(false);
   return (
-    <Grid id="fundraiser-and-events" item xs={12} mt={{ xs: 5, sm: 10, md: 15 }}>
-      <Typography typography="h2">Upcoming fundraisers</Typography>
-      <BentoLayout gridItemsData={fundraisersCardData} />
+    <Grid id="fundraiser-and-events" item xs={12}>
+      <SectionLayout id="fundraiser-and-events-section" aria-label="Fundraiser and Events Section" marginBlock={true}>
+        <Typography typography="h2" component="h2">
+          Upcoming fundraisers
+        </Typography>
+        <BentoLayout gridItemsData={fundraisersCardData} />
+      </SectionLayout>
       {/* <Grid container maxWidth="lg" spacing={4}> */}
 
       {/* {fundraisersCardData.map((fundraiser, index) => (

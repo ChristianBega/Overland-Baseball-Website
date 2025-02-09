@@ -48,8 +48,7 @@ const Events = () => {
         <Typography typography="h2" component="h2">
           Events
         </Typography>
-        <Typography component="p" typography="p"></Typography>
-        <Typography component="p" typography="p" marginBottom={isMd ? 4 : 0}>
+        <Typography component="p" typography="p" marginBottom={isMd ? 4 : 2}>
           {highlightedText}
         </Typography>
         <BentoLayout gridItemsData={events} />
