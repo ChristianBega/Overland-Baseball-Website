@@ -6,7 +6,6 @@ import { StyledDescriptionText } from "./eventCard.styles";
 // Icons
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import RightArrowIcon from "@mui/icons-material/ArrowForwardIos";
 // Helpers & Utils
 import { formatDateTimeForCalendar } from "../../../../../../../setup/utils/helpers/formatDate";
 import useMediaQueries from "../../../../../../../setup/utils/helpers/useMediaQueries.utils";

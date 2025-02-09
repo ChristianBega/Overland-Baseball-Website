@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid/Grid";
 import { Typography, Box, styled, Button } from "@mui/material";
 
-import { fundraisersCardData } from "../../../../../websiteData/events.data";
+// import { fundraisersCardData } from "../../../../../websiteData/events.data";
 import { eventData } from "../../../../../websiteData/events.data";
 
 import FundraiserModal from "../../../../../components/modals/fundraiserModal.component";
-
+import fundraisersCardData from "../../../../../websiteData/events/fundraiser.data.json";
+import BentoLayout from "../../../../../components/reusableComponents/bentoLayout/bentoLayout.component";
 const StyledImageBox = styled(Box)(({ theme }) => ({
   objectFit: "cover",
   height: "100%",
@@ -46,22 +47,34 @@ export default function Fundraisers() {
   return (
     <Grid id="fundraiser-and-events" item xs={12} mt={{ xs: 5, sm: 10, md: 15 }}>
       <Typography typography="h2">Upcoming fundraisers</Typography>
-      <Grid container maxWidth="lg" spacing={4}>
-        {fundraisersCardData.map((fundraiser, index) => (
-          <Grid sx={{ position: "relative" }} id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
-            <StyledImageBox component="img" src={fundraiser.image}></StyledImageBox>
-            <StyledOverlay>
-              <Typography typography="h3Card">{fundraiser.eventName} Events</Typography>
-              <Box textAlign="center">
-                <Button size="md" onClick={handleOpen}>
-                  Sign up!
-                </Button>
-              </Box>
-            </StyledOverlay>
-            <FundraiserModal open={open} handleClose={handleClose} events={events} currentEvent={currentEvent} />
-          </Grid>
-        ))}
-      </Grid>
+      <BentoLayout gridItemsData={fundraisersCardData} />
+      {/* <Grid container maxWidth="lg" spacing={4}> */}
+
+      {/* {fundraisersCardData.map((fundraiser, index) => (
+          <>
+            <EventCard
+              key={selectedCardIndex}
+              card={events[selectedCardIndex]}
+              index={selectedCardIndex}
+              selectedCardIndex={selectedCardIndex}
+              setSelectedCardIndex={setSelectedCardIndex}
+            />
+          </>
+          // <Grid sx={{ position: "relative" }} id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
+          //   <StyledImageBox component="img" src={fundraiser.image}></StyledImageBox>
+          //   <StyledOverlay>
+
+          //     <Typography typography="h3Card">{fundraiser.eventName} Events</Typography>
+          //     <Box textAlign="center">
+          //       <Button size="md" onClick={handleOpen}>
+          //         Sign up!
+          //       </Button>
+          //     </Box>
+          //   </StyledOverlay>
+          //   <FundraiserModal open={open} handleClose={handleClose} events={events} currentEvent={currentEvent} />
+          // </Grid>
+        ))} */}
+      {/* </Grid> */}
     </Grid>
   );
 }

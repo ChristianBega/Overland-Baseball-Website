@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTheme } from "@emotion/react";
 // MUI
 import { Grid, Typography } from "@mui/material";
 //  Components
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
-import EventCard from "./components/eventCard/eventCard.component";
 // Utilities
 import findKeyWordsAndHighlight from "../../../../../setup/utils/helpers/findKeyWordsAndHighLight";
 // Data
@@ -16,7 +15,9 @@ import cardImgThree from "../../../../../assets/homePage/events/card-img-3.svg";
 import cardImgFour from "../../../../../assets/homePage/events/card-img-4.svg";
 
 import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
+import BentoLayout from "../../../../../components/reusableComponents/bentoLayout/bentoLayout.component";
 
+// ! lines 20-31 are temp for mockData... Once we move to DB eventImageUrl will be required instead of the temp image solution below
 const images = {
   cardImgOne,
   cardImgTwo,
@@ -28,18 +29,19 @@ const events = cardMockData.map((event) => ({
   ...event,
   image: images[event.image] || event.image,
 }));
+// ! lines 20-31 are temp for mockData... Once we move to DB eventImageUrl will be required instead of the temp image solution below
 
 const Events = () => {
   const { isMd } = useMediaQueries();
   const theme = useTheme();
-  const [selectedCardIndex, setSelectedCardIndex] = useState(0);
 
-  const text =
-    "Help support your Overland Trailblazer baseball program by attending our upcoming events. We have lots happening in our community including fundraisers, team activities, and more. Check out all our events here and sign up!";
-  const keywords = [{ keyword: "all our events here and sign up!", url: "/events", type: "RouterLink" }];
-  const options = { color: theme.palette.secondary.main };
+  const eventInfoPageData = {
+    text: "Help support your Overland Trailblazer baseball program by attending our upcoming events. We have lots happening in our community including fundraisers, team activities, and more. Check out all our events here and sign up!",
+    keywords: [{ keyword: "all our events here and sign up!", url: "/events", type: "RouterLink" }],
+    options: { color: theme.palette.secondary.main },
+  };
 
-  const highlightedText = findKeyWordsAndHighlight(text, keywords, options);
+  const highlightedText = findKeyWordsAndHighlight(eventInfoPageData.text, eventInfoPageData.keywords, eventInfoPageData.options);
   return (
     <Grid item xs={12} sx={{ minHeight: { md: "815px", lg: "745px" } }}>
       <SectionLayout id="events-section" aria-label="Events Section">
@@ -50,40 +52,7 @@ const Events = () => {
         <Typography component="p" typography="p" marginBottom={isMd ? 4 : 0}>
           {highlightedText}
         </Typography>
-        <Grid container rowSpacing={4} columnSpacing={4}>
-          {isMd ? (
-            <>
-              <EventCard
-                key={selectedCardIndex}
-                card={events[selectedCardIndex]}
-                index={selectedCardIndex}
-                selectedCardIndex={selectedCardIndex}
-                setSelectedCardIndex={setSelectedCardIndex}
-              />
-
-              <Grid item md={6}>
-                <Grid container rowSpacing={2}>
-                  {events.map((card, index) => {
-                    if (index !== selectedCardIndex) {
-                      return (
-                        <Grid item xs={12} key={index}>
-                          <EventCard card={card} index={index} selectedCardIndex={selectedCardIndex} setSelectedCardIndex={setSelectedCardIndex} />
-                        </Grid>
-                      );
-                    }
-                    return null;
-                  })}
-                </Grid>
-              </Grid>
-            </>
-          ) : (
-            <>
-              {events.map((card, index) => (
-                <EventCard key={index} card={card} index={index} selectedCardIndex={selectedCardIndex} setSelectedCardIndex={setSelectedCardIndex} />
-              ))}
-            </>
-          )}
-        </Grid>
+        <BentoLayout gridItemsData={events} />
       </SectionLayout>
     </Grid>
   );

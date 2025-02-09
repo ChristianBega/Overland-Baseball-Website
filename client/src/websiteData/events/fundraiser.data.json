@@ -1,0 +1,106 @@
+[
+  {
+    "title": "Rockies Fundraiser",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "startDateTime": "20240927T100000Z",
+    "endDateTime": "20240927T120000Z",
+    "location": {
+      "locationName": "Overland",
+      "locationAddress": "1234 Main St, Overland, CO 80000",
+      "locationCoordinates": {
+        "latitude": 39.7047,
+        "longitude": -105.0814
+      }
+    },
+    "image": "cardImgOne",
+    "cta": [
+      {
+        "date": {
+          "startDateTime": "20240927T100000Z",
+          "endDateTime": "20240927T120000Z"
+        },
+        "location": {
+          "location": "Overland"
+        }
+      }
+    ]
+  },
+  {
+    "title": "Field Clean Up",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "startDateTime": "20241203T100000Z",
+    "endDateTime": "20241203T120000Z",
+    "location": {
+      "locationName": "Overland",
+      "locationAddress": "1234 Main St, Overland, CO 80000",
+      "locationCoordinates": {
+        "latitude": 39.7047,
+        "longitude": -105.0814
+      }
+    },
+    "image": "cardImgTwo",
+    "cta": [
+      {
+        "date": {
+          "startDateTime": "20241203T100000Z",
+          "endDateTime": "20241203T120000Z"
+        },
+        "location": {
+          "location": "Overland"
+        }
+      }
+    ]
+  },
+  {
+    "title": "Spring Tryouts",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "startDateTime": "20250309T100000Z",
+    "endDateTime": "20250309T120000Z",
+    "location": {
+      "locationName": "Overland",
+      "locationAddress": "1234 Main St, Overland, CO 80000",
+      "locationCoordinates": {
+        "latitude": 39.7047,
+        "longitude": -105.0814
+      }
+    },
+    "image": "cardImgThree",
+    "cta": [
+      {
+        "date": {
+          "startDateTime": "20250309T100000Z",
+          "endDateTime": "20250309T120000Z"
+        },
+        "location": {
+          "location": "Overland"
+        }
+      }
+    ]
+  },
+  {
+    "title": "IHOP Fundraiser",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque enim molestias, itaque, vel cupiditate ut earum nostrum expedita accusantium maiores vitae debitis aspernatur nam neque ex repellat, repudiandae asperiores excepturi.",
+    "startDateTime": "20250312T100000Z",
+    "endDateTime": "20250312T120000Z",
+    "location": {
+      "locationName": "TBD",
+      "locationAddress": "1234 Main St, Overland, CO 80000",
+      "locationCoordinates": {
+        "latitude": 39.7047,
+        "longitude": -105.0814
+      }
+    },
+    "image": "cardImgFour",
+    "cta": [
+      {
+        "date": {
+          "startDateTime": "20250312T100000Z",
+          "endDateTime": "20250312T120000Z"
+        },
+        "location": {
+          "location": "TBD"
+        }
+      }
+    ]
+  }
+]
