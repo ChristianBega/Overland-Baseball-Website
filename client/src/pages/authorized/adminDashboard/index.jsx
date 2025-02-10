@@ -34,9 +34,9 @@ const AdminDashboardPage = () => {
               <CmsCreateItemProvider>
                 <CmsEditItemProvider>
                   <CmsDeleteItemProvider>
-                    <ModalProvider>
-                      {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
-                    </ModalProvider>
+                    {/* <ModalProvider> */}
+                    {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
+                    {/* </ModalProvider> */}
                   </CmsDeleteItemProvider>
                 </CmsEditItemProvider>
               </CmsCreateItemProvider>

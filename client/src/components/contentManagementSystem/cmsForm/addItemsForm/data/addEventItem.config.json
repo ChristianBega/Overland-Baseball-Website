@@ -1,38 +1,54 @@
 [
   {
-    "name": "eventName",
-    "label": "Event Name",
-    "placeholder": "Enter event name here...",
+    "name": "title",
+    "label": "Event Title",
+    "placeholder": "Enter event title here...",
     "type": "text",
     "rules": {
-      "required": "Event name is required *"
+      "required": "Event title is required *"
+    }
+  },
+  {
+    "name": "description",
+    "label": "Description",
+    "placeholder": "Enter event description here...",
+    "type": "textarea",
+    "rules": {
+      "required": "Event description is required *"
+    }
+  },
+  {
+    "name": "startDateTime",
+    "label": "Start Date & Time",
+    "placeholder": "Select start date and time...",
+    "type": "dateTimeLocal",
+    "rules": {
+      "required": "Start date and time is required *"
+    }
+
+  },
+  {
+    "name": "endDateTime",
+    "label": "End Date & Time",
+    "placeholder": "Select end date and time...",
+    "type": "dateTimeLocal",
+    "rules": {
+      "required": "End date and time is required *"
     }
   },
   {
     "name": "location",
     "label": "Location",
-    "placeholder": "Enter location here...",
+    "placeholder": "Enter location (select from suggestions)...",
     "type": "text",
     "rules": {
       "required": "Location is required *"
     }
   },
   {
-    "name": "date",
-    "label": "Date",
-    "placeholder": "Enter date here...",
-    "type": "date",
-    "rules": {
-      "required": "Date is required *"
-    }
-  },
-  {
-    "name": "time",
-    "label": "Time",
-    "placeholder": "Enter time here...",
-    "type": "time",
-    "rules": {
-      "required": "Time is required *"
-    }
+    "name": "eventImage",
+    "label": "Event Image",
+    "placeholder": "Upload event image...",
+    "type": "cmsUploadItem"
   }
 ]

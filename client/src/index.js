@@ -18,11 +18,11 @@ root.render(
       <UserProvider>
         <ThemeToggleProvider>
           <CmsProvider>
-            {/* <ModalProvider> */}
-            <DateNavigatorProvider>
-              <App />
-            </DateNavigatorProvider>
-            {/* </ModalProvider> */}
+            <ModalProvider>
+              <DateNavigatorProvider>
+                <App />
+              </DateNavigatorProvider>
+            </ModalProvider>
           </CmsProvider>
         </ThemeToggleProvider>
       </UserProvider>

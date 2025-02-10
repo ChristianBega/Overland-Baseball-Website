@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, List, ListItem, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 // import PlayerEvents from "../playerEvents/playerEvents.component";
@@ -11,19 +11,21 @@ import youthProgramImage from "../../../../../assets/eventsPage/youthProgramImag
 import PlaceIcon from "@mui/icons-material/Place";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CircleIcon from "@mui/icons-material/Circle";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import CircleIcon from "@mui/icons-material/Circle";
 import { useTheme } from "@emotion/react";
 import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
+// import Form from "../../../../../components/forms/form.component";
+import { useModal } from "../../../../../setup/context/modal.context";
 
 const iconStyles = {
   fontSize: "1rem",
 };
 
-const bulletPointStyles = {
-  fontSize: "0.75rem",
-  marginTop: ".25rem",
-};
+// const bulletPointStyles = {
+//   fontSize: "0.75rem",
+//   marginTop: ".25rem",
+// };
 
 const textStyles = {
   display: "flex",
@@ -31,11 +33,11 @@ const textStyles = {
   gap: "0.5rem",
 };
 
-const listItemStyles = {
-  display: "flex",
-  alignItems: "flex-start",
-  gap: "0.25rem",
-};
+// const listItemStyles = {
+//   display: "flex",
+//   alignItems: "flex-start",
+//   gap: "0.25rem",
+// };
 
 const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeason }) => {
   const theme = useTheme();
@@ -61,7 +63,8 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
   );
 };
 
-export default function PlayerEvent({ isMobile, playerEventType, rowReverse }) {
+export default function PlayerEvent({ playerEventType, rowReverse }) {
+  const { openModal, closeModal } = useModal();
   const { isMd, isLg } = useMediaQueries();
   const [currentEventData, setCurrentEventData] = useState([]);
   const [currentSeason, setCurrentSeason] = useState("Spring");
@@ -72,6 +75,10 @@ export default function PlayerEvent({ isMobile, playerEventType, rowReverse }) {
   useEffect(() => {
     setCurrentEventData(youthProgramData);
   }, [currentEventData]);
+
+  const handleOpenModal = () => {
+    openModal(<>coming soon</>);
+  };
 
   return (
     <Grid item xs={12}>
@@ -106,7 +113,7 @@ export default function PlayerEvent({ isMobile, playerEventType, rowReverse }) {
               </Stack>
             )}
             {!isMd && <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />}
-            <Stack direction={"row"} justifyContent="space-between" spacing={2} mb={4} sx={{ maxWidth: "500px" }}>
+            <Stack direction={"row"} justifyContent="space-between" spacing={2} mb={4} sx={{ maxWidth: "400px" }}>
               <Typography component="p" sx={textStyles}>
                 <CalendarMonthIcon sx={iconStyles} /> Jan, 8th
               </Typography>
@@ -128,7 +135,22 @@ export default function PlayerEvent({ isMobile, playerEventType, rowReverse }) {
               Campers will get the opportunity to learn baseball skills from current players and coaches of Overland Trailblazers. The day will
               consist of hitting, fielding, throwing, and catching, teaching each camper the fundamentals of the game.
             </Typography>
-            {/* <Accordion sx={{ marginTop: "1rem", marginBottom: "2rem" }}>
+
+            <Button onClick={handleOpenModal} variant="contained" color="secondary" sx={{ marginTop: 4 }}>
+              Register Now!
+            </Button>
+          </Grid>
+        </Grid>
+      </SectionLayout>
+    </Grid>
+  );
+}
+// todo : turn youthProgram into a general component for playerEvents - which are player specific events displayed in a section defined in our figma.
+// todo : pass in a type prop : playerEventType = workouts, tryouts, youth program....
+
+// todo : we need to store playerEvents in the firebase database and allow the user to edit all values within the playerEvent object
+// todo : data will look like the data in the youProgramData just not js objects but instead firebase collection data
+/* <Accordion sx={{ marginTop: "1rem", marginBottom: "2rem" }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header">
                 <Typography component="span">Additional Information</Typography>
               </AccordionSummary>
@@ -151,23 +173,4 @@ export default function PlayerEvent({ isMobile, playerEventType, rowReverse }) {
                   </ListItem>
                 </List>
               </AccordionDetails>
-            </Accordion> */}
-            <Button variant="contained" color="secondary" sx={{ marginTop: 4 }}>
-              Register Now!
-            </Button>
-          </Grid>
-        </Grid>
-      </SectionLayout>
-    </Grid>
-  );
-}
-// todo : turn youthProgram into a general component for playerEvents - which are player specific events displayed in a section defined in our figma.
-// todo : pass in a type prop : playerEventType = workouts, tryouts, youth program....
-
-// todo : we need to store playerEvents in the firebase database and allow the user to edit all values within the playerEvent object
-// todo : data will look like the data in the youProgramData just not js objects but instead firebase collection data
-/* <StyledInfoBox> */
-/* <PlayerEvents currentEventData={currentEventData} /> */
-
-/* <RegistrationModal currentEventData={currentEventData} datatypeRegistration="youth program" /> */
-/* </StyledInfoBox> */
+            </Accordion> */

@@ -96,21 +96,37 @@ const AddItemsForm = ({ ...props }) => {
               setProgress(progress);
             });
           } else {
-            console.log(
-              "line 104 ________________",
-              "fired while cmsItemType was",
-              cmsItemType,
-              "was expected to be : anything but : documents, roster, schedule "
-            );
             result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
               setProgress(progress);
             });
           }
           break;
+        case "events":
+          if (localUploadType === "file") {
+            const { url } = await handleUploadFile(
+              data.eventImage,
+              uid,
+              () => {},
+              () => {}
+            );
+            const updatedDataWithEventImageUrl = {
+              ...data,
+              eventImage: url,
+            };
+
+            result = await addCMSItem(uid, role, updatedDataWithEventImageUrl, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          } else {
+            result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          }
         default:
           result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
             setProgress(progress);
           });
+
           break;
       }
 
@@ -139,7 +155,7 @@ const AddItemsForm = ({ ...props }) => {
       return () => clearTimeout(timer);
     }
   }, [status]);
-  
+
   return (
     <Box component="form" onSubmit={handleSubmit(handleAdd)}>
       <FormStatusIndicator statusMessage={statusMessage} />
