@@ -10,13 +10,12 @@ export const addCMSItem = async (userUid, role, data, type) => {
   const cmsItemDocRef = doc(db, `${type}`, docId);
   const filteredData = Object.fromEntries(Object.entries(data).filter(([_, value]) => value !== undefined && value !== null && value !== ""));
   try {
-    console.log("filteredData", filteredData);
     await setDoc(cmsItemDocRef, {
       createdAt: serverTimestamp(),
       id: docId,
       createdByUserUid: userUid,
       ...filteredData,
-      // versionHistory : array of dates & ids pointing to version/references of the data in a collection that deletes every 30 days
+      // Todo:  versionHistory : array of dates & ids pointing to version/references of the data in a collection that deletes every 30 days
 
     });
     return { success: true, id: cmsItemDocRef.id, message: "Created Item successfully!" };

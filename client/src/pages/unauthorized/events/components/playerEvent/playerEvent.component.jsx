@@ -39,6 +39,44 @@ const textStyles = {
 //   gap: "0.25rem",
 // };
 
+const EventDetails = ({ eventData }) => {
+  const theme = useTheme();
+  const { isLg } = useMediaQueries();
+  const desktopStyles = {
+    position: "absolute",
+    bottom: "-2%",
+    left: "50%",
+    transform: "translateX(-44%)",
+    zIndex: 1,
+    color: "#fff",
+    backgroundColor: `${theme.palette.primary.main}90`,
+    padding: "1rem",
+    borderRadius: "6px",
+    width: "85%",
+  };
+  return (
+    <Stack
+      direction={"row"}
+      justifyContent="space-between"
+      spacing={2}
+      mb={isLg ? 4 : 2}
+      sx={{ maxWidth: { sm: "450px" }, ...(isLg && desktopStyles) }}
+    >
+      <Typography component="p" sx={textStyles}>
+        <CalendarMonthIcon sx={iconStyles} /> Jan, 8th
+      </Typography>
+      <Typography component="p" sx={textStyles}>
+        <PlaceIcon sx={iconStyles} />
+        Overland
+      </Typography>
+      <Typography component="p" sx={textStyles}>
+        <AccessTimeIcon sx={iconStyles} />
+        4:00-6pm
+      </Typography>
+    </Stack>
+  );
+};
+
 const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeason }) => {
   const theme = useTheme();
   const { isXs } = useMediaQueries();
@@ -65,7 +103,7 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
 
 export default function PlayerEvent({ playerEventType, rowReverse }) {
   const { openModal, closeModal } = useModal();
-  const { isMd, isLg } = useMediaQueries();
+  const { isSm, isMd, isLg } = useMediaQueries();
   const [currentEventData, setCurrentEventData] = useState([]);
   const [currentSeason, setCurrentSeason] = useState("Spring");
 
@@ -84,12 +122,12 @@ export default function PlayerEvent({ playerEventType, rowReverse }) {
     <Grid item xs={12}>
       <SectionLayout id="player-event-section" aria-label="Player Event Section">
         <Grid container id="player-event-sub-grid" columnSpacing={isLg ? 6 : 4}>
-          <Grid item xs={12} md={4} lg={5} order={{ md: rowReverse ? 1 : 2 }}>
+          <Grid item xs={12} md={4} lg={5} order={{ md: rowReverse ? 1 : 2 }} sx={{ position: "relative" }}>
             <Box
               component="img"
               sx={{
                 width: "100%",
-                maxHeight: { xs: "275px", md: "470px" },
+                maxHeight: { xs: "275px", md: "475px", lg: "410px" },
 
                 marginBottom: { xs: 4, md: 0 },
                 borderRadius: "6px",
@@ -97,14 +135,15 @@ export default function PlayerEvent({ playerEventType, rowReverse }) {
               src={youthProgramImage}
               alt="Youth Program"
             />
-            {!isMd && (
+            {!isSm && (
               <Typography typography="h2" component="h2">
                 {playerEventType}
               </Typography>
             )}
+            {isLg && <EventDetails />}
           </Grid>
           <Grid item xs={12} md={8} lg={7} order={{ md: rowReverse ? 2 : 1 }}>
-            {isMd && (
+            {isSm && (
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography typography="h2" component="h2">
                   {playerEventType}
@@ -112,20 +151,9 @@ export default function PlayerEvent({ playerEventType, rowReverse }) {
                 <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />
               </Stack>
             )}
-            {!isMd && <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />}
-            <Stack direction={"row"} justifyContent="space-between" spacing={2} mb={4} sx={{ maxWidth: "400px" }}>
-              <Typography component="p" sx={textStyles}>
-                <CalendarMonthIcon sx={iconStyles} /> Jan, 8th
-              </Typography>
-              <Typography component="p" sx={textStyles}>
-                <PlaceIcon sx={iconStyles} />
-                Overland
-              </Typography>
-              <Typography component="p" sx={textStyles}>
-                <AccessTimeIcon sx={iconStyles} />
-                4:00-6pm
-              </Typography>
-            </Stack>
+            {!isSm && <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />}
+            {!isLg && <EventDetails />}
+
             <Typography component="p" typography="p" gutterBottom>
               Our Youth Program is designed to instill a love for baseball in kids of all skill levels, fostering teamwork, sportsmanship, and skill
               development. From fundamental coaching to friendly matches, we provide a safe and supportive environment for young players to learn and

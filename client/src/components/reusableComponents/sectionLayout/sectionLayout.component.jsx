@@ -18,7 +18,7 @@ const StyledSectionLayout = styled(Box)(({ theme, ...rest }) => ({
   },
   [theme.breakpoints.up("lg")]: {
     ...(rest?.marginBlock && { marginBlock: "6rem !important" }),
-    ...(rest?.marginZero ? { marginTop: "0" } : { marginTop: "6rem !important" }),
+    ...(rest?.marginZero ? { marginTop: "0" } : { marginTop: "8rem !important" }),
   },
 }));
 

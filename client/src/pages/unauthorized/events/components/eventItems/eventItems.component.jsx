@@ -15,15 +15,20 @@ export default function EventItems({ ...props }) {
   const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const [open, setOpen] = React.useState(false);
   const [currentEventData, setCurrentEventData] = React.useState({
-    eventName: "",
+    // eventName: "",
+    // date: "",
+    // time: "",
+    // title: "",
+    startDateTime: "",
+    endDateTime: "",
+    description: "",
+    eventImage: "",
     location: "",
-    date: "",
-    time: "",
   });
   const theme = useTheme();
 
   const currentData = isEditable ? editableData : data;
-  const { eventName, location, date, time } = currentData || {};
+  const { eventName, location, date, time, startDateTime, endDateTime, description, eventImage, title } = currentData || {};
 
   if (isLoading || isError || isSuccess) {
     return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
@@ -45,22 +50,22 @@ export default function EventItems({ ...props }) {
       <StyledTableCell isCmsItem={isCmsItem} className={`table-cell-accent table-header-cell-wide ${!isEditable ? "table-cell-center" : ""}`}>
         {isEditable ? (
           <>
-            <InputFieldComponent cssProps={{ color: "#fff" }} label="Date" onChange={handleChange("date")} type="date" value={formatDate(date)} />
+            <InputFieldComponent label="Start Date & Time" onChange={handleChange("startDateTime")} type="dateTimeLocal" value={startDateTime} />
+            {/* <InputFieldComponent label="End Date & Time" onChange={handleChange("endDateTime")} type="dateTimeLocal" value={endDateTime} /> */}
+
+            {/* <InputFieldComponent cssProps={{ color: "#fff" }} label="Date" onChange={handleChange("date")} type="date" value={formatDate(date)} />
             <InputFieldComponent
               cssProps={{ color: "#fff" }}
               label="Time"
               onChange={handleChange("time")}
               type="time"
               value={convertTo24HourFormat(time)}
-            />
+            /> */}
           </>
         ) : (
           <Stack direction="column" justifyContent="center" gap={1}>
             <Typography component="p" variant="body1">
-              {date}
-            </Typography>
-            <Typography component="p" variant="body1">
-              {time}
+              {startDateTime}
             </Typography>
           </Stack>
         )}
@@ -94,7 +99,7 @@ export default function EventItems({ ...props }) {
               </IconButton>
             )}
             <Typography component={"span"} sx={{ fontSize: "1rem", textAlign: "center" }}>
-              {eventName}
+              {title}
             </Typography>
           </>
         )}
