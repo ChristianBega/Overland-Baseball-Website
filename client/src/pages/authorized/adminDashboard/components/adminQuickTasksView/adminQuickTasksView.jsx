@@ -8,64 +8,87 @@ import { Box, Typography } from "@mui/material";
 
 const quickTaskConfig = [
   {
+    task: "Manage Pages",
+    component: "<ManagePages />",
+    description: "View all pages on the website, edit them, add new pages, delete pages, etc...",
+    action: (navigate) => navigate("/manage-pages"),
+    type: "navigate",
+  },
+  {
     task: "Player Stats",
     component: "<PlayerStats />",
     description: "Coming soon - batting average, on base percentage, etc...",
     action: (navigate) => navigate("/player-stats"),
+    type: "navigate",
   },
   {
-    // ! take a picture of your game score, create a virtual version, allow for editing, sharing, and AI analysis of the game
-    task: "Game Score Cards",
-    component: "<GameScoreCards />",
-    description: "Coming soon - view all game score cards, add new game score cards, edit game score cards, delete game score cards...",
-    action: (navigate) => navigate("/game-score-cards"),
+    task: "Media Storage",
+    component: <CmsMediaStorage />,
+    action: (openModal) => openModal(<CmsMediaStorage />, "mediaStorage"),
+    type: "modal",
   },
   {
     task: "Events Sign Ups",
     component: "<Events />",
     description: "View all events sign ups, filter by event, user, date, etc...",
     action: (navigate) => navigate("/events"),
-  },
-  {
-    task: "Form Analytics",
-    description: "View all form submissions and their analytics - who's signed up for what, what events they've signed up for, etc...",
-    component: "<FormAnalytics />",
-    action: (navigate) => navigate("/form-analytics"),
+    type: "navigate",
   },
   {
     task: "User Management",
     component: "<CmsUserManagement />",
     description: "Manage all users on the website - update, delete, add new users, manage roles, etc...",
     action: (navigate) => navigate("/user-management"),
+    type: "navigate",
   },
-  {
-    task: "Incoming Emails",
-    component: "<IncomingEmails />",
-    description: "View all incoming emails, filter by sender, subject, date, etc...",
-    action: (navigate) => navigate("/incoming-emails"),
-  },
-  {
-    task: "Media Storage",
-    component: <CmsMediaStorage />,
-    action: (openModal) => openModal(<CmsMediaStorage />, "mediaStorage"),
-  },
-  {
-    task: "Website Analytics (GA4 Tracking) - coming soon (page views, clicks, ecom tracker, cart, etc...)",
-    component: "<WebsiteAnalytics />",
-    action: (navigate) => navigate("/website-analytics"),
-  },
+  // {
+  //   // ! take a picture of your game score, create a virtual version, allow for editing, sharing, and AI analysis of the game
+  //   task: "Game Score Cards",
+  //   component: "<GameScoreCards />",
+  //   description: "Coming soon - view all game score cards, add new game score cards, edit game score cards, delete game score cards...",
+  //   action: (navigate) => navigate("/game-score-cards"),
+  //   type: "navigate",
+  // },
+
+  // {
+  //   task: "Form Analytics",
+  //   component: "<FormAnalytics />",
+  //   description: "View all form submissions and their analytics - who's signed up for what, what events they've signed up for, etc...",
+  //   action: (navigate) => navigate("/form-analytics"),
+  //   type: "navigate",
+  // },
+
+  // {
+  //   task: "Incoming Emails",
+  //   component: "<IncomingEmails />",
+  //   description: "View all incoming emails, filter by sender, subject, date, etc...",
+  //   action: (navigate) => navigate("/incoming-emails"),
+  //   type: "navigate",
+  // },
+
+  // {
+  //   task: "Website Analytics (GA4 Tracking) - coming soon (page views, clicks, ecom tracker, cart, etc...)",
+  //   component: "<WebsiteAnalytics />",
+  //   action: (navigate) => navigate("/website-analytics"),
+  //   type: "navigate",
+  // },
 ];
 
 const AdminQuickTasksView = () => {
   const { openModal } = useModal();
-  const { navigate } = useNavigate();
+  const navigate = useNavigate();
   const { currentUserProfile } = useContext(UserContext);
   const { role } = currentUserProfile;
   const checkAuthorization = useCheckAuthorization();
 
-  const handleQuickTask = (taskAction) => {
+  const handleQuickTask = (task) => {
     if (!checkAuthorization(role)) return;
-    taskAction(openModal);
+
+    if (task.type === "navigate") {
+      task.action(navigate);
+    } else if (task.type === "modal") {
+      task.action(openModal);
+    }
   };
 
   return (
@@ -78,7 +101,6 @@ const AdminQuickTasksView = () => {
         display: "flex",
         flexWrap: "wrap",
         gap: "1rem",
-        display: "flex",
         overflow: "scroll",
       }}
     >
@@ -94,7 +116,7 @@ const AdminQuickTasksView = () => {
             height: "200px",
             margin: "auto",
           }}
-          onClick={() => handleQuickTask(task.action)}
+          onClick={() => handleQuickTask(task)}
         >
           <Typography variant="h6" component="h2">
             {task.task}

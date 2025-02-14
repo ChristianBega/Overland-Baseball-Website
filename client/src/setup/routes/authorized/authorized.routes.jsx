@@ -15,7 +15,7 @@ import PasswordResetPage from "../../../pages/unauthorized/passwordReset/passwor
 import Page404 from "../../../pages/404/404.page";
 import AdminDashboardPage from "../../../pages/authorized/adminDashboard";
 import ThemeShowcase from "../../../pages/themeShowcase/themeShowcase";
-
+import ManagePages from "../../../pages/authorized/managePages/managePages.page";
 export default function AuthorizedRoutes() {
   const location = useLocation();
   return (
@@ -37,6 +37,7 @@ export default function AuthorizedRoutes() {
         <Route path="/authentication/password-reset" element={<PasswordResetPage />}></Route>
         <Route path="/dashboard" element={<AdminDashboardPage />}></Route>
         <Route path="/theme-showcase" element={<ThemeShowcase />}></Route>
+        <Route path="/manage-pages" element={<ManagePages />}></Route>
       </Routes>
     </AnimatePresence>
   );

@@ -107,7 +107,9 @@ const AddItemsForm = ({ ...props }) => {
               data.eventImage,
               uid,
               () => {},
-              () => {}
+              () => {},
+              "events",
+              "eventImages"
             );
             const updatedDataWithEventImageUrl = {
               ...data,
@@ -122,6 +124,7 @@ const AddItemsForm = ({ ...props }) => {
               setProgress(progress);
             });
           }
+          break;
         default:
           result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
             setProgress(progress);
@@ -160,7 +163,7 @@ const AddItemsForm = ({ ...props }) => {
     <Box component="form" onSubmit={handleSubmit(handleAdd)}>
       <FormStatusIndicator statusMessage={statusMessage} />
       {/* Add Cms Loading Status Indicator for state - a) progress */}
-      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules, cmsType, optionLabels }, index) => (
+      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules, cmsType, optionLabels, options }, index) => (
         <Controller
           key={index + name}
           name={name}
@@ -196,6 +199,7 @@ const AddItemsForm = ({ ...props }) => {
                   helperText={errors[name]?.message}
                   {...field}
                   optionLabels={optionLabels}
+                  options={options && options}
                 />
               )}
             </Box>

@@ -25,7 +25,6 @@
     "rules": {
       "required": "Start date and time is required *"
     }
-
   },
   {
     "name": "endDateTime",
@@ -49,6 +48,27 @@
     "name": "eventImage",
     "label": "Event Image",
     "placeholder": "Upload event image...",
-    "type": "cmsUploadItem"
+    "type": "cmsUploadItem",
+    "cmsType": "eventImages"
+  },
+  {
+    "name": "eventType",
+    "label": "Event Type",
+    "placeholder": "Select event type...",
+    "type": "select",
+    "options": [
+      {
+        "value": "featured",
+        "label": "Featured"
+      },
+      {
+        "value": "regular",
+        "label": "Regular"
+      },
+      {
+        "value": "player",
+        "label": "Player"
+      }
+    ]
   }
 ]

@@ -13,6 +13,7 @@ const inputComponents = {
   file: lazy(() => import("./FileInputField/fileInputField")),
   toggleSwitch: lazy(() => import("./ToggleSwitchInputField/toggleSwitchInputField")),
   dateTimeLocal: lazy(() => import("./DateTimeField/dateTimeField")),
+  select: lazy(() => import("./SelectInputField/selectInputField")),
 };
 
 const InputFieldComponent = ({ type, ...props }) => {
