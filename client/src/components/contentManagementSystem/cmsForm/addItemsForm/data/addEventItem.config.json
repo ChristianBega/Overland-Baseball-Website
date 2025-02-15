@@ -68,6 +68,10 @@
       {
         "value": "player",
         "label": "Player"
+      },
+      {
+        "value": "fundraiser",
+        "label": "Fundraiser"
       }
     ]
   }

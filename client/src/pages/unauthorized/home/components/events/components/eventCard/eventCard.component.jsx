@@ -29,33 +29,49 @@ const handleEventButtonClick = (event) => {
   }
 };
 
-const EventCardCtas = ({ card }) => {
+const EventCardCtas = ({ data }) => {
+  const { startDateTime, endDateTime, title, location } = data || {};
   const { isMd } = useMediaQueries();
+  const buttons = [
+    {
+      type: "date",
+      icon: <CalendarMonthIcon />,
+      value: startDateTime,
+      eventValue: { startDateTime, endDateTime },
+      // display: startDateTime,
+      display: formatDateTimeForCalendar(startDateTime),
+    },
+    {
+      type: "location",
+      icon: <LocationOnIcon />,
+      value: location,
+      // value: location?.locationAddress,
+      eventValue: { location: location?.locationAddress },
+      display: location,
+      // display: location?.locationAddress,
+    },
+  ];
+
   return (
     <Stack direction="row" spacing={2} sx={{ justifyContent: isMd ? "flex-start" : "flex-end", display: isMd && "inline", zIndex: 1 }}>
-      {card.cta.map((cta, index) => (
-        <React.Fragment key={index}>
-          {Object.entries(cta).map(([key, value]) => {
-            return (
-              <Button
-                data-startDateTime={card.startDateTime}
-                data-endDateTime={card.endDateTime}
-                data-eventTitle={card.title}
-                data-eventDate={card.date}
-                data-eventLocation={card.location.locationAddress}
-                data-eventValue={JSON.stringify(value)}
-                onClick={handleEventButtonClick}
-                key={key}
-                variant="contained"
-                color="secondary"
-                size="card"
-                startIcon={key === "date" ? <CalendarMonthIcon /> : <LocationOnIcon />}
-              >
-                {key === "date" ? formatDateTimeForCalendar(value.startDateTime) : value.location}
-              </Button>
-            );
-          })}
-        </React.Fragment>
+      {buttons.map((button) => (
+        <Button
+          key={button.type}
+          data-startDateTime={startDateTime}
+          data-endDateTime={endDateTime}
+          data-eventTitle={title}
+          // data-eventDate={date}
+          data-eventLocation={location}
+          // data-eventLocation={location?.locationAddress}
+          data-eventValue={JSON.stringify(button.eventValue)}
+          onClick={handleEventButtonClick}
+          variant="contained"
+          color="secondary"
+          size="card"
+          startIcon={button.icon}
+        >
+          {button.display}
+        </Button>
       ))}
     </Stack>
   );
@@ -78,8 +94,12 @@ const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => 
       }}
       onClick={handleCardClick}
     >
-      <Card key={index} variant={selectedCardIndex === index ? "events-main" : "events-secondary"} sx={{ backgroundImage: `url(${card?.image})` }}>
-        {!isMd && <EventCardCtas card={card} />}
+      <Card
+        key={index}
+        variant={selectedCardIndex === index ? "events-main" : "events-secondary"}
+        sx={{ backgroundImage: `url(${card?.eventImage})` }}
+      >
+        {!isMd && <EventCardCtas data={card} />}
         {!isMd && (
           <CardContent sx={{ color: "#fff", zIndex: 1 }}>
             <Typography variant="h3" component="h3" gutterBottom={selectedCardIndex === index}>
@@ -96,11 +116,11 @@ const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => 
       {isMd && (
         <Box sx={{ zIndex: 1, color: "#000", mt: selectedCardIndex === index ? "2rem" : "0", ml: selectedCardIndex !== index ? "1rem" : "0" }}>
           <Stack direction={isLg ? "row" : "column"} justifyContent="space-between" mb={2}>
-            {selectedCardIndex === index && !isLg && <EventCardCtas card={card} />}
+            {selectedCardIndex === index && !isLg && <EventCardCtas data={card} />}
             <Typography variant="h4" component="h3" sx={{ display: "inline", mt: { md: 1, lg: 0 } }}>
               {card.title}
             </Typography>
-            {selectedCardIndex === index && isLg && <EventCardCtas card={card} />}
+            {selectedCardIndex === index && isLg && <EventCardCtas data={card} />}
           </Stack>
 
           {selectedCardIndex === index ? (
