@@ -15,11 +15,18 @@ import PlayerEvent from "./components/playerEvent/playerEvent.component";
 // Utils & Helpers
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 import Fundraisers from "./components/fundraisers/fundraisers.component";
-
+import BentoLayout from "../../../components/reusableComponents/bentoLayout/bentoLayout.component";
+import { useRealtimeData } from "../../../hooks/useRealtimeData";
 export default function EventsPage() {
   // const theme = useTheme();
   const { isLg } = useMediaQueries();
   // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { data, isLoading, error } = useRealtimeData("events");
+  const playerEvents = data?.filter((event) => event.eventType === "player");
+  const fundraiserEvents = data?.filter((event) => event.eventType === "fundraiser");
+
+  if (isLoading) return "loading...";
+  if (error) return "error...";
   return (
     <Container
       // component={motion.section}
@@ -35,10 +42,12 @@ export default function EventsPage() {
 
       <Grid container id="events-main-grid" columnSpacing={isLg ? 6 : 4}>
         <EventsView />
-        <PlayerEvent playerEventType="youth program" />
+        {playerEvents.map((event, index) => (
+          <PlayerEvent key={event.id} data={event} rowReverse={index % 2 === 0 ? true : false} />
+        ))}
+        {/* <PlayerEvent playerEventType="youth program" />
         <PlayerEvent playerEventType="work outs" rowReverse />
-        <PlayerEvent playerEventType="try outs" />
-
+        <PlayerEvent playerEventType="try outs" /> */}
         {/* {isMobile && <YouthProgramSlider isMobile={isMobile} />}
         <YouthProgram isMobile={isMobile} />
         {!isMobile && <YouthProgramSlider />}
@@ -48,8 +57,8 @@ export default function EventsPage() {
 
         <Workouts isMobile={isMobile} />
         {!isMobile && <WorkoutSlider />}
-        <Fundraisers /> */}
-        <Fundraisers />
+        <Fundraisers fundraiserEvents={fundraiserEvents} /> */}
+        <Fundraisers fundraiserEvents={fundraiserEvents} />
       </Grid>
     </Container>
   );

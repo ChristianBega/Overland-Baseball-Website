@@ -33,7 +33,7 @@ const StyledOverlay = styled(Box)(({ theme }) => ({
   },
 }));
 
-export default function Fundraisers() {
+export default function Fundraisers({ fundraiserEvents }) {
   const [open, setOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState();
   const [events, setEvents] = useState();
@@ -51,7 +51,9 @@ export default function Fundraisers() {
         <Typography typography="h2" component="h2">
           Upcoming fundraisers
         </Typography>
-        <BentoLayout gridItemsData={fundraisersCardData} />
+        <BentoLayout gridItemsData={fundraiserEvents} />
+
+        {/* <BentoLayout gridItemsData={fundraisersCardData} /> */}
       </SectionLayout>
       {/* <Grid container maxWidth="lg" spacing={4}> */}
 

@@ -35,6 +35,10 @@ const Events = () => {
   const { isMd } = useMediaQueries();
   const theme = useTheme();
 
+  // const { data, isLoading, error } = useRealtimeData("events");
+  // if (isLoading) return "loading...";
+  // if (error) return "error...";
+
   const eventInfoPageData = {
     text: "Help support your Overland Trailblazer baseball program by attending our upcoming events. We have lots happening in our community including fundraisers, team activities, and more. Check out all our events here and sign up!",
     keywords: [{ keyword: "all our events here and sign up!", url: "/events", type: "RouterLink" }],
@@ -51,7 +55,7 @@ const Events = () => {
         <Typography component="p" typography="p" marginBottom={isMd ? 4 : 2}>
           {highlightedText}
         </Typography>
-        <BentoLayout gridItemsData={events} />
+        {/* <BentoLayout gridItemsData={events} /> */}
       </SectionLayout>
     </Grid>
   );

@@ -8,15 +8,7 @@
       "required": "Event title is required *"
     }
   },
-  {
-    "name": "description",
-    "label": "Description",
-    "placeholder": "Enter event description here...",
-    "type": "textarea",
-    "rules": {
-      "required": "Event description is required *"
-    }
-  },
+
   {
     "name": "startDateTime",
     "label": "Start Date & Time",
@@ -45,13 +37,6 @@
     }
   },
   {
-    "name": "eventImage",
-    "label": "Event Image",
-    "placeholder": "Upload event image...",
-    "type": "cmsUploadItem",
-    "cmsType": "eventImages"
-  },
-  {
     "name": "eventType",
     "label": "Event Type",
     "placeholder": "Select event type...",
@@ -74,5 +59,35 @@
         "label": "Fundraiser"
       }
     ]
+  },
+  {
+    "name": "description",
+    "label": "Description (optional)",
+    "placeholder": "Enter event description here...",
+    "type": "textarea"
+  },
+  {
+    "name": "eventImage",
+    "label": "Event Image (optional)",
+    "placeholder": "Upload event image...",
+    "type": "cmsUploadItem",
+    "cmsType": "eventImages"
+  },
+  {
+    "name": "playerEventContent",
+    "instructions": "Press Enter twice to start a new paragraph",
+    "label": "Player Event Content (optional)",
+    "placeholder": "Enter player event content here...",
+    "type": "textarea",
+    "rules": {
+      "minLength": {
+        "value": 250,
+        "message": "Player Event Content must be at least 250 characters long"
+      },
+      "maxLength": {
+        "value": 468,
+        "message": "Player Event Content cannot exceed 468 characters"
+      }
+    }
   }
 ]

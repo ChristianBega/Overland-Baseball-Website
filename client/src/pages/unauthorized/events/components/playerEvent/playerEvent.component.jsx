@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 // import RegistrationModal from "../../../../../components/modals/registrationModal.component";
 import { youthProgramData } from "../../../../../websiteData/events.data";
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
-import youthProgramImage from "../../../../../assets/eventsPage/youthProgramImage.webp";
 
 // Icons
 import PlaceIcon from "@mui/icons-material/Place";
@@ -17,6 +16,8 @@ import { useTheme } from "@emotion/react";
 import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
 // import Form from "../../../../../components/forms/form.component";
 import { useModal } from "../../../../../setup/context/modal.context";
+import { formatTime } from "../../../../../setup/utils/helpers/formatTime";
+import { formatDateTimeForCalendar } from "../../../../../setup/utils/helpers/formatDate";
 
 const iconStyles = {
   fontSize: "1rem",
@@ -31,6 +32,10 @@ const textStyles = {
   display: "flex",
   alignItems: "center",
   gap: "0.5rem",
+  fontSize: ".9rem",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 
 // const listItemStyles = {
@@ -39,9 +44,10 @@ const textStyles = {
 //   gap: "0.25rem",
 // };
 
-const EventDetails = ({ eventData }) => {
+const EventDetails = ({ data }) => {
   const theme = useTheme();
   const { isLg } = useMediaQueries();
+  const { startDateTime, location, endDateTime } = data || {};
   const desktopStyles = {
     position: "absolute",
     bottom: "-2%",
@@ -63,15 +69,15 @@ const EventDetails = ({ eventData }) => {
       sx={{ maxWidth: { sm: "450px" }, ...(isLg && desktopStyles) }}
     >
       <Typography component="p" sx={textStyles}>
-        <CalendarMonthIcon sx={iconStyles} /> Jan, 8th
+        <CalendarMonthIcon sx={iconStyles} /> {formatDateTimeForCalendar(startDateTime)}
       </Typography>
       <Typography component="p" sx={textStyles}>
         <PlaceIcon sx={iconStyles} />
-        Overland
+        {location}
       </Typography>
       <Typography component="p" sx={textStyles}>
         <AccessTimeIcon sx={iconStyles} />
-        4:00-6pm
+        {startDateTime && endDateTime ? `${formatTime(startDateTime)}-${formatTime(endDateTime, true)}` : ""}
       </Typography>
     </Stack>
   );
@@ -101,9 +107,10 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
   );
 };
 
-export default function PlayerEvent({ playerEventType, rowReverse }) {
+export default function PlayerEvent({ playerEventType, rowReverse, data }) {
+  const { title, playerEventContent, eventImage } = data;
   const { openModal, closeModal } = useModal();
-  const { isSm, isMd, isLg } = useMediaQueries();
+  const { isSm, isLg } = useMediaQueries();
   const [currentEventData, setCurrentEventData] = useState([]);
   const [currentSeason, setCurrentSeason] = useState("Spring");
 
@@ -117,6 +124,10 @@ export default function PlayerEvent({ playerEventType, rowReverse }) {
   const handleOpenModal = () => {
     openModal(<>coming soon</>);
   };
+  const paragraphs = playerEventContent
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter((p) => p);
 
   return (
     <Grid item xs={12}>
@@ -127,43 +138,38 @@ export default function PlayerEvent({ playerEventType, rowReverse }) {
               component="img"
               sx={{
                 width: "100%",
-                maxHeight: { xs: "275px", md: "475px", lg: "410px" },
-
+                maxHeight: { xs: "275px", sm: "325px", md: "475px", lg: "410px" },
+                height: "100%",
                 marginBottom: { xs: 4, md: 0 },
                 borderRadius: "6px",
               }}
-              src={youthProgramImage}
-              alt="Youth Program"
+              src={eventImage}
+              alt={title}
             />
             {!isSm && (
               <Typography typography="h2" component="h2">
-                {playerEventType}
+                {title}
               </Typography>
             )}
-            {isLg && <EventDetails />}
+            {isLg && <EventDetails data={data} />}
           </Grid>
           <Grid item xs={12} md={8} lg={7} order={{ md: rowReverse ? 2 : 1 }}>
             {isSm && (
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography typography="h2" component="h2">
-                  {playerEventType}
+                  {title}
                 </Typography>
                 <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />
               </Stack>
             )}
             {!isSm && <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />}
-            {!isLg && <EventDetails />}
+            {!isLg && <EventDetails data={data} />}
 
-            <Typography component="p" typography="p" gutterBottom>
-              Our Youth Program is designed to instill a love for baseball in kids of all skill levels, fostering teamwork, sportsmanship, and skill
-              development. From fundamental coaching to friendly matches, we provide a safe and supportive environment for young players to learn and
-              grow in the sport they're passionate about.
-            </Typography>
-            <Typography component="p" typography="p" marginBottom={0}>
-              Campers will get the opportunity to learn baseball skills from current players and coaches of Overland Trailblazers. The day will
-              consist of hitting, fielding, throwing, and catching, teaching each camper the fundamentals of the game.
-            </Typography>
-
+            {paragraphs?.map((paragraph, index) => (
+              <Typography key={index} component="p" typography="p" sx={{ marginBottom: index !== paragraphs.length - 1 ? 2 : 0 }}>
+                {paragraph}
+              </Typography>
+            ))}
             <Button onClick={handleOpenModal} variant="contained" color="secondary" sx={{ marginTop: 4 }}>
               Register Now!
             </Button>
