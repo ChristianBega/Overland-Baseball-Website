@@ -138,7 +138,7 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
               component="img"
               sx={{
                 width: "100%",
-                maxHeight: { xs: "275px", sm: "325px", md: "475px", lg: "410px" },
+                maxHeight: { xs: "275px", sm: "325px", md: "475px", lg: " 100%" },
                 height: "100%",
                 marginBottom: { xs: 4, md: 0 },
                 borderRadius: "6px",
