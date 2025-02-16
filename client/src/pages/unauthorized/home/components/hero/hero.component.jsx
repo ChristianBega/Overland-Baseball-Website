@@ -1,56 +1,53 @@
 import React from "react";
-import { useTheme } from "@emotion/react";
 import { Link as RouterLink } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
 // Components
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 // MUI
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 // Assets
-import OverlandLogo from "../../../../../assets/homePage/hero/hero-bg-temp.svg";
-import OverlandLogo1 from "../../../../../assets/logos/overland-logo-1.svg";
+import heroBg from "../../../../../assets/hero-bg-1.png";
 // Styles
 import { styles } from "./hero.styles";
+// Icons
+import CallMadeIcon from "@mui/icons-material/CallMade";
 
 const Hero = () => {
-  const theme = useTheme();
   return (
     <SectionLayout
       marginZero={true}
       id="hero"
       aria-label="Hero Section"
       component="section"
-      sx={{ backgroundImage: `url(${OverlandLogo})`, ...styles.section }}
+      sx={{ backgroundImage: `url(${heroBg})`, ...styles.section }}
     >
-      <Box sx={{ maxWidth: 700, margin: "0 auto" }}>
-        <Box sx={styles.box}>
-          <Typography
-            sx={{
-              ...styles.typography,
-              filter: `drop-shadow(0px 0px 2px ${theme.palette.accent.accentThree})`,
-            }}
-            variant="h1"
-            component="h1"
-            gutterBottom
-          >
-            <span style={{ fontSize: "75%" }}>Overland</span> <br /> Trailblazers
-          </Typography>
+      <Typography
+        sx={{
+          ...styles.typography,
+        }}
+        variant="h1"
+        component="h1"
+        gutterBottom
+      >
+        <span style={{ fontSize: "45%", lineHeight: "0.45" }}>Home Of The</span>
+        <br />
+        Blazers
+      </Typography>
 
-          <img src={OverlandLogo1} alt="Overland Trailblazers Logo" style={styles.image} />
-        </Box>
-        <Typography variant="body1" sx={styles.text}>
-          Welcome to the official site of the Overland Trailblazers Baseball Team! <br />
-          Find game schedules, events & news, and ways to support our players. Start exploring below!
-        </Typography>
-        <Stack spacing={2} mt={4} sx={styles.stack}>
-          <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up" size="large">
-            Sign Up For Blazer Update
-          </Button>
-          <Button variant="outlined" color="secondary" component={HashLink} to="/#contact-us-section" size="large">
-            Get In Contact With Us
-          </Button>
-        </Stack>
-      </Box>
+      <Typography variant="body1" sx={styles.text}>
+        Welcome to the official site of the Overland Trailblazers Baseball Team! Find game schedules, events & news, and ways to support our players.
+        Start exploring below!
+      </Typography>
+      <Button
+        sx={{ marginTop: "2rem", width: { xs: "90%", sm: 350 }, marginInline: "auto" }}
+        variant="contained"
+        color="secondary"
+        component={RouterLink}
+        to="/authentication/sign-up"
+        size="large"
+        endIcon={<CallMadeIcon sx={{ fontSize: ".9rem" }} />}
+      >
+        Join Our Community
+      </Button>
     </SectionLayout>
   );
 };

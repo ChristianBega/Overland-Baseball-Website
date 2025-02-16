@@ -5,49 +5,47 @@ export const styles = {
     textAlign: "center",
     color: "#fff",
     padding: "2rem 1rem",
-    height: "550px",
+    minHeight: "550px",
+    height: "calc(80vh - 64px)",
+    "@media (max-width: 600px)": {
+      padding: "1.5rem",
+      minHeight: "450px",
+    },
+    "@media (min-width: 900px)": {
+      minHeight: "650px",
+    },
+    "@media (min-width: 1200px)": {
+      height: "72vh",
+      // justifyContent: "flex-start",
+    },
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    "@media (min-width: 900px)": {
-      height: "750px",
-    },
-    "@media (min-width: 1200px)": {
-      height: "85vh",
-    },
-  },
-
-  box: {
-    position: "relative",
-    margin: "0 auto",
   },
   typography: {
-    position: "absolute",
-    top: "45%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
     fontFamily: "Varsity Regular",
-    fontSize: "45px",
+    fontSize: "75px",
+    lineHeight: "65px",
     marginBottom: 0,
-    color: "#003366",
-    textShadow: `
-      -1px -1px 0 #ffffff,
-      1px -1px 0 #ffffff,
-      -1px 1px 0 #ffffff,
-      1px 1px 0 #ffffff,
-      0 0 1px #ffffff
-    `,
-  },
-  image: {
-    maxWidth: "100%",
-    height: "auto",
-    margin: "auto",
-    display: "block",
+    color: "#ffffff",
+    textTransform: "lowercase",
+    width: "100%",
+    "@media (min-width: 600px)": {
+      fontSize: "95px",
+      lineHeight: "85px",
+    },
+    "@media (min-width: 900px)": {
+      fontSize: "115px",
+      lineHeight: "105px",
+    },
+    "@media (min-width: 1200px)": {
+      fontSize: "130px",
+      lineHeight: "110px",
+    },
   },
   text: {
     marginTop: "1rem",
-  },
-  stack: {
-    marginTop: "2rem",
+    maxWidth: 590,
+    margin: "2rem auto 0 auto",
   },
 };
