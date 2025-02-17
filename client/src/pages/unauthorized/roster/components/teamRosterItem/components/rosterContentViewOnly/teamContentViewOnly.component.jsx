@@ -1,0 +1,68 @@
+import React from "react";
+// MUI
+import { styled } from "@mui/material";
+// Assets
+import PlaceHolderImage from "../../../../../../../assets/rosterPlaceHolder.png";
+// Utils
+
+// Styled components using proper table elements
+
+const TableCell = styled("td")({
+  padding: "16px",
+  borderBottom: "1px solid rgba(224, 224, 224, 0.4)",
+  verticalAlign: "middle",
+});
+
+const NameCell = styled(TableCell)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "12px",
+  position: "sticky",
+  minWidth: "100px",
+}));
+
+const PlayerImage = styled("img")({
+  width: "40px",
+  height: "40px",
+  borderRadius: "50%",
+  objectFit: "cover",
+});
+
+const PlayerName = styled("span")({
+  fontSize: "14px",
+  fontWeight: 500,
+  color: "#1a2b4f",
+});
+
+const InfoText = styled("span")({
+  fontSize: "14px",
+  color: "#1a2b4f",
+});
+
+const TeamContentViewOnly = ({ data, isCmsItem }) => {
+  const { playerImage, position, height, weight, handed, number, name, year, yearAbbr } = data;
+
+  return (
+    <>
+      <NameCell>
+        <PlayerImage src={playerImage || PlaceHolderImage} alt={`${name}'s profile`} />
+        <PlayerName>{name}</PlayerName>
+      </NameCell>
+      <TableCell>
+        <InfoText>{position}</InfoText>
+      </TableCell>
+      <TableCell>
+        <InfoText>{height}</InfoText>
+      </TableCell>
+      <TableCell>
+        <InfoText>{handed}</InfoText>
+      </TableCell>
+
+      {/* <TableCell>
+        <InfoText>{weight}</InfoText>
+      </TableCell> */}
+    </>
+  );
+};
+
+export default TeamContentViewOnly;
