@@ -1,5 +1,19 @@
 import React, { useState } from "react";
-import { Grid, Paper, Table, TableBody, TableHead, TableRow, TableCell, TableContainer, Typography, styled, Box, Pagination } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableContainer,
+  Typography,
+  styled,
+  Box,
+  Pagination,
+  Stack,
+} from "@mui/material";
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component";
 import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
@@ -57,6 +71,35 @@ const StyledPagination = styled(Pagination)({
   },
 });
 
+const StyledInput = styled("input")(({ theme }) => ({
+  padding: "8px 12px",
+  border: "1px solid #e0e0e0",
+  borderRadius: "4px",
+  fontSize: "14px",
+  width: "100%",
+  "&:focus": {
+    outline: "none",
+    borderColor: "#1a2b4f",
+  },
+  "&::placeholder": {
+    color: "#757575",
+  },
+}));
+
+const StyledSelect = styled("select")(({ theme }) => ({
+  padding: "8px 12px",
+  border: "1px solid #e0e0e0",
+  borderRadius: "4px",
+  fontSize: "14px",
+  backgroundColor: "white",
+  minWidth: "150px",
+  cursor: "pointer",
+  "&:focus": {
+    outline: "none",
+    borderColor: "#1a2b4f",
+  },
+}));
+
 export default function TeamRoster() {
   const [page, setPage] = useState(1);
   const itemsPerPage = 9;
@@ -85,6 +128,15 @@ export default function TeamRoster() {
         <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
           Current Roster
         </Typography>
+        <Stack direction="row" gap={2} alignItems="center" sx={{ mb: 2, border: "1px dotted red" }}>
+          <StyledInput placeholder="Find A Player" />
+          <StyledSelect defaultValue="all">
+            <option value="all">All Teams</option>
+            <option value="varsity">Varsity</option>
+            <option value="juniorVarsity">Junior Varsity</option>
+            <option value="freshman">Freshman</option>
+          </StyledSelect>
+        </Stack>
 
         <StyledTableContainer component={Paper}>
           <StyledTable aria-label="roster table">
@@ -95,7 +147,7 @@ export default function TeamRoster() {
                     paddingLeft: "1rem",
                     position: "sticky",
                     zIndex: 1,
-                    width: { xs: "150px", sm: "200px", md: "300px" },
+                    width: { xs: "210px", sm: "225px", md: "300px" },
                   }}
                 >
                   Name
