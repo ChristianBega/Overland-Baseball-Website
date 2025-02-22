@@ -1,12 +1,28 @@
-// import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "./index.firebase";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { ROLES } from "../constants/roles";
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: "select_account",
 });
+
+// Helper function to update last login
+const updateLastLogin = async (uid) => {
+  const userDocRef = doc(db, "users", uid);
+  try {
+    await setDoc(
+      userDocRef,
+      {
+        lastLoginTimestamp: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.error("Error updating last login:", error);
+  }
+};
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
@@ -17,34 +33,58 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
   if (!userAuth) return;
 
   const userDocRef = doc(db, "users", userAuth.uid);
+
   try {
     const userSnapshot = await getDoc(userDocRef);
+
     if (!userSnapshot.exists()) {
       const { email, uid } = userAuth;
+      const { userName, role = ROLES.USER } = additionalInfo;
 
-      const currentDate = new Date();
-      const createdAtTimestamp = currentDate.toISOString();
-      await setDoc(userDocRef, {
+      // Validate role
+      if (!Object.values(ROLES).includes(role)) {
+        throw new Error(`Invalid role: ${role}`);
+      }
+
+      const userData = {
         uid,
         email,
-        createdAtTimestamp,
-        role: "user",
-        ...additionalInfo,
-      });
+        userName,
+        role,
+        createdAtTimestamp: new Date().toISOString(),
+        lastLoginTimestamp: new Date().toISOString(),
+        accountStatus: "active",
+        profileComplete: false,
+      };
+
+      await setDoc(userDocRef, userData);
+      return userData;
     }
+
+    return userSnapshot.data();
   } catch (error) {
-    console.error(error);
+    console.error("Error creating/updating user document:", error);
+    throw error;
   }
-  return userDocRef;
 };
 
 export const signInAuthWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
-  return await signInWithEmailAndPassword(auth, email, password);
+  const result = await signInWithEmailAndPassword(auth, email, password);
+  if (result.user) {
+    await updateLastLogin(result.user.uid);
+  }
+  return result;
 };
 
 export const signOutUser = async () => {
-  auth.signOut();
+  await auth.signOut();
 };
 
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      await updateLastLogin(user.uid);
+    }
+    callback(user);
+  });

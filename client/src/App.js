@@ -1,47 +1,27 @@
-import "./app.css";
-import { BrowserRouter as Router } from "react-router-dom";
-// import { mainTheme } from "./DesignSystem";
-// import { ThemeProvider } from "@mui/material";
-import { UserContext } from "./setup/context/user.context";
-import { ThemeToggleContext, ThemeToggleProvider } from "./setup/context/components/themeToggler.context.jsx";
-import { useContext } from "react";
-
-// Animation Route - for adding animations with framer motion.
-import UnauthorizedRoutes from "./setup/routes/unauthorized/unauthorized.routes";
-import AuthorizedRoutes from "./setup/routes/authorized/authorized.routes";
-import Navigation from "./components/navigation/navigation.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useContext } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+
 import FooterNavigation from "./components/footer/newFooterNavigation.component.jsx";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Navigation from "./components/navigation/navigation.jsx";
+import { ThemeToggleContext, ThemeToggleProvider } from "./setup/context/components/themeToggler.context.jsx";
+import AppRoutes from "./setup/routes/routes";
+import "./app.css";
+
 const queryClient = new QueryClient();
+
 function App() {
-  const { currentUserProfile } = useContext(UserContext);
-  // 1. use the themeToggle context to get the currentTheme
   const { currentTheme } = useContext(ThemeToggleContext);
 
-  // pass currentTheme to the mainTheme (aka - index.theme.jsx)
-  // the index.theme.jsx will return the theme based on the currentTheme by checking it against a themeMap object.
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ThemeProvider theme={mainTheme}> */}
       <ThemeToggleProvider theme={currentTheme}>
         <Router>
           <Navigation />
-          {currentUserProfile?.role === "admin" ||
-          currentUserProfile?.role === "player" ||
-          currentUserProfile?.role === "coach" ||
-          currentUserProfile?.role === "parent" ? (
-            <AuthorizedRoutes />
-          ) : (
-            <UnauthorizedRoutes />
-          )}
-
-          {/* Error with "react does not recognize show label" - can't find it but somewhere in footer */}
+          <AppRoutes />
           <FooterNavigation />
         </Router>
       </ThemeToggleProvider>
-      {/* </ThemeProvider> */}
-      {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   );
 }
