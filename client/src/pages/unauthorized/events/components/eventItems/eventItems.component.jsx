@@ -86,10 +86,10 @@ export default function EventItems({ ...props }) {
           <InputFieldComponent
             inputTextColor="#fff"
             cssProps={{ color: "#fff" }}
-            label="Event Name"
-            onChange={handleChange("eventName")}
+            label="Event Title"
+            onChange={handleChange("title")}
             type="text"
-            value={eventName}
+            value={title}
           />
         ) : (
           <>

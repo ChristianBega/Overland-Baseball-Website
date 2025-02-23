@@ -99,6 +99,9 @@ const EditItemsForm = ({ ...props }) => {
             result = await updateCMSItem(uid, role, formValues.id, formValues, cmsItemType);
           }
           break;
+        case "events":
+          result = await updateCMSItem(uid, role, formValues.id, formValues, cmsItemType);
+          break;
         default:
           result = await updateCMSItem(uid, role, formValues.id, formValues, cmsItemType);
           break;

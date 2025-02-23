@@ -55,7 +55,6 @@ export default function Staff({ currentTeam }) {
   useEffect(() => {
     setCurrentRooster(staffData.filter((team) => team.team === currentTeam));
   }, [currentTeam]);
-  console.log(currentRooster);
   return (
     <Grid item xs={12}>
       <SectionLayout id="staff-section" aria-label="Staff Section" marginBlock={true}>

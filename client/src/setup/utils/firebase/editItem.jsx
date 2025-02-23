@@ -15,8 +15,9 @@ export const updateCMSItem = async (userUid, role, docId, data, type) => {
   if (!userUid || (role !== "admin" && role !== "coach")) return { success: false, message: "Unauthorized or invalid user data" };
 
   const cmsItemDocRef = doc(db, type, docId);
+  const filteredData = Object.fromEntries(Object.entries(data).filter(([_, value]) => value !== undefined && value !== null && value !== ""));
   try {
-    await updateDoc(cmsItemDocRef, data);
+    await updateDoc(cmsItemDocRef, filteredData);
     return { success: true, id: docId };
   } catch (error) {
     console.error("Error updating document:", error);

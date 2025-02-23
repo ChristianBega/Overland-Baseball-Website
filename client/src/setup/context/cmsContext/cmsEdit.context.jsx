@@ -122,6 +122,9 @@ export const CmsEditItemProvider = ({ children }) => {
           await updateCMSItem(uid, role, id, editableItemData, type);
         }
       }
+      if (type === "events") {
+        await updateCMSItem(uid, role, id, editableItemData, type);
+      }
       //! await updateCMSItem(uid, role, id, editableItemData, type);
 
       setCmsOperationStatus({ type: "update", loading: false, error: null, success: true });
