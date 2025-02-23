@@ -13,9 +13,9 @@ import useMediaQueries from "../../../../../../../../../setup/utils/helpers/useM
 import overland from "../../../../../../../../../assets/homePage/teamLogos/overland.webp";
 
 const ScheduleContentEditable = ({ ...props }) => {
-  const { isEditable, editableData, handleChange, isCmsItem } = props;
-  const { date, time, location, opponent, opponentIcon } = editableData ?? props.data;
-  const { isSm, isLg, isMd } = useMediaQueries();
+  const { isEditable, editableData, handleChange, isCmsItem, data } = props;
+  const { date, time, location, opponent, opponentIcon } = data || {};
+  const { isSm, isMd } = useMediaQueries();
   const isEditableNew = isEditable && isMd;
   return (
     <>

@@ -27,10 +27,10 @@ export default function ScheduleItem({ ...props }) {
       {isEditable || isCmsItem ? (
         renderAsRow ? (
           <StyledTableRow>
-            <ScheduleContentEditable {...props} {...currentData} />
+            <ScheduleContentEditable {...props} data={currentData} />
           </StyledTableRow>
         ) : (
-          <ScheduleContentEditable {...props} {...currentData} />
+          <ScheduleContentEditable {...props} data={currentData} />
         )
       ) : (
         <ScheduleContentViewOnly theme={theme} {...props} formattedDateMonth={formattedDateMonth} formattedDateDay={formattedDateDay} />
@@ -38,3 +38,4 @@ export default function ScheduleItem({ ...props }) {
     </>
   );
 }
+//TODO: when i click edit, the other items in the contentEditable component are updating to the selected item....
