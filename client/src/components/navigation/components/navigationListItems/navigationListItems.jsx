@@ -4,50 +4,49 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 // MUI components
 import { Link, Stack } from "@mui/material";
 // Contexts
-import { AuthContext } from "../../../../setup/context/authentication.context";
 import { UserContext } from "../../../../setup/context/user.context";
 // Utils & Helpers
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
 import { signOutUser } from "../../../../setup/utils/firebase/authentication";
 // Styled components
 import { StyledList, StyledListItem } from "./navigationListItems.styles";
-
+import { useRoleCheck } from "../../../../hooks/useRoleCheck";
+import { ROLES } from "../../../../setup/utils/constants/roles";
 const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
-  const { isAuthorized } = useContext(AuthContext);
   const { currentUserProfile } = useContext(UserContext);
+  const { isAuthenticated, hasRole } = useRoleCheck();
   const [currentMenuItems, setCurrentMenuItems] = useState(menuItems);
   const { isLg } = useMediaQueries();
   const navigate = useNavigate();
 
   const filterMenuItems = (items) => {
-    let filteredItems = [];
-    if (!isAuthorized) {
-      filteredItems = items.filter((item) => item.label !== "Sign Out" && item.label !== "Settings");
-    } else {
-      filteredItems = items.filter((item) => item.label !== "Sign In" && item.label !== "Sign Up");
-    }
+    // First filter based on authentication status
+    let filteredItems = items.filter((item) => {
+      if (!isAuthenticated) {
+        return !["Sign Out", "Settings"].includes(item.label);
+      }
+      return !["Sign In", "Sign Up"].includes(item.label);
+    });
 
     return filteredItems.filter((item) => {
-      switch (currentUserProfile?.role) {
-        case "admin":
-        case "coach":
-          return true;
-        case "player":
-          return item.label !== "Dashboard";
-        case "parent":
-          return item.label !== "Dashboard" && item.label !== "Documents";
-        case "user":
-          return item.label !== "Dashboard" && item.label !== "Documents";
-        default:
-          return item.label !== "Dashboard" && item.label !== "Documents";
+      const menuPermissions = {
+        "Dashboard": [ROLES.ADMIN, ROLES.COACH],
+        "Documents": [ROLES.ADMIN, ROLES.COACH, ROLES.PLAYER],
+        // ! Add other menu items with their allowed roles if needed
+      };
+
+      if (menuPermissions[item.label]) {
+        return menuPermissions[item.label].some((role) => !hasRole(role));
       }
+
+      return true;
     });
   };
 
   useEffect(() => {
     const filteredMenuItems = filterMenuItems(menuItems);
     setCurrentMenuItems(filteredMenuItems);
-  }, [menuItems, isAuthorized, currentUserProfile?.role]);
+  }, [menuItems, isAuthenticated, currentUserProfile?.role]);
 
   const handleClick = (e) => {
     if (e.currentTarget.id.toLowerCase() === "sign out") {

@@ -14,34 +14,41 @@ export const UserProvider = ({ children }) => {
   const { isAuthorized } = useContext(AuthContext);
   const [currentUserObject, setCurrentUserObject] = useState(null);
   const [currentUserProfile, setCurrentUserProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
+    const unsubscribe = onAuthStateChangedListener(async (user) => {
       if (user) {
-        createUserDocumentFromAuth(user);
+        await createUserDocumentFromAuth(user);
         setCurrentUserObject(user);
+
+        if (user.uid) {
+          try {
+            const userProfile = await getCurrentUserProfile(user.uid);
+            setCurrentUserProfile(userProfile);
+          } catch (error) {
+            console.error("Error fetching user profile:", error);
+          }
+        }
       } else {
         setCurrentUserObject(null);
         setCurrentUserProfile(null);
       }
+      setIsLoading(false);
     });
     return unsubscribe;
   }, []);
-
-  useEffect(() => {
-    const getCurrentUserProfileData = async () => {
-      if (isAuthorized && auth.currentUser?.uid) {
-        const userProfile = await getCurrentUserProfile(auth.currentUser.uid);
-        setCurrentUserProfile(userProfile);
-      }
-    };
-    getCurrentUserProfileData();
-  }, [isAuthorized]);
 
   const value = {
     currentUserProfile,
     currentUserObject,
     setCurrentUserObject,
+    isLoading,
   };
+
+  if (isLoading) {
+    return null; // or return a loading spinner
+  }
+
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

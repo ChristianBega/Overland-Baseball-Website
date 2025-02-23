@@ -1,13 +1,16 @@
+import { ROLES, ROLE_HIERARCHY } from "../setup/utils/constants/roles";
+
 import { useContext } from "react";
 import { UserContext } from "../setup/context/user.context";
-import { ROLES, ROLE_HIERARCHY } from "../setup/utils/constants/roles";
 
 export const useRoleCheck = () => {
   const { currentUserProfile } = useContext(UserContext);
-
   const hasRole = (requiredRole) => {
-    if (!currentUserProfile?.role) return false;
-    return ROLE_HIERARCHY[currentUserProfile.role]?.includes(requiredRole) || false;
+    if (!currentUserProfile?.role) {
+      return false;
+    }
+    const hasPermission = ROLE_HIERARCHY[currentUserProfile.role]?.includes(requiredRole) || false;
+    return !hasPermission;
   };
 
   const checkMultipleRoles = (requiredRoles) => {
