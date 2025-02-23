@@ -1,15 +1,30 @@
-import { TextField } from "@mui/material";
+import { InputLabel } from "@mui/material";
+import React from "react";
+import { commonInputStyles, commonLabelStyles, inputVariants, mergeStyles } from "../styles/shared.styles";
 
-const TextAreaInputField = ({ rows = 3, cols = 30, resize = "vertical", ...props }) => {
-  // const { cssProps } = props;
-  // const theme = useTheme();
+const TextAreaInputField = ({ cssProps, ...props }) => {
+  const inputStyles = mergeStyles(
+    commonInputStyles,
+    inputVariants.textarea,
+    cssProps?.input
+  );
+
+  const labelStyles = mergeStyles(
+    commonLabelStyles,
+    {},
+    cssProps?.label
+  );
+
   return (
     <>
-      {/* <InputLabel sx={{ ...cssProps, fontSize: "14px", marginBottom: "4px" }} htmlFor={props.name}>
+      <InputLabel sx={labelStyles} htmlFor={props.name}>
         {props.label}
-      </InputLabel> */}
-      <TextField multiline style={{ resize }} id={props.name} rows={rows} cols={cols} {...props} />
-      {/* {props.helperText && <Typography sx={{ color: "red", fontSize: "0.75rem", marginTop: "3px", display: "block" }}>{props.helperText}</Typography>} */}
+      </InputLabel>
+      <textarea 
+        style={inputStyles}
+        id={props.name}
+        {...props}
+      />
     </>
   );
 };

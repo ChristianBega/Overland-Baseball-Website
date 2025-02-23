@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
 import InputFieldComponent from "../../inputFields/inputFields";
@@ -73,16 +73,18 @@ const CmsUploadItem = ({
         </Button>
       </Stack>
       {uploadType === "url" ? (
-        <FormControl fullWidth>
-          <InputLabel id="url-select-label">{`${label} Url`}</InputLabel>
-          <Select labelId="url-select-label" value={value} label={`${label} Url`} onChange={onChange}>
-            {displayData?.map((item) => (
-              <MenuItem sx={{ color: "black" }} value={item.url} key={item.id}>
-                {item.fileName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <InputFieldComponent
+          type="select"
+          label={`${label} Url`}
+          value={value}
+          onChange={onChange}
+          options={
+            displayData?.map((item) => ({
+              value: item.url,
+              label: item.fileName,
+            })) || []
+          }
+        />
       ) : (
         <InputFieldComponent
           onChange={localUploadType === "file" ? handleChangeTest(cmsUploadName) : onChange}

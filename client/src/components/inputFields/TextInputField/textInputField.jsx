@@ -1,14 +1,35 @@
-import { styled, TextField } from "@mui/material";
+import { InputLabel } from "@mui/material";
 import React from "react";
+import { 
+  commonInputStyles, 
+  commonLabelStyles,
+  mergeStyles 
+} from "../styles/shared.styles";
 
-const StyledTextField = styled(TextField)(({ inputTextColor }) => ({
-  width: "100%",
-  ...(inputTextColor && { "& .MuiInputBase-input": { color: inputTextColor } }),
-}));
-const TextInputField = ({ ...props }) => {
+const TextInputField = ({ cssProps, ...props }) => {
+  const inputStyles = mergeStyles(
+    commonInputStyles,
+    {},
+    cssProps?.input
+  );
+
+  const labelStyles = mergeStyles(
+    commonLabelStyles,
+    {},
+    cssProps?.label
+  );
+
   return (
     <>
-      <StyledTextField type="text" {...props} />
+      <InputLabel sx={labelStyles} htmlFor={props.name}>
+        {props.label}
+      </InputLabel>
+      <input 
+        style={inputStyles}
+        type="text"
+        id={props.name}
+        {...props}
+      />
     </>
   );
 };

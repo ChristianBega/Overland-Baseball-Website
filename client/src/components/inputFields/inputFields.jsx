@@ -11,9 +11,9 @@ const inputComponents = {
   numeric: lazy(() => import("./Numeric/numericInputField")),
   textarea: lazy(() => import("./TextAreaInputField/textAreaInputField")),
   file: lazy(() => import("./FileInputField/fileInputField")),
-  toggleSwitch: lazy(() => import("./ToggleSwitchInputField/toggleSwitchInputField")),
   dateTimeLocal: lazy(() => import("./DateTimeField/dateTimeField")),
   select: lazy(() => import("./SelectInputField/selectInputField")),
+  toggleSwitch: lazy(() => import("./ToggleSwitchInputField/toggleSwitchInputField")),
 };
 
 const InputFieldComponent = ({ type, ...props }) => {

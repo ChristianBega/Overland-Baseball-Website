@@ -90,7 +90,7 @@ const TeamContentEditable = ({ ...props }) => {
                 <InputFieldComponent label="Number" onChange={handleChange("number")} type="numeric" value={Number(number)} />
               </div>
               <div>
-                <InputFieldComponent label="Name" onChange={handleChange("name")} type="text" value={name} style={{ width: "200px" }} />
+                <InputFieldComponent label="Name" onChange={handleChange("name")} type="text" value={name} />
               </div>
             </Stack>
           ) : (
