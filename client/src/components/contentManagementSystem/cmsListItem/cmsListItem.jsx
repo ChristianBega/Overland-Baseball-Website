@@ -75,7 +75,7 @@ const CmsListItem = ({ values, id }) => {
 
   return (
     <>
-      <TableRow sx={{ "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
+      <TableRow sx={{ width: "100%", "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
         <CheckboxCell isSelected={isItemSelected} {...commonTableCellProps} />
         {isEditingNew && (role === "admin" || role === "coach") && <DeleteButtonCell {...commonTableCellProps} />}
         {renderEditableCmsItem()}
@@ -86,10 +86,3 @@ const CmsListItem = ({ values, id }) => {
   );
 };
 export default CmsListItem;
-
-{
-  /* if i close the modal with the X, it resets the state, and rests the editableItemData. So if i keep clicking it doesnt prefill the data. meaning the state is never set for the editableItemData. */
-}
-{
-  /* if i click off the modal and close it, thise doesn't reset the state, so when i reclick the edit button, it does prefill the data....  */
-}

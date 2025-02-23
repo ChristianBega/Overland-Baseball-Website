@@ -63,6 +63,7 @@ export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
       fontSize: 22,
     },
   },
+
   ...(isCmsItem && {
     padding: ".5rem",
   }),

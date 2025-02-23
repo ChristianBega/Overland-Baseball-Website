@@ -2,6 +2,7 @@ import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useTheme } from "@mui/material/styles";
+import { StyledTableCell } from "../../../styles/index.styles";
 
 export const StatusMessage = ({ status, message }) => {
   const theme = useTheme();
@@ -30,26 +31,27 @@ export const StatusMessage = ({ status, message }) => {
   };
 
   return (
-    <Stack
-      alignItems="center"
-      justifyContent="center"
-      direction="row"
-      spacing={2}
-      sx={{
-        width: "100%",
-        minHeight: "48px",
-        backgroundColor: getStatusColor(),
-        padding: theme.spacing(2),
-      }}
-    >
-      {getStatusIcon() && <Box sx={{ color: "#fff" }}>{getStatusIcon()}</Box>}
-      {message && (
-        <Typography color="#fff" variant="body1" sx={{ fontWeight: "bold" }}>
-          {message}
-        </Typography>
-      )}
-      {status === "loading" && <CircularProgress sx={{ color: "#fff" }} size={20} />}
-    </Stack>
+    <StyledTableCell colSpan="100%" sx={{ padding: "0 !important" }}>
+      <Stack
+        alignItems="center"
+        justifyContent="center"
+        direction="row"
+        spacing={2}
+        sx={{
+          width: "100%",
+          backgroundColor: getStatusColor(),
+          padding: theme.spacing(4),
+        }}
+      >
+        {getStatusIcon() && <Box sx={{ color: "#fff" }}>{getStatusIcon()}</Box>}
+        {message && (
+          <Typography color="#fff" variant="body1" sx={{ fontWeight: "bold" }}>
+            {message}
+          </Typography>
+        )}
+        {status === "loading" && <CircularProgress sx={{ color: "#fff" }} size={20} />}
+      </Stack>
+    </StyledTableCell>
   );
 };
 
