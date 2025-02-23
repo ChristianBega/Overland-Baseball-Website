@@ -10,9 +10,10 @@ import PlaceHolderImage from "../../../../../../../assets/rosterPlaceHolder.png"
 // Utils
 import useMediaQueries from "../../../../../../../setup/utils/helpers/useMediaQueries.utils";
 
-const TeamContentEditable = ({ data, isCmsItem, handleChange, isEditable }) => {
+const TeamContentEditable = ({ ...props }) => {
+  const { isCmsItem, handleChange, isEditable, data } = props;
+  const { playerImage, position, height, weight, handed, number, name, year, yearAbbr } = data || {};
   const { isMd, isSm, isMobile_XS } = useMediaQueries();
-  const { playerImage, position, height, weight, handed, number, name, year, yearAbbr } = data;
 
   return (
     <>

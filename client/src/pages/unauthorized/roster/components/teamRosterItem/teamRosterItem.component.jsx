@@ -21,10 +21,10 @@ export default function TeamRoosterItem({ ...props }) {
       {isEditable || isCmsItem ? (
         renderAsRow ? (
           <StyledTableRow>
-            <TeamContentEditable {...props} {...currentData} />
+            <TeamContentEditable {...props} data={currentData} />
           </StyledTableRow>
         ) : (
-          <TeamContentEditable {...props} {...currentData} />
+          <TeamContentEditable {...props} data={currentData} />
         )
       ) : (
         <StyledTableRow>
