@@ -18,7 +18,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 const CmsOptionsPanel = () => {
   const { openModal, closeModal } = useModal();
   const { isMd } = useMediaQueries();
-  const { selectedItems, setSelectedItems, selectAll } = useContext(CmsBulkActionContext);
+  const { selectedItems, setSelectedItems } = useContext(CmsBulkActionContext);
   const { editableItemData } = useContext(CmsEditItemContext);
   const checkAuthorization = useCheckAuthorization();
   let queryParams = useUrlQueryParams();
@@ -55,7 +55,7 @@ const CmsOptionsPanel = () => {
   };
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" spacing={2} sx={{ height: "100%" }}>
       <Button
         size={isMd ? "medium" : "small"}
         variant="contained"

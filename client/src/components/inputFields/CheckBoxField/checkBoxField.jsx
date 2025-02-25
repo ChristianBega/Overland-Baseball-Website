@@ -11,6 +11,9 @@ const CheckBoxField = ({ ...props }) => {
           display: "inline-block",
           padding: props?.padding ? props.padding : "0px",
           color: props?.customColor,
+          "&.Mui-checked": {
+            color: props?.customColor,
+          },
         }}
         defaultUnchecked
         variant="outlined"
