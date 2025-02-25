@@ -25,6 +25,7 @@ export const CmsEditItemContext = createContext({
   handleFieldChangeWithFiles: () => {},
   setUploadType: () => {},
   uploadType: "url",
+  isEditing: false,
 });
 
 export const CmsEditItemProvider = ({ children }) => {
@@ -38,6 +39,7 @@ export const CmsEditItemProvider = ({ children }) => {
   const [originalItemData, setOriginalItemData] = useState(null);
   const [cmsOperationStatus, setCmsOperationStatus] = useState({ type: null, loading: false, error: null, success: false });
   const [uploadType, setUploadType] = useState("url"); //! used for cmsUploadItem component to track toggle mode
+  const [isEditing, setIsEditing] = useState(false);
   // Reset editing state when URL changes
   useEffect(() => {
     handleCancelEditing();
@@ -48,6 +50,7 @@ export const CmsEditItemProvider = ({ children }) => {
       alert("Please save or cancel the current edit before editing another item.");
       return;
     }
+    setIsEditing(true);
     setEditableItemId(itemId);
     setEditableItemData(itemData);
     setEditableItemDataOriginalCopy(itemData);
@@ -58,6 +61,7 @@ export const CmsEditItemProvider = ({ children }) => {
     setEditableItemData(null);
     setEditableItemDataOriginalCopy(null);
     setOriginalItemData(null);
+    setIsEditing(false);
   };
   const handleSaveAndUpdateItem = async (type, id, uploadType) => {
     if (!checkAuthorization(role)) return;
@@ -175,6 +179,7 @@ export const CmsEditItemProvider = ({ children }) => {
     handleFieldChangeWithFiles: () => {},
     setUploadType,
     uploadType,
+    isEditing,
   };
 
   return <CmsEditItemContext.Provider value={contextValue}>{children}</CmsEditItemContext.Provider>;

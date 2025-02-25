@@ -23,7 +23,7 @@ const ScheduleContentEditable = ({ ...props }) => {
       {isSm && (
         <StyledTableCell
           isCmsItem={isCmsItem}
-          className={`table-cell-dark ${isEditableNew ? "isEditable" : ""}`}
+          className={`${isEditableNew ? "isEditable" : ""}`}
           sx={{
             flex: "1 0 10%",
           }}

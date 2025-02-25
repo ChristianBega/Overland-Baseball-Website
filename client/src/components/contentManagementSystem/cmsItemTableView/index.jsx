@@ -22,7 +22,7 @@ import { CmsBulkActionContext } from "../../../setup/context/cmsContext/cmsBulkA
 import InputFieldComponent from "../../inputFields/inputFields";
 import { CmsEditItemContext } from "../../../setup/context/cmsContext/cmsEdit.context";
 // import { generateTableHeaders, tableHeadersMap } from "./helpers/generateTableHeaders";
-// import { convertToTitleCase } from "../../../setup/utils/helpers/convertText";
+import { convertToTitleCase } from "../../../setup/utils/helpers/convertText";
 import { StyledTableCell } from "../../../styles/index.styles";
 import CmsTableViewHeader from "./components/cmsTableViewHeader/cmsTableViewHeader";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
@@ -34,7 +34,7 @@ const CmsItemTableView = ({ currentItem }) => {
   const { data: displayData, isLoading, error } = useRealtimeData(currentItem?.linkName?.toLowerCase());
   const currentMenuItemType = currentItem?.linkName || "";
   const { isSm } = useMediaQueries();
-  // const tableHeaders = ddisplayData;
+  const tableHeaders = displayData;
 
   // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -58,10 +58,11 @@ const CmsItemTableView = ({ currentItem }) => {
                       onChange={(event) => handleSelectAll(event, displayData)}
                     />
                   </StyledTableCell>
-                  {/* <CmsTableViewHeader tableHeaders={displayData} editableItemData={editableItemData} /> */}
+                  {/* <TableHeaders tableHeaders={displayData} /> */}
+                  <CmsTableViewHeader />
                   {/* {tableHeaders?.map((headerItem, index) => (
                     <StyledTableCell className={`table-header-cell ${headerItem.className}`} key={index}>
-                      <Typography component="p">{convertToTitleCase(headerItem.header)}</Typography>
+                      <Typography component="p">{headerItem.header}</Typography>
                     </StyledTableCell>
                   ))} */}
                 </TableRow>
@@ -82,3 +83,27 @@ const CmsItemTableView = ({ currentItem }) => {
 };
 
 export default CmsItemTableView;
+
+// const requiredFields = ["date", "time", "opponent", "location"];
+// const TableHeaders = (tableHeaders) => {
+//   const { editableItemData } = useContext(CmsEditItemContext);
+//   return tableHeaders?.map((headerItem, index) => (
+//     <>
+//       {editableItemData && (
+//         <>
+//           <StyledTableCell className="table-header-cell table-header-cell-narrow">
+//             <Typography component="p">Edit</Typography>
+//           </StyledTableCell>
+//         </>
+//       )}
+
+//       {editableItemData && (
+//         <>
+//           <StyledTableCell className="table-header-cell table-header-cell-narrow">
+//             <Typography component="p">Delete</Typography>
+//           </StyledTableCell>
+//         </>
+//       )}
+//     </>
+//   ));
+// };

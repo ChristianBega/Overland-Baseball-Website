@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useTheme } from "@emotion/react";
 import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
@@ -6,12 +6,12 @@ import InputFieldComponent from "../../../../../components/inputFields/inputFiel
 import VolunteerModal from "../../../../../components/modals/volunteerModal.component";
 import CmsOperationStatus from "../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import { StyledTableCell, StyledTableRow } from "../../../../../styles/index.styles";
-import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
-import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
+// import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
+// import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
 import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
 
 export default function EventItems({ ...props }) {
-  const { isSm, isMd } = useMediaQueries();
+  const { isMd } = useMediaQueries();
   const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const [open, setOpen] = React.useState(false);
   const [currentEventData, setCurrentEventData] = React.useState({
@@ -47,7 +47,7 @@ export default function EventItems({ ...props }) {
   const content = (
     <>
       {!isEditable && editableData ? <StyledTableCell>{null}</StyledTableCell> : null}
-      <StyledTableCell isCmsItem={isCmsItem} className={`table-cell-accent table-header-cell-wide ${!isEditable ? "table-cell-center" : ""}`}>
+      <StyledTableCell isCmsItem={isCmsItem} className={`table-header-cell-wide ${!isEditable ? "table-cell-center" : ""}`}>
         {isEditable ? (
           <>
             <InputFieldComponent label="Start Date & Time" onChange={handleChange("startDateTime")} type="dateTimeLocal" value={startDateTime} />
@@ -81,7 +81,7 @@ export default function EventItems({ ...props }) {
         </StyledTableCell>
       )}
 
-      <StyledTableCell isCmsItem={isCmsItem} className={`table-header-cell-normal table-cell-dark ${!isEditable ? "table-cell-center" : ""}`}>
+      <StyledTableCell isCmsItem={isCmsItem} className={`table-header-cell-normal ${!isEditable ? "table-cell-center" : ""}`}>
         {isEditable ? (
           <InputFieldComponent
             inputTextColor="#fff"

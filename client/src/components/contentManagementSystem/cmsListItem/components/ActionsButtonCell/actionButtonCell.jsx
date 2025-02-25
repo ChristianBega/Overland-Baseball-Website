@@ -46,7 +46,7 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
   };
 
   return (
-    <StyledTableCell className="table-header-cell-narrow" sx={{ padding: { xs: ".5rem", md: "1rem" } }}>
+    <StyledTableCell className="table-header-cell-narrow" sx={{ padding: { xs: ".5rem .5rem .5rem 0", md: ".5rem 1rem" } }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {!isEditingNew && (role === "admin" || role === "coach") && (
           <Button

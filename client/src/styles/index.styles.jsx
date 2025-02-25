@@ -14,7 +14,6 @@ export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
   },
   "&.table-header-cell": {
     background: "#f2f2f2",
-    textAlign: "center",
   },
   "&.table-header-cell-narrow": {
     width: "5%",
@@ -49,7 +48,8 @@ export const StyledTableCell = styled(TableCell)(({ theme, isCmsItem }) => ({
     },
   },
   "&.delete-button-cell": {
-    padding: "0",
+    padding: "0 1rem 0 0",
+    width: "64px",
   },
   "&.table-cell-cms-list-item": {
     textAlign: "center",

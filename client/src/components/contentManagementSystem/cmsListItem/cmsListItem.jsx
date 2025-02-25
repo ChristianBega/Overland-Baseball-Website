@@ -35,7 +35,7 @@ import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils"
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();
-  const { isLg } = useMediaQueries();
+  const { isLg, isMd } = useMediaQueries();
   let type = queryParams.get("type");
   const { currentUserProfile } = useContext(UserContext);
   const { editableItemId, editableItemData, handleFieldChange, cmsOperationStatus } = useContext(CmsEditItemContext);
@@ -43,7 +43,7 @@ const CmsListItem = ({ values, id }) => {
   const { role } = currentUserProfile;
   const isEditing = editableItemId === id;
   const isItemSelected = selectedItems.some((item) => item.id === id);
-  const isEditingNew = isEditing && isLg;
+  const isEditingNew = isEditing && isMd;
   const commonTableCellProps = {
     id: id,
     values: values,
