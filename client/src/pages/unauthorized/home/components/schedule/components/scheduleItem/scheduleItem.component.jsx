@@ -11,7 +11,7 @@ import { formatDateToLongString } from "../../../../../../../setup/utils/helpers
 
 export default function ScheduleItem({ ...props }) {
   const theme = useTheme();
-  const { data, isEditable, editableData, isLoading = true, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
+  const { data, isEditable, editableData, isLoading = false, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const currentData = isEditable ? editableData : data;
   const { date } = currentData || {};
   const formattedDate = formatDateToLongString(date);
