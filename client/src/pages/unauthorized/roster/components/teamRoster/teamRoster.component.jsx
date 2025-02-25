@@ -1,25 +1,11 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableContainer,
-  Typography,
-  styled,
-  Box,
-  Pagination,
-  Stack,
-} from "@mui/material";
+import { Grid, Paper, Table, TableBody, TableHead, TableRow, TableCell, TableContainer, Typography, styled, Stack } from "@mui/material";
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component";
 import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
 import { useQuery } from "@tanstack/react-query";
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
-
+import CustomPagination from "../../../../../components/reusableComponents/pagination/pagination.jsx";
 // Styled Components
 const StyledTableContainer = styled(TableContainer)({
   borderRadius: "8px",
@@ -36,7 +22,7 @@ const StyledTable = styled(Table)({
   tableLayout: "fixed",
 });
 
-const HeaderRow = styled(TableRow)({
+export const HeaderRow = styled(TableRow)({
   backgroundColor: "#1a2b4f",
 });
 
@@ -47,29 +33,6 @@ const HeaderCell = styled(TableCell)(() => ({
   borderBottom: "none",
   textAlign: "left",
 }));
-
-const PaginationContainer = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "16px",
-  backgroundColor: "#1a2b4f",
-  color: "#fff",
-});
-
-const ItemsPerPage = styled(Typography)({
-  color: "#fff",
-  fontSize: "14px",
-});
-
-const StyledPagination = styled(Pagination)({
-  "& .MuiPaginationItem-root": {
-    color: "#fff",
-    "&.Mui-selected": {
-      backgroundColor: "rgba(255, 255, 255, 0.2)",
-    },
-  },
-});
 
 const StyledInput = styled("input")(({ theme }) => ({
   padding: "8px 12px",
@@ -163,10 +126,7 @@ export default function TeamRoster() {
               ))}
             </TableBody>
           </StyledTable>
-          <PaginationContainer>
-            <StyledPagination count={Math.ceil(data.length / itemsPerPage)} page={page} onChange={(e, value) => setPage(value)} size="small" />
-            <ItemsPerPage>{itemsPerPage} Per Page</ItemsPerPage>
-          </PaginationContainer>
+          <CustomPagination totalItems={data.length} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
         </StyledTableContainer>
       </SectionLayout>
     </Grid>

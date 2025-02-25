@@ -24,26 +24,26 @@ const CmsTableViewHeader = () => {
 
         if (header === "delete" && isEditing) {
           return (
-            <StyledTableCell key={index} className={`table-header-cell ${isEditing ? "table-cell-cms-list-item" : ""}`} isCmsItem>
+            <StyledTableCell key={index} className={`table-cell-dark ${isEditing ? "table-cell-cms-list-item" : ""}`} isCmsItem>
               <Typography component="p">Delete</Typography>
             </StyledTableCell>
           );
         }
 
         if (header === "") {
-          return <StyledTableCell key={index} className={`table-header-cell ${isEditing ? "table-cell-cms-list-item" : ""}`} isCmsItem />;
+          return <StyledTableCell key={index} className={`table-cell-dark ${isEditing ? "table-cell-cms-list-item" : ""}`} isCmsItem />;
         }
 
         if (header === "edit") {
           return (
-            <StyledTableCell key={index} className={`table-header-cell ${isEditing ? "table-cell-cms-list-item" : ""}`} isCmsItem>
+            <StyledTableCell key={index} className={`table-cell-dark ${isEditing ? "table-cell-cms-list-item" : ""}`} isCmsItem>
               <Typography component="p">{isEditing ? "Save/Cancel" : "Edit"}</Typography>
             </StyledTableCell>
           );
         }
 
         return (
-          <StyledTableCell key={index} className={`table-header-cell ${header}-header`} isCmsItem>
+          <StyledTableCell key={index} className={`table-cell-dark ${header}-header`} isCmsItem>
             <Typography component="p">{convertToTitleCase(header)}</Typography>
           </StyledTableCell>
         );

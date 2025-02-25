@@ -7,7 +7,11 @@ const CheckBoxField = ({ ...props }) => {
       <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
       <Checkbox
         {...props}
-        sx={{ display: "inline-block", padding: props?.padding ? props.padding : "0px" }}
+        sx={{
+          display: "inline-block",
+          padding: props?.padding ? props.padding : "0px",
+          color: props?.customColor,
+        }}
         defaultUnchecked
         variant="outlined"
         variable
