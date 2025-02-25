@@ -18,6 +18,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
  * @param {String} props.placeholder - Custom placeholder for search input
  * @param {Object} props.sx - Additional MUI sx styling object
  */
+
+// TODO: Add a prop to allow for custom sort options (ascending, descending, alphabetical, reverse alphabetical, numeric, reverse numeric, date, reverse date....)
 const MuiSearchFilterComponent = ({
   data = [],
   onFilteredDataChange,
