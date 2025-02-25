@@ -117,6 +117,20 @@ const MuiSearchFilterComponent = ({
 
   return (
     <Box sx={{ width: "100%", ...sx }}>
+      {showQuickFilters && quickFilterField && quickFilterValues.length > 0 && (
+        <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: "wrap", gap: 1 }}>
+          {quickFilterValues.map((value) => (
+            <Chip
+              key={value}
+              label={value}
+              size="small"
+              color={searchTerm === value && filterKey === quickFilterField ? "primary" : "default"}
+              onClick={() => applyQuickFilter(value)}
+              clickable
+            />
+          ))}
+        </Stack>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -213,20 +227,6 @@ const MuiSearchFilterComponent = ({
       </Box>
 
       {/* Quick Filter Chips */}
-      {showQuickFilters && quickFilterField && quickFilterValues.length > 0 && (
-        <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: "wrap", gap: 1 }}>
-          {quickFilterValues.map((value) => (
-            <Chip
-              key={value}
-              label={value}
-              size="small"
-              color={searchTerm === value && filterKey === quickFilterField ? "primary" : "default"}
-              onClick={() => applyQuickFilter(value)}
-              clickable
-            />
-          ))}
-        </Stack>
-      )}
 
       {/* Filter Status Indicator */}
       {searchTerm && (

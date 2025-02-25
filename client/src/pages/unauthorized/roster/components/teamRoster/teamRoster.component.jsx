@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Grid, Paper, Table, TableBody, TableHead, TableRow, TableCell, TableContainer, Typography, styled, Stack } from "@mui/material";
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component";
@@ -6,6 +6,7 @@ import { fetchCMSItems } from "../../../../../setup/utils/firebase/getItem";
 import { useQuery } from "@tanstack/react-query";
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 import CustomPagination from "../../../../../components/reusableComponents/pagination/pagination.jsx";
+import SearchFilterComponent from "../../../../../components/reusableComponents/searchFilter/searchFilter";
 // Styled Components
 const StyledTableContainer = styled(TableContainer)({
   borderRadius: "8px",
@@ -65,12 +66,23 @@ const StyledSelect = styled("select")(({ theme }) => ({
 
 export default function TeamRoster() {
   const [page, setPage] = useState(1);
+  const [filteredData, setFilteredData] = useState([]);
   const itemsPerPage = 9;
 
-  const { data, isLoading, error } = useQuery({
+  const {
+    data: originalData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["roster"],
     queryFn: () => fetchCMSItems("roster"),
   });
+
+  // Reset to page 1 when filter changes
+  const handleFilteredDataChange = useCallback((newFilteredData) => {
+    setFilteredData(newFilteredData);
+    setPage(1);
+  }, []);
 
   if (isLoading) {
     return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
@@ -80,10 +92,24 @@ export default function TeamRoster() {
     return "error...";
   }
 
+  const dataToDisplay = filteredData.length > 0 || (filteredData.length === 0 && originalData?.length === 0) ? filteredData : originalData || [];
+
   // Calculate pagination
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedRoster = data.slice(startIndex, endIndex);
+  const paginatedRoster = dataToDisplay.slice(startIndex, endIndex);
+
+  // Define filter fields and labels
+  const filterFields = ["name", "position", "bats", "throws"];
+  const customFieldLabels = {
+    name: "Player Name",
+    position: "Position",
+    bats: "Bats",
+    throws: "Throws",
+  };
+
+  // Define quick filter values for teams
+  const quickFilterValues = ["Varsity", "Junior Varsity", "Freshman"];
 
   return (
     <Grid item>
@@ -91,15 +117,18 @@ export default function TeamRoster() {
         <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
           Current Roster
         </Typography>
-        <Stack direction="row" gap={2} alignItems="center" sx={{ mb: 2, border: "1px dotted red" }}>
-          <StyledInput placeholder="Find A Player" />
-          <StyledSelect defaultValue="all">
-            <option value="all">All Teams</option>
-            <option value="varsity">Varsity</option>
-            <option value="juniorVarsity">Junior Varsity</option>
-            <option value="freshman">Freshman</option>
-          </StyledSelect>
-        </Stack>
+
+        <SearchFilterComponent
+          data={originalData || []}
+          onFilteredDataChange={handleFilteredDataChange}
+          filterFields={filterFields}
+          customFieldLabels={customFieldLabels}
+          showQuickFilters={true}
+          quickFilterField="team"
+          // quickFilterValues={quickFilterValues}
+          placeholder="Find a player..."
+          sx={{ mb: 2 }}
+        />
 
         <StyledTableContainer component={Paper}>
           <StyledTable aria-label="roster table">
@@ -126,7 +155,7 @@ export default function TeamRoster() {
               ))}
             </TableBody>
           </StyledTable>
-          <CustomPagination totalItems={data.length} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
+          <CustomPagination totalItems={dataToDisplay.length} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
         </StyledTableContainer>
       </SectionLayout>
     </Grid>
