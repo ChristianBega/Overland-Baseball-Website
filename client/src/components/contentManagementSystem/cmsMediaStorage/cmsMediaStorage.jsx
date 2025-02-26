@@ -26,11 +26,11 @@ const CmsMediaStorage = () => {
   const { data: mediaStorageData = [], isLoading: mediaStorageLoading, error: mediaStorageError } = useRealtimeData("mediaStorage");
   const { data: scheduleData = [], isLoading: scheduleLoading, error: scheduleError } = useRealtimeData("opponentIcon");
   const { data: rosterData = [], isLoading: rosterLoading, error: rosterError } = useRealtimeData("playerImage");
-  const { data: documentsData = [], isLoading: documentsLoading, error: documentsError } = useRealtimeData("documents");
-  // eventImages
+  // const { data: documentsData = [], isLoading: documentsLoading, error: documentsError } = useRealtimeData("documents");
+  const { data: eventImagesData = [], isLoading: eventImagesLoading, error: eventImagesError } = useRealtimeData("eventImages");
 
-  const isLoading = mediaStorageLoading || scheduleLoading || rosterLoading || documentsLoading;
-  const error = mediaStorageError || scheduleError || rosterError || documentsError;
+  const isLoading = mediaStorageLoading || scheduleLoading || rosterLoading || eventImagesLoading;
+  const error = mediaStorageError || scheduleError || rosterError || eventImagesError;
 
   const currentDirectoryData = useMemo(() => {
     if (isLoading) return [];
@@ -39,14 +39,14 @@ const CmsMediaStorage = () => {
         return scheduleData;
       case "playerImage":
         return rosterData;
-      case "documents":
-        return documentsData;
       case "mediaStorage":
         return mediaStorageData;
+      case "eventImages":
+        return eventImagesData;
       default:
-        return [...mediaStorageData, ...scheduleData, ...rosterData, ...documentsData];
+        return [...mediaStorageData, ...scheduleData, ...rosterData];
     }
-  }, [selectedSubDirectory, scheduleData, rosterData, documentsData, mediaStorageData, isLoading]);
+  }, [selectedSubDirectory, scheduleData, rosterData, mediaStorageData, eventImagesData, isLoading]);
 
   // Handle filtered data changes
   const handleFilteredDataChange = useCallback((newFilteredData) => {

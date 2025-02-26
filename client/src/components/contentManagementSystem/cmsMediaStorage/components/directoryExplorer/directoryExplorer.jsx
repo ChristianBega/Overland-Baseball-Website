@@ -8,7 +8,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { StyledDirectoryButton, StyledDirectoryButtonContainer } from "./directoryExplorer.styles";
 
 const DirectoryExplorer = ({ selectedSubDirectory, setSelectedSubDirectory }) => {
-  const directories = ["mediaStorage", "opponentIcon", "playerImage", "documents"];
+  const directories = ["mediaStorage", "opponentIcon", "playerImage", "eventImages"];
   const handleSelectDirectory = (directory) => {
     setSelectedSubDirectory(directory);
   };
