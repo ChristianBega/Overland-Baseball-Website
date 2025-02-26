@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Grid } from "@mui/material";
-import EventCard from "../../../pages/unauthorized/home/components/events/components/eventCard/eventCard.component";
+import EventCard from "../../../pages/home/components/events/components/eventCard/eventCard.component";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 const BentoLayout = ({ gridItemsData }) => {
   const { isMd } = useMediaQueries();

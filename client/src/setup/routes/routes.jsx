@@ -8,23 +8,23 @@ import { ROLES } from "../../setup/utils/constants/roles";
 import { PageLoader } from "../../components/reusableComponents/pageLoader";
 
 // Home page is not lazy loaded
-import HomePage from "../../pages/unauthorized/home/home.page";
+import HomePage from "../../pages/home/home.page";
 
 // Lazy load all other pages
-const BoostersPage = lazy(() => import("../../pages/unauthorized/boosters/boosters.page"));
-const EventsPage = lazy(() => import("../../pages/unauthorized/events/events.page"));
-const RosterPage = lazy(() => import("../../pages/unauthorized/roster/roster.page"));
-const AlumniPage = lazy(() => import("../../pages/unauthorized/alumni/alumni.page"));
-const SponsorsPage = lazy(() => import("../../pages/unauthorized/sponsors/sponsors.page"));
-const AuthenticationPage = lazy(() => import("../../pages/unauthorized/authentication/authentication.page"));
-const PasswordResetPage = lazy(() => import("../../pages/unauthorized/passwordReset/passwordReset.page"));
+const BoostersPage = lazy(() => import("../../pages/boosters/boosters.page"));
+const EventsPage = lazy(() => import("../../pages/events/events.page"));
+const RosterPage = lazy(() => import("../../pages/roster/roster.page"));
+const AlumniPage = lazy(() => import("../../pages/alumni/alumni.page"));
+const SponsorsPage = lazy(() => import("../../pages/sponsors/sponsors.page"));
+const AuthenticationPage = lazy(() => import("../../pages/authentication/authentication.page"));
+const PasswordResetPage = lazy(() => import("../../pages/passwordReset/passwordReset.page"));
 const Page404 = lazy(() => import("../../pages/404/404.page"));
 
 // Lazy load protected pages
-const DocumentsPage = lazy(() => import("../../pages/authorized/documents/documents.page"));
-const AdminDashboardPage = lazy(() => import("../../pages/authorized/adminDashboard"));
+const DocumentsPage = lazy(() => import("../../pages/documents/documents.page"));
+const AdminDashboardPage = lazy(() => import("../../pages/adminDashboard"));
 const ThemeShowcase = lazy(() => import("../../pages/themeShowcase/themeShowcase"));
-const ManagePages = lazy(() => import("../../pages/authorized/managePages/managePages.page"));
+const ManagePages = lazy(() => import("../../pages/managePages/managePages.page"));
 
 //TODO : Loading component for suspended content, build custom overland loading screen component later
 

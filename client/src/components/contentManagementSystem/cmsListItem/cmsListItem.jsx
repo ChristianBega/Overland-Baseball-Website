@@ -18,10 +18,10 @@ import React, { useContext } from "react";
 // Mui
 import { Typography, TableRow } from "@mui/material";
 // Components
-import TeamRoosterItem from "../../../pages/unauthorized/roster/components/teamRosterItem/teamRosterItem.component";
-import ScheduleItem from "../../../pages/unauthorized/home/components/schedule/components/scheduleItem/scheduleItem.component";
-import EventItems from "../../../pages/unauthorized/events/components/eventItems/eventItems.component";
-import DocumentCard from "../../../pages/authorized/documents/components/documentCard/documentCard.component";
+import TeamRoosterItem from "../../../pages/roster/components/teamRosterItem/teamRosterItem.component";
+import ScheduleItem from "../../../pages/home/components/schedule/components/scheduleItem/scheduleItem.component";
+import EventItems from "../../../pages/events/components/eventItems/eventItems.component";
+import DocumentCard from "../../../pages/documents/components/documentCard/documentCard.component";
 import ActionButtonsCell from "./components/ActionsButtonCell/actionButtonCell";
 import CheckboxCell from "./components/CheckboxCell/checkboxCell";
 import DeleteButtonCell from "./components/DeleteButtonCell/deleteButtonCell";

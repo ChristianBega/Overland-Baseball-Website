@@ -1,3 +1,0 @@
-this is a test for aws
-this is another test for aws
-this is another another test for aws
