@@ -1,9 +1,7 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React, { useEffect, useState } from "react";
-// import PlayerEvents from "../playerEvents/playerEvents.component";
-// import RegistrationModal from "../../../../../components/modals/registrationModal.component";
-import { youthProgramData } from "../../../../../websiteData/events.data";
+import React, { useState } from "react";
+
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 
 // Icons
@@ -109,17 +107,14 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
 
 export default function PlayerEvent({ playerEventType, rowReverse, data }) {
   const { title, playerEventContent, eventImage } = data;
-  const { openModal, closeModal } = useModal();
+  // closeModal
+  const { openModal } = useModal();
   const { isSm, isLg } = useMediaQueries();
-  const [currentEventData, setCurrentEventData] = useState([]);
   const [currentSeason, setCurrentSeason] = useState("Spring");
 
   const handleChangeSeason = (season) => {
     setCurrentSeason(season);
   };
-  useEffect(() => {
-    setCurrentEventData(youthProgramData);
-  }, [currentEventData]);
 
   const handleOpenModal = () => {
     openModal(<>coming soon</>);

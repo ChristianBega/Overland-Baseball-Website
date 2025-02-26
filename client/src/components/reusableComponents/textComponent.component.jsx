@@ -1,13 +1,8 @@
 import { Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import RegistrationModal from "../modals/registrationModal.component";
-import { eventData } from "../../websiteData/events.data";
 export default function TextComponent({ boosterData, isMobile, sectionType }) {
   const [currentEventData, setCurrentEventData] = useState([]);
-
-  useEffect(() => {
-    setCurrentEventData(eventData);
-  }, []);
 
   return (
     <>

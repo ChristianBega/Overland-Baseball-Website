@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid/Grid";
-import { Typography, Box, styled, Button } from "@mui/material";
+import { Typography, Box, styled } from "@mui/material";
 
-// import { fundraisersCardData } from "../../../../../websiteData/events.data";
-import { eventData } from "../../../../../websiteData/events.data";
-
-import FundraiserModal from "../../../../../components/modals/fundraiserModal.component";
-import fundraisersCardData from "../../../../../websiteData/events/fundraiser.data.json";
 import BentoLayout from "../../../../../components/reusableComponents/bentoLayout/bentoLayout.component";
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 const StyledImageBox = styled(Box)(({ theme }) => ({
@@ -39,9 +34,8 @@ export default function Fundraisers({ fundraiserEvents }) {
   const [events, setEvents] = useState();
   const handleOpen = (event) => {
     let currentEventId = event.currentTarget.parentElement.parentElement.parentElement.id;
-    let filterEventsArray = eventData.filter((event) => event.eventName.includes(currentEventId));
+
     setCurrentEvent(currentEventId);
-    setEvents(filterEventsArray);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
