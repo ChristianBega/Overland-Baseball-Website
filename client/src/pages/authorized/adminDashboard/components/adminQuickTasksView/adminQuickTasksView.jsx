@@ -5,6 +5,7 @@ import { useCheckAuthorization } from "../../../../../setup/utils/helpers/checkA
 import { UserContext } from "../../../../../setup/context/user.context";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
+// import { initializeBulkAddFields } from "../../../../../setup/utils/firebase/helper";
 
 const quickTaskConfig = [
   {
@@ -41,6 +42,7 @@ const quickTaskConfig = [
     action: (navigate) => navigate("/user-management"),
     type: "navigate",
   },
+
   // {
   //   // ! take a picture of your game score, create a virtual version, allow for editing, sharing, and AI analysis of the game
   //   task: "Game Score Cards",
@@ -104,6 +106,7 @@ const AdminQuickTasksView = () => {
         overflow: "scroll",
       }}
     >
+      {/* <button onClick={() => initializeBulkAddFields()}>Initialize Bulk Add Fields</button> */}
       {quickTaskConfig.map((task, index) => (
         <Box
           key={index}

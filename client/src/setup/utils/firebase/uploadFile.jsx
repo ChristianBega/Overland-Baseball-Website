@@ -67,6 +67,8 @@ export const handleUploadFile = (file, userUid, setProgress, onCancel, mainDirec
             fileName: file.name,
             fileSize: file.size,
             fileType: file.type,
+            sourceDirectory: subDirectoryName,
+            mainDirectory: mainDirectoryName,
           });
 
           resolve({ success: true, message: "Uploaded file successfully", url: downloadURL });
@@ -100,9 +102,9 @@ export const handleUpdateImage = async (userUid, role, originalFileNameWithExt, 
 
   try {
     // 1. Reference to the original file in Firebase Storage
-    const oldFileRef = ref(storage, `${mainDirectoryName ? `${mainDirectoryName}/` : ""}${cmsType}/${originalFileNameWithExt}`);
+    const oldFileRef = ref(storage, `${mainDirectoryName ? `${mainDirectoryName}` : ""}${cmsType && `/${cmsType}`}/${originalFileNameWithExt}`);
     // 2. Reference to the new file path
-    const newFileRef = ref(storage, `${mainDirectoryName ? `${mainDirectoryName}/` : ""}${cmsType}/${newFileNameWithExt}`);
+    const newFileRef = ref(storage, `${mainDirectoryName ? `${mainDirectoryName}` : ""}${cmsType && `/${cmsType}`}/${newFileNameWithExt}`);
     // 3. Copy the file by uploading to the new location
     const oldFileSnapshot = await getDownloadURL(oldFileRef);
     const fileResponse = await fetch(oldFileSnapshot);

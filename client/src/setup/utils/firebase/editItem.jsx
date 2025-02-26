@@ -11,10 +11,9 @@ import { db } from "./index.firebase"; // Import your db config
  * @returns {Promise<Object>} A result object with success status and optionally an error message.
  */
 
-export const updateCMSItem = async (userUid, role, docId, data, type) => {
+export const updateCMSItem = async (userUid, role, docId, data, type, mainDirectoryName) => {
   if (!userUid || (role !== "admin" && role !== "coach")) return { success: false, message: "Unauthorized or invalid user data" };
-
-  const cmsItemDocRef = doc(db, type, docId);
+  const cmsItemDocRef = doc(db, type || mainDirectoryName, docId);
   const filteredData = Object.fromEntries(Object.entries(data).filter(([_, value]) => value !== undefined && value !== null && value !== ""));
   try {
     await updateDoc(cmsItemDocRef, filteredData);

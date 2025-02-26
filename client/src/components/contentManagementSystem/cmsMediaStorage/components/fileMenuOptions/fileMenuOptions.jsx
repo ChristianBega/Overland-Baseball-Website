@@ -8,27 +8,19 @@ import { UserContext } from "../../../../../setup/context/user.context";
 import { deleteCMSItem, deleteItemFromStorage } from "../../../../../setup/utils/firebase/deleteItem";
 import { useModal } from "../../../../../setup/context/modal.context";
 // ! save rename function
-export const handleSaveRename = async (
-  uid,
-  role,
-  file,
-  newFileName,
-  originalFileExtension,
-  closeModal,
-  setAnchorEl,
-  subDirectoryName,
-  mainDirectoryName
-) => {
+export const handleSaveRename = async (uid, role, file, newFileName, originalFileExtension, closeModal, setAnchorEl, mainDirectoryName) => {
   const newFileNameWithExt = newFileName + "." + originalFileExtension;
   const originalFileNameWithExt = file.fileName;
-  const renameResponse = await handleUpdateImage(uid, role, originalFileNameWithExt, newFileNameWithExt, subDirectoryName, mainDirectoryName);
+  // console.log("file.sourceDirectory", file.sourceDirectory);
+  // console.log("mainDirectoryName", mainDirectoryName);
+  const renameResponse = await handleUpdateImage(uid, role, originalFileNameWithExt, newFileNameWithExt, file.sourceDirectory, mainDirectoryName);
 
   if (renameResponse.success) {
     const newFileData = {
       fileName: newFileName + "." + originalFileExtension,
       url: renameResponse.newDownloadURL,
     };
-    const response = await updateCMSItem(uid, role, file.id, newFileData, subDirectoryName);
+    const response = await updateCMSItem(uid, role, file.id, newFileData, file.sourceDirectory, mainDirectoryName);
     if (response.success) {
       alert("File renamed successfully");
       closeModal();
@@ -41,7 +33,7 @@ export const handleSaveRename = async (
   }
 };
 // ! rename image component
-const RenameImage = ({ file, closeModal, setAnchorEl, selectedSubDirectory, mainDirectoryName }) => {
+const RenameImage = ({ file, closeModal, setAnchorEl }) => {
   const [newFileName, setNewFileName] = useState();
   const originalFileExtension = file.fileName.split(".")[1];
   const { currentUserProfile } = useContext(UserContext);
@@ -61,18 +53,15 @@ const RenameImage = ({ file, closeModal, setAnchorEl, selectedSubDirectory, main
         <Button onClick={closeModal}>X Cancel</Button>
       </Stack>
       <TextInputField type="text" label="New File Name" name="fileName" value={currentData.split(".")[0]} onChange={handleEditChange} />
-      <Button
-        onClick={() =>
-          handleSaveRename(uid, role, file, newFileName, originalFileExtension, closeModal, setAnchorEl, selectedSubDirectory, mainDirectoryName)
-        }
-      >
+      <Button onClick={() => handleSaveRename(uid, role, file, newFileName, originalFileExtension, closeModal, setAnchorEl, file.mainDirectory)}>
         Save
       </Button>
     </div>
   );
 };
 
-const FileMenuOptions = ({ file, selectedSubDirectory, mainDirectoryName }) => {
+const FileMenuOptions = ({ file }) => {
+  console.log("file", file);
   const { currentUserProfile } = useContext(UserContext);
   const { closeModal, openModal } = useModal();
   const { role, uid } = currentUserProfile;
@@ -117,24 +106,15 @@ const FileMenuOptions = ({ file, selectedSubDirectory, mainDirectoryName }) => {
   const handleDeleteItem = async () => {
     if (role !== "admin" && role !== "coach") return;
     if (window.confirm("Are you sure you want to delete this item?")) {
-      await deleteCMSItem(uid, role, file.id, selectedSubDirectory);
+      await deleteCMSItem(uid, role, file.id, file.sourceDirectory || file.mainDirectory);
       await deleteItemFromStorage(uid, role, file.url);
       alert("Item deleted successfully");
     }
-
     handleClose();
   };
 
   const handleEditClick = () => {
-    openModal(
-      <RenameImage
-        file={file}
-        closeModal={closeModal}
-        setAnchorEl={setAnchorEl}
-        selectedSubDirectory={selectedSubDirectory}
-        mainDirectoryName={mainDirectoryName}
-      />
-    );
+    openModal(<RenameImage file={file} closeModal={closeModal} setAnchorEl={setAnchorEl} />);
   };
 
   const handleMoveToFolder = () => {
