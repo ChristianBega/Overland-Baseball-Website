@@ -14,9 +14,9 @@ import PlayerEvent from "./components/playerEvent/playerEvent.component";
 // import WorkoutSlider from "./components/workoutSlider/workoutSlider.component";
 // Utils & Helpers
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
-import Fundraisers from "./components/fundraisers/fundraisers.component";
 import BentoLayout from "../../../components/reusableComponents/bentoLayout/bentoLayout.component";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
+import Fundraisers from "./components/fundraisers/fundraisers.component";
 export default function EventsPage() {
   // const theme = useTheme();
   const { isLg } = useMediaQueries();

@@ -1,44 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Grid from "@mui/material/Grid/Grid";
-import { Typography, Box, styled } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import BentoLayout from "../../../../../components/reusableComponents/bentoLayout/bentoLayout.component";
 import SectionLayout from "../../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
-const StyledImageBox = styled(Box)(({ theme }) => ({
-  objectFit: "cover",
-  height: "100%",
-  width: "100%",
-  minHeight: "300px",
-  maxHeight: "325px",
-  filter: "blur(3px)",
-}));
-
-const StyledOverlay = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  margin: ".9rem 0 0 .9rem",
-  padding: "1rem",
-  position: "absolute",
-  inset: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.54)",
-  "&:hover": {
-    boxShadow: `0px 0px 12px 1px ${theme.palette.secondary.light}`,
-    transition: ".3s ease-in",
-  },
-}));
 
 export default function Fundraisers({ fundraiserEvents }) {
-  const [open, setOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState();
-  const [events, setEvents] = useState();
-  const handleOpen = (event) => {
-    let currentEventId = event.currentTarget.parentElement.parentElement.parentElement.id;
-
-    setCurrentEvent(currentEventId);
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
   return (
     <Grid id="fundraiser-and-events" item xs={12}>
       <SectionLayout id="fundraiser-and-events-section" aria-label="Fundraiser and Events Section" marginBlock={true}>
@@ -46,36 +13,7 @@ export default function Fundraisers({ fundraiserEvents }) {
           Upcoming fundraisers
         </Typography>
         <BentoLayout gridItemsData={fundraiserEvents} />
-
-        {/* <BentoLayout gridItemsData={fundraisersCardData} /> */}
       </SectionLayout>
-      {/* <Grid container maxWidth="lg" spacing={4}> */}
-
-      {/* {fundraisersCardData.map((fundraiser, index) => (
-          <>
-            <EventCard
-              key={selectedCardIndex}
-              card={events[selectedCardIndex]}
-              index={selectedCardIndex}
-              selectedCardIndex={selectedCardIndex}
-              setSelectedCardIndex={setSelectedCardIndex}
-            />
-          </>
-          // <Grid sx={{ position: "relative" }} id={fundraiser.eventName} item key={index} xs={12} sm={6} md={3}>
-          //   <StyledImageBox component="img" src={fundraiser.image}></StyledImageBox>
-          //   <StyledOverlay>
-
-          //     <Typography typography="h3Card">{fundraiser.eventName} Events</Typography>
-          //     <Box textAlign="center">
-          //       <Button size="md" onClick={handleOpen}>
-          //         Sign up!
-          //       </Button>
-          //     </Box>
-          //   </StyledOverlay>
-          //   <FundraiserModal open={open} handleClose={handleClose} events={events} currentEvent={currentEvent} />
-          // </Grid>
-        ))} */}
-      {/* </Grid> */}
     </Grid>
   );
 }
