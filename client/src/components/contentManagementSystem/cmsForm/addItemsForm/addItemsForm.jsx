@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 // Components
 import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../inputFields/inputFields";
@@ -13,40 +13,194 @@ import rosterItemInputFieldsConfig from "./data/addRosterItem.config.json";
 import eventsItemInputFieldsConfig from "./data/addEventItem.config.json";
 import documentsItemInputFieldsConfig from "./data/addDocument.config.json";
 import CmsUploadItem from "../../cmsUploadItem/cmsUploadItem";
+import CmsSeasonTabOptions from "../../cmsSeasonTabOptions/cmsSeasonTabOptions";
+
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [localUploadType, setLocalUploadType] = useState("url");
+  const [selectedSeason, setSelectedSeason] = useState("spring");
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const inputFieldsConfig = {
     schedule: scheduleItemInputFieldsConfig,
     roster: rosterItemInputFieldsConfig,
     events: eventsItemInputFieldsConfig,
     documents: documentsItemInputFieldsConfig,
-    // quickLinks: quickLinksItemInputFieldsConfig,
-    // sponsors: scheduleItemInputFieldsConfig,
+  };
+
+  // Initialize form with default values for seasons
+  const defaultValues = {
+    "seasons.spring.active": true,
+    "seasons.summer.active": false,
+    "seasons.fall.active": false,
   };
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
-  } = useForm();
+    setValue,
+    formState: { errors, isSubmitting },
+    getValues,
+  } = useForm({
+    defaultValues,
+    mode: "onChange",
+  });
 
-  const handleAdd = async (data) => {
-    //! refactor how we handle checking the cmsItemType to conditionally handle specific edge cases for adding items. use switch statement or if else or handleAddLogicMap.
+  // Watch the event type to conditionally render fields
+  const eventType = useWatch({
+    control,
+    name: "eventType",
+    defaultValue: "",
+  });
+
+  // Handle season tab changes
+  const handleSeasonChange = (season) => {
+    setSelectedSeason(season);
+
+    // When changing seasons, set only the current season as active
+    if (season === "spring") {
+      setValue("seasons.spring.active", true);
+      setValue("seasons.summer.active", false);
+      setValue("seasons.fall.active", false);
+    } else if (season === "summer") {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.summer.active", true);
+      setValue("seasons.fall.active", false);
+    } else if (season === "fall") {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.summer.active", false);
+      setValue("seasons.fall.active", true);
+    }
+  };
+
+  // Watch the active checkboxes to keep them in sync
+  const springActive = useWatch({
+    control,
+    name: "seasons.spring.active",
+    defaultValue: true,
+  });
+
+  const summerActive = useWatch({
+    control,
+    name: "seasons.summer.active",
+    defaultValue: false,
+  });
+
+  const fallActive = useWatch({
+    control,
+    name: "seasons.fall.active",
+    defaultValue: false,
+  });
+
+  // Keep the active checkboxes in sync (only one can be active)
+  useEffect(() => {
+    if (springActive) {
+      setValue("seasons.summer.active", false);
+      setValue("seasons.fall.active", false);
+    }
+  }, [springActive, setValue]);
+
+  useEffect(() => {
+    if (summerActive) {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.fall.active", false);
+    }
+  }, [summerActive, setValue]);
+
+  useEffect(() => {
+    if (fallActive) {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.summer.active", false);
+    }
+  }, [fallActive, setValue]);
+
+  // Pre-process form data before submission
+  const preprocessFormData = (data) => {
+    // Skip preprocessing if not a player event
+    if (cmsItemType !== "events" || data.eventType !== "player") {
+      console.log("Not a player event, skipping preprocessing");
+      return data; // Return original data unchanged
+    }
+
+    // Only for player events - create a deep copy to avoid modifying the original data
+    const processedData = JSON.parse(JSON.stringify(data));
+
+    // Make sure the seasons object exists
+    if (!processedData.seasons) {
+      processedData.seasons = {
+        spring: { active: true },
+        summer: { active: false },
+        fall: { active: false },
+      };
+    }
+
+    // Ensure at least one season is active
+    const anySeasonActive = processedData.seasons?.spring?.active || processedData.seasons?.summer?.active || processedData.seasons?.fall?.active;
+
+    if (!anySeasonActive) {
+      // Default to spring if no season is active
+      processedData.seasons.spring.active = true;
+    }
+
+    // Remove top-level fields that we're keeping in seasons
+    delete processedData.startDateTime;
+    delete processedData.endDateTime;
+    delete processedData.playerEventContent;
+
+    // Log the processed data for debugging
+    console.log("Processed player event data:", processedData);
+
+    return processedData;
+  };
+
+  const onSubmit = async (data) => {
+    setSubmitAttempted(true);
     setStatusMessage("Loading...");
+
+    console.log("Raw form data:", data);
+    // Pre-process the form data for submission
+    const formData = preprocessFormData(data);
+
     try {
-      console.log("cmsItemType", cmsItemType);
+      console.log("cmsItemType:", cmsItemType);
+      console.log("Submitting form data:", formData);
+
       let result;
 
       switch (cmsItemType) {
+        case "events":
+          if (localUploadType === "file" && formData.eventImage) {
+            const { url } = await handleUploadFile(
+              formData.eventImage,
+              uid,
+              () => {},
+              () => {},
+              "events",
+              "eventImages"
+            );
+            const updatedData = {
+              ...formData,
+              eventImage: url,
+            };
+
+            result = await addCMSItem(uid, role, updatedData, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          } else {
+            result = await addCMSItem(uid, role, formData, cmsItemType, (progress) => {
+              setProgress(progress);
+            });
+          }
+          break;
+
+        // Other cases remain the same
         case "documents":
           result = await handleUploadFile(
-            data.documentFile,
+            formData.documentFile,
             uid,
             (progress) => {
               setProgress(progress);
@@ -56,97 +210,75 @@ const AddItemsForm = ({ ...props }) => {
           );
           break;
         case "schedule":
-          if (localUploadType === "file") {
+          if (localUploadType === "file" && formData.opponentIcon) {
             const { url } = await handleUploadFile(
-              data.opponentIcon,
+              formData.opponentIcon,
               uid,
               () => {},
               () => {},
               "schedule",
               "opponentIcon"
             );
-            const updatedDataWithOpponentIconUrl = {
-              ...data,
+            const updatedData = {
+              ...formData,
               opponentIcon: url,
             };
-            result = await addCMSItem(uid, role, updatedDataWithOpponentIconUrl, cmsItemType, (progress) => {
+            result = await addCMSItem(uid, role, updatedData, cmsItemType, (progress) => {
               setProgress(progress);
             });
           } else {
-            result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+            result = await addCMSItem(uid, role, formData, cmsItemType, (progress) => {
               setProgress(progress);
             });
           }
           break;
         case "roster":
-          if (localUploadType === "file") {
+          if (localUploadType === "file" && formData.playerImage) {
             const { url } = await handleUploadFile(
-              data.playerImage,
+              formData.playerImage,
               uid,
               () => {},
               () => {},
               "roster",
               "playerImage"
             );
-            const updatedDataWithPlayerImageUrl = {
-              ...data,
+            const updatedData = {
+              ...formData,
               playerImage: url,
             };
-            result = await addCMSItem(uid, role, updatedDataWithPlayerImageUrl, cmsItemType, (progress) => {
+            result = await addCMSItem(uid, role, updatedData, cmsItemType, (progress) => {
               setProgress(progress);
             });
           } else {
-            result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
-              setProgress(progress);
-            });
-          }
-          break;
-        case "events":
-          if (localUploadType === "file") {
-            const { url } = await handleUploadFile(
-              data.eventImage,
-              uid,
-              () => {},
-              () => {},
-              "events",
-              "eventImages"
-            );
-            const updatedDataWithEventImageUrl = {
-              ...data,
-              eventImage: url,
-            };
-
-            result = await addCMSItem(uid, role, updatedDataWithEventImageUrl, cmsItemType, (progress) => {
-              setProgress(progress);
-            });
-          } else {
-            result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+            result = await addCMSItem(uid, role, formData, cmsItemType, (progress) => {
               setProgress(progress);
             });
           }
           break;
         default:
-          result = await addCMSItem(uid, role, data, cmsItemType, (progress) => {
+          result = await addCMSItem(uid, role, formData, cmsItemType, (progress) => {
             setProgress(progress);
           });
-
           break;
       }
 
-      if (result.success === true) {
-        setStatusMessage(result.message);
+      if (result && result.success === true) {
+        setStatus("success");
+        setStatusMessage(result.message || "Item added successfully!");
         reset();
         setTimeout(() => {
           closeModal();
         }, 2000);
         setSelectedItems([]);
       } else {
-        setStatusMessage(result.error);
-        alert(result.error);
+        setStatus("error");
+        setStatusMessage(result?.error || "Error adding item. Please try again.");
+        console.error("Form submission error:", result);
       }
     } catch (error) {
-      console.error("Failed to add schedule item:", error);
-      setStatusMessage("Error during add. Check the console for more details.");
+      console.error("Failed to add item:", error);
+      setStatus("error");
+      setStatusMessage(`Error during add: ${error.message || "Unknown error"}`);
     }
   };
 
@@ -159,53 +291,107 @@ const AddItemsForm = ({ ...props }) => {
     }
   }, [status]);
 
+  // Log errors when they occur
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      console.log("Form validation errors:", errors);
+    }
+  }, [errors]);
+
+  // Determine if a field should be shown based on conditional rendering rules
+  const shouldShowField = (field) => {
+    // If no showWhen rule, always show the field
+    if (!field.showWhen) return true;
+
+    const { showWhen } = field;
+
+    // For fields that depend on eventType
+    if (showWhen.field === "eventType") {
+      // Handle the case where the field should NOT be shown for a specific value
+      if (showWhen.notValue && eventType === showWhen.notValue) {
+        return false;
+      }
+
+      // Handle the case where the field should be shown for a specific value
+      if (showWhen.value && eventType !== showWhen.value) {
+        return false;
+      }
+
+      // If there's also a dependency on selected season
+      if (showWhen.additionalField === "seasonSelect") {
+        return selectedSeason === showWhen.additionalValue;
+      }
+
+      return true;
+    }
+
+    return true;
+  };
+
   return (
-    <Box component="form" onSubmit={handleSubmit(handleAdd)}>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <FormStatusIndicator statusMessage={statusMessage} />
-      {/* Add Cms Loading Status Indicator for state - a) progress */}
-      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules, cmsType, optionLabels, options }, index) => (
-        <Controller
-          key={index + name}
-          name={name}
-          control={control}
-          rules={rules}
-          render={({ field }) => (
-            <Box mb={2}>
-              {type === "cmsUploadItem" ? (
-                <CmsUploadItem
-                  cmsItemType={cmsType}
-                  onChange={(field) => (event) => {
-                    field.onChange(event.target.files[0]);
-                  }}
-                  // onChange={field.onChange}
-                  label={label}
-                  placeholderTextfield={placeholder}
-                  value={field.value}
-                  {...field}
-                  cmsUploadName={name}
-                  parentElement={"addItemsForm"}
-                  localUploadType={localUploadType}
-                  setLocalUploadType={setLocalUploadType}
-                />
-              ) : (
-                <InputFieldComponent
-                  type={type}
-                  label={label}
-                  placeholder={placeholder}
-                  fullWidth
-                  value={field.value}
-                  onChange={field.onChange}
-                  error={Boolean(errors[name])}
-                  helperText={errors[name]?.message}
-                  {...field}
-                  optionLabels={optionLabels}
-                  options={options && options}
-                />
-              )}
-            </Box>
-          )}
-        />
-      ))}
+
+      {inputFieldsConfig[cmsItemType]?.map((field, index) => {
+        // Skip fields that shouldn't be shown based on conditional logic
+        if (!shouldShowField(field)) {
+          return null;
+        }
+
+        return (
+          <Controller
+            key={index + field.name}
+            name={field.name}
+            control={control}
+            rules={field.rules}
+            render={({ field: { onChange, value, ref, ...rest } }) => (
+              <Box mb={2}>
+                {field.type === "cmsUploadItem" ? (
+                  <CmsUploadItem
+                    cmsItemType={field.cmsType}
+                    onChange={(fieldRef) => (event) => {
+                      onChange(event.target.files[0]);
+                    }}
+                    label={field.label}
+                    placeholderTextfield={field.placeholder}
+                    value={value}
+                    {...rest}
+                    cmsUploadName={field.name}
+                    parentElement={"addItemsForm"}
+                    localUploadType={localUploadType}
+                    setLocalUploadType={setLocalUploadType}
+                  />
+                ) : field.type === "seasonTabs" ? (
+                  <CmsSeasonTabOptions
+                    label={field.label}
+                    options={field.options}
+                    value={selectedSeason}
+                    onChange={handleSeasonChange}
+                    error={Boolean(errors[field.name])}
+                    helperText={errors[field.name]?.message}
+                    {...rest}
+                  />
+                ) : (
+                  <InputFieldComponent
+                    type={field.type}
+                    label={field.label}
+                    placeholder={field.placeholder}
+                    fullWidth
+                    value={value}
+                    onChange={onChange}
+                    error={Boolean(errors[field.name])}
+                    helperText={errors[field.name]?.message}
+                    {...rest}
+                    optionLabels={field.optionLabels}
+                    options={field.options && field.options}
+                  />
+                )}
+              </Box>
+            )}
+          />
+        );
+      })}
+
       <Button
         type="submit"
         variant="contained"
@@ -213,17 +399,12 @@ const AddItemsForm = ({ ...props }) => {
         aria-label={`create ${cmsItemType} item`}
         id={`create-${cmsItemType}-cms-item-button`}
         sx={{ width: "100%" }}
+        disabled={isSubmitting}
       >
-        Create
+        {isSubmitting ? "Creating..." : "Create"}
       </Button>
     </Box>
   );
 };
 
 export default AddItemsForm;
-
-// ! Other fields for uploading files
-// url: downloadURL,
-// fileName: file.name,
-// fileSize: file.size,
-// fileType: file.type,

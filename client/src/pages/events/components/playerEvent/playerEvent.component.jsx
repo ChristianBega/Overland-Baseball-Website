@@ -43,6 +43,7 @@ const textStyles = {
 // };
 
 const EventDetails = ({ data }) => {
+  console.log("data", data);
   const theme = useTheme();
   const { isLg } = useMediaQueries();
   const { startDateTime, location, endDateTime } = data || {};
@@ -67,7 +68,7 @@ const EventDetails = ({ data }) => {
       sx={{ maxWidth: { sm: "450px" }, ...(isLg && desktopStyles) }}
     >
       <Typography component="p" sx={textStyles}>
-        <CalendarMonthIcon sx={iconStyles} /> {formatDateTimeForCalendar(startDateTime)}
+        {/* <CalendarMonthIcon sx={iconStyles} /> {formatDateTimeForCalendar(startDateTime)} */}
       </Typography>
       <Typography component="p" sx={textStyles}>
         <PlaceIcon sx={iconStyles} />
@@ -75,7 +76,7 @@ const EventDetails = ({ data }) => {
       </Typography>
       <Typography component="p" sx={textStyles}>
         <AccessTimeIcon sx={iconStyles} />
-        {startDateTime && endDateTime ? `${formatTime(startDateTime)}-${formatTime(endDateTime, true)}` : ""}
+        {/* {startDateTime && endDateTime ? `${formatTime(startDateTime)}-${formatTime(endDateTime, true)}` : ""} */}
       </Typography>
     </Stack>
   );
@@ -106,7 +107,7 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
 };
 
 export default function PlayerEvent({ playerEventType, rowReverse, data }) {
-  const { title, playerEventContent, eventImage } = data;
+  const { title, playerEventContent, eventImage } = data || {};
   // closeModal
   const { openModal } = useModal();
   const { isSm, isLg } = useMediaQueries();
@@ -120,7 +121,7 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
     openModal(<>coming soon</>);
   };
   const paragraphs = playerEventContent
-    .split(/\n\s*\n/)
+    ?.split(/\n\s*\n/)
     .map((p) => p.trim())
     .filter((p) => p);
 

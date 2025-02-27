@@ -1,0 +1,93 @@
+[
+  {
+    "name": "title",
+    "label": "Event Title",
+    "placeholder": "Enter event title here...",
+    "type": "text",
+    "rules": {
+      "required": "Event title is required *"
+    }
+  },
+
+  {
+    "name": "startDateTime",
+    "label": "Start Date & Time",
+    "placeholder": "Select start date and time...",
+    "type": "dateTimeLocal",
+    "rules": {
+      "required": "Start date and time is required *"
+    }
+  },
+  {
+    "name": "endDateTime",
+    "label": "End Date & Time",
+    "placeholder": "Select end date and time...",
+    "type": "dateTimeLocal",
+    "rules": {
+      "required": "End date and time is required *"
+    }
+  },
+  {
+    "name": "location",
+    "label": "Location",
+    "placeholder": "Enter location (select from suggestions)...",
+    "type": "text",
+    "rules": {
+      "required": "Location is required *"
+    }
+  },
+  {
+    "name": "eventType",
+    "label": "Event Type",
+    "placeholder": "Select event type...",
+    "type": "select",
+    "options": [
+      {
+        "value": "featured",
+        "label": "Featured"
+      },
+      {
+        "value": "regular",
+        "label": "Regular"
+      },
+      {
+        "value": "player",
+        "label": "Player"
+      },
+      {
+        "value": "fundraiser",
+        "label": "Fundraiser"
+      }
+    ]
+  },
+  {
+    "name": "description",
+    "label": "Description (optional)",
+    "placeholder": "Enter event description here...",
+    "type": "textarea"
+  },
+  {
+    "name": "eventImage",
+    "label": "Event Image (optional)",
+    "placeholder": "Upload event image...",
+    "type": "cmsUploadItem",
+    "cmsType": "eventImages"
+  },
+  {
+    "name": "playerEventContent",
+    "instructions": "Press Enter twice to start a new paragraph",
+    "label": "Player Event Content (optional)",
+    "placeholder": "Enter player event content here...",
+    "type": "textarea",
+    "rules": {
+      "minLength": {
+        "value": 250,
+        "message": "Player Event Content must be at least 250 characters long"
+      },
+      "maxLength": {
+        "value": 468,
+        "message": "Player Event Content cannot exceed 468 characters"
+      }
+    }
+  }
+]
