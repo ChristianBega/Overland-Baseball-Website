@@ -118,41 +118,49 @@ const AddItemsForm = ({ ...props }) => {
     }
   }, [fallActive, setValue]);
 
-  // Pre-process form data before submission
   const preprocessFormData = (data) => {
     // Skip preprocessing if not a player event
-    if (cmsItemType !== "events" || data.eventType !== "player") {
-      console.log("Not a player event, skipping preprocessing");
-      return data; // Return original data unchanged
+    if (data.eventType !== "player") {
+      return data;
     }
 
-    // Only for player events - create a deep copy to avoid modifying the original data
+    // Save the eventImage reference before JSON operations
+    const eventImage = data.eventImage;
+
+    // Create a deep copy to avoid modifying the original data
     const processedData = JSON.parse(JSON.stringify(data));
 
-    // Make sure the seasons object exists
-    if (!processedData.seasons) {
-      processedData.seasons = {
-        spring: { active: true },
-        summer: { active: false },
-        fall: { active: false },
-      };
-    }
+    // Restore the eventImage that was lost in JSON serialization
+    processedData.eventImage = eventImage;
 
-    // Ensure at least one season is active
-    const anySeasonActive = processedData.seasons?.spring?.active || processedData.seasons?.summer?.active || processedData.seasons?.fall?.active;
+    // Store the current seasons data
+    const currentSeasons = processedData.seasons || {};
 
-    if (!anySeasonActive) {
-      // Default to spring if no season is active
-      processedData.seasons.spring.active = true;
-    }
+    // Create a fresh seasons object with only the fields we want
+    const freshSeasons = {
+      spring: {
+        startDateTime: currentSeasons.spring?.startDateTime || "",
+        endDateTime: currentSeasons.spring?.endDateTime || "",
+        playerEventContent: currentSeasons.spring?.playerEventContent || "",
+      },
+      summer: {
+        startDateTime: currentSeasons.summer?.startDateTime || "",
+        endDateTime: currentSeasons.summer?.endDateTime || "",
+        playerEventContent: currentSeasons.summer?.playerEventContent || "",
+      },
+      fall: {
+        startDateTime: currentSeasons.fall?.startDateTime || "",
+        endDateTime: currentSeasons.fall?.endDateTime || "",
+        playerEventContent: currentSeasons.fall?.playerEventContent || "",
+      },
+    };
 
-    // Remove top-level fields that we're keeping in seasons
+    processedData.seasons = freshSeasons;
+
     delete processedData.startDateTime;
     delete processedData.endDateTime;
-    delete processedData.playerEventContent;
 
-    // Log the processed data for debugging
-    console.log("Processed player event data:", processedData);
+    // Add debug logging
 
     return processedData;
   };
@@ -161,14 +169,10 @@ const AddItemsForm = ({ ...props }) => {
     setSubmitAttempted(true);
     setStatusMessage("Loading...");
 
-    console.log("Raw form data:", data);
     // Pre-process the form data for submission
     const formData = preprocessFormData(data);
 
     try {
-      console.log("cmsItemType:", cmsItemType);
-      console.log("Submitting form data:", formData);
-
       let result;
 
       switch (cmsItemType) {
@@ -331,9 +335,7 @@ const AddItemsForm = ({ ...props }) => {
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <FormStatusIndicator statusMessage={statusMessage} />
-
       {inputFieldsConfig[cmsItemType]?.map((field, index) => {
-        // Skip fields that shouldn't be shown based on conditional logic
         if (!shouldShowField(field)) {
           return null;
         }
@@ -344,18 +346,18 @@ const AddItemsForm = ({ ...props }) => {
             name={field.name}
             control={control}
             rules={field.rules}
-            render={({ field: { onChange, value, ref, ...rest } }) => (
+            render={({ field: formField }) => (
               <Box mb={2}>
                 {field.type === "cmsUploadItem" ? (
                   <CmsUploadItem
                     cmsItemType={field.cmsType}
-                    onChange={(fieldRef) => (event) => {
-                      onChange(event.target.files[0]);
+                    onChange={(formField) => (event) => {
+                      formField.onChange(event.target.files[0]);
                     }}
                     label={field.label}
                     placeholderTextfield={field.placeholder}
-                    value={value}
-                    {...rest}
+                    value={formField.value}
+                    {...formField}
                     cmsUploadName={field.name}
                     parentElement={"addItemsForm"}
                     localUploadType={localUploadType}
@@ -369,7 +371,7 @@ const AddItemsForm = ({ ...props }) => {
                     onChange={handleSeasonChange}
                     error={Boolean(errors[field.name])}
                     helperText={errors[field.name]?.message}
-                    {...rest}
+                    {...formField}
                   />
                 ) : (
                   <InputFieldComponent
@@ -377,11 +379,11 @@ const AddItemsForm = ({ ...props }) => {
                     label={field.label}
                     placeholder={field.placeholder}
                     fullWidth
-                    value={value}
-                    onChange={onChange}
+                    value={formField.value}
+                    onChange={formField.onChange}
                     error={Boolean(errors[field.name])}
                     helperText={errors[field.name]?.message}
-                    {...rest}
+                    {...formField}
                     optionLabels={field.optionLabels}
                     options={field.options && field.options}
                   />
