@@ -5,6 +5,30 @@ import FormStatusIndicator from "../../../statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../inputFields/inputFields";
 import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
 import { StyledTableCell } from "../../../../styles/index.styles";
+import { styled } from "@mui/material/styles";
+
+//! Add column width configurations
+//! use the key name from any object being mapped over in the table
+const columnConfigs = {
+  eventImage: { width: "150px", maxLines: 1 },
+  title: { width: "120px", maxLines: 1 },
+  location: { width: "100px", maxLines: 1 },
+  description: { width: "200px", maxLines: 2 },
+  eventType: { width: "100px", maxLines: 1 },
+};
+
+const DynamicTableCell = styled(StyledTableCell)(({ columnKey }) => ({
+  width: columnConfigs[columnKey]?.width || "120px",
+  maxWidth: columnConfigs[columnKey]?.width || "120px",
+  "& .cell-content": {
+    display: "-webkit-box",
+    WebkitLineClamp: columnConfigs[columnKey]?.maxLines || 1,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "1.2em",
+  },
+}));
 
 const DeleteItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, selectedItems, setSelectedItems } = props;
@@ -65,8 +89,18 @@ const DeleteItemsForm = ({ ...props }) => {
   };
   const allKeys = Array.from(new Set(selectedItems.flatMap((item) => Object.keys(item))));
 
-  // Filter out unwanted keys
-  const filteredKeys = allKeys.filter((key) => !["createdAt", "addedByUserUid", "createdByUserUid", "id"].includes(key));
+  // Filter out unwanted keys and nested objects
+  const filteredKeys = allKeys.filter((key) => {
+    // Skip standard unwanted keys and check for nested objects
+    if (
+      ["createdAt", "addedByUserUid", "createdByUserUid", "id", "seasons.summer.active", "seasons.spring.active", "seasons.fall.active"].includes(key)
+    ) {
+      return false;
+    }
+    const sampleValue = selectedItems[0]?.[key];
+    return typeof sampleValue !== "object" || sampleValue === null;
+  });
+
   return (
     <Box component="form">
       <FormStatusIndicator statusMessage={statusMessage} progress={progress} />
@@ -76,20 +110,19 @@ const DeleteItemsForm = ({ ...props }) => {
           <TableHead>
             <TableRow>
               {filteredKeys.map((key) => (
-                <StyledTableCell isCmsItem={true} className="table-header-cell table-header-cell-narrow" key={key}>
+                <DynamicTableCell isCmsItem={true} className="table-header-cell table-header-cell-narrow" key={key} columnKey={key}>
                   <p>{key}</p>
-                </StyledTableCell>
+                </DynamicTableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* Render rows */}
             {selectedItems.map((row, index) => (
               <TableRow key={index}>
                 {filteredKeys.map((key) => (
-                  <StyledTableCell isCmsItem={true} className="table-cell" sx={{ maxWidth: "200px" }} key={key}>
-                    {row[key] || ""}
-                  </StyledTableCell>
+                  <DynamicTableCell isCmsItem={true} className="table-cell" columnKey={key} key={key}>
+                    <div className="cell-content">{row[key] || ""}</div>
+                  </DynamicTableCell>
                 ))}
               </TableRow>
             ))}

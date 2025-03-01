@@ -61,7 +61,6 @@ const RenameImage = ({ file, closeModal, setAnchorEl }) => {
 };
 
 const FileMenuOptions = ({ file }) => {
-  console.log("file", file);
   const { currentUserProfile } = useContext(UserContext);
   const { closeModal, openModal } = useModal();
   const { role, uid } = currentUserProfile;
