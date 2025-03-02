@@ -42,11 +42,15 @@ const textStyles = {
 //   gap: "0.25rem",
 // };
 
-const EventDetails = ({ data }) => {
-  console.log("data", data);
+const EventDetails = ({ data, currentSeason }) => {
   const theme = useTheme();
   const { isLg } = useMediaQueries();
-  const { startDateTime, location, endDateTime } = data || {};
+  const { seasons, location } = data || {};
+
+  // Get the current season's data
+  const seasonData = seasons?.[currentSeason.toLowerCase()];
+  const { startDateTime, endDateTime } = seasonData || {};
+
   const desktopStyles = {
     position: "absolute",
     bottom: "-2%",
@@ -59,6 +63,7 @@ const EventDetails = ({ data }) => {
     borderRadius: "6px",
     width: "85%",
   };
+
   return (
     <Stack
       direction={"row"}
@@ -68,7 +73,8 @@ const EventDetails = ({ data }) => {
       sx={{ maxWidth: { sm: "450px" }, ...(isLg && desktopStyles) }}
     >
       <Typography component="p" sx={textStyles}>
-        {/* <CalendarMonthIcon sx={iconStyles} /> {formatDateTimeForCalendar(startDateTime)} */}
+        <CalendarMonthIcon sx={iconStyles} />
+        {startDateTime && formatDateTimeForCalendar(startDateTime)}
       </Typography>
       <Typography component="p" sx={textStyles}>
         <PlaceIcon sx={iconStyles} />
@@ -76,7 +82,7 @@ const EventDetails = ({ data }) => {
       </Typography>
       <Typography component="p" sx={textStyles}>
         <AccessTimeIcon sx={iconStyles} />
-        {/* {startDateTime && endDateTime ? `${formatTime(startDateTime)}-${formatTime(endDateTime, true)}` : ""} */}
+        {startDateTime && endDateTime ? `${formatTime(startDateTime)}-${formatTime(endDateTime, true)}` : ""}
       </Typography>
     </Stack>
   );
@@ -107,11 +113,19 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
 };
 
 export default function PlayerEvent({ playerEventType, rowReverse, data }) {
-  const { title, playerEventContent, eventImage } = data || {};
-  // closeModal
+  const { title, eventImage, seasons } = data || {};
   const { openModal } = useModal();
   const { isSm, isLg } = useMediaQueries();
   const [currentSeason, setCurrentSeason] = useState("Spring");
+
+  // Get the current season's content
+  const currentSeasonData = seasons?.[currentSeason.toLowerCase()];
+  const playerEventContent = currentSeasonData?.playerEventContent;
+
+  const paragraphs = playerEventContent
+    ?.split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter((p) => p);
 
   const handleChangeSeason = (season) => {
     setCurrentSeason(season);
@@ -120,11 +134,7 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
   const handleOpenModal = () => {
     openModal(<>coming soon</>);
   };
-  const paragraphs = playerEventContent
-    ?.split(/\n\s*\n/)
-    .map((p) => p.trim())
-    .filter((p) => p);
-
+  console.log("data", data);
   return (
     <Grid item xs={12}>
       <SectionLayout id="player-event-section" aria-label="Player Event Section">
@@ -147,7 +157,7 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
                 {title}
               </Typography>
             )}
-            {isLg && <EventDetails data={data} />}
+            {isLg && <EventDetails data={data} currentSeason={currentSeason} />}
           </Grid>
           <Grid item xs={12} md={8} lg={7} order={{ md: rowReverse ? 2 : 1 }}>
             {isSm && (
@@ -159,13 +169,14 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
               </Stack>
             )}
             {!isSm && <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />}
-            {!isLg && <EventDetails data={data} />}
+            {!isLg && <EventDetails data={data} currentSeason={currentSeason} />}
 
             {paragraphs?.map((paragraph, index) => (
               <Typography key={index} component="p" typography="p" sx={{ marginBottom: index !== paragraphs.length - 1 ? 2 : 0 }}>
                 {paragraph}
               </Typography>
             ))}
+
             <Button onClick={handleOpenModal} variant="contained" color="secondary" sx={{ marginTop: 4 }}>
               Register Now!
             </Button>
