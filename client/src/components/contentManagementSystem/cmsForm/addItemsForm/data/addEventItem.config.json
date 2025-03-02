@@ -128,7 +128,7 @@
   },
   {
     "name": "seasons.spring.startDateTime",
-    "label": "Spring Start Date & Time",
+    "label": "Spring Start Date & Time Spring",
     "placeholder": "Select spring start date and time...",
     "type": "dateTimeLocal",
     "showWhen": {
@@ -191,7 +191,7 @@
   },
   {
     "name": "seasons.summer.startDateTime",
-    "label": "Summer Start Date & Time",
+    "label": "Summer Start Date & Time Summer",
     "placeholder": "Select summer start date and time...",
     "type": "dateTimeLocal",
     "showWhen": {
@@ -254,7 +254,7 @@
   },
   {
     "name": "seasons.fall.startDateTime",
-    "label": "Fall Start Date & Time",
+    "label": "Fall Start Date & Time Fall",
     "placeholder": "Select fall start date and time...",
     "type": "dateTimeLocal",
     "showWhen": {
@@ -281,7 +281,7 @@
     "rules": {
       "required": "Fall End date and time is required *"
     }
-  },
+  },              
   {
     "name": "seasons.fall.playerEventContent",
     "label": "Fall Player Event Content",
@@ -292,7 +292,7 @@
       "value": "player",
       "additionalField": "seasonSelect",
       "additionalValue": "fall"
-    },
+    },                        
     "rules": {
       "minLength": {
         "value": 250,

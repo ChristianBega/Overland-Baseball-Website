@@ -3,7 +3,6 @@ import { Box, Tabs, Tab, Typography } from "@mui/material";
 
 const CmsSeasonTabOptions = ({ label, options, value, onChange, error, helperText }) => {
   // Default to first season if no value is set
-  const currentValue = value || (options && options.length > 0 ? options[0].value : "");
 
   const handleChange = (event, newValue) => {
     if (onChange) {
@@ -18,15 +17,15 @@ const CmsSeasonTabOptions = ({ label, options, value, onChange, error, helperTex
       </Typography>
 
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={currentValue} onChange={handleChange} aria-label="season tabs" variant="fullWidth">
+        <Tabs value={value} onChange={handleChange} aria-label="season tabs" variant="fullWidth">
           {options?.map((option) => (
             <Tab
               key={option.value}
               label={option.label}
               value={option.value}
               sx={{
-                fontWeight: currentValue === option.value ? "bold" : "normal",
-                color: currentValue === option.value ? "primary" : "inherit",
+                fontWeight: value === option.value ? "bold" : "normal",
+                color: value === option.value ? "primary" : "inherit",
               }}
             />
           ))}

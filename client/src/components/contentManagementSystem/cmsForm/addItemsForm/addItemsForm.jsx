@@ -61,7 +61,6 @@ const AddItemsForm = ({ ...props }) => {
   const handleSeasonChange = (season) => {
     setSelectedSeason(season);
 
-    // When changing seasons, set only the current season as active
     if (season === "spring") {
       setValue("seasons.spring.active", true);
       setValue("seasons.summer.active", false);
@@ -331,7 +330,6 @@ const AddItemsForm = ({ ...props }) => {
 
     return true;
   };
-
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <FormStatusIndicator statusMessage={statusMessage} />
@@ -371,7 +369,6 @@ const AddItemsForm = ({ ...props }) => {
                     onChange={handleSeasonChange}
                     error={Boolean(errors[field.name])}
                     helperText={errors[field.name]?.message}
-                    {...formField}
                   />
                 ) : (
                   <InputFieldComponent

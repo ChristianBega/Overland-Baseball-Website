@@ -15,6 +15,7 @@ const columnConfigs = {
   location: { width: "100px", maxLines: 1 },
   description: { width: "200px", maxLines: 2 },
   eventType: { width: "100px", maxLines: 1 },
+  name: { width: "200px", maxLines: 2 },
 };
 
 const DynamicTableCell = styled(StyledTableCell)(({ columnKey }) => ({
