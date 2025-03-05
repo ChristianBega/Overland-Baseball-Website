@@ -1,0 +1,72 @@
+[
+  {
+    "name": "playerName",
+    "label": "Player Name",
+    "placeholder": "Enter player's full name...",
+    "type": "text",
+    "rules": {
+      "required": "Player name is required *"
+    }
+  },
+  {
+    "name": "email",
+    "label": "Player Email",
+    "placeholder": "Enter player's email address...",
+    "type": "email",
+    "rules": {
+      "required": "Player email is required *",
+      "pattern": {
+        "value": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+        "message": "Invalid email address *"
+      }
+    }
+  },
+  {
+    "name": "playerPhone",
+    "label": "Player Phone",
+    "placeholder": "Enter player's phone number...",
+    "type": "tel",
+    "rules": {
+      "required": "Player phone number is required *",
+      "pattern": {
+        "value": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+        "message": "Invalid phone number format *"
+      }
+    }
+  },
+  {
+    "name": "guardianName",
+    "label": "Parent/Guardian Name",
+    "placeholder": "Enter parent/guardian's full name...",
+    "type": "text",
+    "rules": {
+      "required": "Parent/Guardian name is required *"
+    }
+  },
+  {
+    "name": "guardianEmail",
+    "label": "Parent/Guardian Email",
+    "placeholder": "Enter parent/guardian's email address...",
+    "type": "email",
+    "rules": {
+      "required": "Parent/Guardian email is required *",
+      "pattern": {
+        "value": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+        "message": "Invalid email address *"
+      }
+    }
+  },
+  {
+    "name": "guardianPhone",
+    "label": "Parent/Guardian Phone",
+    "placeholder": "Enter parent/guardian's phone number...",
+    "type": "tel",
+    "rules": {
+      "required": "Parent/Guardian phone number is required *",
+      "pattern": {
+        "value": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+        "message": "Invalid phone number format *"
+      }
+    }
+  }
+]

@@ -16,6 +16,7 @@ import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.uti
 import { useModal } from "../../../../setup/context/modal.context";
 import { formatTime } from "../../../../setup/utils/helpers/formatTime";
 import { formatDateTimeForCalendar } from "../../../../setup/utils/helpers/formatDate";
+import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
 
 const iconStyles = {
   fontSize: "1rem",
@@ -114,7 +115,7 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
 
 export default function PlayerEvent({ playerEventType, rowReverse, data }) {
   const { title, eventImage, seasons } = data || {};
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const { isSm, isLg } = useMediaQueries();
   const [currentSeason, setCurrentSeason] = useState("Spring");
 
@@ -132,7 +133,7 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
   };
 
   const handleOpenModal = () => {
-    openModal(<>coming soon</>);
+    openModal(<EventSignUpForm data={data} currentSeason={currentSeason} closeModal={closeModal} />);
   };
   console.log("data", data);
   return (
