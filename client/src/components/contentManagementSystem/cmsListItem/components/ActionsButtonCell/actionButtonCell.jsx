@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 // Styles
 import { StyledTableCell } from "../../../../../styles/index.styles";
 // Icons
-import { Edit as EditIcon, Save as SaveIcon, Close as CloseIcon } from "@mui/icons-material";
+import { Edit as EditIcon } from "@mui/icons-material";
 // Context
 import { useContext } from "react";
 import { CmsEditItemContext } from "../../../../../setup/context/cmsContext/cmsEdit.context";
@@ -11,36 +11,31 @@ import { UserContext } from "../../../../../setup/context/user.context";
 import { useModal } from "../../../../../setup/context/modal.context";
 // Components
 import CmsForm from "../../../cmsForm/cmsForm";
-// Utils
-import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
 // Hooks
 import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQueryParams";
-const ActionButtonsCell = ({ isEditing, id, values, type }) => {
-  const { isMd } = useMediaQueries();
+const ActionButtonsCell = ({ id, values, type }) => {
   const { openModal, closeModal } = useModal();
   const { currentUserProfile } = useContext(UserContext);
   const { role } = currentUserProfile;
-  const { handleStartEditing, handleCancelEditing, checkForEditChanges, cmsOperationStatus, handleSaveAndUpdateItem, uploadType } =
-    useContext(CmsEditItemContext);
-  const isEditingNew = isEditing && isMd;
+  const { handleStartEditing, handleCancelEditing, cmsOperationStatus } = useContext(CmsEditItemContext);
 
   let queryParams = useUrlQueryParams();
   let uid = queryParams.get("uid");
 
-  const handleMobileStartEditing = (id, values) => {
+  const handleModalStartEditing = (id, values) => {
     const props = {
       cmsItemType: type,
       role: role,
       uid: uid,
       editableItemData: values,
-      closeModal: handleMobileCancelEditing,
+      closeModal: handleModalCancelEditing,
     };
 
     handleStartEditing(id, values[0]);
-    openModal(<CmsForm formType="edit" {...props} />, "cmsFormEditMobile", handleMobileCancelEditing);
+    openModal(<CmsForm formType="edit" {...props} />, "cmsFormEditMobile", handleModalCancelEditing);
   };
 
-  const handleMobileCancelEditing = () => {
+  const handleModalCancelEditing = () => {
     handleCancelEditing();
     closeModal();
   };
@@ -48,20 +43,20 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
   return (
     <StyledTableCell className="table-header-cell-narrow" sx={{ padding: { xs: ".5rem .5rem .5rem 0", md: ".5rem 1rem" } }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        {!isEditingNew && (role === "admin" || role === "coach") && (
+        {(role === "admin" || role === "coach") && (
           <Button
             variant="contained"
             color="secondary"
             size="small"
             disabled={cmsOperationStatus.loading || cmsOperationStatus.success}
-            onClick={isMd ? () => handleStartEditing(id, values[0]) : () => handleMobileStartEditing(id, values[0])}
+            onClick={() => handleModalStartEditing(id, values[0])}
             type="button"
             aria-label="edit item"
           >
             <EditIcon />
           </Button>
         )}
-        {isEditingNew && (
+        {/* {isEditingNew && (
           <>
             <Button
               variant="contained"
@@ -86,7 +81,7 @@ const ActionButtonsCell = ({ isEditing, id, values, type }) => {
               <CloseIcon />
             </Button>
           </>
-        )}
+        )} */}
       </Box>
     </StyledTableCell>
   );

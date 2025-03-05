@@ -124,7 +124,7 @@ const EditItemsForm = ({ ...props }) => {
       setStatusMessage("Failed to update item. Please try again.");
     }
   };
-
+  console.log(inputFieldsConfig[cmsItemType]);
   return (
     <Box component="form" onSubmit={handleSubmit(handleUpdateTest)}>
       <FormStatusIndicator
@@ -133,7 +133,7 @@ const EditItemsForm = ({ ...props }) => {
         loading={status === "loading"}
         error={status === "error"}
       />
-      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules, cmsType, optionLabels }, index) => (
+      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules, cmsType, optionLabels, options }, index) => (
         <Controller
           key={index + name}
           name={name}
@@ -169,6 +169,7 @@ const EditItemsForm = ({ ...props }) => {
                   helperText={errors[name]?.message}
                   {...field}
                   optionLabels={optionLabels}
+                  options={options}
                 />
               )}
             </Box>
