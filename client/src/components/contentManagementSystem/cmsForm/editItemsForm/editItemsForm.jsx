@@ -1,8 +1,9 @@
 import { Box, Button } from "@mui/material";
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import CmsUploadItem from "../../cmsUploadItem/cmsUploadItem";
 import InputFieldComponent from "../../../inputFields/inputFields";
+import CmsSeasonTabOptions from "../../cmsSeasonTabOptions/cmsSeasonTabOptions";
 
 // Data
 import scheduleItemInputFieldsConfig from "../addItemsForm/data/addScheduleItem.config.json";
@@ -17,21 +18,62 @@ import { updateCMSItem } from "../../../../setup/utils/firebase/editItem";
 import { handleSaveRename } from "../../cmsMediaStorage/components/fileMenuOptions/fileMenuOptions";
 
 const EditItemsForm = ({ ...props }) => {
-  const { editableItemData, handleChange } = props;
+  const { editableItemData } = props;
 
   const { cmsItemType, uid, role, closeModal } = props;
   const [localUploadType, setLocalUploadType] = useState("url");
   const [status, setStatus] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [selectedSeason, setSelectedSeason] = useState(() => {
+    if (editableItemData?.seasons) {
+      if (editableItemData.seasons.spring?.active) return "spring";
+      if (editableItemData.seasons.summer?.active) return "summer";
+      if (editableItemData.seasons.fall?.active) return "fall";
+    }
+    return "spring";
+  });
 
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
-    defaultValues: editableItemData,
+    defaultValues: {
+      ...editableItemData,
+      eventType: editableItemData?.eventType || "",
+      seasons: editableItemData?.seasons || {
+        spring: { active: true },
+        summer: { active: false },
+        fall: { active: false },
+      },
+    },
+  });
+
+  const eventType = useWatch({
+    control,
+    name: "eventType",
+    defaultValue: editableItemData?.eventType || "",
+  });
+
+  const springActive = useWatch({
+    control,
+    name: "seasons.spring.active",
+    defaultValue: true,
+  });
+
+  const summerActive = useWatch({
+    control,
+    name: "seasons.summer.active",
+    defaultValue: false,
+  });
+
+  const fallActive = useWatch({
+    control,
+    name: "seasons.fall.active",
+    defaultValue: false,
   });
 
   const inputFieldsConfig = {
@@ -43,7 +85,94 @@ const EditItemsForm = ({ ...props }) => {
     // sponsors: scheduleItemInputFieldsConfig,
   };
 
+  const handleSeasonChange = (season) => {
+    setSelectedSeason(season);
+
+    if (season === "spring") {
+      setValue("seasons.spring.active", true);
+      setValue("seasons.summer.active", false);
+      setValue("seasons.fall.active", false);
+    } else if (season === "summer") {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.summer.active", true);
+      setValue("seasons.fall.active", false);
+    } else if (season === "fall") {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.summer.active", false);
+      setValue("seasons.fall.active", true);
+    }
+  };
+
+  useEffect(() => {
+    if (springActive) {
+      setValue("seasons.summer.active", false);
+      setValue("seasons.fall.active", false);
+    }
+  }, [springActive, setValue]);
+
+  useEffect(() => {
+    if (summerActive) {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.fall.active", false);
+    }
+  }, [summerActive, setValue]);
+
+  useEffect(() => {
+    if (fallActive) {
+      setValue("seasons.spring.active", false);
+      setValue("seasons.summer.active", false);
+    }
+  }, [fallActive, setValue]);
+
+  useEffect(() => {
+    if (editableItemData?.eventType) {
+      setValue("eventType", editableItemData.eventType);
+    }
+  }, [editableItemData, setValue]);
+
+  // useEffect(() => {
+  //   console.log("Current eventType:", eventType);
+  //   console.log("Current selectedSeason:", selectedSeason);
+  // }, [eventType, selectedSeason]);
+
+  const shouldShowField = (field) => {
+    if (field.showWhen?.field === "eventType") {
+      // console.log("Checking field visibility:", {
+      //   fieldName: field.name,
+      //   currentEventType: eventType,
+      //   showWhenValue: field.showWhen.value,
+      //   showWhenNotValue: field.showWhen.notValue,
+      //   additionalField: field.showWhen.additionalField,
+      //   additionalValue: field.showWhen.additionalValue,
+      //   selectedSeason,
+      // });
+    }
+
+    if (!field.showWhen) return true;
+
+    const { showWhen } = field;
+
+    if (showWhen.field === "eventType") {
+      if (showWhen.notValue && eventType === showWhen.notValue) {
+        return false;
+      }
+
+      if (showWhen.value && eventType !== showWhen.value) {
+        return false;
+      }
+
+      if (showWhen.additionalField === "seasonSelect") {
+        return selectedSeason === showWhen.additionalValue;
+      }
+
+      return true;
+    }
+
+    return true;
+  };
+
   const handleUpdateTest = async (formValues) => {
+    // console.log("formValues", formValues);
     setStatus("loading");
     setStatusMessage("Loading...");
     try {
@@ -100,7 +229,27 @@ const EditItemsForm = ({ ...props }) => {
           }
           break;
         case "events":
-          result = await updateCMSItem(uid, role, formValues.id, formValues, cmsItemType);
+          if (localUploadType === "file") {
+            console.log("start upload");
+            const { url } = await handleUploadFile(
+              formValues.eventImage,
+              uid,
+              (progress) => setProgress(progress),
+              () => {},
+              "events",
+              "eventImages"
+            );
+            console.log("upload complete");
+            const updatedDataWithEventImageUrl = {
+              ...formValues,
+              eventImage: url,
+            };
+            console.log("start updateCMSItem");
+            result = await updateCMSItem(uid, role, formValues.id, updatedDataWithEventImageUrl, cmsItemType);
+            console.log("updateCMSItem complete");
+          } else {
+            result = await updateCMSItem(uid, role, formValues.id, formValues, cmsItemType);
+          }
           break;
         default:
           result = await updateCMSItem(uid, role, formValues.id, formValues, cmsItemType);
@@ -124,58 +273,76 @@ const EditItemsForm = ({ ...props }) => {
       setStatusMessage("Failed to update item. Please try again.");
     }
   };
-  console.log(inputFieldsConfig[cmsItemType]);
   return (
     <Box component="form" onSubmit={handleSubmit(handleUpdateTest)}>
       <FormStatusIndicator
         statusMessage={statusMessage}
-        statusCode={status === "success" ? 200 : status === "error" ? 400 : null}
-        loading={status === "loading"}
-        error={status === "error"}
+        // statusCode={status === "success" ? 200 : status === "error" ? 400 : null}
+        // loading={status === "loading"}
+        // error={status === "error"}
       />
-      {inputFieldsConfig[cmsItemType].map(({ name, label, placeholder, type, rules, cmsType, optionLabels, options }, index) => (
-        <Controller
-          key={index + name}
-          name={name}
-          control={control}
-          rules={rules}
-          render={({ field }) => (
-            <Box mb={2}>
-              {type === "cmsUploadItem" ? (
-                <CmsUploadItem
-                  cmsItemType={cmsType}
-                  onChange={field.onChange}
-                  label={label}
-                  placeholderTextfield={placeholder}
-                  value={field.value}
-                  {...field}
-                  cmsUploadName={name}
-                  parentElement={"addItemsForm"}
-                  localUploadType={localUploadType}
-                  setLocalUploadType={setLocalUploadType}
-                />
-              ) : (
-                <InputFieldComponent
-                  type={type}
-                  label={label}
-                  placeholder={placeholder}
-                  fullWidth
-                  value={field.value}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    handleChange(name)(e);
-                  }}
-                  error={Boolean(errors[name])}
-                  helperText={errors[name]?.message}
-                  {...field}
-                  optionLabels={optionLabels}
-                  options={options}
-                />
-              )}
-            </Box>
-          )}
-        />
-      ))}
+      {inputFieldsConfig[cmsItemType].map((field, index) => {
+        if (!shouldShowField(field)) {
+          return null;
+        }
+
+        return (
+          <Controller
+            key={index + field.name}
+            name={field.name}
+            control={control}
+            rules={field.rules}
+            render={({ field: formField }) => (
+              <Box mb={2}>
+                {field.type === "cmsUploadItem" ? (
+                  <CmsUploadItem
+                    cmsItemType={field.cmsType}
+                    // onChange={formField.onChange}
+                    onChange={(formField) => (event) => {
+                      formField.onChange(event.target.files[0]);
+                    }}
+                    label={field.label}
+                    placeholderTextfield={field.placeholder}
+                    value={formField.value}
+                    {...formField}
+                    cmsUploadName={field.name}
+                    parentElement={"addItemsForm"}
+                    localUploadType={localUploadType}
+                    setLocalUploadType={setLocalUploadType}
+                  />
+                ) : field.type === "seasonTabs" ? (
+                  <CmsSeasonTabOptions
+                    label={field.label}
+                    options={field.options}
+                    value={selectedSeason}
+                    onChange={handleSeasonChange}
+                    error={Boolean(errors[field.name])}
+                    helperText={errors[field.name]?.message}
+                  />
+                ) : (
+                  <InputFieldComponent
+                    type={field.type}
+                    label={field.label}
+                    placeholder={field.placeholder}
+                    fullWidth
+                    value={formField.value}
+                    onChange={formField.onChange}
+                    // onChange={(e) => {
+                    //   formField.onChange(e);
+                    //   handleChange(field.name)(e);
+                    // }}
+                    error={Boolean(errors[field.name])}
+                    helperText={errors[field.name]?.message}
+                    {...formField}
+                    optionLabels={field.optionLabels}
+                    options={field.options}
+                  />
+                )}
+              </Box>
+            )}
+          />
+        );
+      })}
       <Button
         type="submit"
         variant="contained"
@@ -191,6 +358,5 @@ const EditItemsForm = ({ ...props }) => {
 };
 
 export default EditItemsForm;
-// TODO:
-// 3. restyle the modal background to match the figma design
-// 4. when a user clicks of a modal (onBlur?) we need to call the handleCancelEditing function to reset the state and close the modal
+
+// 1. i need to enable the toggle functionality for the seasons tab, showField logic, etc.

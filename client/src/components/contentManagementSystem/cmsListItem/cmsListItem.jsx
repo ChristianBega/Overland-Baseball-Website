@@ -80,7 +80,7 @@ const CmsListItem = ({ values, id }) => {
         {isEditingNew && (role === "admin" || role === "coach") && <DeleteButtonCell {...commonTableCellProps} />}
         {renderEditableCmsItem()}
 
-        <ActionButtonsCell isEditing={isEditing} {...commonTableCellProps} />
+        <ActionButtonsCell  {...commonTableCellProps} />
       </TableRow>
     </>
   );

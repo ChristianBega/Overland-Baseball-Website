@@ -3,6 +3,7 @@ import { ref, uploadBytesResumable, getDownloadURL, getStorage, uploadBytes, del
 import { doc, setDoc, serverTimestamp, collection } from "firebase/firestore";
 
 export const handleUploadFile = (file, userUid, setProgress, onCancel, mainDirectoryName = "mediaStorage", subDirectoryName = "") => {
+  console.log("handleUploadFile", userUid, mainDirectoryName, subDirectoryName);
   return new Promise((resolve, reject) => {
     try {
       if (!file) {
