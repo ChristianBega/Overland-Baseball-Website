@@ -3,13 +3,8 @@ import { Link as RouterLink } from "react-router-dom";
 import { Box, Grid, Stack, Typography, Link } from "@mui/material";
 // Image assets
 import logo from "../../../../assets/overlandLogo_3.webp";
+import { useTheme } from "@emotion/react";
 const styles = {
-  link: {
-    color: (theme) => theme.palette.text.secondary,
-    width: "250px",
-    display: "block",
-    margin: "0 auto",
-  },
   stack: {
     width: "250px",
     margin: "0 auto",
@@ -24,13 +19,35 @@ const styles = {
   },
 };
 
-export default function LogoFooter() {
+const noHoverStyles = {
+  "&:hover": {
+    cursor: "default",
+    color: "transparent",
+    filter: "none",
+    "& svg": {
+      filter: "none",
+    },
+  },
+};
+
+export default function LogoFooter({ textColor, noHover }) {
+  const theme = useTheme();
   return (
     <Grid item xs={12}>
-      <Link component={RouterLink} to="/" sx={styles.link}>
+      <Link component={RouterLink} to="/" sx={noHover && noHoverStyles}>
         <Stack alignItems="center" sx={styles.stack}>
           <Box component="img" sx={styles.box} src={logo}></Box>
-          <Typography component="p" sx={styles.typography}>
+          <Typography
+            textColor={textColor}
+            component="p"
+            sx={{
+              color: textColor ? textColor : theme.palette.text.secondary,
+              width: "250px",
+              display: "block",
+              margin: "0 auto",
+              textAlign: "center",
+            }}
+          >
             The Official Site of The <br />
             <Typography component="p" color="secondary">
               Overland Trail Blazers

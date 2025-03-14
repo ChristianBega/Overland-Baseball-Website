@@ -3,12 +3,18 @@ import { Drawer, styled, Toolbar } from "@mui/material";
 export const StyledDrawerMenu = styled(Drawer)(({ theme }) => ({
   background: "rgba(0, 0, 0, 0.7)",
   width: "100%",
-  [theme.breakpoints.up("md")]: {
-    width: "30%",
+  maxWidth: "200px",
+  // [theme.breakpoints.up("md")]: {
+  //   border: "1px solid red",
+  //   width: "200px",
+  //   // width: "20%",
+  // },
+  "& .MuiDrawer-paper": {
+    width: "350px",
   },
 }));
 
-export const  StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
+export const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
   display: "flex",
   justifyContent: "space-between",
   color: theme.palette.text.primary,

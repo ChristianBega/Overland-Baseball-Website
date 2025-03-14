@@ -8,7 +8,7 @@ import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.uti
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 
-export default function ContactUs() {
+export default function ContactUs({ sx }) {
   const theme = useTheme();
   const { isMd } = useMediaQueries();
   const iconStyle = {
@@ -17,7 +17,7 @@ export default function ContactUs() {
   };
 
   return (
-    <Grid item xs={12} md={4} id="contact-us-grid-item" order={isMd ? 3 : 2}>
+    <Grid item xs={12} md={4} id="contact-us-grid-item" order={isMd ? 3 : 2} sx={sx}>
       <Typography component="h2" variant="h4" textAlign="center" fontWeight="bold" mb={1}>
         Contact us
       </Typography>

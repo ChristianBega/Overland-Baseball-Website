@@ -9,20 +9,24 @@ import TopicIcon from "@mui/icons-material/Topic";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SportsIcon from "@mui/icons-material/Sports";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import OverlandLogo from "../../../footer/components/footerLogo/logofooter.component";
+import ContactUs from "../../../footer/components/conactUs/contactUs.component";
 // MUI components
-import { Box, IconButton } from "@mui/material";
+import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
 // Components
 import { StyledDrawerMenu } from "../../styles/index.styles";
 import NavigationListItems from "../navigationListItems/navigationListItems";
 // Utils
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
+import Socials from "../../../reusableComponents/socials.component";
+import { useTheme } from "@emotion/react";
 
 const menuItems = [
-  { label: "Home", url: "/", icon: <HomeIcon fontSize="large" /> },
-  { label: "Roster", url: "/roster", icon: <FormatListNumberedIcon fontSize="large" /> },
-  { label: "Events", url: "/events", icon: <EventIcon fontSize="large" /> },
-  { label: "Alumni", url: "/alumni", icon: <GroupsIcon fontSize="large" /> },
-  { label: "Dashboard", url: "/dashboard", icon: <AdminPanelSettingsIcon fontSize="large" /> },
+  { label: "Home", url: "/", icon: <HomeIcon fontSize="small" /> },
+  { label: "Roster", url: "/roster", icon: <FormatListNumberedIcon fontSize="small" /> },
+  { label: "Events", url: "/events", icon: <EventIcon fontSize="small" /> },
+  { label: "Alumni", url: "/alumni", icon: <GroupsIcon fontSize="small" /> },
+  { label: "Dashboard", url: "/dashboard", icon: <AdminPanelSettingsIcon fontSize="small" /> },
   // { label: "Boosters", url: "/boosters", icon: <SportsIcon fontSize="large" /> },
   // { label: "Documents", url: "/documents", icon: <TopicIcon fontSize="large" /> },
   // { label: "Sponsors", url: "/sponsors" },
@@ -32,6 +36,7 @@ const styles = {
   box: {
     marginBlock: "2rem",
     textAlign: "center",
+    padding: "1rem",
   },
 };
 
@@ -55,12 +60,23 @@ const NavigationMenu = () => {
             <MenuIcon fontSize="large" color="secondary" />
           </IconButton>
           <StyledDrawerMenu open={openMenu} anchor={"left"} onClose={handleClose}>
-            <IconButton sx={{ marginLeft: "auto" }} variant="square" onClick={handleClose} color="primary.main" aria-label="exit menu">
-              <CloseIcon fontSize="large" />
-            </IconButton>
+            <Stack direction="column" justifyContent="space-between">
+              <IconButton variant="square" sx={{ marginLeft: "auto" }} onClick={handleClose} color="primary.main" aria-label="exit menu">
+                <CloseIcon fontSize="large" />
+              </IconButton>
+              {/* <Stack direction="column" alignItems="center">
+                <img src="https://placehold.co/25x25" alt="placeholder" style={{ width: "45px", height: "45px" }} />
+                <Typography variant="h6">User Name</Typography>
+                </Stack> */}
+            </Stack>
 
+            <OverlandLogo textColor="primary.main" noHover={true} />
             <NavigationListItems menuItems={menuItems} handleClose={handleClose} navListType="navigation-menu" />
-            <Box sx={styles.box}>{!isLg && <>**contact details here**</>}</Box>
+            <Divider sx={{ marginInline: "1rem" }} />
+            <Box sx={styles.box}>
+              <ContactUs sx={{ mb: "2rem" }} />
+              <Socials dataTypeDevice="footer" />
+            </Box>
           </StyledDrawerMenu>
         </>
       )}

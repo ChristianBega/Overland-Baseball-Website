@@ -43,14 +43,14 @@ const socialData = [
 //   },
 // }));
 
-export default function Socials({ dataTypeDevice }) {
+export default function Socials({ dataTypeDevice, sx }) {
   const theme = useTheme();
   const { isSm, isMd } = useMediaQueries();
   return (
     <>
       {dataTypeDevice === "mobile" && (
         <Box sx={{ my: 20 }}>
-          <Typography typography="h5" textAlign="center">
+          <Typography typography="h5" textAlign="center" sx={sx}>
             Follow us
           </Typography>
           <Stack sx={{ justifyContent: "center", position: "relative" }} direction="row" spacing={2} mt={4}>

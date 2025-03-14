@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // MUI components
-import { Link, Stack } from "@mui/material";
+import { Link, Stack, Typography } from "@mui/material";
 // Contexts
 import { UserContext } from "../../../../setup/context/user.context";
 // Utils & Helpers
@@ -18,7 +18,7 @@ const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
   const [currentMenuItems, setCurrentMenuItems] = useState(menuItems);
   const { isLg } = useMediaQueries();
   const navigate = useNavigate();
-
+  const currentUrl = window.location.pathname;
   const filterMenuItems = (items) => {
     // First filter based on authentication status
     let filteredItems = items.filter((item) => {
@@ -63,15 +63,17 @@ const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
   return (
     <StyledList navListType={navListType}>
       {currentMenuItems?.map(({ label, url, icon }) => (
-        <StyledListItem navListType={navListType} key={label} onClick={handleClick} id={label} data-url={url}>
+        <StyledListItem url={url} currentUrl={currentUrl} navListType={navListType} key={label} onClick={handleClick} id={label} data-url={url}>
           <Link
             component={RouterLink}
             key={label}
             className={navListType === "navigation-menu" || navListType === "account-menu" ? "normal-shadow" : ""}
           >
-            <Stack direction="row" alignItems="center" gap={1}>
+            <Stack direction="row" alignItems="center" gap={1} className={currentUrl === url ? "active-link" : "inactive-link"}>
               {isLg && navListType === "navigation-menu" ? null : <>{icon}</>}
-              {label}
+              <Typography variant="h6" sx={{ fontSize: "16px" }}>
+                {label}
+              </Typography>
             </Stack>
           </Link>
         </StyledListItem>
