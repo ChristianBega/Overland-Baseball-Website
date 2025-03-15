@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from "react";
-import { Grid, Paper, Table, TableBody, TableHead, TableRow, TableCell, TableContainer, Typography, Box, Stack } from "@mui/material";
+import { Grid, Paper, TableBody, TableHead, TableCell, Typography, Box, Stack } from "@mui/material";
 
 // Components
-import TeamRosterItem from "../teamRosterItem/teamRosterItem.component.jsx";
 import { fetchCMSItems } from "../../../../setup/utils/firebase/getItem.jsx";
 import { useQuery } from "@tanstack/react-query";
 import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component.jsx";
@@ -18,7 +17,7 @@ import {
   ScrollContainer,
   PlayerAvatar,
   PlayerLink,
-  PlayerNumber,
+  // PlayerNumber,
   TableHeader,
   PlayerImage,
 } from "./teamRoster.styles.jsx";
@@ -109,13 +108,12 @@ export default function TeamRoster() {
                       sx={{
                         borderRight: `1px solid ${theme.palette.borders.primary}`,
                         fontWeight: "bold",
-                        fontSize: "16px",
                         padding: 1.5,
                         minHeight: "61px",
                         height: "65px",
                       }}
                     >
-                      NAME
+                      Name
                     </TableCell>
                   </TableHeader>
                 </TableHead>
@@ -137,7 +135,6 @@ export default function TeamRoster() {
                       >
                         <Stack direction="row" spacing={1} justifyContent="space-between">
                           <PlayerLink>{player.name}</PlayerLink>
-                          <PlayerNumber>{player.number.slice(0, 2)}</PlayerNumber>
                         </Stack>
                       </TableCell>
                     </tr>

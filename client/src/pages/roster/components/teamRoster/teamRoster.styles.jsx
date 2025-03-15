@@ -59,6 +59,13 @@ export const PlayerLink = styled("p")(({ theme }) => ({
   whiteSpace: "nowrap",
   maxWidth: "100px",
   margin: 0,
+  [theme.breakpoints.up("rosterDataTable")]: {
+    maxWidth: "150px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    maxWidth: "200px",
+  },
+
   // "&:hover": {
   //   textDecoration: "underline",
   // },
@@ -72,7 +79,7 @@ export const PlayerNumber = styled("small")(({ theme }) => ({
   width: "24px",
   borderRadius: "50%",
   textAlign: "center",
-  lineHeight: "24px", 
+  lineHeight: "24px",
   marginLeft: theme.spacing(0.5),
 }));
 
