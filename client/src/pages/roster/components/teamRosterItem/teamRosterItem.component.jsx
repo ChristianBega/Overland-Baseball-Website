@@ -18,7 +18,7 @@ export default function TeamRoosterItem({ ...props }) {
 
   return (
     <>
-      {isEditable || isCmsItem ? (
+      {/* {isEditable || isCmsItem ? (
         renderAsRow ? (
           <StyledTableRow>
             <TeamContentEditable {...props} data={currentData} />
@@ -26,11 +26,11 @@ export default function TeamRoosterItem({ ...props }) {
         ) : (
           <TeamContentEditable {...props} data={currentData} />
         )
-      ) : (
-        <StyledTableRow>
-          <TeamContentViewOnly theme={theme} {...props} />
-        </StyledTableRow>
-      )}
+      ) : ( */}
+      <StyledTableRow>
+        <TeamContentViewOnly theme={theme} {...props} />
+      </StyledTableRow>
+      {/* )} */}
     </>
   );
 }

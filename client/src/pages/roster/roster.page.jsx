@@ -14,10 +14,6 @@ export default function RosterPage() {
           <TeamRoster currentTeam={"varsity"} />
           <Staff currentTeam={"varsity"} />
         </Grid>
-        {/* <Grid container maxWidth="lg" my={10}>
-
-          <TeamRoster currentTeam={currentTeam} />
-        </Grid> */}
       </Container>
     </>
   );

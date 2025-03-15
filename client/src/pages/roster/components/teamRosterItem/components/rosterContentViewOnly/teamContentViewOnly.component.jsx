@@ -3,6 +3,7 @@ import React from "react";
 import { styled } from "@mui/material";
 // Assets
 import PlaceHolderImage from "../../../../../../assets/rosterPlaceHolder.png";
+import useMediaQueries from "../../../../../../setup/utils/helpers/useMediaQueries.utils";
 // Utils
 
 // Styled components using proper table elements
@@ -40,6 +41,7 @@ const InfoText = styled("span")({
 });
 
 const TeamContentViewOnly = ({ data, isCmsItem }) => {
+  const { isMd } = useMediaQueries();
   const { playerImage, position, height, weight, handed, number, name, year, yearAbbr } = data;
 
   return (
@@ -52,10 +54,19 @@ const TeamContentViewOnly = ({ data, isCmsItem }) => {
         <InfoText>{position}</InfoText>
       </TableCell>
       <TableCell>
-        <InfoText>{height}</InfoText>
+        <InfoText>{handed}</InfoText>
       </TableCell>
       <TableCell>
         <InfoText>{handed}</InfoText>
+      </TableCell>
+      <TableCell>
+        <InfoText>{isMd ? year : yearAbbr}</InfoText>
+      </TableCell>
+      <TableCell>
+        <InfoText>{height}</InfoText>
+      </TableCell>
+      <TableCell>
+        <InfoText>{weight}</InfoText>
       </TableCell>
 
       {/* <TableCell>

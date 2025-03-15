@@ -38,6 +38,7 @@ export const defaultTheme = {
     values: {
       xs: 0,
       sm: 600,
+      rosterDataTable: 687,
       tablet: 768,
       md: 900,
       laptop: 1024,
@@ -298,7 +299,6 @@ export const defaultTheme = {
         },
         sizeSmall: {
           fontSize: "14px",
-
 
           padding: "6px 12px",
           maxWidth: "100px",

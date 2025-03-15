@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { Grid, Paper, Table, TableBody, TableHead, TableRow, TableCell, TableContainer, Typography, styled, Stack } from "@mui/material";
+import { Grid, Paper, Table, TableBody, TableHead, TableRow, TableCell, TableContainer, Typography, Box, Stack } from "@mui/material";
+
 // Components
 import TeamRosterItem from "../teamRosterItem/teamRosterItem.component.jsx";
 import { fetchCMSItems } from "../../../../setup/utils/firebase/getItem.jsx";
@@ -7,77 +8,36 @@ import { useQuery } from "@tanstack/react-query";
 import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component.jsx";
 import CustomPagination from "../../../../components/reusableComponents/pagination/pagination.jsx";
 import SearchFilterComponent from "../../../../components/reusableComponents/searchFilter/searchFilter.jsx";
-// Styled Components
-const StyledTableContainer = styled(TableContainer)({
-  borderRadius: "8px",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-  overflow: "hidden",
-  border: "1px solid #e0e0e0",
-  width: "100%",
-});
-
-const StyledTable = styled(Table)({
-  borderCollapse: "separate",
-  borderSpacing: 0,
-  width: "100%",
-  tableLayout: "fixed",
-});
-
-export const HeaderRow = styled(TableRow)({
-  backgroundColor: "#1a2b4f",
-});
-
-const HeaderCell = styled(TableCell)(() => ({
-  color: "#fff",
-  fontWeight: 500,
-  padding: "16px",
-  borderBottom: "none",
-  textAlign: "left",
-}));
-
-const StyledInput = styled("input")(({ theme }) => ({
-  padding: "8px 12px",
-  border: "1px solid #e0e0e0",
-  borderRadius: "4px",
-  fontSize: "14px",
-  width: "100%",
-  "&:focus": {
-    outline: "none",
-    borderColor: "#1a2b4f",
-  },
-  "&::placeholder": {
-    color: "#757575",
-  },
-}));
-
-const StyledSelect = styled("select")(({ theme }) => ({
-  padding: "8px 12px",
-  border: "1px solid #e0e0e0",
-  borderRadius: "4px",
-  fontSize: "14px",
-  backgroundColor: "white",
-  minWidth: "150px",
-  cursor: "pointer",
-  "&:focus": {
-    outline: "none",
-    borderColor: "#1a2b4f",
-  },
-}));
+import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils.jsx";
+import headerMap from "./rosterHeaderMap.config.jsx";
+import { useTheme } from "@emotion/react";
+import {
+  RosterContainer,
+  FixedColumnTable,
+  ScrollableTable,
+  ScrollContainer,
+  PlayerAvatar,
+  PlayerLink,
+  PlayerNumber,
+  TableHeader,
+  PlayerImage,
+} from "./teamRoster.styles.jsx";
 
 export default function TeamRoster() {
+  const theme = useTheme();
+  const { isMd } = useMediaQueries();
   const [page, setPage] = useState(1);
-  const [filteredData, setFilteredData] = useState([]);
   const itemsPerPage = 9;
+  const [filteredData, setFilteredData] = useState([]);
 
   const {
-    data: originalData,
+    data: players,
     isLoading,
     error,
   } = useQuery({
     queryKey: ["roster"],
     queryFn: () => fetchCMSItems("roster"),
   });
-
   // Reset to page 1 when filter changes
   const handleFilteredDataChange = useCallback((newFilteredData) => {
     setFilteredData(newFilteredData);
@@ -92,12 +52,25 @@ export default function TeamRoster() {
     return "error...";
   }
 
-  const dataToDisplay = filteredData.length > 0 || (filteredData.length === 0 && originalData?.length === 0) ? filteredData : originalData || [];
+  // Function to get the first letter of player's name for avatar
+  const getPlayerInitial = (name) => {
+    return name.charAt(0);
+  };
+
+  // Function to determine row background color
+  const getRowBackground = (index) => {
+    return index % 2 === 0 ? "white" : "#f5f5f5";
+  };
 
   // Calculate pagination
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedRoster = dataToDisplay.slice(startIndex, endIndex);
+  const paginatedPlayers = filteredData.length > 0 ? filteredData.slice(startIndex, endIndex) : players ? players.slice(startIndex, endIndex) : [];
+
+  const checkHeaderText = (field) => {
+    if (!field) return;
+    return isMd ? headerMap[field].full : headerMap[field].abbr;
+  };
 
   // Define filter fields and labels
   const filterFields = ["name", "position", "bats", "throws"];
@@ -108,55 +81,101 @@ export default function TeamRoster() {
     throws: "Throws",
   };
 
-  // Define quick filter values for teams
-  const quickFilterValues = ["Varsity", "Junior Varsity", "Freshman"];
-
   return (
-    <Grid item>
+    <Grid item sx={{ overflowX: "hidden" }}>
       <SectionLayout id="roster-section" aria-label="Roster Section">
         <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
           Current Roster
         </Typography>
 
         <SearchFilterComponent
-          data={originalData || []}
+          data={players || []}
           onFilteredDataChange={handleFilteredDataChange}
           filterFields={filterFields}
           customFieldLabels={customFieldLabels}
           showQuickFilters={true}
           quickFilterField="team"
-          // quickFilterValues={quickFilterValues}
           placeholder="Find a player..."
           sx={{ mb: 2 }}
         />
+        <Paper elevation={0} sx={{ maxWidth: "100%" }}>
+          <RosterContainer>
+            <Box>
+              <FixedColumnTable>
+                <TableHead>
+                  <TableHeader>
+                    <TableCell
+                      colSpan={2}
+                      sx={{
+                        borderRight: `1px solid ${theme.palette.borders.primary}`,
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        padding: 1.5,
+                        minHeight: "61px",
+                        height: "65px",
+                      }}
+                    >
+                      NAME
+                    </TableCell>
+                  </TableHeader>
+                </TableHead>
+                <TableBody sx={{ borderRight: `1px solid ${theme.palette.borders.primary}` }}>
+                  {paginatedPlayers.map((player, index) => (
+                    <tr key={player.id} style={{ backgroundColor: getRowBackground(index) }}>
+                      <TableCell style={{ width: 48, height: 65, verticalAlign: "middle" }}>
+                        {player.playerImage ? (
+                          <PlayerImage src={player.playerImage} alt={player.name} />
+                        ) : (
+                          <PlayerAvatar>{getPlayerInitial(player.name)}</PlayerAvatar>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          verticalAlign: "middle",
+                          height: 65,
+                        }}
+                      >
+                        <Stack direction="row" spacing={1} justifyContent="space-between">
+                          <PlayerLink>{player.name}</PlayerLink>
+                          <PlayerNumber>{player.number.slice(0, 2)}</PlayerNumber>
+                        </Stack>
+                      </TableCell>
+                    </tr>
+                  ))}
+                </TableBody>
+              </FixedColumnTable>
+            </Box>
 
-        <StyledTableContainer component={Paper}>
-          <StyledTable aria-label="roster table">
-            <TableHead>
-              <HeaderRow>
-                <HeaderCell
-                  sx={{
-                    paddingLeft: "1rem",
-                    position: "sticky",
-                    zIndex: 1,
-                    width: { xs: "210px", sm: "225px", md: "300px" },
-                  }}
-                >
-                  Name
-                </HeaderCell>
-                <HeaderCell>Pos</HeaderCell>
-                <HeaderCell>Bat</HeaderCell>
-                <HeaderCell>Thw</HeaderCell>
-              </HeaderRow>
-            </TableHead>
-            <TableBody>
-              {paginatedRoster.map((rosterItem, index) => (
-                <TeamRosterItem data={rosterItem} key={index} />
-              ))}
-            </TableBody>
-          </StyledTable>
-          <CustomPagination totalItems={dataToDisplay.length} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
-        </StyledTableContainer>
+            {/* Scrollable right table with stats */}
+            <ScrollContainer>
+              <ScrollableTable>
+                <TableHead>
+                  <TableHeader>
+                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Pos")}</TableCell>
+                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Bat")}</TableCell>
+                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Thw")}</TableCell>
+                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Year")}</TableCell>
+                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Height")}</TableCell>
+                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Weight")}</TableCell>
+                  </TableHeader>
+                </TableHead>
+                <TableBody>
+                  {paginatedPlayers.map((player, index) => (
+                    <tr key={player.id} style={{ backgroundColor: getRowBackground(index) }}>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.position}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.handed}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.handed}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{isMd ? player.year : player.yearAbbr}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "70px" }}>{player.height}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "80px" }}>{player.weight}</TableCell>
+                    </tr>
+                  ))}
+                </TableBody>
+              </ScrollableTable>
+            </ScrollContainer>
+          </RosterContainer>
+          <CustomPagination totalItems={players?.length || 0} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
+        </Paper>
       </SectionLayout>
     </Grid>
   );
