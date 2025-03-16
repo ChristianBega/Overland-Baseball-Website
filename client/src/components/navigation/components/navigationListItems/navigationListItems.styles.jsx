@@ -38,6 +38,7 @@ export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl
   [theme.breakpoints.up("lg")]: {
     display: navListType === "navigation-menu" ? "flex" : "",
     justifyContent: navListType === "navigation-menu" ? "space-evenly" : "",
+    marginBottom: "0",
 
     ...(currentUrl === url && {
       background: "transparent",

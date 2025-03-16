@@ -7,22 +7,29 @@ export const styles = {
     padding: "2rem 1rem",
     minHeight: "550px",
     height: "calc(80vh - 64px)",
-    "@media (max-width: 600px)": {
-      padding: "1.5rem",
-      minHeight: "450px",
+
+    "@media (min-width: 600px)": {
+      minHeight: "600px",
+    },
+
+    "@media (min-width: 662px)": {
+      minHeight: "670px",
     },
     "@media (min-width: 900px)": {
-      minHeight: "650px",
+      minHeight: "700px",
     },
     "@media (min-width: 1200px)": {
-      height: "800px",
-      backgroundSize: "cover",
+      height: "760px",
       // justifyContent: "flex-start",
+    },
+    "@media (min-width: 1400px)": {
+      height: "800px",
     },
     display: "flex",
     flexDirection: "column",
     // justifyContent: "center",
     position: "relative",
+    // maxHeight: "760px",
   },
   typography: {
     zIndex: 1000,
@@ -33,7 +40,7 @@ export const styles = {
     color: "#ffffff",
     textTransform: "lowercase",
     width: "100%",
-    marginTop: "50px",
+    marginTop: "90px",
     "@media (min-width: 600px)": {
       fontSize: "95px",
       lineHeight: "85px",
@@ -43,8 +50,7 @@ export const styles = {
       lineHeight: "105px",
     },
     "@media (min-width: 1200px)": {
-      marginTop: "75px",
-
+      marginTop: "120px",
       fontSize: "130px",
       lineHeight: "110px",
     },

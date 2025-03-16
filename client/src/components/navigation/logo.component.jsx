@@ -18,7 +18,7 @@ const styles = {
     },
   },
   imageBox: {
-    height: "75px",
+    height: "55px",
     width: "auto",
   },
 };
@@ -27,7 +27,7 @@ export default function OverlandLogo() {
   return (
     <Link component={RouterLink} to="/">
       <Box sx={styles.linkBox}>
-        <Box component="img" sx={styles.imageBox} src={Logo} />
+        <Box component="img" sx={{ height: { xs: "50px", md: "55px", lg: "65px" }, width: "auto" }} src={Logo} />
       </Box>
     </Link>
   );

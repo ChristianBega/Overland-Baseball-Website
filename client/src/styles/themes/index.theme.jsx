@@ -38,6 +38,7 @@ export const defaultTheme = {
     values: {
       xs: 0,
       sm: 600,
+      heroSvg: 662,
       rosterDataTable: 687,
       tablet: 768, // xxxx
       md: 900,

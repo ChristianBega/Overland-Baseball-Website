@@ -18,10 +18,11 @@ export const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
   display: "flex",
   justifyContent: "space-between",
   color: theme.palette.text.primary,
-  background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
+  // background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
+  // background: "#ffffff16",
 
-  padding: theme.spacing(2, 2),
-  [theme.breakpoints.up("lg")]: {
-    padding: theme.spacing(2, 4),
-  },
+  // padding: theme.spacing(2, 2),
+  // [theme.breakpoints.up("lg")]: {
+  // padding: theme.spacing(2, 4),
+  // },
 }));

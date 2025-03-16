@@ -71,7 +71,7 @@ const Hero = () => {
       >
         Join Our Community
       </Button>
-      <Box sx={{ position: "absolute", bottom: 0, right: 0, width: "100%", zIndex: 1000, top: 600 }}>
+      <Box sx={{ position: "absolute", bottom: 0, right: 0, width: "100%", zIndex: 1000, top: { xs: 505, sm: 510, heroSvg: 575, lg: 600, xl: 600 } }}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120">
           <defs>
             <filter id="inner-shadow" x="-10%" y="-40%" width="120%" height="180%">
@@ -90,42 +90,6 @@ const Hero = () => {
           />
         </svg>
       </Box>
-      {/* <Box
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-          width: "100%",
-          zIndex: 1000,
-          top: 650,
-        }}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120">
-          <path
-            d="M 0,120 
-           L 0,80 
-           L 50,60 
-           L 100,80 
-           L 150,40 
-           L 200,60 
-           L 250,30 
-           L 300,40 
-           L 350,50 
-           L 400,20 
-           L 450,50 
-           L 500,40 
-           L 550,60 
-           L 600,50 
-           L 650,70 
-           L 700,50 
-           L 750,70 
-           L 800,60
-           L 800,120 
-           Z"
-            fill="white"
-          />
-        </svg>
-      </Box> */}
     </SectionLayout>
   );
 };
