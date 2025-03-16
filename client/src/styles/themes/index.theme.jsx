@@ -21,7 +21,7 @@ export const defaultTheme = {
       secondary: "#ffffffa8",
 
       secondary2: "hsl(0, 0%, 100%)",
-      // secondary2: "hsl(0, 0%, 70%)",
+      secondary3: "hsl(0, 0%, 70%)",
       // disabled: "hsl(0, 0%, 50%)",
       grey: "#666666",
     },
@@ -39,7 +39,7 @@ export const defaultTheme = {
       xs: 0,
       sm: 600,
       rosterDataTable: 687,
-      tablet: 768,
+      tablet: 768, // xxxx
       md: 900,
       laptop: 1024,
       lg: 1200,

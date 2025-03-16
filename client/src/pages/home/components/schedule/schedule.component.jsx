@@ -47,16 +47,22 @@ export default function Schedule() {
             maxHeight: "425px",
             overflowY: "auto",
             scrollbarWidth: "none",
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
             "&::-webkit-scrollbar": {
               display: "none",
             },
             [theme.breakpoints.up("md")]: {
               maxHeight: "525px",
             },
+            [theme.breakpoints.up("laptop")]: {
+              maxHeight: "635px",
+            },
           }}
         >
           {sortedData.map((gameData, index) => (
-            <ScheduleItem data={gameData} key={index} />
+            <ScheduleItem data={gameData} key={index} index={index} />
           ))}
         </Box>
         <Stack direction="column" alignItems="center" justifyContent="center" mt={2}>

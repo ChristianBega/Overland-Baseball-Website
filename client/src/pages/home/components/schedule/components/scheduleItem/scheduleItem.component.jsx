@@ -1,16 +1,14 @@
 import React from "react";
-import { useTheme } from "@emotion/react";
 // Components
 import CmsOperationStatus from "../../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import ScheduleContentEditable from "./components/ScheduleContentEditable/scheduleContentEditable.component";
-import ScheduleContentViewOnly from "./components/ScheduleContentViewOnly/scheduleContentViewOnly.component";
 // Styles
 import { StyledTableRow } from "../../../../../../styles/index.styles";
 // Utils & Helpers
 import { formatDateToLongString } from "../../../../../../setup/utils/helpers/formatDateToString";
+import ScheduleContentViewOnly from "./components/ScheduleContentViewOnly/scheduleContentViewOnly.component";
 
 export default function ScheduleItem({ ...props }) {
-  const theme = useTheme();
   const { data, isEditable, editableData, isLoading = false, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const currentData = isEditable ? editableData : data;
   const { date } = currentData || {};
@@ -33,7 +31,7 @@ export default function ScheduleItem({ ...props }) {
           <ScheduleContentEditable {...props} data={currentData} />
         )
       ) : (
-        <ScheduleContentViewOnly theme={theme} {...props} formattedDateMonth={formattedDateMonth} formattedDateDay={formattedDateDay} />
+        <ScheduleContentViewOnly {...props} formattedDateMonth={formattedDateMonth} formattedDateDay={formattedDateDay} />
       )}
     </>
   );

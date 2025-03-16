@@ -15,9 +15,16 @@ export const StyledScheduleItemContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledLogoStack = styled(Stack)({
-  paddingInline: ".5rem",
-});
+export const StyledLogoStack = styled(Stack)(({ theme }) => ({
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    minWidth: "325px",
+  },
+
+  [theme.breakpoints.up("laptop")]: {
+    minWidth: "450px",
+  },
+}));
 
 export const StyledDateStack = styled(Stack)(({ theme }) => ({
   direction: "column",
