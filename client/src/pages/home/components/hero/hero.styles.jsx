@@ -15,14 +15,17 @@ export const styles = {
       minHeight: "650px",
     },
     "@media (min-width: 1200px)": {
-      height: "72vh",
+      height: "800px",
+      backgroundSize: "cover",
       // justifyContent: "flex-start",
     },
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    // justifyContent: "center",
+    position: "relative",
   },
   typography: {
+    zIndex: 1000,
     fontFamily: "Varsity Regular",
     fontSize: "75px",
     lineHeight: "65px",
@@ -30,6 +33,7 @@ export const styles = {
     color: "#ffffff",
     textTransform: "lowercase",
     width: "100%",
+    marginTop: "50px",
     "@media (min-width: 600px)": {
       fontSize: "95px",
       lineHeight: "85px",
@@ -39,11 +43,14 @@ export const styles = {
       lineHeight: "105px",
     },
     "@media (min-width: 1200px)": {
+      marginTop: "75px",
+
       fontSize: "130px",
       lineHeight: "110px",
     },
   },
   text: {
+    zIndex: 1000,
     marginTop: "1rem",
     maxWidth: 590,
     margin: "2rem auto 0 auto",
