@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { Box, Link, Stack } from "@mui/material";
+import { Box, Link, Stack, Card, Chip } from "@mui/material";
 
 export const StyledScheduleItemContainer = styled(Box)(({ theme }) => ({
   width: "100%",
@@ -55,4 +55,67 @@ export const StyledLocationLink = styled(Link)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     fontSize: "16px",
   },
+}));
+
+// New styled components for refactored component
+export const DateDisplayContainer = styled(Stack)(({ theme }) => ({
+  minHeight: "85px",
+  minWidth: "85px",
+  backgroundColor: "#01984E",
+  color: "#fff",
+  padding: ".5rem",
+  borderRadius: "4px",
+  alignItems: "center",
+  justifyContent: "center",
+  [theme.breakpoints.up("sm")]: {
+    minHeight: "90px",
+    minWidth: "90px",
+  },
+  [theme.breakpoints.up("md")]: {
+    minHeight: "95px",
+    minWidth: "95px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    minHeight: "110px",
+    minWidth: "110px",
+  },
+}));
+
+export const LocationLinkWrapper = styled(Link)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: ".25rem",
+  fontSize: "14px",
+  textDecoration: "underline",
+  justifyContent: "flex-start",
+  alignSelf: "flex-end",
+}));
+
+export const TeamLogoContainer = styled(Stack)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  gap: theme.spacing(2),
+}));
+
+export const StatusChip = styled(Chip)(({ theme, isHome }) => ({
+  fontSize: "12px",
+  backgroundColor: isHome ? "#17c7722b" : `#283f7653`,
+  border: isHome ? "1px solid #01984E" : `1px solid ${theme.palette.primary.main}`,
+  height: "20px",
+  "& .MuiChip-label": {
+    color: isHome ? theme.palette.secondary.main : theme.palette.primary.main,
+  },
+  [theme.breakpoints.up("sm")]: {
+    height: isHome ? "30px" : "24px",
+  },
+}));
+
+export const ScheduleCard = styled(Card)(({ theme, isMobile, isDesktop }) => ({
+  justifyContent: "flex-start",
+  gap: "1rem",
+  padding: ".75rem",
+  ...(isDesktop && {
+    alignItems: "center",
+  }),
 }));
