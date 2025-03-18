@@ -11,9 +11,6 @@ export const StyledList = styled(List)(({ theme, navListType }) => ({
   // },
   [theme.breakpoints.up("lg")]: {
     flexDirection: navListType === "account-menu" ? "column" : "row",
-    // width: "40%",
-    minWidth: "50vw",
-    maxWidth: "600px",
     marginBlock: "0",
 
     justifyContent: "space-evenly",
@@ -39,7 +36,7 @@ export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl
     display: navListType === "navigation-menu" ? "flex" : "",
     justifyContent: navListType === "navigation-menu" ? "space-evenly" : "",
     marginBottom: "0",
-
+    marginInline: "2rem",
     ...(currentUrl === url && {
       background: "transparent",
     }),

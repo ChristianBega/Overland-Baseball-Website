@@ -13,35 +13,32 @@ export const styles = {
     },
 
     "@media (min-width: 662px)": {
-      minHeight: "670px",
+      minHeight: "600px",
     },
     "@media (min-width: 900px)": {
-      minHeight: "700px",
+      minHeight: "650px",
     },
     "@media (min-width: 1200px)": {
-      height: "760px",
-      // justifyContent: "flex-start",
+      // height: "700px",
     },
     "@media (min-width: 1400px)": {
-      height: "800px",
+      height: "700px",
     },
     display: "flex",
     flexDirection: "column",
-    // justifyContent: "center",
     position: "relative",
-    // maxHeight: "760px",
   },
   typography: {
     zIndex: 1000,
     fontFamily: "Varsity Regular",
-    fontSize: "75px",
+    fontSize: "85px",
     lineHeight: "65px",
     marginBottom: 0,
     color: "#ffffff",
     textTransform: "lowercase",
     width: "100%",
-    marginTop: "90px",
     "@media (min-width: 600px)": {
+      // marginTop: "55px",
       fontSize: "95px",
       lineHeight: "85px",
     },
@@ -50,7 +47,7 @@ export const styles = {
       lineHeight: "105px",
     },
     "@media (min-width: 1200px)": {
-      marginTop: "120px",
+      marginTop: "80px",
       fontSize: "130px",
       lineHeight: "110px",
     },

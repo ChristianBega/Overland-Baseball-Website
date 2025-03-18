@@ -27,7 +27,7 @@ const Hero = () => {
           left: 0,
           width: "100%",
           height: "100%",
-          background: `radial-gradient(circle at center, rgba(20, 30, 60, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%)`,
+          background: `radial-gradient(circle at center, rgba(20, 30, 60, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%)`,
           filter: "brightness(90%) contrast(120%) saturate(110%) sepia(15%)",
           mixBlendMode: "overlay",
         },
@@ -38,7 +38,7 @@ const Hero = () => {
           left: 0,
           width: "100%",
           height: "100%",
-          boxShadow: "inset 0 0 100px 20px rgba(0,0,0,0.9)",
+          boxShadow: "inset 0 0 100px 20px rgba(0,0,0,0.7)",
           pointerEvents: "none",
         },
       }}
@@ -57,11 +57,12 @@ const Hero = () => {
       </Typography>
 
       <Typography variant="body1" sx={styles.text}>
-        Welcome to the official site of the Overland Trailblazers Baseball Team! Find game schedules, events & news, and ways to support our players.
+        Welcome to the official site of the Overland Trailblazers Baseball Team! Find game schedules, events, news, and ways to support our players.
+        <br />
         Start exploring below!
       </Typography>
       <Button
-        sx={{ marginTop: "2rem", width: { xs: "90%", sm: 350 }, marginInline: "auto" }}
+        sx={{ marginTop: "2rem", width: "100%", maxWidth: 400, marginInline: "auto" }}
         variant="contained"
         color="secondary"
         component={RouterLink}
@@ -71,8 +72,17 @@ const Hero = () => {
       >
         Join Our Community
       </Button>
-      <Box sx={{ position: "absolute", bottom: 0, right: 0, width: "100%", zIndex: 1000, top: { xs: 505, sm: 510, heroSvg: 575, lg: 600, xl: 600 } }}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120">
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          width: "100%",
+          zIndex: 1000,
+          top: { xs: 505, sm: 510, heroSvg: 575, tablet: 555, lg: 600, xl: 600 },
+        }}
+      >
+        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120">
           <defs>
             <filter id="inner-shadow" x="-10%" y="-40%" width="120%" height="180%">
               <feOffset dx="0" dy="5" />
@@ -84,11 +94,19 @@ const Hero = () => {
             </filter>
           </defs>
           <path
-            d="M 0,120 L 0,80 L 50,60 L 100,80 L 150,40 L 200,60 L 250,30 L 300,40 L 350,50 L 400,20 L 450,50 L 500,40 L 550,60 L 600,50 L 650,70 L 700,50 L 750,70 L 800,60 L 800,120 Z"
+            d="M 0,120 
+       L 0,60
+       C 50,30 100,20 150,30
+       C 200,40 250,70 300,80
+       C 350,90 400,90 450,80
+       C 500,70 550,40 600,30
+       C 650,20 700,30 750,50
+       C 775,55 790,60 800,60
+       L 800,120 Z"
             fill="white"
             filter="url(#inner-shadow)"
           />
-        </svg>
+        </svg> */}
       </Box>
     </SectionLayout>
   );

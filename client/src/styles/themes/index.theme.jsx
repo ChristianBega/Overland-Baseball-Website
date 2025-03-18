@@ -616,18 +616,18 @@ export const defaultTheme = {
           fontSize: "22px",
           "&.normal-shadow": {
             ":hover": {
-              filter: "drop-shadow(0px 0px 10px #fff)",
+              // filter: "drop-shadow(0px 0px 10px #fff)",
               "& svg": {
-                filter: "drop-shadow(0px 0px 10px #fff)",
+                // filter: "drop-shadow(0px 0px 10px #fff)",
               },
             },
           },
           ":hover": {
             cursor: "pointer",
             color: "#00ff2fce",
-            filter: "drop-shadow(0px 0px 10px #00ff2fce)",
+            // filter: "drop-shadow(0px 0px 10px #00ff2fce)",
             "& svg": {
-              filter: "drop-shadow(0px 0px 10px #00ff2fce)",
+              // filter: "drop-shadow(0px 0px 10px #00ff2fce)",
             },
             // transform: "scale(1.01)",
           },
