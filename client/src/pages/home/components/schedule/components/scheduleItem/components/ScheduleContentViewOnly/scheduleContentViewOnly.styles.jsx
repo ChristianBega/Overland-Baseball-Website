@@ -61,7 +61,8 @@ export const StyledLocationLink = styled(Link)(({ theme }) => ({
 export const DateDisplayContainer = styled(Stack)(({ theme }) => ({
   minHeight: "85px",
   minWidth: "85px",
-  backgroundColor: "#01984E",
+  backgroundColor: theme.palette.secondary.main,
+
   color: "#fff",
   padding: ".5rem",
   borderRadius: "4px",
@@ -88,7 +89,11 @@ export const LocationLinkWrapper = styled(Link)(({ theme }) => ({
   fontSize: "14px",
   textDecoration: "underline",
   justifyContent: "flex-start",
-  alignSelf: "flex-end",
+  whiteSpace: "nowrap",
+  [theme.breakpoints.up("md")]: {
+    maxWidth: "200px",
+    alignSelf: "flex-end",
+  },
 }));
 
 export const TeamLogoContainer = styled(Stack)(({ theme }) => ({
@@ -100,14 +105,13 @@ export const TeamLogoContainer = styled(Stack)(({ theme }) => ({
 
 export const StatusChip = styled(Chip)(({ theme, isHome }) => ({
   fontSize: "12px",
-  backgroundColor: isHome ? "#17c7722b" : `#283f7653`,
-  border: isHome ? "1px solid #01984E" : `1px solid ${theme.palette.primary.main}`,
+  backgroundColor: isHome ? theme.palette.secondary.main : `#09255d`,
   height: "20px",
   "& .MuiChip-label": {
-    color: isHome ? theme.palette.secondary.main : theme.palette.primary.main,
+    color: "#fff",
   },
   [theme.breakpoints.up("sm")]: {
-    height: isHome ? "30px" : "24px",
+    height: "30px",
   },
 }));
 

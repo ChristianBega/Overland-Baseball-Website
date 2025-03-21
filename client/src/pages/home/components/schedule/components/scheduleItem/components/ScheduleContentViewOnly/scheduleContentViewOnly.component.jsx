@@ -1,7 +1,7 @@
 import React from "react";
 import useMediaQueries from "../../../../../../../../setup/utils/helpers/useMediaQueries.utils";
 // MUI
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 // Assets
 import { LogoImage } from "../../../../../../../../styles/index.styles";
 import overland from "../../../../../../../../assets/overlandLogo2.webp";
@@ -54,7 +54,10 @@ const LocationLink = ({ location }) => {
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
-          maxWidth: "160px",
+          maxWidth: "180px",
+          [theme.breakpoints.up("md")]: {
+            fontSize: "14px",
+          },
         }}
       >
         {location}
@@ -104,8 +107,9 @@ const TeamLogo = ({ logo, teamName }) => {
 };
 
 const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventId, ref }) => {
-  const { time, location, date, opponent } = data;
+  const { time, location, date, opponent, home } = data;
   const theme = useTheme();
+  const isHome = home === "TRUE";
 
   return (
     <ScheduleCard ref={ref} id={eventId} variant="schedule-view-only" isMobile>
@@ -113,11 +117,11 @@ const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventI
 
       <Stack sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: ".25rem", width: "100%" }}>
-          <Typography variant="h6" component="h5" sx={{ color: theme.palette.text.secondary3 }}>
+          <Typography variant="h6" component="h5" sx={{ color: theme.palette.text.secondary3, fontSize: "12px !important" }}>
             {`${formatDateString(date).split(",")[0]},`}
             {` ${convertTo12HourFormat(time)}`}
           </Typography>
-          <StatusChip label="Home" color="success" isHome={true} />
+          <StatusChip label={isHome ? "Home" : "Away"} color="success" isHome={isHome} />
         </Stack>
 
         <Typography
@@ -128,6 +132,10 @@ const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventI
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
+            maxWidth: "175px",
+            [theme.breakpoints.up("sm")]: {
+              maxWidth: "200px",
+            },
           }}
         >
           Overland Vs. {opponent}
@@ -179,7 +187,7 @@ const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index
             }}
           >
             <Stack direction="row" alignItems="center" gap={4}>
-              {index === 0 && (
+              {/* {index === 0 && (
                 <Typography
                   variant="h6"
                   component="span"
@@ -187,7 +195,7 @@ const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index
                 >
                   <Box sx={{ height: "12px", width: "12px", backgroundColor: theme.palette.warning.main, borderRadius: "50%" }}></Box> Live
                 </Typography>
-              )}
+              )} */}
 
               <StatusChip label={isHome ? "Home" : "Away"} color="success" isHome={isHome} />
             </Stack>
