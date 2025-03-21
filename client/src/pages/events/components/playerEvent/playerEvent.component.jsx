@@ -135,7 +135,6 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
   const handleOpenModal = () => {
     openModal(<EventSignUpForm data={data} currentSeason={currentSeason} closeModal={closeModal} />);
   };
-  console.log("data", data);
   return (
     <Grid item xs={12}>
       <SectionLayout id="player-event-section" aria-label="Player Event Section">
