@@ -11,7 +11,6 @@ export default function RosterPage() {
     <>
       <Container component="main" id="roster-page" aria-label="Roster Page">
         <Grid container id="roster-page-grid" columnSpacing={isLg ? 6 : 4}>
-          
           <TeamRoster currentTeam={"varsity"} />
           <Staff currentTeam={"varsity"} />
         </Grid>

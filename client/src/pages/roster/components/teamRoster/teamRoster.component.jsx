@@ -82,7 +82,7 @@ export default function TeamRoster() {
 
   return (
     <Grid item sx={{ overflowX: "hidden" }}>
-      <SectionLayout id="roster-section" aria-label="Roster Section">
+      <SectionLayout id="roster-section" aria-label="Roster Section" marginZero>
         <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
           Current Roster
         </Typography>

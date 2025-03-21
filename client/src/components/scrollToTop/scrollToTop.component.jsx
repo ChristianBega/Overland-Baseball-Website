@@ -2,13 +2,17 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 export const ScrollToTop = () => {
-  const location = useLocation();
+  const { pathname, state } = useLocation();
 
   useEffect(() => {
-    if (location?.state?.name !== "fundraisers") {
-      window.scrollTo(0, 0);
-    } else {
-      return;
+    if (state?.name !== "fundraisers") {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
     }
-  }, [location?.state?.name]);
+  }, [pathname, state]);
+
+  return null;
 };
