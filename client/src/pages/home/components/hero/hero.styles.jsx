@@ -7,11 +7,9 @@ export const styles = {
     padding: "2rem 1rem",
     minHeight: "550px",
     height: "calc(80vh - 64px)",
-
     "@media (min-width: 600px)": {
       minHeight: "600px",
     },
-
     "@media (min-width: 662px)": {
       minHeight: "600px",
     },
@@ -37,9 +35,9 @@ export const styles = {
     color: "#ffffff",
     textTransform: "lowercase",
     width: "100%",
+    marginTop: "80px",
     "@media (min-width: 600px)": {
-      // marginTop: "55px",
-      fontSize: "95px",
+      fontSize: "105px",
       lineHeight: "85px",
     },
     "@media (min-width: 900px)": {

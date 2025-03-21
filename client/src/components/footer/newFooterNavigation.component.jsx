@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
 
 // MUI components
-import { BottomNavigation, Grid, useMediaQuery } from "@mui/material";
-import { useTheme } from "@emotion/react";
+import { BottomNavigation, Grid } from "@mui/material";
 
 // Components
 import OverlandLogo from "./components/footerLogo/logofooter.component";
 import LocationMap from "./components/location/locationMap.component";
 import ContactUs from "./components/conactUs/contactUs.component";
 import Socials from "../reusableComponents/socials.component";
-import Copyright from "./components/copyright/copyright.component";
 
 // Context
 import { ThemeToggleContext } from "../../setup/context/components/themeToggler.context";
@@ -23,9 +21,10 @@ import footerBgLg from "../../assets/footer/footer-bg-lg.svg";
 import styled from "@emotion/styled";
 
 const StyledBottomNavigation = styled(BottomNavigation)(({ theme, currentTheme }) => ({
+  overflow: "hidden",
   padding: theme.spacing(4),
   color: theme.palette.text.secondary,
-  background: currentTheme === "dark" ? theme.palette.secondary.main : theme.palette.primary.main,
+  background: currentTheme === "dark" ? theme.palette.secondary.main : "radial-gradient(circle, #082463 0%, rgba(9,31,64,1) 100%)",
   height: "100%",
   position: "relative",
   "&::before": {
@@ -38,7 +37,8 @@ const StyledBottomNavigation = styled(BottomNavigation)(({ theme, currentTheme }
     backgroundImage: `url(${footerBg})`,
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
+    backgroundPosition: "calc(50% + 15px) center",
+    scale: "1.2",
     zIndex: 0,
     filter: "blur(2px)",
     [theme.breakpoints.up("sm")]: {
@@ -48,6 +48,11 @@ const StyledBottomNavigation = styled(BottomNavigation)(({ theme, currentTheme }
       backgroundPosition: "top",
     },
     [theme.breakpoints.up("md")]: {
+      scale: "1.0",
+      height: "85%",
+      backgroundImage: `url(${footerBgLg})`,
+    },
+    [theme.breakpoints.up("lg")]: {
       height: "85%",
       backgroundImage: `url(${footerBgLg})`,
     },
@@ -60,7 +65,7 @@ const StyledBottomNavigation = styled(BottomNavigation)(({ theme, currentTheme }
     width: "100%",
     height: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.25)",
-    backgroundImage: `linear-gradient(to top, #008a4561, #02318e7d, ${theme.palette.primary.main})`,
+    backgroundImage: `linear-gradient(to top, #008a454b, #02318e65, ${theme.palette.primary.main})`,
     filter: "blur(10px)",
     zIndex: 1,
   },

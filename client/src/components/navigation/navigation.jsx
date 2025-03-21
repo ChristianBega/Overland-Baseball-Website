@@ -40,7 +40,7 @@ const Navigation = (props) => {
           position="sticky"
           component="nav"
           sx={{
-            background: "radial-gradient(circle, rgba(8,41,112,1) 0%, rgba(9,31,64,1) 100%)",
+            background: "radial-gradient(circle, #082463 0%, rgba(9,31,64,1) 100%)",
             backdropFilter: "blur(10px)",
             // borderRadius: "100px",
             // top: "2rem",
