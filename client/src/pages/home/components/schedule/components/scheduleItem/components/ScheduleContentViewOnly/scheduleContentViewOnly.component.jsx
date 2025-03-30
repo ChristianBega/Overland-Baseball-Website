@@ -109,7 +109,6 @@ const TeamLogo = ({ logo, teamName }) => {
 const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventId, ref }) => {
   const { time, location, date, opponent, home } = data;
   const theme = useTheme();
-  const isHome = home === "TRUE";
 
   return (
     <ScheduleCard ref={ref} id={eventId} variant="schedule-view-only" isMobile>
@@ -121,7 +120,7 @@ const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventI
             {`${formatDateString(date).split(",")[0]},`}
             {` ${convertTo12HourFormat(time)}`}
           </Typography>
-          <StatusChip label={isHome ? "Home" : "Away"} color="success" isHome={isHome} />
+          <StatusChip label={home ? "Home" : "Away"} color="success" isHome={home} />
         </Stack>
 
         <Typography
@@ -150,7 +149,6 @@ const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventI
 const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index, eventId, ref }) => {
   const { time, location, opponentIcon, home, date, opponent } = data;
   const theme = useTheme();
-  const isHome = home === "TRUE";
 
   return (
     <Stack direction="column" sx={{ "&:not(:first-child)": { marginTop: "2rem" } }} gap={1}>
@@ -197,7 +195,7 @@ const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index
                 </Typography>
               )} */}
 
-              <StatusChip label={isHome ? "Home" : "Away"} color="success" isHome={isHome} />
+              <StatusChip label={home ? "Home" : "Away"} color="success" isHome={home} />
             </Stack>
 
             <LocationLink location={location} />
