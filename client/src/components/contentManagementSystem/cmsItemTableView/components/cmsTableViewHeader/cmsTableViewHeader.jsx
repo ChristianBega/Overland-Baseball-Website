@@ -4,20 +4,36 @@ import { Typography } from "@mui/material";
 import { convertToTitleCase } from "../../../../../setup/utils/helpers/convertText";
 import { useUrlQueryParams } from "../../../../../setup/utils/helpers/useUrlQueryParams";
 import { CmsEditItemContext } from "../../../../../setup/context/cmsContext/cmsEdit.context";
+import useMediaQueries from "../../../../../setup/utils/helpers/useMediaQueries.utils";
 
-const headerConfigMap = {
+const isLgHeaderConfigMap = {
   schedule: ["delete", "date & time", "team logo", "", "opponent logo", "opponent & location", "edit"],
-  roster: ["delete", "player image", "Pos | Hgt | Wgt | Hnd | Number |Name", "year", "edit"],
+  roster: ["", "edit"],
   events: ["delete", "start date & time", "location", "event title", "edit"],
+};
+const isSmHeaderConfigMap = {
+  schedule: ["delete", "team logo", "", "opponent logo", "edit"],
+  roster: ["", "edit"],
+  events: ["delete", "start date & time", "event title", "edit"],
+};
+
+const isMdHeaderConfigMap = {
+  schedule: ["delete", "date & time", "team logo", "", "opponent logo", "edit"],
+  roster: ["", "edit"],
+  events: ["delete", "start date & time", "event title", "edit"],
 };
 
 const CmsTableViewHeader = () => {
+  const { isSmDown, isMdDown } = useMediaQueries();
   const type = useUrlQueryParams().get("type");
   const { isEditing } = useContext(CmsEditItemContext);
-  const headers = headerConfigMap[type] || [];
+  const isLgHeaders = isLgHeaderConfigMap[type] || [];
+  const isSmHeaders = isSmHeaderConfigMap[type] || [];
+  const isMdHeaders = isMdHeaderConfigMap[type] || [];
+  const currentHeaders = isSmDown ? isSmHeaders : isMdDown ? isMdHeaders : isLgHeaders;
   return (
     <>
-      {headers.map((header, index) => {
+      {currentHeaders.map((header, index) => {
         if (header === "delete" && !isEditing) {
           return null;
         }
