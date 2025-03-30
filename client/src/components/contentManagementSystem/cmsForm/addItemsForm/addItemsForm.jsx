@@ -18,6 +18,7 @@ import CmsSeasonTabOptions from "../../cmsSeasonTabOptions/cmsSeasonTabOptions";
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
+  const [statusCode, setStatusCode] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [localUploadType, setLocalUploadType] = useState("url");
@@ -266,7 +267,9 @@ const AddItemsForm = ({ ...props }) => {
       }
 
       if (result && result.success === true) {
+        console.log("result", result);
         setStatus("success");
+        setStatusCode(200);
         setStatusMessage(result.message || "Item added successfully!");
         reset();
         setTimeout(() => {
@@ -275,12 +278,14 @@ const AddItemsForm = ({ ...props }) => {
         setSelectedItems([]);
       } else {
         setStatus("error");
+        setStatusCode(result?.statusCode);
         setStatusMessage(result?.error || "Error adding item. Please try again.");
         console.error("Form submission error:", result);
       }
     } catch (error) {
       console.error("Failed to add item:", error);
       setStatus("error");
+      setStatusCode(error?.statusCode);
       setStatusMessage(`Error during add: ${error.message || "Unknown error"}`);
     }
   };
@@ -332,7 +337,13 @@ const AddItemsForm = ({ ...props }) => {
   };
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <FormStatusIndicator statusMessage={statusMessage} />
+      <FormStatusIndicator
+        statusMessage={statusMessage}
+        statusCode={statusCode}
+        loading={statusMessage === "Loading..."}
+        error={statusMessage && statusMessage === "Failed to update item. Please try again."}
+      />
+      {/* <FormStatusIndicator statusMessage={statusMessage} statusCode={statusMessage} loading={statusMessage} error={statusMessage} /> */}
       {inputFieldsConfig[cmsItemType]?.map((field, index) => {
         if (!shouldShowField(field)) {
           return null;

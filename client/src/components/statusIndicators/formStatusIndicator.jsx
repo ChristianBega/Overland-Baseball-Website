@@ -28,7 +28,7 @@ const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, succes
             <Stack direction="row" spacing={1}>
               <ErrorIcon />
               <Typography variant="body1" color="error">
-                Error: {error.message} || {error.response.data.message}
+                Error: {error?.message || error?.response?.data?.message || "An error occurred"}
               </Typography>
             </Stack>
           )}
