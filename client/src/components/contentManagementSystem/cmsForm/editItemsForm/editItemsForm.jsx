@@ -131,37 +131,34 @@ const EditItemsForm = ({ ...props }) => {
     }
   }, [editableItemData, setValue]);
 
-  // useEffect(() => {
-  //   console.log("Current eventType:", eventType);
-  //   console.log("Current selectedSeason:", selectedSeason);
-  // }, [eventType, selectedSeason]);
-
   const shouldShowField = (field) => {
-    if (field.showWhen?.field === "eventType") {
-      // console.log("Checking field visibility:", {
-      //   fieldName: field.name,
-      //   currentEventType: eventType,
-      //   showWhenValue: field.showWhen.value,
-      //   showWhenNotValue: field.showWhen.notValue,
-      //   additionalField: field.showWhen.additionalField,
-      //   additionalValue: field.showWhen.additionalValue,
-      //   selectedSeason,
-      // });
-    }
-
     if (!field.showWhen) return true;
 
     const { showWhen } = field;
 
+    // For fields that depend on eventType
     if (showWhen.field === "eventType") {
-      if (showWhen.notValue && eventType === showWhen.notValue) {
-        return false;
+      // Handle the case where the field should NOT be shown for a specific value
+      if (showWhen.notValue) {
+        // If notValue is an array, check if eventType is in the array
+        if (Array.isArray(showWhen.notValue)) {
+          if (showWhen.notValue.includes(eventType)) return false;
+        } else if (eventType === showWhen.notValue) {
+          return false;
+        }
       }
 
-      if (showWhen.value && eventType !== showWhen.value) {
-        return false;
+      // Handle the case where the field should be shown for a specific value
+      if (showWhen.value) {
+        // If value is an array, check if eventType is in the array
+        if (Array.isArray(showWhen.value)) {
+          if (!showWhen.value.includes(eventType)) return false;
+        } else if (eventType !== showWhen.value) {
+          return false;
+        }
       }
 
+      // If there's also a dependency on selected season
       if (showWhen.additionalField === "seasonSelect") {
         return selectedSeason === showWhen.additionalValue;
       }

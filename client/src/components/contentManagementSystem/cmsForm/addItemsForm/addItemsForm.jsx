@@ -308,7 +308,6 @@ const AddItemsForm = ({ ...props }) => {
 
   // Determine if a field should be shown based on conditional rendering rules
   const shouldShowField = (field) => {
-    // If no showWhen rule, always show the field
     if (!field.showWhen) return true;
 
     const { showWhen } = field;
@@ -316,13 +315,23 @@ const AddItemsForm = ({ ...props }) => {
     // For fields that depend on eventType
     if (showWhen.field === "eventType") {
       // Handle the case where the field should NOT be shown for a specific value
-      if (showWhen.notValue && eventType === showWhen.notValue) {
-        return false;
+      if (showWhen.notValue) {
+        // If notValue is an array, check if eventType is in the array
+        if (Array.isArray(showWhen.notValue)) {
+          if (showWhen.notValue.includes(eventType)) return false;
+        } else if (eventType === showWhen.notValue) {
+          return false;
+        }
       }
 
       // Handle the case where the field should be shown for a specific value
-      if (showWhen.value && eventType !== showWhen.value) {
-        return false;
+      if (showWhen.value) {
+        // If value is an array, check if eventType is in the array
+        if (Array.isArray(showWhen.value)) {
+          if (!showWhen.value.includes(eventType)) return false;
+        } else if (eventType !== showWhen.value) {
+          return false;
+        }
       }
 
       // If there's also a dependency on selected season
@@ -335,6 +344,7 @@ const AddItemsForm = ({ ...props }) => {
 
     return true;
   };
+
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <FormStatusIndicator
