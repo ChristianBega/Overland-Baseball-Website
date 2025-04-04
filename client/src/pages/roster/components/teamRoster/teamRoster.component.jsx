@@ -26,8 +26,9 @@ export default function TeamRoster() {
   const theme = useTheme();
   const { isMd } = useMediaQueries();
   const [page, setPage] = useState(1);
-  const itemsPerPage = 9;
+  // const itemsPerPage = 9;
   const [filteredData, setFilteredData] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
 
   const {
     data: players,
@@ -171,7 +172,14 @@ export default function TeamRoster() {
               </ScrollableTable>
             </ScrollContainer>
           </RosterContainer>
-          <CustomPagination totalItems={players?.length || 0} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
+          <CustomPagination
+            totalItems={players?.length || 0}
+            itemsPerPage={itemsPerPage}
+            currentPage={page}
+            onPageChange={setPage}
+            setItemsPerPage={setItemsPerPage}
+            itemsPerPageBase={9}
+          />
         </Paper>
       </SectionLayout>
     </Grid>

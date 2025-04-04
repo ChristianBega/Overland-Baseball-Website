@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback, useEffect } from "react";
 import { Box, Grid, Paper, Stack, Table, TableBody, TableContainer, TableHead, TableRow } from "@mui/material";
 import CmsListItem from "../cmsListItem/cmsListItem";
 import CmsOptionsPanel from "../cmsOptionsPanel";
@@ -11,16 +11,17 @@ import CmsTableViewHeader from "./components/cmsTableViewHeader/cmsTableViewHead
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 import CustomPagination from "../../reusableComponents/pagination/pagination";
 import SearchFilterComponent from "../../reusableComponents/searchFilter/searchFilter";
-
+import { useLocation } from "react-router-dom";
 const CmsItemTableView = ({ currentItem }) => {
   const [page, setPage] = useState(1);
-  const itemsPerPage = 6;
-
+  const { search } = useLocation();
+  const urlParams = new URLSearchParams(search);
+  const itemType = urlParams.get("type");
   const { handleSelectAll, selectedItems } = useContext(CmsBulkActionContext);
   const { editableItemData } = useContext(CmsEditItemContext);
   const { data: originalData, isLoading, error } = useRealtimeData(currentItem?.linkName?.toLowerCase());
   const { isSm } = useMediaQueries();
-
+  const [itemsPerPage, setItemsPerPage] = useState(6);
   // State for filtered data
   const [filteredData, setFilteredData] = useState([]);
 
@@ -29,22 +30,6 @@ const CmsItemTableView = ({ currentItem }) => {
     setFilteredData(newFilteredData);
     setPage(1); // Reset to first page when filter changes
   }, []);
-
-  if (isLoading) {
-    return (
-      <Grid item xs={12} lg={12}>
-        <Box sx={{ marginTop: "2rem" }}>Loading...</Box>
-      </Grid>
-    );
-  }
-
-  if (error) {
-    return (
-      <Grid item xs={12} lg={12}>
-        <Box sx={{ marginTop: "2rem" }}>Error: {error.message}</Box>
-      </Grid>
-    );
-  }
 
   const dataToDisplay = filteredData.length > 0 || (filteredData.length === 0 && originalData?.length === 0) ? filteredData : originalData || [];
 
@@ -71,9 +56,26 @@ const CmsItemTableView = ({ currentItem }) => {
   // Optional: Quick filter values (if applicable)
   // Example for filtering by status or type
   const quickFilterValues =
-    originalData && originalData.length > 0
-      ? [...new Set(originalData.map((item) => item.status || item.type))].filter(Boolean).slice(0, 4) // Limit to a reasonable number
-      : [];
+    originalData && originalData.length > 0 ? [...new Set(originalData.map((item) => item.status || item.type))].filter(Boolean).slice(0, 4) : [];
+  useEffect(() => {
+    setItemsPerPage(6);
+  }, [itemType]);
+
+  if (isLoading) {
+    return (
+      <Grid item xs={12} lg={12}>
+        <Box sx={{ marginTop: "2rem" }}>Loading...</Box>
+      </Grid>
+    );
+  }
+
+  if (error) {
+    return (
+      <Grid item xs={12} lg={12}>
+        <Box sx={{ marginTop: "2rem" }}>Error: {error.message}</Box>
+      </Grid>
+    );
+  }
 
   return (
     <Grid item xs={12} lg={12}>
@@ -123,7 +125,14 @@ const CmsItemTableView = ({ currentItem }) => {
               )}
             </TableBody>
           </Table>
-          <CustomPagination totalItems={dataToDisplay?.length || 0} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
+          <CustomPagination
+            totalItems={dataToDisplay?.length || 0}
+            itemsPerPage={itemsPerPage}
+            currentPage={page}
+            onPageChange={setPage}
+            setItemsPerPage={setItemsPerPage}
+            itemsPerPageBase={6}
+          />
         </TableContainer>
       </Box>
     </Grid>
