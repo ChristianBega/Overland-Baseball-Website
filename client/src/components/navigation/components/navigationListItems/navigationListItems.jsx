@@ -67,7 +67,7 @@ const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
           <Link
             component={RouterLink}
             key={label}
-            className={navListType === "navigation-menu" || navListType === "account-menu" ? "normal-shadow" : ""}
+            // className={navListType === "navigation-menu" || navListType === "account-menu" ? "normal-shadow" : ""}
           >
             <Stack direction="row" alignItems="center" gap={1} className={currentUrl === url ? "active-link" : "inactive-link"}>
               {isLg && navListType === "navigation-menu" ? null : <>{icon}</>}

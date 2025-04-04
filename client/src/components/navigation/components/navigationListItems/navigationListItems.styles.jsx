@@ -6,9 +6,7 @@ export const StyledList = styled(List)(({ theme, navListType }) => ({
   flexDirection: "column",
   marginBlock: "2rem",
   paddingInline: "1rem",
-  // [theme.breakpoints.up("sm")]: {
-  //   minWidth: "50vw",
-  // },
+
   [theme.breakpoints.up("lg")]: {
     flexDirection: navListType === "account-menu" ? "column" : "row",
     marginBlock: "0",
@@ -32,15 +30,17 @@ export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl
     },
   },
 
-  [theme.breakpoints.up("lg")]: {
-    display: navListType === "navigation-menu" ? "flex" : "",
-    justifyContent: navListType === "navigation-menu" ? "space-evenly" : "",
-    marginBottom: "0",
-    marginInline: "2rem",
-    ...(currentUrl === url && {
-      background: "transparent",
-    }),
-  },
+  ...(navListType !== "account-menu" && {
+    [theme.breakpoints.up("lg")]: {
+      display: navListType === "navigation-menu" ? "flex" : "",
+      justifyContent: navListType === "navigation-menu" ? "space-evenly" : "",
+      marginBottom: "0",
+      marginInline: "2rem",
+      ...(currentUrl === url && {
+        background: "transparent",
+      }),
+    },
+  }),
   ...(currentUrl === url && {
     background: "linear-gradient(180deg, #5f5f5f1b 20%, #b3b3b311 40%)",
   }),
