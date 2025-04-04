@@ -61,7 +61,7 @@ const Navigation = (props) => {
           </StyledToolbar>
         </AppBar>
       </HideOnScroll>
-      {!isHeroPage && <Box sx={{ height: "calc(2rem + 49px)" }} />}
+      {/* {!isHeroPage && <Box sx={{ height: "calc(2rem + 49px)" }} />} */}
     </>
   );
 };

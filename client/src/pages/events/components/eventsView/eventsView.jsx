@@ -25,7 +25,7 @@ export default function Events() {
   }
   return (
     <Grid item xs={12}>
-      <SectionLayout id="events-section" aria-label="Events Section" marginZero={true}>
+      <SectionLayout id="events-section" aria-label="Events Section">
         <Typography typography="h1" component="h1" gutterBottom>
           Events
         </Typography>
