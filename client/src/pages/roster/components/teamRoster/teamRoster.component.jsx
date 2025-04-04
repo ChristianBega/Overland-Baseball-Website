@@ -73,12 +73,15 @@ export default function TeamRoster() {
   };
 
   // Define filter fields and labels
-  const filterFields = ["name", "position", "bats", "throws"];
+  const filterFields = ["name", "position", "bats", "throws", "year", "height", "weight"];
   const customFieldLabels = {
     name: "Player Name",
     position: "Position",
     bats: "Bats",
     throws: "Throws",
+    year: "Year",
+    height: "Height",
+    weight: "Weight",
   };
 
   return (
@@ -161,8 +164,8 @@ export default function TeamRoster() {
                   {paginatedPlayers.map((player, index) => (
                     <tr key={player.id} style={{ backgroundColor: getRowBackground(index) }}>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.position}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.handed}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.handed}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.bat || "update"}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.throw || "update"}</TableCell>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{isMd ? player.year : player.yearAbbr}</TableCell>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "70px" }}>{player.height}</TableCell>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "80px" }}>{player.weight}</TableCell>
