@@ -26,8 +26,9 @@ export default function TeamRoster() {
   const theme = useTheme();
   const { isMd } = useMediaQueries();
   const [page, setPage] = useState(1);
-  const itemsPerPage = 9;
+  // const itemsPerPage = 9;
   const [filteredData, setFilteredData] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
 
   const {
     data: players,
@@ -72,12 +73,15 @@ export default function TeamRoster() {
   };
 
   // Define filter fields and labels
-  const filterFields = ["name", "position", "bats", "throws"];
+  const filterFields = ["name", "position", "bats", "throws", "year", "height", "weight"];
   const customFieldLabels = {
     name: "Player Name",
     position: "Position",
     bats: "Bats",
     throws: "Throws",
+    year: "Year",
+    height: "Height",
+    weight: "Weight",
   };
 
   return (
@@ -160,8 +164,8 @@ export default function TeamRoster() {
                   {paginatedPlayers.map((player, index) => (
                     <tr key={player.id} style={{ backgroundColor: getRowBackground(index) }}>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.position}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.handed}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.handed}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.bat || "update"}</TableCell>
+                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.throw || "update"}</TableCell>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{isMd ? player.year : player.yearAbbr}</TableCell>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "70px" }}>{player.height}</TableCell>
                       <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "80px" }}>{player.weight}</TableCell>
@@ -171,7 +175,14 @@ export default function TeamRoster() {
               </ScrollableTable>
             </ScrollContainer>
           </RosterContainer>
-          <CustomPagination totalItems={players?.length || 0} itemsPerPage={itemsPerPage} currentPage={page} onPageChange={setPage} />
+          <CustomPagination
+            totalItems={players?.length || 0}
+            itemsPerPage={itemsPerPage}
+            currentPage={page}
+            onPageChange={setPage}
+            setItemsPerPage={setItemsPerPage}
+            itemsPerPageBase={9}
+          />
         </Paper>
       </SectionLayout>
     </Grid>

@@ -34,6 +34,7 @@ const DynamicTableCell = styled(StyledTableCell)(({ columnKey }) => ({
 const DeleteItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, selectedItems, setSelectedItems } = props;
   const [statusMessage, setStatusMessage] = useState(null);
+  const [statusCode, setStatusCode] = useState(null);
   const [progress, setProgress] = useState(0);
   const [inputValueConfirmDelete, setInputValueConfirmDelete] = useState("");
   const confirmDeleteIsTrue = inputValueConfirmDelete === "Confirm Delete";
@@ -72,15 +73,18 @@ const DeleteItemsForm = ({ ...props }) => {
       const allSuccess = results.every((result) => result.success);
       if (allSuccess) {
         setStatusMessage("Items deleted successfully");
+        setStatusCode(200);
         setTimeout(() => {
           closeModal();
         }, 2000);
         setSelectedItems([]);
       } else {
         setStatusMessage("Error during deletion. Check the console for more details.");
+        setStatusCode(400);
       }
     } catch (error) {
       setStatusMessage("Error during bulk delete. Check the console for more details.");
+      setStatusCode(400);
       console.error("Error during bulk delete:", error);
       alert("Error during bulk delete. Check the console for more details.");
     }
@@ -104,7 +108,13 @@ const DeleteItemsForm = ({ ...props }) => {
 
   return (
     <Box component="form">
-      <FormStatusIndicator statusMessage={statusMessage} progress={progress} />
+      <FormStatusIndicator
+        statusMessage={statusMessage}
+        statusCode={statusCode}
+        loading={statusMessage === "Loading..."}
+        error={statusMessage && statusMessage === "Error during deletion. Check the console for more details."}
+      />
+      {/* <FormStatusIndicator statusMessage={statusMessage} progress={progress} /> */}
       <p>Are you sure you want to delete the selected items?</p>
       <TableContainer sx={{ maxHeight: "400px", overflow: "auto", marginBlock: "2rem" }}>
         <Table>

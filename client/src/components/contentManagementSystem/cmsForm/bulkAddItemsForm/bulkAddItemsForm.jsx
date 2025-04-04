@@ -15,6 +15,7 @@ const BulkAddItemsForm = ({ ...props }) => {
 
   const steps = ["Upload CSV", "Confirm Data", "Upload Progress"];
   const [csvData, setCsvData] = useState([]);
+  const [statusCode, setStatusCode] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [statusMessage, setStatusMessage] = useState(null);
 
@@ -35,6 +36,7 @@ const BulkAddItemsForm = ({ ...props }) => {
       const result = await bulkAddToFirebase(uid, role, cmsItemType, csvData);
       if (result.success === true) {
         setStatusMessage(result.message);
+        setStatusCode(200);
         setTimeout(() => {
           closeModal();
         }, 2000);
@@ -42,6 +44,7 @@ const BulkAddItemsForm = ({ ...props }) => {
       }
     } catch (error) {
       setStatusMessage("Error during bulk add. Check the console for more details.");
+      setStatusCode(400);
       console.error("Error during bulk delete:", error);
       alert("Error during bulk add. Check the console for more details.");
     }
@@ -103,7 +106,13 @@ const BulkAddItemsForm = ({ ...props }) => {
 
       {currentStep === 2 && (
         <div>
-          <FormStatusIndicator statusMessage={statusMessage} />
+          <FormStatusIndicator
+            statusMessage={statusMessage}
+            statusCode={statusCode}
+            loading={statusMessage === "Loading..."}
+            error={statusMessage && statusMessage === "Error during deletion. Check the console for more details."}
+          />
+          {/* <FormStatusIndicator statusMessage={statusMessage} /> */}
         </div>
       )}
     </Box>

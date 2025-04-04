@@ -35,12 +35,13 @@
   {
     "name": "location",
     "label": "Location",
-    "placeholder": "Enter location",
+    "placeholder": "Enter location (select from suggestions)...",
     "type": "text",
     "rules": {
       "required": "Location is required *"
     }
   },
+
   {
     "name": "startDateTime",
     "label": "Start Date & Time",
@@ -48,6 +49,10 @@
     "type": "dateTimeLocal",
     "rules": {
       "required": "Start date and time is required *"
+    },
+    "showWhen": {
+      "field": "eventType",
+      "notValue": "player"
     }
   },
   {
@@ -57,83 +62,43 @@
     "type": "dateTimeLocal",
     "rules": {
       "required": "End date and time is required *"
-    }
-  },
-  {
-    "name": "description",
-    "label": "Description",
-    "placeholder": "Enter event description here...",
-    "type": "textarea",
+    },
     "showWhen": {
       "field": "eventType",
-      "value": ["featured", "fundraiser"]
-    },
-    "rules": {
-      "required": {
-        "showWhen": {
-          "field": "eventType",
-          "value": ["featured", "fundraiser"]
-        },
-        "message": "Description is required for this event type *"
-      }
+      "notValue": "player"
     }
   },
   {
     "name": "description",
     "label": "Description (optional)",
     "placeholder": "Enter event description here...",
-    "type": "textarea",
-    "showWhen": {
-      "field": "eventType",
-      "value": ["regular"]
-    },
-    "rules": {
-      "required": {
-        "showWhen": {
-          "field": "eventType",
-          "value": ["regular"]
-        },
-        "message": "Description is required for this event type *"
-      }
-    }
-  },
-  {
-    "name": "eventImage",
-    "label": "Event Image",
-    "placeholder": "Upload event image...",
-    "type": "cmsUploadItem",
-    "cmsType": "eventImages",
-    "showWhen": {
-      "field": "eventType",
-      "value": ["featured", "fundraiser", "player"]
-    },
-    "rules": {
-      "required": {
-        "showWhen": {
-          "field": "eventType",
-          "value": ["featured", "fundraiser", "player"]
-        },
-        "message": "Event image is required for this event type *"
-      }
-    }
+    "type": "textarea"
   },
   {
     "name": "eventImage",
     "label": "Event Image (optional)",
     "placeholder": "Upload event image...",
     "type": "cmsUploadItem",
-    "cmsType": "eventImages",
+    "cmsType": "eventImages"
+  },
+  {
+    "name": "playerEventContent",
+    "instructions": "Press Enter twice to start a new paragraph",
+    "label": "Player Event Content (optional)",
+    "placeholder": "Enter player event content here...",
+    "type": "textarea",
     "showWhen": {
       "field": "eventType",
-      "value": ["regular"]
+      "notValue": "player"
     },
     "rules": {
-      "required": {
-        "showWhen": {
-          "field": "eventType",
-          "value": ["regular"]
-        },
-        "message": "Event image is required for this event type *"
+      "minLength": {
+        "value": 250,
+        "message": "Player Event Content must be at least 250 characters long"
+      },
+      "maxLength": {
+        "value": 468,
+        "message": "Player Event Content cannot exceed 468 characters"
       }
     }
   },
@@ -163,7 +128,7 @@
   },
   {
     "name": "seasons.spring.startDateTime",
-    "label": "Spring Start Date & Time",
+    "label": "Spring Start Date & Time Spring",
     "placeholder": "Select spring start date and time...",
     "type": "dateTimeLocal",
     "showWhen": {
@@ -203,7 +168,6 @@
       "additionalValue": "spring"
     },
     "rules": {
-      "required": "Spring Player Event Content is required *",
       "minLength": {
         "value": 250,
         "message": "Spring Player Event Content must be at least 250 characters long"
@@ -227,7 +191,7 @@
   },
   {
     "name": "seasons.summer.startDateTime",
-    "label": "Summer Start Date & Time",
+    "label": "Summer Start Date & Time Summer",
     "placeholder": "Select summer start date and time...",
     "type": "dateTimeLocal",
     "showWhen": {
@@ -267,7 +231,6 @@
       "additionalValue": "summer"
     },
     "rules": {
-      "required": "Summer Player Event Content is required *",
       "minLength": {
         "value": 250,
         "message": "Summer Player Event Content must be at least 250 characters long"
@@ -291,7 +254,7 @@
   },
   {
     "name": "seasons.fall.startDateTime",
-    "label": "Fall Start Date & Time",
+    "label": "Fall Start Date & Time Fall",
     "placeholder": "Select fall start date and time...",
     "type": "dateTimeLocal",
     "showWhen": {
@@ -318,7 +281,7 @@
     "rules": {
       "required": "Fall End date and time is required *"
     }
-  },
+  },              
   {
     "name": "seasons.fall.playerEventContent",
     "label": "Fall Player Event Content",
@@ -329,9 +292,8 @@
       "value": "player",
       "additionalField": "seasonSelect",
       "additionalValue": "fall"
-    },
+    },                        
     "rules": {
-      "required": "Fall Player Event Content is required *",
       "minLength": {
         "value": 250,
         "message": "Fall Player Event Content must be at least 250 characters long"

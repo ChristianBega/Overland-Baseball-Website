@@ -18,6 +18,7 @@ import CmsSeasonTabOptions from "../../cmsSeasonTabOptions/cmsSeasonTabOptions";
 const AddItemsForm = ({ ...props }) => {
   const { cmsItemType, uid, role, closeModal, setSelectedItems } = props;
   const [status, setStatus] = useState(null);
+  const [statusCode, setStatusCode] = useState(null);
   const [statusMessage, setStatusMessage] = useState(null);
   const [progress, setProgress] = useState(0);
   const [localUploadType, setLocalUploadType] = useState("url");
@@ -266,7 +267,9 @@ const AddItemsForm = ({ ...props }) => {
       }
 
       if (result && result.success === true) {
+        console.log("result", result);
         setStatus("success");
+        setStatusCode(200);
         setStatusMessage(result.message || "Item added successfully!");
         reset();
         setTimeout(() => {
@@ -275,12 +278,14 @@ const AddItemsForm = ({ ...props }) => {
         setSelectedItems([]);
       } else {
         setStatus("error");
+        setStatusCode(result?.statusCode);
         setStatusMessage(result?.error || "Error adding item. Please try again.");
         console.error("Form submission error:", result);
       }
     } catch (error) {
       console.error("Failed to add item:", error);
       setStatus("error");
+      setStatusCode(error?.statusCode);
       setStatusMessage(`Error during add: ${error.message || "Unknown error"}`);
     }
   };
@@ -303,7 +308,6 @@ const AddItemsForm = ({ ...props }) => {
 
   // Determine if a field should be shown based on conditional rendering rules
   const shouldShowField = (field) => {
-    // If no showWhen rule, always show the field
     if (!field.showWhen) return true;
 
     const { showWhen } = field;
@@ -311,13 +315,23 @@ const AddItemsForm = ({ ...props }) => {
     // For fields that depend on eventType
     if (showWhen.field === "eventType") {
       // Handle the case where the field should NOT be shown for a specific value
-      if (showWhen.notValue && eventType === showWhen.notValue) {
-        return false;
+      if (showWhen.notValue) {
+        // If notValue is an array, check if eventType is in the array
+        if (Array.isArray(showWhen.notValue)) {
+          if (showWhen.notValue.includes(eventType)) return false;
+        } else if (eventType === showWhen.notValue) {
+          return false;
+        }
       }
 
       // Handle the case where the field should be shown for a specific value
-      if (showWhen.value && eventType !== showWhen.value) {
-        return false;
+      if (showWhen.value) {
+        // If value is an array, check if eventType is in the array
+        if (Array.isArray(showWhen.value)) {
+          if (!showWhen.value.includes(eventType)) return false;
+        } else if (eventType !== showWhen.value) {
+          return false;
+        }
       }
 
       // If there's also a dependency on selected season
@@ -330,9 +344,16 @@ const AddItemsForm = ({ ...props }) => {
 
     return true;
   };
+
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <FormStatusIndicator statusMessage={statusMessage} />
+      <FormStatusIndicator
+        statusMessage={statusMessage}
+        statusCode={statusCode}
+        loading={statusMessage === "Loading..."}
+        error={statusMessage && statusMessage === "Failed to update item. Please try again."}
+      />
+      {/* <FormStatusIndicator statusMessage={statusMessage} statusCode={statusMessage} loading={statusMessage} error={statusMessage} /> */}
       {inputFieldsConfig[cmsItemType]?.map((field, index) => {
         if (!shouldShowField(field)) {
           return null;

@@ -8,9 +8,7 @@ import FormStatusIndicator from "../../../../components/statusIndicators/formSta
 
 const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   const { sendEmail, response, loading, error } = useEmailService(process.env.REACT_APP_AWS_API_BASE_URL_DEV);
-  console.log(data);
-  console.log(currentSeason);
-  const currentSeasonData = data?.seasons?.[currentSeason.toLowerCase()];
+  const currentSeasonData = data?.seasons?.[currentSeason?.toLowerCase()] || data;
   const {
     control,
     handleSubmit,

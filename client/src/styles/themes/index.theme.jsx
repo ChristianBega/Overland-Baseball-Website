@@ -651,13 +651,21 @@ export const defaultTheme = {
               left: 0,
               width: "100%",
               height: "100%",
-              background: "radial-gradient(circle, #d9d9d932 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
+              background: "radial-gradient(circle, #d9d9d953 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
               opacity: 0.5,
+            },
+            "@media (min-width: 700px)": {
+              height: "300px",
             },
             "@media (min-width: 900px)": {
               height: "100%",
               padding: "1.5rem",
-              maxHeight: "300px",
+              maxHeight: "250px",
+            },
+            "@media (min-width: 1100px)": {
+              height: "100%",
+              padding: "1.5rem",
+              maxHeight: "275px",
             },
           },
         },
@@ -674,6 +682,12 @@ export const defaultTheme = {
               height: "100%",
               background: "radial-gradient(circle, #d9d9d932 0%, #393744 75%, #1A1827 89%, #110F1F 94%, #040112 100%)",
               opacity: 0.5,
+            },
+            "@media (min-width: 600px)": {
+              height: "175px",
+            },
+            "@media (min-width: 700px)": {
+              height: "200px",
             },
             "@media (min-width: 900px)": {
               minHeight: "135px",

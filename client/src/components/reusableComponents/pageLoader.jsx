@@ -8,7 +8,8 @@ export const PageLoader = () => {
   return (
     <Box
       sx={{
-        minHeight: "calc(100vh - 64px - 56px)",
+        // height: "100%",
+        height: "100vh",
         width: "100%",
         display: "flex",
         alignItems: "center",

@@ -9,9 +9,11 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 // Helpers & Utils
 import { formatDateTimeForCalendar } from "../../../../../../setup/utils/helpers/formatDate";
 import useMediaQueries from "../../../../../../setup/utils/helpers/useMediaQueries.utils";
-
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 // ! move this logic into a handleNavigatingToCalendarOrMap func
 const handleEventButtonClick = (event) => {
+  event.stopPropagation();
+
   const eventValue = event.currentTarget.getAttribute("data-eventValue");
   const eventTitle = event.currentTarget.getAttribute("data-eventTitle");
   const startDateTime = event.currentTarget.getAttribute("data-startDateTime");
@@ -53,9 +55,10 @@ const EventCardCtas = ({ data }) => {
   ];
 
   return (
-    <Stack direction="row" spacing={2} sx={{ justifyContent: isMd ? "flex-start" : "flex-end", display: isMd && "inline", zIndex: 1 }}>
+    <Stack direction={"row"} spacing={2} sx={{ justifyContent: isMd ? "flex-start" : "flex-end", display: isMd && "inline", zIndex: 100 }}>
       {buttons.map((button) => (
         <Button
+          variant="contained"
           key={button.type}
           data-startDateTime={startDateTime}
           data-endDateTime={endDateTime}
@@ -65,10 +68,10 @@ const EventCardCtas = ({ data }) => {
           // data-eventLocation={location?.locationAddress}
           data-eventValue={JSON.stringify(button.eventValue)}
           onClick={handleEventButtonClick}
-          variant="contained"
           color="secondary"
           size="card"
           startIcon={button.icon}
+          aria-label={`${button.type === "date" ? "Add to calendar" : "View location"}: ${button.display}`}
         >
           {button.display}
         </Button>
@@ -76,10 +79,21 @@ const EventCardCtas = ({ data }) => {
     </Stack>
   );
 };
-const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => {
+const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex, handleSelectedCardClick }) => {
   const { isMd, isLg } = useMediaQueries();
-  const handleCardClick = () => {
+
+  const handleDesktopCardClick = (isSelected, isMd) => {
     setSelectedCardIndex(index);
+    if (handleSelectedCardClick && isSelected && isMd) {
+      handleSelectedCardClick(index);
+    }
+  };
+
+  const handleMobileCardClick = () => {
+    setSelectedCardIndex(index);
+    if (handleSelectedCardClick) {
+      handleSelectedCardClick(index);
+    }
   };
 
   return (
@@ -89,15 +103,19 @@ const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => 
       md={selectedCardIndex === index && 6}
       sx={{
         display: { md: selectedCardIndex !== index && "flex" },
-        "&:hover": { cursor: "pointer", transform: selectedCardIndex !== index ? "scale(1.01)" : "scale(1)" },
+        "&:hover": { cursor: "pointer", transform: "scale(1.01)" },
         transition: "all .3s ease-in-out",
+        position: "relative",
       }}
-      onClick={handleCardClick}
+      onClick={() => handleDesktopCardClick(selectedCardIndex === index, isMd)}
+      role="button"
+      tabIndex={0}
+      aria-pressed={selectedCardIndex === index}
     >
       <Card
         key={index}
         variant={selectedCardIndex === index ? "events-main" : "events-secondary"}
-        sx={{ backgroundImage: `url(${card?.eventImage})` }}
+        sx={{ backgroundImage: `url(${card?.eventImage})`, position: "relative", zIndex: 1 }}
       >
         {!isMd && <EventCardCtas data={card} />}
         {!isMd && (
@@ -110,11 +128,26 @@ const EventCard = ({ card, index, selectedCardIndex, setSelectedCardIndex }) => 
                 {card.description}
               </StyledDescriptionText>
             )}
+            {selectedCardIndex === index && (
+              <Box sx={{ mt: 2 }}>
+                <Button onClick={handleMobileCardClick} variant="contained" color="secondary" size="card" startIcon={<AppRegistrationIcon />}>
+                  Sign Up
+                </Button>
+              </Box>
+            )}
           </CardContent>
         )}
       </Card>
       {isMd && (
-        <Box sx={{ zIndex: 1, color: "#000", mt: selectedCardIndex === index ? "2rem" : "0", ml: selectedCardIndex !== index ? "1rem" : "0" }}>
+        <Box
+          sx={{
+            zIndex: 1,
+            color: "#000",
+            mt: selectedCardIndex === index ? "2rem" : "0",
+            ml: selectedCardIndex !== index ? "1rem" : "0",
+            display: "block",
+          }}
+        >
           <Stack direction={isLg ? "row" : "column"} justifyContent="space-between" mb={2}>
             {selectedCardIndex === index && !isLg && <EventCardCtas data={card} />}
             <Typography variant="h4" component="h3" sx={{ display: "inline", mt: { md: 1, lg: 0 } }}>
