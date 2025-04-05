@@ -10,7 +10,6 @@ import CircleIcon from "@mui/icons-material/Circle";
  * @param {Function} props.onClick - Optional click handler
  */
 const EventPill = ({ event, onClick }) => {
-  console.log("onClick", onClick);
   const colors = getEventColor(event.eventType);
 
   return (

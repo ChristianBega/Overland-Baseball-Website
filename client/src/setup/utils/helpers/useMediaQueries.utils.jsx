@@ -35,6 +35,10 @@ const useMediaQueries = () => {
     defaultMatches: true,
   });
 
+  const isEventCalendarDown = useMediaQuery(theme.breakpoints.down("eventCalendar"), {
+    defaultMatches: true,
+  });
+
   return {
     isXs,
     isSm,
@@ -46,6 +50,7 @@ const useMediaQueries = () => {
     isSmDown,
     isMdDown,
     isLgDown,
+    isEventCalendarDown,
   };
 };
 

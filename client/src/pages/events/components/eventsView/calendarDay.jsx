@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import EventPill from "./eventPill";
 import { isToday, isPastDate } from "./utils";
 import { useTheme } from "@emotion/react";
 import { useModal } from "../../../../setup/context/modal.context";
 import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
+import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
+import CalendarSignUpMobile from "./calendarSignUpMobile";
+import { CalendarContext } from "../../../../setup/context/components/calendar.context";
 
 /**
  * Component for other month days (previous or next month)
@@ -39,18 +42,18 @@ const OtherMonthDay = ({ day }) => {
 /**
  * Component for current month days with events
  */
-const CurrentMonthDay = ({ day, month, year, events = [], onEventClick }) => {
+const CurrentMonthDay = ({ day, month, year, events = [], onEventClick, isEventCalendarDown }) => {
   const { openModal, closeModal } = useModal();
+  const { handleClearMobileSignUpValues } = useContext(CalendarContext);
 
   const handleViewMoreEvents = () => {
-    openModal(
-      <Stack>
-        {events.map((event) => (
-          <p key={event.id}>{event.title}</p>
-        ))}
-      </Stack>
-    );
+    if (events.length === 0) {
+      alert("No events for this day");
+      return;
+    }
+    openModal(<CalendarSignUpMobile events={events} closeModal={handleClearMobileSignUpValues(closeModal)} />);
   };
+
   const today = isToday(year, month, day);
   const pastDate = isPastDate(year, month, day);
   const theme = useTheme();
@@ -90,20 +93,20 @@ const CurrentMonthDay = ({ day, month, year, events = [], onEventClick }) => {
   const hasHiddenEvents = events.length > 2;
 
   return (
-    <Box sx={dayCellStyles}>
+    <Box sx={dayCellStyles} onClick={isEventCalendarDown ? handleViewMoreEvents : null}>
       <Typography variant="body2" sx={dayNumberStyles}>
         {day}
       </Typography>
 
       <Stack direction="column" spacing={1} sx={{ overflow: "hidden", overflowY: "hidden", minHeight: { md: 55 } }}>
         {displayEvents.map((event) => (
-          <EventPill key={event.id} event={event} onClick={onEventClick} />
+          <EventPill key={event.id} event={event} onClick={isEventCalendarDown ? null : onEventClick} />
         ))}
       </Stack>
 
       {hasHiddenEvents && (
         <Typography
-          onClick={handleViewMoreEvents}
+          onClick={isEventCalendarDown ? null : handleViewMoreEvents}
           variant="caption"
           sx={{
             color: "#6c757d",
@@ -132,11 +135,14 @@ const CurrentMonthDay = ({ day, month, year, events = [], onEventClick }) => {
  * @param {Function} props.onEventClick - Function to call when an event is clicked
  */
 const CalendarDay = ({ day, month, year, isCurrentMonth, events = [], onEventClick }) => {
+  const { isEventCalendarDown } = useMediaQueries();
   if (!isCurrentMonth) {
-    return <OtherMonthDay day={day} onEventClick={onEventClick} />;
+    return <OtherMonthDay day={day} onEventClick={onEventClick} isEventCalendarDown={isEventCalendarDown} />;
   }
 
-  return <CurrentMonthDay day={day} month={month} year={year} events={events} onEventClick={onEventClick} />;
+  return (
+    <CurrentMonthDay day={day} month={month} year={year} events={events} onEventClick={onEventClick} isEventCalendarDown={isEventCalendarDown} />
+  );
 };
 
 export default CalendarDay;

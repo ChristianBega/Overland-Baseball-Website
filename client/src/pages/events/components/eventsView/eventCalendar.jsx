@@ -40,10 +40,7 @@ const Calendar = ({ events = [], onEventClick }) => {
     setCurrentDate(new Date());
   };
 
-  // The default event click handler logs the event
   const defaultEventClickHandler = (event) => {
-    console.log("Event clicked:", event);
-    // openEventModal(event);
     openModal(<EventSignUpForm data={event} closeModal={closeModal} />);
   };
 
