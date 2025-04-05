@@ -42,21 +42,8 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
         Event Sign Up Form
       </Typography>
 
-      <Typography
-        variant="h5"
-        component="h2"
-        gutterBottom
-        sx={{
-          mb: 2,
-          color: "primary.main",
-          fontWeight: 500,
-        }}
-      >
-        {data.title} - {currentSeason}
-      </Typography>
-
       <Stack
-        direction="row"
+        direction="column"
         spacing={2}
         sx={{
           mb: 3,
@@ -65,11 +52,22 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
           borderRadius: 1,
         }}
       >
-        <Typography variant="body1" component="p">
-          Start Time & Date: {currentSeasonData.startDateTime}
+        <Typography
+          variant="h5"
+          component="h2"
+          mb={0}
+          sx={{
+            color: "primary.main",
+            fontWeight: 500,
+          }}
+        >
+          <strong>Event:</strong> {data.title} - {currentSeason}
         </Typography>
         <Typography variant="body1" component="p">
-          End Time & Date: {currentSeasonData.endDateTime}
+          <strong>Start Time & Date:</strong> {currentSeasonData.startDateTime}
+        </Typography>
+        <Typography variant="body1" component="p">
+          <strong>End Time & Date:</strong> {currentSeasonData.endDateTime}
         </Typography>
       </Stack>
 

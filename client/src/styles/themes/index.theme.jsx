@@ -40,6 +40,7 @@ export const defaultTheme = {
       sm: 600,
       heroSvg: 662,
       rosterDataTable: 687,
+      eventCalendar: 700,
       tablet: 768, // xxxx
       md: 900,
       laptop: 1024,
