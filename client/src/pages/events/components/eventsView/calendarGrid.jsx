@@ -3,6 +3,7 @@ import { Grid, Box } from "@mui/material";
 import CalendarDay from "./calendarDay";
 import { getDaysInMonth, getFirstDayOfMonth, getWeekDayNames, formatDateForComparison, filterEventsForDate } from "./utils";
 import { useTheme } from "@emotion/react";
+import CalendarHeader from "./calendarHeader";
 
 /**
  * CalendarGrid component that displays a month of days
@@ -12,7 +13,7 @@ import { useTheme } from "@emotion/react";
  * @param {Array} props.events - Array of Firebase events
  * @param {Function} props.onEventClick - Function to call when an event is clicked
  */
-const CalendarGrid = ({ currentDate, events = [], onEventClick }) => {
+const CalendarGrid = ({ currentDate, events = [], onEventClick, onPrevMonth, onNextMonth, onToday }) => {
   const theme = useTheme();
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -39,8 +40,9 @@ const CalendarGrid = ({ currentDate, events = [], onEventClick }) => {
           sx={{
             textAlign: "center",
             py: 2,
-            color: "white",
-            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.main,
+            backgroundColor: "#fff",
+            // backgroundColor: theme.palette.primary.main,
             border: "1px solid #f0f0f0ba",
             fontSize: "0.75rem",
             fontWeight: 500,
@@ -61,7 +63,7 @@ const CalendarGrid = ({ currentDate, events = [], onEventClick }) => {
 
       prevDays.push(
         <Grid item xs={12 / 7} key={`prev-${i}`}>
-          <CalendarDay day={day} month={prevMonth} year={prevMonthYear} isCurrentMonth={false} />
+          <CalendarDay day={day} month={prevMonth} year={prevMonthYear} isCurrentMonth={false} onEventClick={onEventClick} />
         </Grid>
       );
     }
@@ -100,7 +102,7 @@ const CalendarGrid = ({ currentDate, events = [], onEventClick }) => {
     for (let i = 1; i <= nextMonthDays; i++) {
       nextDays.push(
         <Grid item xs={12 / 7} key={`next-${i}`}>
-          <CalendarDay day={i} month={nextMonth} year={nextMonthYear} isCurrentMonth={false} />
+          <CalendarDay day={i} month={nextMonth} year={nextMonthYear} isCurrentMonth={false} onEventClick={onEventClick} />
         </Grid>
       );
     }
@@ -117,6 +119,10 @@ const CalendarGrid = ({ currentDate, events = [], onEventClick }) => {
         borderRadius: "4px",
       }}
     >
+      <Grid item xs={12}>
+        <CalendarHeader currentDate={currentDate} onPrevMonth={onPrevMonth} onNextMonth={onNextMonth} onToday={onToday} />
+      </Grid>
+
       {/* Day headers (Sun, Mon, etc) */}
       {renderDayHeaders()}
 

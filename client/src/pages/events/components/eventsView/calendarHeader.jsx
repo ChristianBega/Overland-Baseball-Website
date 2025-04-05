@@ -24,29 +24,29 @@ const CalendarHeader = ({ currentDate, onPrevMonth, onNextMonth, onToday }) => {
         justifyContent: "space-between",
         alignItems: "center",
         p: 2,
-        mb: 2,
-        border: "2px solid #f0f0f0",
-        boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
+        // mb: 2,
+        // border: "2px solid #f0f0f0",
+        // boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.1)",
         borderRadius: "8px",
       }}
     >
-      <Typography variant="h5" component="h3" sx={{ mb: 0 }}>
-        {monthYearText}
-      </Typography>
-
       <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography variant="h5" component="h3" sx={{ mb: 0 }}>
+          {monthYearText}
+        </Typography>
+
         <IconButton onClick={onPrevMonth}>
           <ChevronLeft />
         </IconButton>
-
-        <Button variant="contained" size="small" color="secondary" onClick={onToday}>
-          Today
-        </Button>
 
         <IconButton onClick={onNextMonth}>
           <ChevronRight />
         </IconButton>
       </Box>
+
+      <Button variant="contained" size="small" color="secondary" onClick={onToday}>
+        Today
+      </Button>
     </Box>
   );
 };

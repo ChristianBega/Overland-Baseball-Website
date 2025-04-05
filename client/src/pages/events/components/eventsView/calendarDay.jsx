@@ -1,8 +1,10 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import EventPill from "./eventPill";
 import { isToday, isPastDate } from "./utils";
 import { useTheme } from "@emotion/react";
+import { useModal } from "../../../../setup/context/modal.context";
+import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
 
 /**
  * Component for other month days (previous or next month)
@@ -12,15 +14,18 @@ const OtherMonthDay = ({ day }) => {
   return (
     <Box
       sx={{
-        height: 80,
+        height: 105,
         p: 1,
         color: "#ccc",
         bgcolor: "#f8f9fa",
         borderRadius: 0,
         border: "1px solid #f0f0f0",
         textAlign: "left",
+        [theme.breakpoints.up("sm")]: {
+          height: 115,
+        },
         [theme.breakpoints.up("md")]: {
-          height: 100,
+          height: 124,
         },
       }}
     >
@@ -35,14 +40,25 @@ const OtherMonthDay = ({ day }) => {
  * Component for current month days with events
  */
 const CurrentMonthDay = ({ day, month, year, events = [], onEventClick }) => {
+  const { openModal, closeModal } = useModal();
+
+  const handleViewMoreEvents = () => {
+    openModal(
+      <Stack>
+        {events.map((event) => (
+          <p key={event.id}>{event.title}</p>
+        ))}
+      </Stack>
+    );
+  };
   const today = isToday(year, month, day);
   const pastDate = isPastDate(year, month, day);
   const theme = useTheme();
 
   // Styles based on day type
   const dayCellStyles = {
-    height: 80,
-    p: 1,
+    height: 105,
+    p: 0.5,
     position: "relative",
     bgcolor: pastDate ? "#faf9f8" : "white",
     border: today ? `2px solid #091f40a6` : "1px solid #f0f0f0",
@@ -53,8 +69,13 @@ const CurrentMonthDay = ({ day, month, year, events = [], onEventClick }) => {
     "&:hover": {
       bgcolor: "#f8f9fa",
     },
+
+    [theme.breakpoints.up("sm")]: {
+      height: 115,
+      p: 1,
+    },
     [theme.breakpoints.up("md")]: {
-      height: 100,
+      height: 124,
     },
   };
 
@@ -74,16 +95,22 @@ const CurrentMonthDay = ({ day, month, year, events = [], onEventClick }) => {
         {day}
       </Typography>
 
-      {displayEvents.map((event) => (
-        <EventPill key={event.id} event={event} onClick={onEventClick} />
-      ))}
+      <Stack direction="column" spacing={1} sx={{ overflow: "hidden", overflowY: "hidden", minHeight: { md: 55 } }}>
+        {displayEvents.map((event) => (
+          <EventPill key={event.id} event={event} onClick={onEventClick} />
+        ))}
+      </Stack>
 
       {hasHiddenEvents && (
         <Typography
+          onClick={handleViewMoreEvents}
           variant="caption"
           sx={{
             color: "#6c757d",
-            fontSize: "0.7rem",
+            fontSize: { xs: "9px", sm: "10px", md: "12px" },
+            mt: 0.5,
+            cursor: "pointer",
+            textDecoration: "underline",
           }}
         >
           +{events.length - 2} more
@@ -106,7 +133,7 @@ const CurrentMonthDay = ({ day, month, year, events = [], onEventClick }) => {
  */
 const CalendarDay = ({ day, month, year, isCurrentMonth, events = [], onEventClick }) => {
   if (!isCurrentMonth) {
-    return <OtherMonthDay day={day} />;
+    return <OtherMonthDay day={day} onEventClick={onEventClick} />;
   }
 
   return <CurrentMonthDay day={day} month={month} year={year} events={events} onEventClick={onEventClick} />;

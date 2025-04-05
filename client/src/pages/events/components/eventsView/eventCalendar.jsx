@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Paper } from "@mui/material";
 import CalendarHeader from "./calendarHeader";
 import CalendarGrid from "./calendarGrid";
+import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
+import { useModal } from "../../../../setup/context/modal.context";
 
 /**
  * Main Calendar component designed to work directly with Firebase events
@@ -10,10 +12,11 @@ import CalendarGrid from "./calendarGrid";
  * @param {Array} props.events - Array of Firebase event objects
  * @param {Function} props.onEventClick - Optional handler for event clicks
  */
+
 const Calendar = ({ events = [], onEventClick }) => {
   // State for tracking currently displayed month/year
   const [currentDate, setCurrentDate] = useState(new Date());
-
+  const { openModal, closeModal } = useModal();
   // Handler for navigating to previous month
   const handlePrevMonth = () => {
     setCurrentDate((prevDate) => {
@@ -40,10 +43,12 @@ const Calendar = ({ events = [], onEventClick }) => {
   // The default event click handler logs the event
   const defaultEventClickHandler = (event) => {
     console.log("Event clicked:", event);
+    // openEventModal(event);
+    openModal(<EventSignUpForm data={event} closeModal={closeModal} />);
   };
 
   // Use provided event click handler or default
-  const eventClickHandler = onEventClick || defaultEventClickHandler;
+  const eventClickHandler = defaultEventClickHandler;
 
   return (
     <Paper
@@ -55,11 +60,15 @@ const Calendar = ({ events = [], onEventClick }) => {
         overflow: "hidden",
       }}
     >
-      {/* Calendar header with navigation */}
-      <CalendarHeader currentDate={currentDate} onPrevMonth={handlePrevMonth} onNextMonth={handleNextMonth} onToday={handleToday} />
-
       {/* Calendar grid with days */}
-      <CalendarGrid currentDate={currentDate} events={events} onEventClick={eventClickHandler} />
+      <CalendarGrid
+        currentDate={currentDate}
+        events={events}
+        onPrevMonth={handlePrevMonth}
+        onNextMonth={handleNextMonth}
+        onToday={handleToday}
+        onEventClick={eventClickHandler}
+      />
     </Paper>
   );
 };
