@@ -578,9 +578,9 @@ export const defaultTheme = {
     MuiContainer: {
       styleOverrides: {
         root: {
-          padding: "1rem",
+          padding: "0 1rem",
           "@media (min-width: 600px)": {
-            padding: "2rem",
+            padding: "0 2rem",
           },
         },
       },

@@ -6,11 +6,14 @@ import { Container } from "@mui/material";
 export default function AlumniPage() {
   return (
     <Container
-      component={motion.section}
+      // component={motion.section}
       initial={containerVariants.hidden}
       animate={containerVariants.visible}
       exit={containerVariants.exit}
       transition={containerVariants.transition}
+      id="alumni-page"
+      component="main"
+      aria-label="Alumni Page"
     >
       <TimeLine />
     </Container>
