@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Button, Box, Typography, Stack } from "@mui/material";
+import { Button, Box, Typography, Stack, Grid } from "@mui/material";
 import formConfig from "./eventSignUp.config.json";
 import InputFieldComponent from "../../../../components/inputFields/inputFields";
 import useEmailService from "../../../../hooks/useEmailServices";
@@ -71,31 +71,35 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
         </Typography>
       </Stack>
 
-      {formConfig.map((field) => (
-        <Controller
-          key={field.name}
-          name={field.name}
-          control={control}
-          rules={{
-            required: field.rules.required,
-            pattern: field.rules.pattern,
-          }}
-          render={({ field: formField }) => (
-            <InputFieldComponent
-              type={field.type}
-              label={field.label}
-              placeholder={field.placeholder}
-              fullWidth
-              margin="normal"
-              value={formField.value}
-              onChange={formField.onChange}
-              error={Boolean(errors[field.name])}
-              helperText={errors[field.name]?.message}
-              {...formField}
+      <Grid container direction="column" spacing={2} mb={4}>
+        {formConfig.map((field, index) => (
+          <Grid key={index} item xs={12}>
+            <Controller
+              key={field.name}
+              name={field.name}
+              control={control}
+              rules={{
+                required: field.rules.required,
+                pattern: field.rules.pattern,
+              }}
+              render={({ field: formField }) => (
+                <InputFieldComponent
+                  type={field.type}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  fullWidth
+                  margin="normal"
+                  value={formField.value}
+                  onChange={formField.onChange}
+                  error={Boolean(errors[field.name])}
+                  helperText={errors[field.name]?.message}
+                  {...formField}
+                />
+              )}
             />
-          )}
-        />
-      ))}
+          </Grid>
+        ))}
+      </Grid>
       {(loading || error || response) && (
         <FormStatusIndicator statusMessage={response?.data?.message} statusCode={response?.status} loading={loading} error={error} />
       )}

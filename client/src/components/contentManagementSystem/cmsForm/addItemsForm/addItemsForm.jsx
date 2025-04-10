@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 // Components
@@ -354,71 +354,75 @@ const AddItemsForm = ({ ...props }) => {
         error={statusMessage && statusMessage === "Failed to update item. Please try again."}
       />
       {/* <FormStatusIndicator statusMessage={statusMessage} statusCode={statusMessage} loading={statusMessage} error={statusMessage} /> */}
-      {inputFieldsConfig[cmsItemType]?.map((field, index) => {
-        if (!shouldShowField(field)) {
-          return null;
-        }
 
-        return (
-          <Controller
-            key={index + field.name}
-            name={field.name}
-            control={control}
-            rules={field.rules}
-            render={({ field: formField }) => (
-              <Box mb={2}>
-                {field.type === "cmsUploadItem" ? (
-                  <CmsUploadItem
-                    cmsItemType={field.cmsType}
-                    onChange={(formField) => (event) => {
-                      formField.onChange(event.target.files[0]);
-                    }}
-                    label={field.label}
-                    placeholderTextfield={field.placeholder}
-                    value={formField.value}
-                    {...formField}
-                    cmsUploadName={field.name}
-                    parentElement={"addItemsForm"}
-                    localUploadType={localUploadType}
-                    setLocalUploadType={setLocalUploadType}
-                  />
-                ) : field.type === "seasonTabs" ? (
-                  <CmsSeasonTabOptions
-                    label={field.label}
-                    options={field.options}
-                    value={selectedSeason}
-                    onChange={handleSeasonChange}
-                    error={Boolean(errors[field.name])}
-                    helperText={errors[field.name]?.message}
-                  />
-                ) : (
-                  <InputFieldComponent
-                    type={field.type}
-                    label={field.label}
-                    placeholder={field.placeholder}
-                    fullWidth
-                    value={formField.value}
-                    onChange={formField.onChange}
-                    error={Boolean(errors[field.name])}
-                    helperText={errors[field.name]?.message}
-                    {...formField}
-                    optionLabels={field.optionLabels}
-                    options={field.options && field.options}
-                  />
+      <Grid container direction="column" spacing={2}>
+        {inputFieldsConfig[cmsItemType]?.map((field, index) => {
+          if (!shouldShowField(field)) {
+            return null;
+          }
+
+          return (
+            <Grid key={index} item xs={12}>
+              <Controller
+                key={index + field.name}
+                name={field.name}
+                control={control}
+                rules={field.rules}
+                render={({ field: formField }) => (
+                  <>
+                    {field.type === "cmsUploadItem" ? (
+                      <CmsUploadItem
+                        cmsItemType={field.cmsType}
+                        onChange={(formField) => (event) => {
+                          formField.onChange(event.target.files[0]);
+                        }}
+                        label={field.label}
+                        placeholderTextfield={field.placeholder}
+                        value={formField.value}
+                        {...formField}
+                        cmsUploadName={field.name}
+                        parentElement={"addItemsForm"}
+                        localUploadType={localUploadType}
+                        setLocalUploadType={setLocalUploadType}
+                      />
+                    ) : field.type === "seasonTabs" ? (
+                      <CmsSeasonTabOptions
+                        label={field.label}
+                        options={field.options}
+                        value={selectedSeason}
+                        onChange={handleSeasonChange}
+                        error={Boolean(errors[field.name])}
+                        helperText={errors[field.name]?.message}
+                      />
+                    ) : (
+                      <InputFieldComponent
+                        type={field.type}
+                        label={field.label}
+                        placeholder={field.placeholder}
+                        fullWidth
+                        value={formField.value}
+                        onChange={formField.onChange}
+                        error={Boolean(errors[field.name])}
+                        helperText={errors[field.name]?.message}
+                        {...formField}
+                        optionLabels={field.optionLabels}
+                        options={field.options && field.options}
+                      />
+                    )}
+                  </>
                 )}
-              </Box>
-            )}
-          />
-        );
-      })}
-
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
       <Button
         type="submit"
         variant="contained"
         color="secondary"
         aria-label={`create ${cmsItemType} item`}
         id={`create-${cmsItemType}-cms-item-button`}
-        sx={{ width: "100%" }}
+        sx={{ width: "100%", marginTop: "1rem" }}
         disabled={isSubmitting}
       >
         {isSubmitting ? "Creating..." : "Create"}

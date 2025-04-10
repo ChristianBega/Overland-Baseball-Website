@@ -140,8 +140,13 @@ const DeleteItemsForm = ({ ...props }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <p style={{ color: "red" }}>Please type "Confirm Delete" to delete</p>
-      <InputFieldComponent type="text" placeholder=" Type 'Confirm Delete' here..." value={inputValueConfirmDelete} onChange={handleInputChange} />
+      <InputFieldComponent
+        type="text"
+        placeholder=" Type 'Confirm Delete' here..."
+        value={inputValueConfirmDelete}
+        onChange={handleInputChange}
+        label="Confirm Delete"
+      />
       <Button
         sx={{ marginTop: "2rem" }}
         disabled={!confirmDeleteIsTrue}

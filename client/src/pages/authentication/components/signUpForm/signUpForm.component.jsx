@@ -5,13 +5,14 @@ import { Controller, useForm } from "react-hook-form";
 // Components
 import AlternativeAuthCta from "../alternativeAuthCta/alternativeAuthCta";
 // MUI
-import { Button, Stack, TextField, Typography, Link as MuiLink } from "@mui/material";
+import { Button, Stack, TextField, Typography, Link as MuiLink, Grid } from "@mui/material";
 // Styles
 import { StyledForm } from "../../../../styles/index.styles";
 // Utils & Hooks
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../../../setup/utils/firebase/authentication";
 // Config
 import signUpInputFields from "./signUpInputFields.config.json";
+import InputFieldComponent from "../../../../components/inputFields/inputFields";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -55,29 +56,34 @@ const SignUpForm = () => {
   return (
     <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-up-form">
       {/* <FormHeader formHeaderContent={"Sign Up Form"} /> */}
-      <Stack direction="column" spacing={2} id="input-field-container" my={2}>
+      <Grid container direction="column" spacing={2} mb={4}>
         {signUpInputFields.map((config, index) => (
-          <Controller
-            required
-            key={index + config.name}
-            name={config.name}
-            control={control}
-            rules={config.rules}
-            render={({ field }) => (
-              <TextField
-                id={config.name}
-                placeHolder={config.placeholder}
-                type={config.type}
-                label={config.label}
-                error={errors[config.name]}
-                variant="outlined"
-                helperText={errors.player_name?.message}
-                {...field}
-              />
-            )}
-          />
+          <Grid key={index + config.name} item xs={12}>
+            <Controller
+              required
+              key={index + config.name}
+              name={config.name}
+              control={control}
+              rules={config.rules}
+              render={({ field }) => (
+                <InputFieldComponent
+                  id={config.name}
+                  placeHolder={config.placeholder}
+                  type={config.type}
+                  label={config.label}
+                  fullWidth
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors[config.name]}
+                  // variant="outlined"
+                  helperText={errors.player_name?.message}
+                  {...field}
+                />
+              )}
+            />
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
       <Button variant="contained" color="secondary" id="sign-up-form" aria-label="Sign Up Form" type="submit" sx={{ mt: 2, mb: 4 }}>
         Sign Up
       </Button>

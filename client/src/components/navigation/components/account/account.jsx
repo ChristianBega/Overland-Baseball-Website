@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // MUI components
-import { Box,  IconButton,  } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 // Icons
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,7 +19,7 @@ const menuItems = [
   { label: "Sign Up", url: "/authentication/sign-up", icon: <SignUpIcon /> },
   { label: "Sign Out", url: "/", icon: <SignOutIcon /> },
   { label: "Settings", url: "/settings", icon: <SettingsIcon /> },
-  { label: "Theme Showcase", url: "/theme-showcase", icon: <SettingsIcon /> },
+  // { label: "Theme Showcase", url: "/theme-showcase", icon: <SettingsIcon /> },
 ];
 
 const styles = {

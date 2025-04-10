@@ -3,7 +3,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 // Components
 import AlternativeAuthCta from "../alternativeAuthCta/alternativeAuthCta";
 // MUI
-import { Button, Stack, TextField, Typography, Link as MuiLink } from "@mui/material";
+import { Button, Stack, TextField, Typography, Link as MuiLink, Grid } from "@mui/material";
 // React Hook Form
 import { Controller, useForm } from "react-hook-form";
 // Config
@@ -11,6 +11,7 @@ import signInInputFields from "./signInInputFields.config.json";
 // Utils & Hooks
 import { signInAuthWithEmailAndPassword } from "../../../../setup/utils/firebase/authentication";
 import { StyledForm } from "../../../../styles/index.styles";
+import InputFieldComponent from "../../../../components/inputFields/inputFields";
 
 const SignInForm = () => {
   const navigate = useNavigate();
@@ -46,29 +47,33 @@ const SignInForm = () => {
 
   return (
     <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-in-form" aria-label="Sign In Form">
-      <Stack direction="column" spacing={2} id="input-field-container" my={2}>
+      <Grid container direction="column" spacing={2} mb={4}>
         {signInInputFields.map((config, index) => (
-          <Controller
-            required
-            key={index + config.name}
-            name={config.name}
-            control={control}
-            rules={config.rules}
-            render={({ field }) => (
-              <TextField
-                id={config.name}
-                placeHolder={config.placeholder}
-                type={config.type}
-                label={config.label}
-                error={errors[config.name]}
-                variant="outlined"
-                helperText={errors.player_name?.message}
-                {...field}
-              />
-            )}
-          />
+          <Grid key={index + config.name} item xs={12}>
+            <Controller
+              required
+              name={config.name}
+              control={control}
+              rules={config.rules}
+              render={({ field }) => (
+                <InputFieldComponent
+                  id={config.name}
+                  placeHolder={config.placeholder}
+                  type={config.type}
+                  label={config.label}
+                  fullWidth
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors[config.name]}
+                  // variant="outlined"
+                  helperText={errors.player_name?.message}
+                  {...field}
+                />
+              )}
+            />
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
       <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/password-reset"} aria-label="Forgot Password Link">
         Forgot your password?
       </MuiLink>

@@ -5,6 +5,9 @@ import { TextField } from "@mui/material";
 
 const inputComponents = {
   text: lazy(() => import("./TextInputField/textInputField")),
+  email: lazy(() => import("./TextInputField/textInputField")),
+  tel: lazy(() => import("./TextInputField/textInputField")),
+  password: lazy(() => import("./TextInputField/textInputField")),
   date: lazy(() => import("./DateInputField/dateInputField")),
   time: lazy(() => import("./TimeInputField/timeInputField")),
   checkbox: lazy(() => import("./CheckBoxField/checkBoxField")),
