@@ -5,8 +5,12 @@ import formConfig from "./eventSignUp.config.json";
 import InputFieldComponent from "../../../../components/inputFields/inputFields";
 import useEmailService from "../../../../hooks/useEmailServices";
 import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
-
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useTheme } from "@emotion/react";
 const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
+  const theme = useTheme();
   const { sendEmail, response, loading, error } = useEmailService(process.env.REACT_APP_AWS_API_BASE_URL_DEV);
   const currentSeasonData = data?.seasons?.[currentSeason?.toLowerCase()] || data;
   const {
@@ -36,39 +40,130 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
       closeModal();
     }, 3000);
   };
+
+  // Updated helper component with improved styling
+  const InfoItem = ({ icon, label, value }) => (
+    <Stack direction="row" spacing={1} alignItems="center">
+      <Box
+        component="span"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 42,
+          height: 42,
+          borderRadius: "12px",
+          backgroundColor: "rgba(255,255,255,0.1)",
+          backdropFilter: "blur(4px)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          flexShrink: 0,
+        }}
+      >
+        {icon}
+      </Box>
+      <Stack direction="column" justifyContent="center">
+        <Typography
+          variant="caption"
+          display="block"
+          sx={{
+            color: theme.palette.text.secondary4,
+            fontSize: "0.7rem",
+            fontWeight: 500,
+            lineHeight: "0.7rem",
+            marginBottom: "0.2rem",
+          }}
+        >
+          {label}
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 500,
+
+            fontSize: { xs: "0.85rem", sm: "0.9rem", md: "1rem" },
+          }}
+        >
+          {value}
+        </Typography>
+      </Stack>
+    </Stack>
+  );
+
+  // Prepare the location value
+  const locationValue = currentSeasonData.location || data.location;
+
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ maxWidth: 800, mx: "auto", p: 2 }}>
+      {/* <Typography variant="h4" component="h1" gutterBottom>
         Event Sign Up Form
-      </Typography>
+      </Typography> */}
 
       <Stack
         direction="column"
+        // alignItems="center"
+        justifyContent="center"
         spacing={2}
         sx={{
           mb: 3,
-          backgroundColor: "grey.50",
-          p: 2,
+          // background: "linear-gradient(168deg, #4cbb17 0%, #2b6411 100%)",
+          background: "linear-gradient(-2deg, #4cbb17 0%, #317711 100%)",
+
+          // background: "linear-gradient(135deg, #091f40 0%, #1a3a6a 100%)",
+          color: "white",
+          p: { xs: 2, sm: 3 },
           borderRadius: 1,
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
-          mb={0}
+        <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{
+              color: "white",
+              fontWeight: 600,
+              fontSize: { xs: "1.25rem", sm: "1.5rem" },
+            }}
+          >
+            {data.title}
+          </Typography>
+        </Box>
+
+        <Box
           sx={{
-            color: "primary.main",
-            fontWeight: 500,
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
+            gap: 2,
+            mt: 2,
+            "& > div": {
+              borderRight: { xs: "none", md: "1px solid rgba(255,255,255,0.15)" },
+              "&:last-child": {
+                borderRight: "none",
+              },
+              py: { xs: 1, md: 0 },
+              pl: { md: 2 },
+              "&:first-of-type": {
+                pl: 0,
+              },
+            },
           }}
         >
-          <strong>Event:</strong> {data.title} - {currentSeason}
-        </Typography>
-        <Typography variant="body1" component="p">
-          <strong>Start Time & Date:</strong> {currentSeasonData.startDateTime}
-        </Typography>
-        <Typography variant="body1" component="p">
-          <strong>End Time & Date:</strong> {currentSeasonData.endDateTime}
-        </Typography>
+          <Box>
+            <InfoItem icon={<CalendarMonthIcon />} label="DATE" value={currentSeasonData.startDateTime?.split("T")[0]} />
+          </Box>
+
+          <Box>
+            <InfoItem
+              icon={<AccessTimeIcon />}
+              label="TIME"
+              value={`${currentSeasonData.startDateTime?.split("T")[1]} - ${currentSeasonData.endDateTime?.split("T")[1]}`}
+            />
+          </Box>
+
+          <Box>
+            <InfoItem icon={<LocationOnIcon />} label="LOCATION" value={locationValue} />
+          </Box>
+        </Box>
       </Stack>
 
       <Grid container direction="column" spacing={2} mb={4}>
@@ -103,7 +198,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
       {(loading || error || response) && (
         <FormStatusIndicator statusMessage={response?.data?.message} statusCode={response?.status} loading={loading} error={error} />
       )}
-      <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3 }}>
+      <Button type="submit" variant="contained" color="secondary" fullWidth sx={{ mt: 3 }}>
         Submit
       </Button>
     </Box>

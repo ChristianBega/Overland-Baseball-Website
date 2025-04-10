@@ -21,7 +21,10 @@ export const defaultTheme = {
       secondary: "#ffffffa8",
 
       secondary2: "hsl(0, 0%, 100%)",
+      secondary4: "hsl(0, 0%, 90%)",
+      secondary5: "hsl(0, 0%, 80%)",
       secondary3: "hsl(0, 0%, 70%)",
+
       // disabled: "hsl(0, 0%, 50%)",
       grey: "#666666",
     },
@@ -54,7 +57,7 @@ export const defaultTheme = {
   typography: {
     fontFamily: "Work Sans",
     h1: {
-      fontFamily: "Anuphan, serif",
+      // fontFamily: "Anuphan, serif",
       textTransform: "uppercase",
       letterSpacing: ".2rem",
       fontSize: "2.25rem", // 36px
