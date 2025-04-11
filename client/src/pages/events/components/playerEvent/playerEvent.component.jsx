@@ -95,14 +95,20 @@ const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeaso
   return (
     <>
       {playerEventType !== "youth program" && (
-        <Stack direction="row" spacing={2} mb={4}>
+        <Stack direction="row" spacing={1} mb={{ xs: 2, md: 4 }}>
           {["Spring", "Summer", "Fall"].map((season) => (
             <Button
               key={season}
               variant={currentSeason === season ? "pillShapeActive" : "pillShapeInactive"}
               onClick={() => handleChangeSeason(season)}
-              sx={{ textDecoration: "underline", color: currentSeason === season ? "#fff" : theme.palette.text.grey }}
-              size={isXs ? "small" : ""}
+              sx={{
+                textDecoration: "underline",
+                color: currentSeason === season ? "#fff" : theme.palette.text.grey,
+                minWidth: "50px",
+                fontSize: "14px",
+                padding: "4px 12px",
+              }}
+              // size={isXs ? "small" : ""}
             >
               {season}
             </Button>
