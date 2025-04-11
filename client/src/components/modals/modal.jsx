@@ -15,7 +15,7 @@ const StyledModalContainer = styled(Box)(({ theme, modalType, isCmsForm }) => ({
   overflow: "auto",
   width: "90%",
   [theme.breakpoints.up("md")]: {
-    width: modalType === "mediaStorage" ? "80%" : isCmsForm ? "90%" : "50%",
+    width: modalType === "mediaStorage" ? "80%" : isCmsForm ? "90%" : "80%",
   },
 }));
 

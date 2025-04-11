@@ -9,7 +9,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useTheme } from "@emotion/react";
+import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
 const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
+  const { isSm } = useMediaQueries();
   const theme = useTheme();
   const { sendEmail, response, loading, error } = useEmailService(process.env.REACT_APP_AWS_API_BASE_URL_DEV);
   const currentSeasonData = data?.seasons?.[currentSeason?.toLowerCase()] || data;
@@ -43,7 +45,13 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
 
   // Updated helper component with improved styling
   const InfoItem = ({ icon, label, value }) => (
-    <Stack direction="row" spacing={1} alignItems="center">
+    <Stack
+      direction="row"
+      spacing={1}
+      sx={{ paddingTop: "4px", paddingBottom: "4px" }}
+      alignItems="center"
+      justifyContent={{ xs: "", sm: "center", md: "flex-start" }}
+    >
       <Box
         component="span"
         sx={{
@@ -93,7 +101,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   const locationValue = currentSeasonData.location || data.location;
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ maxWidth: 800, mx: "auto", p: 2 }}>
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ maxWidth: 800, mx: "auto" }}>
       {/* <Typography variant="h4" component="h1" gutterBottom>
         Event Sign Up Form
       </Typography> */}
@@ -123,6 +131,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
               color: "white",
               fontWeight: 600,
               fontSize: { xs: "1.25rem", sm: "1.5rem" },
+              mb: 0,
             }}
           >
             {data.title}
@@ -132,11 +141,10 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
-            gap: 2,
-            mt: 2,
+            gridTemplateColumns: { xs: "1fr", formHeader: "1fr 1fr", sm: "1fr 1fr 1fr" },
+            gap: 1,
             "& > div": {
-              borderRight: { xs: "none", md: "1px solid rgba(255,255,255,0.15)" },
+              borderRight: { xs: "none", sm: "1px solid rgba(255,255,255,0.15)" },
               "&:last-child": {
                 borderRight: "none",
               },
@@ -148,21 +156,15 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
             },
           }}
         >
-          <Box>
-            <InfoItem icon={<CalendarMonthIcon />} label="DATE" value={currentSeasonData.startDateTime?.split("T")[0]} />
-          </Box>
+          <InfoItem icon={<CalendarMonthIcon />} label="DATE" value={currentSeasonData.startDateTime?.split("T")[0]} />
 
-          <Box>
-            <InfoItem
-              icon={<AccessTimeIcon />}
-              label="TIME"
-              value={`${currentSeasonData.startDateTime?.split("T")[1]} - ${currentSeasonData.endDateTime?.split("T")[1]}`}
-            />
-          </Box>
+          <InfoItem
+            icon={<AccessTimeIcon />}
+            label="TIME"
+            value={`${currentSeasonData.startDateTime?.split("T")[1]} - ${currentSeasonData.endDateTime?.split("T")[1]}`}
+          />
 
-          <Box>
-            <InfoItem icon={<LocationOnIcon />} label="LOCATION" value={locationValue} />
-          </Box>
+          {isSm && <InfoItem icon={<LocationOnIcon />} label="LOCATION" value={locationValue} />}
         </Box>
       </Stack>
 
