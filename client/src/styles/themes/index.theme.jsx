@@ -41,6 +41,7 @@ export const defaultTheme = {
     values: {
       xs: 0,
       sm: 600,
+      formHeader: 404,
       heroSvg: 662,
       rosterDataTable: 687,
       eventCalendar: 700,
