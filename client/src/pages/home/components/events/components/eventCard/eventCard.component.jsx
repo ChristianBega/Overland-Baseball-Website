@@ -10,26 +10,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { formatDateTimeForCalendar } from "../../../../../../setup/utils/helpers/formatDate";
 import useMediaQueries from "../../../../../../setup/utils/helpers/useMediaQueries.utils";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import addToCalendarOrOpenMaps from "../../../../../../setup/utils/helpers/addToCalendarOrOpenMaps";
 // ! move this logic into a handleNavigatingToCalendarOrMap func
-const handleEventButtonClick = (event) => {
-  event.stopPropagation();
-
-  const eventValue = event.currentTarget.getAttribute("data-eventValue");
-  const eventTitle = event.currentTarget.getAttribute("data-eventTitle");
-  const startDateTime = event.currentTarget.getAttribute("data-startDateTime");
-  const endDateTime = event.currentTarget.getAttribute("data-endDateTime");
-  const eventLocation = event.currentTarget.getAttribute("data-eventLocation");
-  const eventValueObject = JSON.parse(eventValue);
-  if (eventValueObject.startDateTime && eventValueObject.endDateTime) {
-    const calendarUrl = `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(
-      eventTitle
-    )}&dates=${startDateTime}/${endDateTime}&details=${encodeURIComponent(eventTitle)}&location=${encodeURIComponent(eventLocation)}`;
-    window.open(calendarUrl, "_blank");
-  } else if (eventValueObject.location) {
-    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(eventLocation)}`;
-    window.open(mapsUrl, "_blank");
-  }
-};
 
 const EventCardCtas = ({ data }) => {
   const { startDateTime, endDateTime, title, location } = data || {};
@@ -63,11 +45,8 @@ const EventCardCtas = ({ data }) => {
           data-startDateTime={startDateTime}
           data-endDateTime={endDateTime}
           data-eventTitle={title}
-          // data-eventDate={date}
           data-eventLocation={location}
-          // data-eventLocation={location?.locationAddress}
-          data-eventValue={JSON.stringify(button.eventValue)}
-          onClick={handleEventButtonClick}
+          onClick={(e) => addToCalendarOrOpenMaps(e, button.type)}
           color="secondary"
           size="card"
           startIcon={button.icon}

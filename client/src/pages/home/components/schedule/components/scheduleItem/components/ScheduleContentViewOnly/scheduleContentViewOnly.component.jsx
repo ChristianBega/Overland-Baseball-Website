@@ -20,6 +20,7 @@ import { formatDateString } from "../../../../../../../../setup/utils/helpers/fo
 import { convertTo12HourFormat } from "../../../../../../../../setup/utils/helpers/convertTo24HourFormat";
 import { useTheme } from "@emotion/react";
 import { formatDateToLongString } from "../../../../../../../../setup/utils/helpers/formatDateToString";
+import addToCalendarOrOpenMaps from "../../../../../../../../setup/utils/helpers/addToCalendarOrOpenMaps";
 
 // Reusable Components
 const DateDisplay = ({ month, day }) => {
@@ -38,7 +39,7 @@ const DateDisplay = ({ month, day }) => {
 const LocationLink = ({ location }) => {
   const theme = useTheme();
   return (
-    <LocationLinkWrapper>
+    <LocationLinkWrapper data-eventLocation={location} onClick={(e) => addToCalendarOrOpenMaps(e, "location")}>
       <LocationOnIcon
         sx={{
           fontSize: "1rem",
@@ -109,7 +110,6 @@ const TeamLogo = ({ logo, teamName }) => {
 const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventId, ref }) => {
   const { time, location, date, opponent, home } = data;
   const theme = useTheme();
-
   return (
     <ScheduleCard ref={ref} id={eventId} variant="schedule-view-only" isMobile>
       <DateDisplay month={formattedDateMonth} day={formattedDateDay} />
