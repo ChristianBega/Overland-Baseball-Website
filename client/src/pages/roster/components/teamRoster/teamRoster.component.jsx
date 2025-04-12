@@ -73,17 +73,18 @@ export default function TeamRoster() {
   };
 
   // Define filter fields and labels
-  const filterFields = ["name", "position", "bats", "throws", "year", "height", "weight"];
+  const filterFields = ["name", "position", "bat", "throw", "year", "height", "weight"];
   const customFieldLabels = {
     name: "Player Name",
     position: "Position",
-    bats: "Bats",
-    throws: "Throws",
+    bat: "Bats",
+    throw: "Throws",
     year: "Year",
     height: "Height",
     weight: "Weight",
   };
 
+  // console.log("filteredData", players);
   return (
     <Grid item sx={{ overflowX: "hidden" }}>
       <SectionLayout id="roster-section" aria-label="Roster Section">

@@ -64,6 +64,7 @@ const MuiSearchFilterComponent = ({
       } else {
         // Search in specific field
         const fieldValue = item[filterKey];
+        // TODO: Maybe include common matches for abbreviations. For example for player "year", when searching for "senior", it should match "sr" and vice versa.
         return fieldValue && String(fieldValue).toLowerCase().includes(searchTerm.toLowerCase());
       }
     });
