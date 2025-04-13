@@ -33,11 +33,15 @@ const AddItemsForm = ({ ...props }) => {
   };
 
   // Initialize form with default values for seasons
-  const defaultValues = {
-    "seasons.spring.active": true,
-    "seasons.summer.active": false,
-    "seasons.fall.active": false,
-  };
+  let defaultValues = {};
+
+  if (cmsItemType === "events") {
+    defaultValues = {
+      "seasons.spring.active": true,
+      "seasons.summer.active": false,
+      "seasons.fall.active": false,
+    };
+  }
 
   const {
     control,
@@ -61,7 +65,6 @@ const AddItemsForm = ({ ...props }) => {
   // Handle season tab changes
   const handleSeasonChange = (season) => {
     setSelectedSeason(season);
-
     if (season === "spring") {
       setValue("seasons.spring.active", true);
       setValue("seasons.summer.active", false);
@@ -98,25 +101,25 @@ const AddItemsForm = ({ ...props }) => {
 
   // Keep the active checkboxes in sync (only one can be active)
   useEffect(() => {
-    if (springActive) {
+    if (cmsItemType === "events" && springActive) {
       setValue("seasons.summer.active", false);
       setValue("seasons.fall.active", false);
     }
-  }, [springActive, setValue]);
+  }, [springActive, setValue, cmsItemType]);
 
   useEffect(() => {
-    if (summerActive) {
+    if (cmsItemType === "events" && summerActive) {
       setValue("seasons.spring.active", false);
       setValue("seasons.fall.active", false);
     }
-  }, [summerActive, setValue]);
+  }, [summerActive, setValue, cmsItemType]);
 
   useEffect(() => {
-    if (fallActive) {
+    if (cmsItemType === "events" && fallActive) {
       setValue("seasons.spring.active", false);
       setValue("seasons.summer.active", false);
     }
-  }, [fallActive, setValue]);
+  }, [fallActive, setValue, cmsItemType]);
 
   const preprocessFormData = (data) => {
     // Skip preprocessing if not a player event
@@ -166,6 +169,7 @@ const AddItemsForm = ({ ...props }) => {
   };
 
   const onSubmit = async (data) => {
+    console.log("data", data);
     setSubmitAttempted(true);
     setStatusMessage("Loading...");
 

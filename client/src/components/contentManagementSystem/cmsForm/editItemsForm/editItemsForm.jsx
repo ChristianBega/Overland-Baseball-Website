@@ -45,11 +45,13 @@ const EditItemsForm = ({ ...props }) => {
     defaultValues: {
       ...editableItemData,
       eventType: editableItemData?.eventType || "",
-      seasons: editableItemData?.seasons || {
-        spring: { active: true },
-        summer: { active: false },
-        fall: { active: false },
-      },
+      ...(cmsItemType === "events" && {
+        seasons: editableItemData?.seasons || {
+          spring: { active: true },
+          summer: { active: false },
+          fall: { active: false },
+        },
+      }),
     },
   });
 
@@ -105,25 +107,25 @@ const EditItemsForm = ({ ...props }) => {
   };
 
   useEffect(() => {
-    if (springActive) {
+    if (cmsItemType === "events" && springActive) {
       setValue("seasons.summer.active", false);
       setValue("seasons.fall.active", false);
     }
-  }, [springActive, setValue]);
+  }, [springActive, setValue, cmsItemType]);
 
   useEffect(() => {
-    if (summerActive) {
+    if (cmsItemType === "events" && summerActive) {
       setValue("seasons.spring.active", false);
       setValue("seasons.fall.active", false);
     }
-  }, [summerActive, setValue]);
+  }, [summerActive, setValue, cmsItemType]);
 
   useEffect(() => {
-    if (fallActive) {
+    if (cmsItemType === "events" && fallActive) {
       setValue("seasons.spring.active", false);
       setValue("seasons.summer.active", false);
     }
-  }, [fallActive, setValue]);
+  }, [fallActive, setValue, cmsItemType]);
 
   useEffect(() => {
     if (editableItemData?.eventType) {
