@@ -54,9 +54,10 @@ const EventDetails = ({ data, currentSeason }) => {
 
   const desktopStyles = {
     position: "absolute",
-    bottom: "-2%",
+    // border: "1px solid white",
+    bottom: "35px",
     left: "50%",
-    transform: "translateX(-44%)",
+    transform: "translateX(-45.5%)",
     zIndex: 1,
     color: "#fff",
     backgroundColor: `${theme.palette.primary.main}90`,
@@ -70,7 +71,7 @@ const EventDetails = ({ data, currentSeason }) => {
       direction={"row"}
       justifyContent="space-between"
       spacing={2}
-      mb={isLg ? 4 : 2}
+      // mb={isLg ? 4 : 2}
       sx={{ maxWidth: { sm: "450px" }, ...(isLg && desktopStyles) }}
     >
       <Typography component="p" sx={textStyles}>
@@ -91,7 +92,6 @@ const EventDetails = ({ data, currentSeason }) => {
 
 const SeasonToggleButtons = ({ playerEventType, currentSeason, handleChangeSeason }) => {
   const theme = useTheme();
-  const { isXs } = useMediaQueries();
   return (
     <>
       {playerEventType !== "youth program" && (
@@ -141,49 +141,119 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
   const handleOpenModal = () => {
     openModal(<EventSignUpForm data={data} currentSeason={currentSeason} closeModal={closeModal} />);
   };
+
   return (
     <Grid item xs={12}>
       <SectionLayout id="player-event-section" aria-label="Player Event Section">
-        <Grid container id="player-event-sub-grid" columnSpacing={isLg ? 6 : 4}>
-          <Grid item xs={12} md={4} lg={5} order={{ md: rowReverse ? 1 : 2 }} sx={{ position: "relative" }}>
+        <Grid
+          container
+          id="player-event-sub-grid"
+          spacing={4}
+          sx={{
+            alignItems: "center",
+          }}
+        >
+          <Grid
+            item
+            xs={12}
+            md={4}
+            lg={5}
+            order={{ md: rowReverse ? 1 : 2 }}
+            sx={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <Box
-              component="img"
               sx={{
+                position: "relative",
                 width: "100%",
-                maxHeight: { xs: "275px", sm: "325px", md: "475px", lg: " 100%" },
-                height: "100%",
-                marginBottom: { xs: 4, md: 0 },
+                minHeight: {
+                  xs: "250px",
+                  xs2: "300px",
+                  sm: "320px",
+                  tablet: "420px",
+                  lg: "350px",
+                },
                 borderRadius: "6px",
+                overflow: "hidden",
               }}
-              src={eventImage}
-              alt={title}
-            />
-            {!isSm && (
-              <Typography typography="h2" component="h2">
+            >
+              <Box
+                component="img"
+                src={eventImage}
+                alt={title}
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "6px",
+                }}
+              />
+            </Box>
+            {isLg && (
+              <Box sx={{ mt: 2 }}>
+                <EventDetails data={data} currentSeason={currentSeason} />
+              </Box>
+            )}
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            md={8}
+            lg={7}
+            order={{ md: rowReverse ? 2 : 1 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: { xs: 2, md: 1 },
+            }}
+          >
+            <Stack direction={isSm ? "row" : "column"} spacing={2} alignItems={isSm ? "center" : "flex-start"} justifyContent="space-between">
+              <Typography
+                variant="h2"
+                component="h2"
+                sx={{
+                  mb: 0,
+                  fontSize: { xs: "1.75rem", sm: "2rem", md: "2.25rem" },
+                }}
+              >
                 {title}
               </Typography>
-            )}
-            {isLg && <EventDetails data={data} currentSeason={currentSeason} />}
-          </Grid>
-          <Grid item xs={12} md={8} lg={7} order={{ md: rowReverse ? 2 : 1 }}>
-            {isSm && (
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typography typography="h2" component="h2">
-                  {title}
-                </Typography>
-                <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />
-              </Stack>
-            )}
-            {!isSm && <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />}
+              <SeasonToggleButtons playerEventType={playerEventType} currentSeason={currentSeason} handleChangeSeason={handleChangeSeason} />
+            </Stack>
+
             {!isLg && <EventDetails data={data} currentSeason={currentSeason} />}
 
-            {paragraphs?.map((paragraph, index) => (
-              <Typography key={index} component="p" typography="p" sx={{ marginBottom: index !== paragraphs.length - 1 ? 2 : 0 }}>
-                {paragraph}
-              </Typography>
-            ))}
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              {paragraphs?.map((paragraph, index) => (
+                <Typography
+                  key={index}
+                  component="p"
+                  typography="p"
+                  sx={{
+                    marginBottom: index !== paragraphs.length - 1 ? 2 : 0,
+                  }}
+                >
+                  {paragraph}
+                </Typography>
+              ))}
+            </Box>
 
-            <Button onClick={handleOpenModal} variant="contained" color="secondary" sx={{ marginTop: 4 }}>
+            <Button
+              onClick={handleOpenModal}
+              variant="contained"
+              color="secondary"
+              sx={{
+                alignSelf: "flex-start",
+                mt: { xs: 2, sm: 3 },
+              }}
+            >
               Register Now!
             </Button>
           </Grid>
@@ -197,27 +267,3 @@ export default function PlayerEvent({ playerEventType, rowReverse, data }) {
 
 // todo : we need to store playerEvents in the firebase database and allow the user to edit all values within the playerEvent object
 // todo : data will look like the data in the youProgramData just not js objects but instead firebase collection data
-/* <Accordion sx={{ marginTop: "1rem", marginBottom: "2rem" }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header">
-                <Typography component="span">Additional Information</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <List>
-                  <ListItem sx={listItemStyles}>
-                    <CircleIcon sx={bulletPointStyles} />
-                    <Typography component="p">Eligible players: 7th & 8th grade</Typography>
-                  </ListItem>
-
-                  <ListItem sx={listItemStyles}>
-                    <CircleIcon sx={bulletPointStyles} />
-
-                    <Typography component="p">Cost: $50 per player</Typography>
-                  </ListItem>
-                  <ListItem sx={listItemStyles}>
-                    <CircleIcon sx={bulletPointStyles} />
-
-                    <Typography component="p">Players will receive a Blazers shirt and hat</Typography>
-                  </ListItem>
-                </List>
-              </AccordionDetails>
-            </Accordion> */
