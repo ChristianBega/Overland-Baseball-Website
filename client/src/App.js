@@ -6,7 +6,6 @@ import FooterNavigation from "./components/footer/newFooterNavigation.component.
 import Navigation from "./components/navigation/navigation.jsx";
 import { ThemeToggleContext, ThemeToggleProvider } from "./setup/context/components/themeToggler.context.jsx";
 import AppRoutes from "./setup/routes/routes";
-import "./app.css";
 
 const queryClient = new QueryClient();
 

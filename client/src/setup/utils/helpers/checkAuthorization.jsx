@@ -14,3 +14,5 @@ export const useCheckAuthorization = () => {
 
   return checkAuthorization;
 };
+
+// We need to remove this eventually and replace with proper authorization check
