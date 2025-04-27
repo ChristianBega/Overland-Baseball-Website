@@ -15,6 +15,7 @@ import {
   LocationLinkWrapper,
   ScheduleCard,
   TeamLogoContainer,
+  TeamLogoAvatar,
 } from "./scheduleContentViewOnly.styles";
 import { formatDateString } from "../../../../../../../../setup/utils/helpers/formatDate";
 import { convertTo12HourFormat } from "../../../../../../../../setup/utils/helpers/convertTo24HourFormat";
@@ -71,20 +72,27 @@ const TeamLogo = ({ logo, teamName }) => {
   const theme = useTheme();
   return (
     <TeamLogoContainer>
-      <LogoImage
-        component="img"
-        src={logo}
-        sx={{
-          width: "45px",
-          height: "45px",
-          objectFit: "cover",
-          objectPosition: "center",
-          [theme.breakpoints.up("laptop")]: {
-            width: "50px",
-            height: "50px",
-          },
-        }}
-      />
+      {/* if no logo image */}
+      {/* render in the first letter of the team name */}
+
+      {logo ? (
+        <LogoImage
+          component="img"
+          src={logo}
+          sx={{
+            width: "45px",
+            height: "45px",
+            objectFit: "cover",
+            objectPosition: "center",
+            [theme.breakpoints.up("laptop")]: {
+              width: "50px",
+              height: "50px",
+            },
+          }}
+        />
+      ) : (
+        <TeamLogoAvatar>{teamName.charAt(0)}</TeamLogoAvatar>
+      )}
       <Typography
         variant="h6"
         component="h5"
@@ -169,6 +177,7 @@ const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index
               </Typography>
 
               <TeamLogo logo={opponentIcon} teamName={opponent} />
+              {/* if no team logo show the first Letter of the team name and  */}
             </StyledLogoStack>
           </Stack>
 
@@ -195,7 +204,7 @@ const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index
                 </Typography>
               )} */}
 
-              <StatusChip label={home ? "Home" : "Away"} color="success" isHome={home} />
+              <StatusChip label={home === "TRUE" ? "Home" : "Away"} color="success" isHome={home === "TRUE"} />
             </Stack>
 
             <LocationLink location={location} />

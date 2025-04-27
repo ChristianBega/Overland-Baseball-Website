@@ -123,3 +123,19 @@ export const ScheduleCard = styled(Card)(({ theme, isMobile, isDesktop }) => ({
     alignItems: "center",
   }),
 }));
+
+export const TeamLogoAvatar = styled(Box)(({ theme }) => ({
+  width: 45,
+  height: 45,
+  borderRadius: "50%",
+  backgroundColor: theme.palette.grey[300],
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.grey[600],
+  fontWeight: "bold",
+  [theme.breakpoints.up("laptop")]: {
+    width: 50,
+    height: 50,
+  },
+}));

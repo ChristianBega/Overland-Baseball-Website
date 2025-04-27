@@ -3,7 +3,6 @@ import { useTheme } from "@emotion/react";
 import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import InputFieldComponent from "../../../../components/inputFields/inputFields";
-import VolunteerModal from "../../../../components/modals/volunteerModal.component";
 import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import { StyledTableCell, StyledTableRow } from "../../../../styles/index.styles";
 // import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
@@ -104,14 +103,6 @@ export default function EventItems({ ...props }) {
           </>
         )}
       </StyledTableCell>
-
-      <VolunteerModal
-        open={open}
-        handleClose={handleClose}
-        currentEventData={currentEventData}
-        setCurrentEventData={setCurrentEventData}
-        datatypeRegistration="events"
-      />
     </>
   );
 
