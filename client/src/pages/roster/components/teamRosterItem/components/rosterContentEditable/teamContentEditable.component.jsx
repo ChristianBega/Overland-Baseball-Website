@@ -4,7 +4,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import { StyledTableCell } from "../../../../../../styles/index.styles";
 // Components
 import InputFieldComponent from "../../../../../../components/inputFields/inputFields";
-import CmsUploadItem from "../../../../../../components/contentManagementSystem/cmsUploadItem/cmsUploadItem";
+import { CmsUploadItem } from "../../../../../../features/cms";
+
 // Assets
 import PlaceHolderImage from "../../../../../../assets/rosterPlaceHolder.png";
 // Utils

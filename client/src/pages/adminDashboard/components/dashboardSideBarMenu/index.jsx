@@ -12,7 +12,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, StyledMenuDropDownButton, StyledSliderMenu, StyledMenuList } from "./index.styles";
 import MenuItemComponent from "./components/menuItem";
 // State Management
-import { CmsContext } from "../../../../setup/context/cmsContext/cms.context";
+import { CmsContext } from "../../../../features/cms/context/CmsContext";
 import { UserContext } from "../../../../setup/context/user.context";
 // Utilities & Hooks
 import { useCheckAuthorization } from "../../../../setup/utils/helpers/checkAuthorization";

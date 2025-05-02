@@ -3,7 +3,8 @@ import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 // Components
 import InputFieldComponent from "../../../../../../../../components/inputFields/inputFields";
-import CmsUploadItem from "../../../../../../../../components/contentManagementSystem/cmsUploadItem/cmsUploadItem";
+import { CmsUploadItem } from "../../../../../../../../features/cms";
+
 import { LogoImage, StyledTableCell } from "../../../../../../../../styles/index.styles";
 // Utils & Helpers
 import { formatDate } from "../../../../../../../../setup/utils/helpers/formatDate";

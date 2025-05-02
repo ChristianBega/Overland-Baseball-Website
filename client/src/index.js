@@ -5,7 +5,9 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./setup/context/authentication.context";
 import { UserProvider } from "./setup/context/user.context";
-import { CmsProvider } from "./setup/context/cmsContext/cms.context";
+// import { CmsProvider } from "./setup/context/cmsContext/cms.context";
+import { CmsProvider } from "./features/cms/context/CmsContext";
+
 import { ModalProvider } from "./setup/context/modal.context";
 import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
 import { DateNavigatorProvider } from "./pages/home/components/schedule/components/dateNavigator/dateNavigator.context";

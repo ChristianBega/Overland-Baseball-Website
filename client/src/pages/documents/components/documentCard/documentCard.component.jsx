@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardActions, CardContent, Grid, Link, Stack, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+// import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import InputFieldComponent from "../../../../components/inputFields/inputFields";
 
 import { StyledTableCell, StyledTableRow } from "../../../../styles/index.styles";
@@ -28,9 +28,9 @@ export default function DocumentCard({ ...props }, index) {
   const { data, isEditable, editableData, handleChange, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem, isCard } = props;
   const theme = useTheme();
   const currentData = isEditable ? editableData : data;
-  if (isLoading || isError || isSuccess) {
-    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
-  }
+  // if (isLoading || isError || isSuccess) {
+  //   return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  // }
 
   const editableContent = (
     <React.Fragment key={currentData?.id}>

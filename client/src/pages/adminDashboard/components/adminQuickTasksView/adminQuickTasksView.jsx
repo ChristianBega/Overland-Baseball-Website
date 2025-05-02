@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useModal } from "../../../../setup/context/modal.context";
-import CmsMediaStorage from "../../../../components/contentManagementSystem/cmsMediaStorage/cmsMediaStorage";
+import { CmsMediaStorage } from "../../../../features/cms";
 import { useCheckAuthorization } from "../../../../setup/utils/helpers/checkAuthorization";
 import { UserContext } from "../../../../setup/context/user.context";
 import { useNavigate } from "react-router-dom";

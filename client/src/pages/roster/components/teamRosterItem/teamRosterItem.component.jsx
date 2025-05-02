@@ -1,7 +1,8 @@
 import "./teamRosterItem.styles.css";
 import { useTheme } from "@emotion/react";
 // import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
-import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+// import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+// import { CmsOperationStatus } from "../../../../features/cms";
 import { StyledTableRow } from "../../../../styles/index.styles";
 
 import TeamContentViewOnly from "./components/rosterContentViewOnly/teamContentViewOnly.component";
@@ -12,9 +13,9 @@ export default function TeamRoosterItem({ ...props }) {
   const { isEditable, editableData, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
   const currentData = isEditable ? editableData : props.data;
 
-  if (isLoading || isError || isSuccess) {
-    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
-  }
+  // if (isLoading || isError || isSuccess) {
+  //   return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  // }
 
   return (
     <>

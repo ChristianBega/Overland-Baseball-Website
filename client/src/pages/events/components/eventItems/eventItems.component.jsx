@@ -3,7 +3,7 @@ import { useTheme } from "@emotion/react";
 import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import InputFieldComponent from "../../../../components/inputFields/inputFields";
-import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+// import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import { StyledTableCell, StyledTableRow } from "../../../../styles/index.styles";
 // import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
 // import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
@@ -29,9 +29,9 @@ export default function EventItems({ ...props }) {
   const currentData = isEditable ? editableData : data;
   const { eventName, location, date, time, startDateTime, endDateTime, description, eventImage, title } = currentData || {};
 
-  if (isLoading || isError || isSuccess) {
-    return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
-  }
+  // if (isLoading || isError || isSuccess) {
+  //   return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  // }
 
   const handleOpen = (event) => {
     let currentEvent = event.currentTarget.closest("[data-event]").getAttribute("data-event");
