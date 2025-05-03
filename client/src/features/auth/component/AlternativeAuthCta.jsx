@@ -1,8 +1,8 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 // Icons
-import GoogleIcon from "../../../../assets/icons/google-logo.svg";
-import FacebookIcon from "../../../../assets/icons/facebook-logo.svg";
+import GoogleIcon from "../../../assets/icons/google-logo.svg";
+import FacebookIcon from "../../../assets/icons/facebook-logo.svg";
 const lineStyles = {
   border: "1px solid hsl(0, 0%, 90%)",
   width: "30%",

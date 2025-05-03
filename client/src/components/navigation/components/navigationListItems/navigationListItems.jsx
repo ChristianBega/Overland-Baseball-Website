@@ -7,11 +7,11 @@ import { Link, Stack, Typography } from "@mui/material";
 import { UserContext } from "../../../../setup/context/user.context";
 // Utils & Helpers
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
-import { signOutUser } from "../../../../setup/utils/firebase/authentication";
+import { signOutUser } from "../../../../features/auth/utils/authUtils";
 // Styled components
 import { StyledList, StyledListItem } from "./navigationListItems.styles";
 import { useRoleCheck } from "../../../../hooks/useRoleCheck";
-import { ROLES } from "../../../../setup/utils/constants/roles";
+import { ROLES } from "../../../../features/auth/utils/roles";
 const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
   const { currentUserProfile } = useContext(UserContext);
   const { isAuthenticated, hasRole } = useRoleCheck();

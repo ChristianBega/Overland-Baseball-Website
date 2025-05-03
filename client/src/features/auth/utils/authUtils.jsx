@@ -1,7 +1,7 @@
-import { auth, db } from "./index.firebase";
+import { auth, db } from "../../../setup/utils/firebase/index.firebase";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { ROLES } from "../constants/roles";
+import { ROLES } from "../utils/roles";
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({

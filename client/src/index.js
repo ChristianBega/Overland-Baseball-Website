@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { AuthProvider } from "./setup/context/authentication.context";
+import { AuthProvider } from "./features/auth/context/AuthContext";
 import { UserProvider } from "./setup/context/user.context";
 // import { CmsProvider } from "./setup/context/cmsContext/cms.context";
 import { CmsProvider } from "./features/cms/context/CmsContext";

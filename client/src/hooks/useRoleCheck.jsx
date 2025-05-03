@@ -1,4 +1,4 @@
-import { ROLES, ROLE_HIERARCHY } from "../setup/utils/constants/roles";
+import { ROLES, ROLE_HIERARCHY } from "../features/auth/utils/roles";
 
 import { useContext } from "react";
 import { UserContext } from "../setup/context/user.context";

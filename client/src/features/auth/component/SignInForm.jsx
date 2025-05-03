@@ -1,20 +1,19 @@
 import React from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+// Components
+import AlternativeAuthCta from "./AlternativeAuthCta";
+// MUI
+import { Button, Typography, Link as MuiLink, Grid } from "@mui/material";
 // React Hook Form
 import { Controller, useForm } from "react-hook-form";
-// Components
-import AlternativeAuthCta from "../alternativeAuthCta/alternativeAuthCta";
-// MUI
-import { Button, Stack, TextField, Typography, Link as MuiLink, Grid } from "@mui/material";
-// Styles
-import { StyledForm } from "../../../../styles/index.styles";
-// Utils & Hooks
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../../../setup/utils/firebase/authentication";
 // Config
-import signUpInputFields from "./signUpInputFields.config.json";
-import InputFieldComponent from "../../../../components/inputFields/inputFields";
+import signInInputFields from "../data/signInInputFields.config.json";
+// Utils & Hooks
+import { signInAuthWithEmailAndPassword } from "../utils/authUtils";
+import { StyledForm } from "../../../styles/index.styles";
+import InputFieldComponent from "../../../components/inputFields/inputFields";
 
-const SignUpForm = () => {
+const SignInForm = () => {
   const navigate = useNavigate();
   const {
     control,
@@ -22,46 +21,37 @@ const SignUpForm = () => {
     reset,
     formState: { errors },
   } = useForm();
+
   const handleSignUpForm = async (data) => {
-    const { userName, email, password, confirmPassword } = data;
-    if (!userName || !email || !password || !confirmPassword) {
-      console.error("All fields are required");
-      return;
-    }
+    const { email, password } = data;
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(email, password);
-      await createUserDocumentFromAuth(user, { userName });
+      await signInAuthWithEmailAndPassword(email, password);
       reset();
       navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
-          alert("Incorrect Password");
+          alert("Incorrect Password!");
           break;
         case "auth/user-not-found":
-          alert("No user found!");
-          break;
-        case "auth/invalid-email":
-          alert("Invalid Email");
+          alert("Sorry, no user found!");
           break;
         case "auth/invalid-login-credentials":
-          alert("Invalid Login In Credentials");
+          alert("Please recheck your email/password!");
           break;
         default:
-          console.log(error);
+          alert(error);
       }
     }
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-up-form">
-      {/* <FormHeader formHeaderContent={"Sign Up Form"} /> */}
+    <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-in-form" aria-label="Sign In Form">
       <Grid container direction="column" spacing={2} mb={4}>
-        {signUpInputFields.map((config, index) => (
+        {signInInputFields.map((config, index) => (
           <Grid key={index + config.name} item xs={12}>
             <Controller
               required
-              key={index + config.name}
               name={config.name}
               control={control}
               rules={config.rules}
@@ -84,21 +74,25 @@ const SignUpForm = () => {
           </Grid>
         ))}
       </Grid>
-      <Button variant="contained" color="secondary" id="sign-up-form" aria-label="Sign Up Form" type="submit" sx={{ mt: 2, mb: 4 }}>
-        Sign Up
+      <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/password-reset"} aria-label="Forgot Password Link">
+        Forgot your password?
+      </MuiLink>
+      <Button id="sign-in-form" type="submit" variant="contained" color="secondary" aria-label="Sign In Button" sx={{ mt: 2 }}>
+        Sign In
       </Button>
       <AlternativeAuthCta />
-      <Typography component="span" textAlign="center">
-        Already have an account?{" "}
-        <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/sign-in"}>
-          Sign In
+
+      <Typography component="span" variant="span" textAlign="center">
+        Don't have an account?{" "}
+        <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/sign-up"} aria-label="Create Account Link">
+          Register Now
         </MuiLink>
       </Typography>
     </StyledForm>
   );
 };
 
-export default SignUpForm;
+export default SignInForm;
 // {
 //   "name": "password",
 //   "label": "Blazer Number",

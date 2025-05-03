@@ -4,7 +4,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { ScrollToTop } from "../../components/scrollToTop/scrollToTop.component";
 import { RoleGuard } from "../../components/guards/roleGuard";
-import { ROLES } from "../../setup/utils/constants/roles";
+import { ROLES } from "../../features/auth/utils/roles";
 import { PageLoader } from "../../components/reusableComponents/pageLoader";
 
 // Home page is not lazy loaded
@@ -16,7 +16,9 @@ const EventsPage = lazy(() => import("../../pages/events/events.page"));
 const RosterPage = lazy(() => import("../../pages/roster/roster.page"));
 const AlumniPage = lazy(() => import("../../pages/alumni/alumni.page"));
 const SponsorsPage = lazy(() => import("../../pages/sponsors/sponsors.page"));
-const AuthenticationPage = lazy(() => import("../../pages/authentication/authentication.page"));
+// const AuthenticationPage = lazy(() => import("../../pages/authentication/authentication.page"));
+const AuthenticationPage = lazy(() => import("../../features/auth/pages/AuthPage"));
+
 const PasswordResetPage = lazy(() => import("../../pages/passwordReset/passwordReset.page"));
 const Page404 = lazy(() => import("../../pages/404/404.page"));
 

@@ -3,10 +3,10 @@ import { useLocation } from "react-router-dom";
 // MUI
 import { Container, Typography } from "@mui/material";
 // Components
-import SignUpForm from "./components/signUpForm/signUpForm.component";
-import SignInForm from "./components/signInForm/signInForm.component";
-import PasswordResetPage from "../passwordReset/passwordReset.page";
-import SectionLayout from "../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SignUpForm from "../component/SignUpForm";
+import SignInForm from "../component/SignInForm";
+import PasswordResetPage from "../../../pages/passwordReset/passwordReset.page";
+import SectionLayout from "../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 
 const authPageContent = {
   "/authentication/sign-in": {
