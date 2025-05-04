@@ -13,7 +13,7 @@ import rosterItemInputFieldsConfig from "../data/addRosterItem.config.json";
 import eventsItemInputFieldsConfig from "../data/addEventItem.config.json";
 import documentsItemInputFieldsConfig from "../data/addDocument.config.json";
 // Components
-import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
+import { FormStatusIndicator } from "../../../features/ui";
 // Utils
 import { handleUploadFile } from "../utils/uploadFile";
 import { updateCMSItem } from "../utils/editItem";

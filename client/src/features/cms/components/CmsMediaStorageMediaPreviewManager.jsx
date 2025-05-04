@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@mui/material";
-import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
+import { FormStatusIndicator } from "../../../features/ui";
 
 const MediaPreviewManager = ({ preview, file, progress, statusMessage, handleUploadMedia, handleCancelUpload }) => {
   return (
@@ -9,7 +9,7 @@ const MediaPreviewManager = ({ preview, file, progress, statusMessage, handleUpl
           id="media-preview-manager"
           style={{
             // display: "flex",
-            flexDirection: "column",
+            flexDirection: "column",  
             position: "absolute",
             bottom: "16px",
             left: "50%",

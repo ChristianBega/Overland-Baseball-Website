@@ -5,7 +5,7 @@ import { Grid, Typography, Box, Button } from "@mui/material";
 // Components
 import SectionLayout from "../../../../features/ui/components/SectionLayout";
 import InputFieldComponent from "../../../../features/ui/components/InputFields";
-import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
+import { FormStatusIndicator } from "../../../../features/ui";
 // config
 import contactUsConfig from "./contactUs.config.json";
 // hooks

@@ -5,7 +5,7 @@ import { processCsvUpload } from "../helpers/processCsvUpload";
 import scheduleExpectedDataStructure from "../data/schedule.config.json";
 import eventExpectedDataStructure from "../data/event.config.json";
 import { bulkAddToFirebase } from "../utils/addItem";
-import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
+import { FormStatusIndicator } from "../../../features/ui";
 import rosterExpectedDataStructure from "../data/roster.config.json";
 import { StyledTableCell } from "../../../styles/index.styles";
 import InputFieldComponent from "../../../features/ui/components/InputFields";

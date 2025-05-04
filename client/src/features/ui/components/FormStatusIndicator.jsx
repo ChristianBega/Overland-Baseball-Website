@@ -4,7 +4,7 @@ import { Box, CircularProgress, Typography, Stack } from "@mui/material";
 // Icons
 import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { StyledFormStatusIndicatorContainer } from "./formStatusIndicator.styles";
+import { StyledFormStatusIndicatorContainer } from "./FormStatusIndicator.styles";
 
 const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, success }) => {
   return (

@@ -2,7 +2,7 @@ import { Box, Button, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 // Components
-import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
+import { FormStatusIndicator } from "../../../features/ui";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 // Utils
 import { handleUploadFile } from "../utils/uploadFile";

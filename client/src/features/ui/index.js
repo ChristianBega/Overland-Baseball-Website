@@ -21,4 +21,6 @@ export { default as PageLoader } from "./components/PageLoader";
 export { default as Socials } from "./components/Socials.";
 export { default as TextComponent } from "./components/TextComponent";
 export { default as ModalComponent } from "./components/modal";
+export { default as FormStatusIndicator } from "./components/FormStatusIndicator";
+// Context
 export { default as ModalProvider, useModal } from "./context/modal.context";
