@@ -18,7 +18,7 @@ import { StyledDrawerMenu } from "../styles/index.styles";
 import NavigationListItems from "./NavigationListItems";
 // Utils
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
-import Socials from "../../../components/reusableComponents/socials.component";
+import Socials from "../../../features/ui/components/Socials.";
 
 const menuItems = [
   { label: "Home", url: "/", icon: <HomeIcon fontSize="small" /> },

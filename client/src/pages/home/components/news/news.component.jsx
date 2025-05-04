@@ -4,7 +4,7 @@ import { useTheme } from "@emotion/react";
 // Mui
 import { Grid, Typography } from "@mui/material";
 // Components
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
 // Utils & Helpers
 import findKeyWordsAndHighlight from "../../../../setup/utils/helpers/findKeyWordsAndHighLight";
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";

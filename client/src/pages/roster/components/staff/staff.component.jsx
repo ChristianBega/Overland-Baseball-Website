@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import PlaceHolderImage from "../../../../assets/coachRosterPlaceHolder.jpg";
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
 
 const staffData = [
   {

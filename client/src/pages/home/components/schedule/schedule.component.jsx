@@ -3,7 +3,7 @@ import React from "react";
 // MUI
 import { Grid, Typography, Box, Stack } from "@mui/material";
 // Components
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
 import ScheduleItem from "./components/scheduleItem/scheduleItem.component";
 // import DateNavigator from "./components/dateNavigator/dateNavigator.component";
 // Hooks

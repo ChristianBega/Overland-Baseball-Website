@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
-import ModalComponent from "../../components/modals/modal";
+import { ModalComponent } from "..";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 const ModalContext = createContext({
@@ -12,7 +12,7 @@ const ModalContext = createContext({
   setFile: () => {},
 });
 
-export const ModalProvider = ({ children }) => {
+const ModalProvider = ({ children }) => {
   const [modalContent, setModalContent] = useState([]);
   const [preview, setPreview] = useState(null); // Image preview state
   const [file, setFile] = useState(null); // File state
@@ -51,5 +51,6 @@ export const ModalProvider = ({ children }) => {
     </QueryClientProvider>
   );
 };
+export default ModalProvider;
 
 export const useModal = () => useContext(ModalContext);

@@ -6,10 +6,10 @@ import FilesGridView from "./CmsMediaStorageFileGridView";
 import FilesTableView from "./CmsMediaStorageFilesTableView";
 import FileViewToggle from "./CmsMediaStorageFileViewToggle";
 import AddNewItem from "./CmsMediaStorageAddNewItem";
-import SearchFilterComponent from "../../../components/reusableComponents/searchFilter/searchFilter";
+import SearchFilterComponent from "../../../features/ui/components/SearchFilter";
 import DirectoryExplorer from "./CmsMediaStorageDirectoryExplorer";
 // Context
-import { useModal } from "../../../setup/context/modal.context";
+import { useModal } from "../../../features/ui";
 // Utils & Helpers
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";

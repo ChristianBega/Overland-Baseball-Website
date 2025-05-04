@@ -1,7 +1,7 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 // Components
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
 // MUI
 import { Box, Button, Typography } from "@mui/material";
 // Assets

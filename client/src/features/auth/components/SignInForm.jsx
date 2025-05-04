@@ -11,7 +11,8 @@ import signInInputFields from "../data/signInInputFields.config.json";
 // Utils & Hooks
 import { signInAuthWithEmailAndPassword } from "../utils/authUtils";
 import { StyledForm } from "../../../styles/index.styles";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+// import InputFieldComponent from "../../../features/ui/components/InputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 
 const SignInForm = () => {
   const navigate = useNavigate();

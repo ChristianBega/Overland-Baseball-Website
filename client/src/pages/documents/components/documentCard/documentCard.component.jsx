@@ -3,7 +3,7 @@ import { Card, CardActions, CardContent, Grid, Link, Stack, Typography } from "@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 // import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
-import InputFieldComponent from "../../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../../features/ui/components/InputFields";
 
 import { StyledTableCell, StyledTableRow } from "../../../../styles/index.styles";
 import { formatServerTimestamp } from "../../../../setup/utils/helpers/formatDate";

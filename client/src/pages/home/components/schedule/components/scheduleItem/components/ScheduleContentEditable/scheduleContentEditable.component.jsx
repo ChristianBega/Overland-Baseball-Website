@@ -2,7 +2,7 @@ import React from "react";
 // MUI
 import { Box, Stack, Typography } from "@mui/material";
 // Components
-import InputFieldComponent from "../../../../../../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../../../../../../features/ui/components/InputFields";
 import { CmsUploadItem } from "../../../../../../../../features/cms";
 
 import { LogoImage, StyledTableCell } from "../../../../../../../../styles/index.styles";

@@ -2,11 +2,11 @@ import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import axios from "axios";
 import { updateCMSItem } from "../utils/editItem";
-import TextInputField from "../../../components/inputFields/TextInputField/textInputField";
+import TextInputField from "../../../features/ui/components/TextInputField";
 import { getDownloadableUrl, handleUpdateImage } from "../utils/uploadFile";
 import { UserContext } from "../../../features/auth/context/UserContext";
 import { deleteCMSItem, deleteItemFromStorage } from "../utils/deleteItem";
-import { useModal } from "../../../setup/context/modal.context";
+import { useModal } from "../../../features/ui";
 // ! save rename function
 export const handleSaveRename = async (uid, role, file, newFileName, originalFileExtension, closeModal, setAnchorEl, mainDirectoryName) => {
   const newFileNameWithExt = newFileName + "." + originalFileExtension;

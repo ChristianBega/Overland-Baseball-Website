@@ -12,7 +12,7 @@ import { CmsItemTableView } from "../../../features/cms";
 import { CmsContext } from "../../../features/cms/context/CmsContext";
 import { CmsDeleteItemProvider } from "../../../features/cms/context/CmsDelete.context";
 // import { ModalProvider } from "../../setup/context/modal.context";
-import SectionLayout from "../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../features/ui/components/SectionLayout";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 

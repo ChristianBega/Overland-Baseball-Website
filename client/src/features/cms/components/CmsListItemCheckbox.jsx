@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { StyledTableCell } from "../../../styles/index.styles";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";

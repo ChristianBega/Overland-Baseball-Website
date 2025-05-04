@@ -4,9 +4,9 @@ import { Grid, Paper, TableBody, TableHead, TableCell, Typography, Box, Stack } 
 // Components
 import { fetchCMSItems } from "../../../../features/cms/utils/getItem";
 import { useQuery } from "@tanstack/react-query";
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component.jsx";
-import CustomPagination from "../../../../components/reusableComponents/pagination/pagination.jsx";
-import SearchFilterComponent from "../../../../components/reusableComponents/searchFilter/searchFilter.jsx";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
+import CustomPagination from "../../../../features/ui/components/Pagination";
+import SearchFilterComponent from "../../../../features/ui/components/SearchFilter";
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils.jsx";
 import headerMap from "./rosterHeaderMap.config.jsx";
 import { useTheme } from "@emotion/react";

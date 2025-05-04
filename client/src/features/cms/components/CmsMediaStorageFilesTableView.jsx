@@ -2,7 +2,7 @@ import { Paper, styled, Table, TableBody, TableCell, TableContainer, TableHead, 
 import React, { useState } from "react";
 import FileMenuOptions from "./CmsMediaStorageFileMenuOptions";
 import PreviewIcon from "@mui/icons-material/Preview";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { formatFileSize } from "../../../setup/utils/helpers/formatFileSize";
 import { formatServerTimestamp } from "../../../setup/utils/helpers/formatDate";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

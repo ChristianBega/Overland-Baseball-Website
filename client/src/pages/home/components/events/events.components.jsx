@@ -3,8 +3,8 @@ import { useTheme } from "@emotion/react";
 // MUI
 import { Grid, Typography } from "@mui/material";
 //  Components
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
-import BentoLayout from "../../../../components/reusableComponents/bentoLayout/bentoLayout.component";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
+import BentoLayout from "../../../../features/ui/components/BentoLayout.";
 // Utilities
 import findKeyWordsAndHighlight from "../../../../setup/utils/helpers/findKeyWordsAndHighLight";
 import { useRealtimeData } from "../../../../hooks/useRealtimeData";

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useModal } from "../../../setup/context/modal.context";
+import { useModal } from "../../../features/ui";
 import { CmsMediaStorage } from "../../../features/cms";
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
 import { UserContext } from "../../../features/auth/context/UserContext";

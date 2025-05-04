@@ -3,8 +3,8 @@ import { Controller, useForm } from "react-hook-form";
 // Mui
 import { Grid, Typography, Box, Button } from "@mui/material";
 // Components
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
-import InputFieldComponent from "../../../../components/inputFields/inputFields";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
+import InputFieldComponent from "../../../../features/ui/components/InputFields";
 import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
 // config
 import contactUsConfig from "./contactUs.config.json";

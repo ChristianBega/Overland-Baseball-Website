@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { CmsUploadItem } from "../../../features/cms";
 
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 // import CmsSeasonTabOptions from "../../../components/contentManagementSystem/cmsSeasonTabOptions/cmsSeasonTabOptions";
 import { CmsSeasonTabOptions } from "../../../features/cms";
 

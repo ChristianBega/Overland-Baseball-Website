@@ -1,6 +1,6 @@
 import { InputLabel } from "@mui/material";
 import React from "react";
-import { commonInputStyles, commonLabelStyles, inputVariants, mergeStyles } from "../styles/shared.styles";
+import { commonInputStyles, commonLabelStyles, inputVariants, mergeStyles } from "./shared.styles";
 
 const TextAreaInputField = ({ cssProps, ...props }) => {
   const inputStyles = mergeStyles(

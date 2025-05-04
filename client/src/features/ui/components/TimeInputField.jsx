@@ -1,11 +1,11 @@
 import { InputLabel } from "@mui/material";
 import React from "react";
-import { commonInputStyles, commonLabelStyles, inputVariants, mergeStyles } from "../styles/shared.styles";
+import { commonInputStyles, commonLabelStyles, inputVariants, mergeStyles } from "./shared.styles";
 
-const NumericInputField = ({ cssProps, ...props }) => {
+const TimeInputField = ({ cssProps, ...props }) => {
   const inputStyles = mergeStyles(
     commonInputStyles,
-    inputVariants.numeric,
+    inputVariants.time,
     cssProps?.input
   );
 
@@ -22,7 +22,7 @@ const NumericInputField = ({ cssProps, ...props }) => {
       </InputLabel>
       <input 
         style={inputStyles}
-        type="number"
+        type="time"
         id={props.name}
         {...props}
       />
@@ -30,4 +30,4 @@ const NumericInputField = ({ cssProps, ...props }) => {
   );
 };
 
-export default NumericInputField;
+export default TimeInputField;

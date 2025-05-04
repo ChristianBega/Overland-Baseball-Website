@@ -10,7 +10,7 @@ import ImageThree from "../../assets/unformated/tim-mossholder-vdhNO4mGQ14-unspl
 // import Wishlist from "../components/boosters/wishlist.component";
 // import CashAppQRcode from "../components/boosters/cashAppQRcode.component";
 import BoosterImageSlider from "./components/imageSlider/boosterImageSlider.component";
-import TextComponent from "../../components/reusableComponents/textComponent.component";
+import TextComponent from "../../features/ui/components/TextComponent";
 
 const boostersDataMissionStatement = {
   id: "missionStatement",

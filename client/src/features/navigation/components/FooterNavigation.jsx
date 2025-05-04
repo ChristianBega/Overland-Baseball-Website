@@ -7,7 +7,7 @@ import { BottomNavigation, Grid } from "@mui/material";
 import OverlandLogo from "./FooterLogo";
 import LocationMap from "./LocationMap";
 import ContactUs from "./ContactUs";
-import Socials from "../../../components/reusableComponents/socials.component";
+import Socials from "../../../features/ui/components/Socials.";
 
 // Context
 import { ThemeToggleContext } from "../../../setup/context/components/themeToggler.context";

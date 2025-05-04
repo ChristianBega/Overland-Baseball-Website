@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -9,7 +9,7 @@ import { UserProvider } from "./features/auth/context/UserContext";
 // import { CmsProvider } from "./setup/context/cmsContext/cms.context";
 import { CmsProvider } from "./features/cms/context/CmsContext";
 
-import { ModalProvider } from "./setup/context/modal.context";
+import { ModalProvider } from "./features/ui";
 import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
 import { DateNavigatorProvider } from "./pages/home/components/schedule/components/dateNavigator/dateNavigator.context";
 import { CalendarProvider } from "./setup/context/components/calendar.context";

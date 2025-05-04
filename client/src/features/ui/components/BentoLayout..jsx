@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import EventCard from "../../../pages/home/components/events/components/eventCard/eventCard.component";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 import EventSignUpForm from "../../../pages/events/components/eventSignUpForm/eventSignUpForm";
-import { useModal } from "../../../setup/context/modal.context";
+import { useModal } from "../../../features/ui";
 const BentoLayout = ({ gridItemsData }) => {
   const { isMd } = useMediaQueries();
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);

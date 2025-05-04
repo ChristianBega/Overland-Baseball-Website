@@ -2,7 +2,7 @@
 import { Box, CircularProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-export const PageLoader = () => {
+const PageLoader = () => {
   const theme = useTheme();
 
   return (
@@ -27,3 +27,5 @@ export const PageLoader = () => {
     </Box>
   );
 };
+
+export default PageLoader;

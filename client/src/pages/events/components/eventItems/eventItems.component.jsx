@@ -2,7 +2,7 @@ import React from "react";
 import { useTheme } from "@emotion/react";
 import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import InputFieldComponent from "../../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../../features/ui/components/InputFields";
 // import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import { StyledTableCell, StyledTableRow } from "../../../../styles/index.styles";
 // import { formatDate } from "../../../../../setup/utils/helpers/formatDate";

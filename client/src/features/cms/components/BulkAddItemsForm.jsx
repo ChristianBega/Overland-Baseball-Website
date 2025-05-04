@@ -8,7 +8,7 @@ import { bulkAddToFirebase } from "../utils/addItem";
 import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
 import rosterExpectedDataStructure from "../data/roster.config.json";
 import { StyledTableCell } from "../../../styles/index.styles";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 
 const BulkAddItemsForm = ({ ...props }) => {
   const { uid, cmsItemType, closeModal, role, setSelectedItems } = props;

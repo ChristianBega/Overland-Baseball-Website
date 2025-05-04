@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { ScrollToTop } from "../../features/navigation";
 import { RoleGuard } from "../../features/guards";
 import { ROLES } from "../../features/auth/utils/roles";
-import { PageLoader } from "../../components/reusableComponents/pageLoader";
+import { PageLoader } from "../../features/ui";
 
 // Home page is not lazy loaded
 import HomePage from "../../pages/home/home.page";

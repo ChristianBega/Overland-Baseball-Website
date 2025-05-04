@@ -6,13 +6,13 @@ import CmsListItem from "./CmsListItem";
 import { CmsOptionsPanel } from "../../../features/cms";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
 import { StyledTableCell } from "../../../styles/index.styles";
 import CmsTableViewHeader from "./CmsItemTableViewHeader";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
-import CustomPagination from "../../../components/reusableComponents/pagination/pagination";
-import SearchFilterComponent from "../../../components/reusableComponents/searchFilter/searchFilter";
+import CustomPagination from "../../../features/ui/components/Pagination";
+import SearchFilterComponent from "../../../features/ui/components/SearchFilter";
 import { useLocation } from "react-router-dom";
 const CmsItemTableView = ({ currentItem }) => {
   const [page, setPage] = useState(1);

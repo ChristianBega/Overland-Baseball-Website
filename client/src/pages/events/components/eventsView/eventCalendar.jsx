@@ -3,7 +3,7 @@ import { Paper } from "@mui/material";
 import CalendarHeader from "./calendarHeader";
 import CalendarGrid from "./calendarGrid";
 import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
-import { useModal } from "../../../../setup/context/modal.context";
+import { useModal } from "../../../../features/ui";
 
 /**
  * Main Calendar component designed to work directly with Firebase events

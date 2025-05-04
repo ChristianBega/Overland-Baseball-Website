@@ -12,7 +12,7 @@ import { StyledForm } from "../../../styles/index.styles";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../utils/authUtils";
 // Config
 import signUpInputFields from "../data/signUpInputFields.config.json";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 
 const SignUpForm = () => {
   const navigate = useNavigate();

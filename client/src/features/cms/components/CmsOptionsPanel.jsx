@@ -5,7 +5,7 @@ import { Button, Stack, Typography } from "@mui/material";
 // import CmsForm from "../cmsForm/cmsForm";
 import { CmsForm } from "../../../features/cms";
 // Context
-import { useModal } from "../../../setup/context/modal.context";
+import { useModal } from "../../../features/ui";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
 // Helpers & Utils

@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 

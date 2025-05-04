@@ -2,7 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button, Box, Typography, Stack, Grid } from "@mui/material";
 import formConfig from "./eventSignUp.config.json";
-import InputFieldComponent from "../../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../../features/ui/components/InputFields";
 import useEmailService from "../../../../hooks/useEmailServices";
 import FormStatusIndicator from "../../../../components/statusIndicators/formStatusIndicator";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";

@@ -1,8 +1,8 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
-import RegistrationModal from "../modals/registrationModal.component";
+// import RegistrationModal from "../../../components/modals/registrationModal.component";
 export default function TextComponent({ boosterData, isMobile, sectionType }) {
-  const [currentEventData, setCurrentEventData] = useState([]);
+  // const [currentEventData, setCurrentEventData] = useState([]);
 
   return (
     <>
@@ -11,7 +11,7 @@ export default function TextComponent({ boosterData, isMobile, sectionType }) {
         <Typography sx={{ minHeight: "200px" }} typography={{ xs: "smallBodyText", md: "largeBodyText" }}>
           {boosterData.content}
         </Typography>
-        {sectionType === "volunteer" && (
+        {/* {sectionType === "volunteer" && (
           <>
             <RegistrationModal
               currentEventData={currentEventData}
@@ -20,7 +20,7 @@ export default function TextComponent({ boosterData, isMobile, sectionType }) {
               datatypeRegistration="boosters club"
             />
           </>
-        )}
+        )} */}
       </Grid>
     </>
   );

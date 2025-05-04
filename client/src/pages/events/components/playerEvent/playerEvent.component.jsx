@@ -2,7 +2,7 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useState } from "react";
 
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
 
 // Icons
 import PlaceIcon from "@mui/icons-material/Place";
@@ -13,7 +13,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { useTheme } from "@emotion/react";
 import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
 // import Form from "../../../../../components/forms/form.component";
-import { useModal } from "../../../../setup/context/modal.context";
+import { useModal } from "../../../../features/ui";
 import { formatTime } from "../../../../setup/utils/helpers/formatTime";
 import { formatDateTimeForCalendar } from "../../../../setup/utils/helpers/formatDate";
 import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";

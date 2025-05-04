@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 // Components
 import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
-import InputFieldComponent from "../../../components/inputFields/inputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 // Utils
 import { handleUploadFile } from "../utils/uploadFile";
 import { addCMSItem } from "../utils/addItem";

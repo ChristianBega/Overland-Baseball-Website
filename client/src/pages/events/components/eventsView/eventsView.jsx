@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import React from "react";
-import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../../features/ui/components/SectionLayout";
 import EventCalendar from "./eventCalendar";
 import { useRealtimeData } from "../../../../hooks/useRealtimeData";
 
