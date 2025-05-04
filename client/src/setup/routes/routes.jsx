@@ -2,8 +2,8 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { ScrollToTop } from "../../components/scrollToTop/scrollToTop.component";
-import { RoleGuard } from "../../components/guards/roleGuard";
+import { ScrollToTop } from "../../features/navigation";
+import { RoleGuard } from "../../features/guards";
 import { ROLES } from "../../features/auth/utils/roles";
 import { PageLoader } from "../../components/reusableComponents/pageLoader";
 

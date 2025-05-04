@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 // MUI
 import { Container, Typography } from "@mui/material";
 // Components
-import SignUpForm from "../component/SignUpForm";
-import SignInForm from "../component/SignInForm";
+import SignUpForm from "../components/SignUpForm";
+import SignInForm from "../components/SignInForm";
 import PasswordResetPage from "../../../pages/passwordReset/passwordReset.page";
 import SectionLayout from "../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 

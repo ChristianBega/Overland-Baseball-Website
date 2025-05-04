@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useRoleCheck } from "../../hooks/useRoleCheck";
+import { useRoleCheck } from "../../../hooks/useRoleCheck";
 
-export const RoleGuard = ({ children, allowedRoles }) => {
+const RoleGuard = ({ children, allowedRoles }) => {
   const { checkMultipleRoles, isAuthenticated } = useRoleCheck();
   const location = useLocation();
 
@@ -18,3 +18,5 @@ export const RoleGuard = ({ children, allowedRoles }) => {
 
   return children;
 };
+
+export default RoleGuard;
