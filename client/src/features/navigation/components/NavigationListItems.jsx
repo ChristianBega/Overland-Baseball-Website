@@ -4,14 +4,15 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 // MUI components
 import { Link, Stack, Typography } from "@mui/material";
 // Contexts
-import { UserContext } from "../../../../setup/context/user.context";
+// import { UserContext } from "../../../setup/context/user.context";
+import { UserContext } from "../../../features/auth/context/UserContext";
 // Utils & Helpers
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
-import { signOutUser } from "../../../../features/auth/utils/authUtils";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import { signOutUser } from "../../../features/auth/utils/authUtils";
 // Styled components
-import { StyledList, StyledListItem } from "./navigationListItems.styles";
-import { useRoleCheck } from "../../../../hooks/useRoleCheck";
-import { ROLES } from "../../../../features/auth/utils/roles";
+import { StyledList, StyledListItem } from "./NavigationListItems.styles";
+import { useRoleCheck } from "../../../hooks/useRoleCheck";
+import { ROLES } from "../../../features/auth/utils/roles";
 const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
   const { currentUserProfile } = useContext(UserContext);
   const { isAuthenticated, hasRole } = useRoleCheck();

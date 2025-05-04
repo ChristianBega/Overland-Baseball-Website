@@ -27,7 +27,7 @@ import CheckboxCell from "./CmsListItemCheckbox";
 import DeleteButtonCell from "./CmsListItemDeleteButton";
 // Contexts
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
-import { UserContext } from "../../../setup/context/user.context";
+import { UserContext } from "../../../features/auth/context/UserContext";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
 // Utils & Helpers
 import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";

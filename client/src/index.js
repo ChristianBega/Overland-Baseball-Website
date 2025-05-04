@@ -4,7 +4,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./features/auth/context/AuthContext";
-import { UserProvider } from "./setup/context/user.context";
+import { UserProvider } from "./features/auth/context/UserContext";
+// import { UserProvider } from "./setup/context/user.context";
 // import { CmsProvider } from "./setup/context/cmsContext/cms.context";
 import { CmsProvider } from "./features/cms/context/CmsContext";
 

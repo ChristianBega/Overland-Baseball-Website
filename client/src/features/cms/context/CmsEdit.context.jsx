@@ -8,7 +8,7 @@ import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthori
 import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
 import { handleUploadFile } from "../../../setup/utils/firebase/uploadFile";
 // Contexts
-import { UserContext } from "../../../setup/context/user.context";
+import { UserContext } from "../../../features/auth/context/UserContext";
 
 export const CmsEditItemContext = createContext({
   editableItemId: null,

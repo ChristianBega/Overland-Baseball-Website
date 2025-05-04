@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Container, Grid } from "@mui/material";
-import { UserContext } from "../../setup/context/user.context";
+import { UserContext } from "../../features/auth/context/UserContext";
 import DashboardSideBarMenu from "./components/dashboardSideBarMenu";
 import { useNavigate } from "react-router-dom";
 import { CmsCreateItemProvider } from "../../features/cms/context/CmsCreate.context";

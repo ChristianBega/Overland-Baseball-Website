@@ -5,7 +5,7 @@ import { Button, Stack } from "@mui/material";
 import MediaMenu from "./CmsMediaStorageMediaMenu";
 import MediaPreviewManager from "./CmsMediaStorageMediaPreviewManager";
 // Context
-import { UserContext } from "../../../setup/context/user.context";
+import { UserContext } from "../../../features/auth/context/UserContext";
 // Utils & Helpers
 import { handleUploadFile } from "../../../setup/utils/firebase/uploadFile";
 import { scrollTo } from "../../../setup/utils/helpers/scrollTo";

@@ -1,7 +1,7 @@
 import { ROLES, ROLE_HIERARCHY } from "../features/auth/utils/roles";
 
 import { useContext } from "react";
-import { UserContext } from "../setup/context/user.context";
+import { UserContext } from "../features/auth/context/UserContext";
 
 export const useRoleCheck = () => {
   const { currentUserProfile } = useContext(UserContext);

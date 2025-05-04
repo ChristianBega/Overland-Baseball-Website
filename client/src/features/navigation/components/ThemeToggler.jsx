@@ -1,6 +1,6 @@
 import { Button, Stack } from "@mui/material";
 import React, { useContext } from "react";
-import { ThemeToggleContext } from "../../../../setup/context/components/themeToggler.context";
+import { ThemeToggleContext } from "../../../setup/context/components/themeToggler.context";
 
 const ThemeToggler = () => {
   const { toggleTheme } = useContext(ThemeToggleContext);

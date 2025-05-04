@@ -7,7 +7,7 @@ import { Edit as EditIcon } from "@mui/icons-material";
 // Context
 import { useContext } from "react";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
-import { UserContext } from "../../../setup/context/user.context";
+import { UserContext } from "../../../features/auth/context/UserContext";
 import { useModal } from "../../../setup/context/modal.context";
 // Components
 // import CmsForm from "../../../cmsForm/cmsForm";

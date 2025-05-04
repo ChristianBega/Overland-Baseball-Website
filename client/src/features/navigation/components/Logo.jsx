@@ -1,7 +1,7 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 // Assets
-import Logo from "../../assets/overlandLogo2.webp";
+import Logo from "../../../assets/overlandLogo2.webp";
 // MUI components
 import { Box, Link } from "@mui/material";
 

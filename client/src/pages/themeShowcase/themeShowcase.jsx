@@ -26,7 +26,8 @@ import EmailIcon from "@mui/icons-material/Email";
 import GoogleIcon from "@mui/icons-material/Google";
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import ThemeToggler from "../../components/navigation/components/themeToggler/themeToggler";
+// import ThemeToggler from "../../components/navigation/components/themeToggler/themeToggler";
+import ThemeToggler from "../../features/navigation/components/ThemeToggler";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 // Icons

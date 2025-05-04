@@ -11,6 +11,7 @@ export { default as AuthPage } from "./pages/AuthPage";
 
 // Context exports
 export { AuthProvider, useAuth } from "./context/AuthContext";
+export { UsersProvider } from "./context/UserContext";
 
 // Utility exports
 export {

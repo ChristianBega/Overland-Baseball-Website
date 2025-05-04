@@ -3,7 +3,9 @@ import { useContext } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import FooterNavigation from "./components/footer/newFooterNavigation.component.jsx";
-import Navigation from "./components/navigation/navigation.jsx";
+// import Navigation from "./components/navigation/navigation.jsx";
+import Navigation from "./features/navigation/components/Navigation.jsx";
+
 import { ThemeToggleContext, ThemeToggleProvider } from "./setup/context/components/themeToggler.context.jsx";
 import AppRoutes from "./setup/routes/routes";
 

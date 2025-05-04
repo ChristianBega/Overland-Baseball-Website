@@ -4,7 +4,7 @@ import axios from "axios";
 import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
 import TextInputField from "../../../components/inputFields/TextInputField/textInputField";
 import { getDownloadableUrl, handleUpdateImage } from "../../../setup/utils/firebase/uploadFile";
-import { UserContext } from "../../../setup/context/user.context";
+import { UserContext } from "../../../features/auth/context/UserContext";
 import { deleteCMSItem, deleteItemFromStorage } from "../../../setup/utils/firebase/deleteItem";
 import { useModal } from "../../../setup/context/modal.context";
 // ! save rename function

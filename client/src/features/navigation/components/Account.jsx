@@ -9,10 +9,10 @@ import SignUpIcon from "@mui/icons-material/PersonAdd";
 import SignOutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 // Components
-import NavigationListItems from "../navigationListItems/navigationListItems";
-import { StyledDrawerMenu } from "../../styles/index.styles";
+import NavigationListItems from "./NavigationListItems";
+import { StyledDrawerMenu } from "../styles/index.styles";
 // Utils
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";  
 
 const menuItems = [
   { label: "Sign In", url: "/authentication/sign-in", icon: <SignInIcon /> },

@@ -5,20 +5,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import EventIcon from "@mui/icons-material/Event";
-import TopicIcon from "@mui/icons-material/Topic";
+// import TopicIcon from "@mui/icons-material/Topic";
 import GroupsIcon from "@mui/icons-material/Groups";
-import SportsIcon from "@mui/icons-material/Sports";
+// import SportsIcon from "@mui/icons-material/Sports";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import OverlandLogo from "../../../footer/components/footerLogo/logofooter.component";
-import ContactUs from "../../../footer/components/conactUs/contactUs.component";
+import OverlandLogo from "../../../components/footer/components/footerLogo/logofooter.component";
+import ContactUs from "../../../components/footer/components/conactUs/contactUs.component";
 // MUI components
 import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
 // Components
-import { StyledDrawerMenu } from "../../styles/index.styles";
-import NavigationListItems from "../navigationListItems/navigationListItems";
+import { StyledDrawerMenu } from "../styles/index.styles";
+import NavigationListItems from "./NavigationListItems";
 // Utils
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
-import Socials from "../../../reusableComponents/socials.component";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import Socials from "../../../components/reusableComponents/socials.component";
 import { useTheme } from "@emotion/react";
 
 const menuItems = [

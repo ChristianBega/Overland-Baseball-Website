@@ -4,13 +4,13 @@ import { Box, Slide, useScrollTrigger } from "@mui/material";
 // Material UI Components
 import { AppBar } from "@mui/material";
 // Components
-import OverlandLogo from "./logo.component";
-import Account from "./components/account/account";
-import NavigationMenu from "./components/navigationMenu/navigationMenu";
+import OverlandLogo from "./Logo";
+import Account from "./Account";
+import NavigationMenu from "./NavigationMenu";
 // Custom Hooks
-import useMediaQueries from "../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 // Styles
-import { StyledToolbar } from "./styles/index.styles";
+import { StyledToolbar } from "../styles/index.styles";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 

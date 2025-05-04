@@ -13,7 +13,7 @@ import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, StyledMenuDro
 import MenuItemComponent from "./components/menuItem";
 // State Management
 import { CmsContext } from "../../../../features/cms/context/CmsContext";
-import { UserContext } from "../../../../setup/context/user.context";
+import { UserContext } from "../../../../features/auth/context/UserContext";
 // Utilities & Hooks
 import { useCheckAuthorization } from "../../../../setup/utils/helpers/checkAuthorization";
 import { containerVariants } from "../../../../setup/framerAnimations/dashboardMenu";
