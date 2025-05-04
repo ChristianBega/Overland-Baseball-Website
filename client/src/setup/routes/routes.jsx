@@ -24,7 +24,8 @@ const Page404 = lazy(() => import("../../pages/404/404.page"));
 
 // Lazy load protected pages
 const DocumentsPage = lazy(() => import("../../pages/documents/documents.page"));
-const AdminDashboardPage = lazy(() => import("../../pages/adminDashboard"));
+// const AdminDashboardPage = lazy(() => import("../../pages/adminDashboard"));
+const AdminDashboardPage = lazy(() => import("../../features/admin/pages/AdminDashboard"));
 const ThemeShowcase = lazy(() => import("../../pages/themeShowcase/themeShowcase"));
 const ManagePages = lazy(() => import("../../pages/managePages/managePages.page"));
 

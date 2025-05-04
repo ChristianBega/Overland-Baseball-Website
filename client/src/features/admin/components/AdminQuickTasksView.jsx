@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { useModal } from "../../../../setup/context/modal.context";
-import { CmsMediaStorage } from "../../../../features/cms";
-import { useCheckAuthorization } from "../../../../setup/utils/helpers/checkAuthorization";
-import { UserContext } from "../../../../features/auth/context/UserContext";
+import { useModal } from "../../../setup/context/modal.context";
+import { CmsMediaStorage } from "../../../features/cms";
+import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
+import { UserContext } from "../../../features/auth/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 // import { initializeBulkAddFields } from "../../../../../setup/utils/firebase/helper";

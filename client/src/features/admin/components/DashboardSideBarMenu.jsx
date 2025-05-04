@@ -9,15 +9,15 @@ import TopicIcon from "@mui/icons-material/Topic";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 // Custom components and styles
-import { IconBox, MenuWrapper, SliderButton, SliderMenu, MenuList, StyledMenuDropDownButton, StyledSliderMenu, StyledMenuList } from "./index.styles";
-import MenuItemComponent from "./components/menuItem";
+import { MenuWrapper, StyledMenuDropDownButton, StyledSliderMenu, StyledMenuList } from "./DashboardSideBarMenu.styles";
+import MenuItemComponent from "./MenuItem";
 // State Management
-import { CmsContext } from "../../../../features/cms/context/CmsContext";
-import { UserContext } from "../../../../features/auth/context/UserContext";
+import { CmsContext } from "../../../features/cms/context/CmsContext";
+import { UserContext } from "../../../features/auth/context/UserContext";
 // Utilities & Hooks
-import { useCheckAuthorization } from "../../../../setup/utils/helpers/checkAuthorization";
-import { containerVariants } from "../../../../setup/framerAnimations/dashboardMenu";
-import useMenuLogic from "./hooks/useMenuLogic";
+import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
+import { containerVariants } from "../../../setup/framerAnimations/dashboardMenu";
+import useMenuLogic from "../hooks/useMenuLogic";
 
 const menuListItems = [
   { linkName: "dashboard", urlPath: "/", icon: <DashboardIcon sx={{ fontSize: "20px" }} />, disabled: false },

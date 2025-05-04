@@ -1,18 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import { Container, Grid } from "@mui/material";
-import { UserContext } from "../../features/auth/context/UserContext";
-import DashboardSideBarMenu from "./components/dashboardSideBarMenu";
+import { UserContext } from "../../../features/auth/context/UserContext";
+import DashboardSideBarMenu from "../components/DashboardSideBarMenu";
 import { useNavigate } from "react-router-dom";
-import { CmsCreateItemProvider } from "../../features/cms/context/CmsCreate.context";
-import { CmsEditItemProvider } from "../../features/cms/context/CmsEdit.context";
-import { CmsBulkActionProvider } from "../../features/cms/context/CmsBulkActions.context";
-import AdminQuickTasksView from "./components/adminQuickTasksView/adminQuickTasksView";
-import { MediaStorageProvider } from "../../features/cms/context/CmsMediaStorage.context";
-import { CmsItemTableView } from "../../features/cms";
-import { CmsContext } from "../../features/cms/context/CmsContext";
-import { CmsDeleteItemProvider } from "../../features/cms/context/CmsDelete.context";
+import { CmsCreateItemProvider } from "../../../features/cms/context/CmsCreate.context";
+import { CmsEditItemProvider } from "../../../features/cms/context/CmsEdit.context";
+import { CmsBulkActionProvider } from "../../../features/cms/context/CmsBulkActions.context";
+import AdminQuickTasksView from "../components/AdminQuickTasksView";
+import { MediaStorageProvider } from "../../../features/cms/context/CmsMediaStorage.context";
+import { CmsItemTableView } from "../../../features/cms";
+import { CmsContext } from "../../../features/cms/context/CmsContext";
+import { CmsDeleteItemProvider } from "../../../features/cms/context/CmsDelete.context";
 // import { ModalProvider } from "../../setup/context/modal.context";
-import SectionLayout from "../../components/reusableComponents/sectionLayout/sectionLayout.component";
+import SectionLayout from "../../../components/reusableComponents/sectionLayout/sectionLayout.component";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 
