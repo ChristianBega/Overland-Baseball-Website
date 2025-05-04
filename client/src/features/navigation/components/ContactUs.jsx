@@ -3,7 +3,7 @@ import React from "react";
 import { Grid, Link, Typography, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 // Utils & Helpers
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 // Icons
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";

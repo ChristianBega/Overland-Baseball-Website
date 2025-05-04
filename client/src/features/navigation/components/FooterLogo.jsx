@@ -2,7 +2,8 @@ import { Link as RouterLink } from "react-router-dom";
 // MUI components
 import { Box, Grid, Stack, Typography, Link } from "@mui/material";
 // Image assets
-import logo from "../../../../assets/overlandLogo_3.webp";
+import logo from "../../../assets/overlandLogo_3.webp";
+// Utils & Helpers
 import { useTheme } from "@emotion/react";
 const styles = {
   stack: {

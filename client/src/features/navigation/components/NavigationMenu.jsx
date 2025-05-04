@@ -9,17 +9,16 @@ import EventIcon from "@mui/icons-material/Event";
 import GroupsIcon from "@mui/icons-material/Groups";
 // import SportsIcon from "@mui/icons-material/Sports";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import OverlandLogo from "../../../components/footer/components/footerLogo/logofooter.component";
-import ContactUs from "../../../components/footer/components/conactUs/contactUs.component";
+import OverlandLogo from "./FooterLogo";
+import ContactUs from "./ContactUs";
 // MUI components
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Stack } from "@mui/material";
 // Components
 import { StyledDrawerMenu } from "../styles/index.styles";
 import NavigationListItems from "./NavigationListItems";
 // Utils
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 import Socials from "../../../components/reusableComponents/socials.component";
-import { useTheme } from "@emotion/react";
 
 const menuItems = [
   { label: "Home", url: "/", icon: <HomeIcon fontSize="small" /> },

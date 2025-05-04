@@ -4,18 +4,18 @@ import React, { useContext } from "react";
 import { BottomNavigation, Grid } from "@mui/material";
 
 // Components
-import OverlandLogo from "./components/footerLogo/logofooter.component";
-import LocationMap from "./components/location/locationMap.component";
-import ContactUs from "./components/conactUs/contactUs.component";
-import Socials from "../reusableComponents/socials.component";
+import OverlandLogo from "./FooterLogo";
+import LocationMap from "./LocationMap";
+import ContactUs from "./ContactUs";
+import Socials from "../../../components/reusableComponents/socials.component";
 
 // Context
-import { ThemeToggleContext } from "../../setup/context/components/themeToggler.context";
+import { ThemeToggleContext } from "../../../setup/context/components/themeToggler.context";
 
 // Assets
-import footerBg from "../../assets/footer/footer-bg-sm.svg";
-import footerBgMd from "../../assets/footer/footer-bg-md.svg";
-import footerBgLg from "../../assets/footer/footer-bg-lg.svg";
+import footerBg from "../../../assets/footer/footer-bg-sm.svg";
+import footerBgMd from "../../../assets/footer/footer-bg-md.svg";
+import footerBgLg from "../../../assets/footer/footer-bg-lg.svg";
 
 // Styled components
 import styled from "@emotion/styled";
