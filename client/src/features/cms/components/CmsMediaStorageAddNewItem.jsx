@@ -7,7 +7,7 @@ import MediaPreviewManager from "./CmsMediaStorageMediaPreviewManager";
 // Context
 import { UserContext } from "../../../features/auth/context/UserContext";
 // Utils & Helpers
-import { handleUploadFile } from "../../../setup/utils/firebase/uploadFile";
+import { handleUploadFile } from "../utils/uploadFile";
 import { scrollTo } from "../../../setup/utils/helpers/scrollTo";
 
 const AddNewItem = () => {

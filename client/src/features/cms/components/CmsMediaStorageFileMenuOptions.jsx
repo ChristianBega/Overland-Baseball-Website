@@ -1,11 +1,11 @@
 import { Button, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import axios from "axios";
-import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
+import { updateCMSItem } from "../utils/editItem";
 import TextInputField from "../../../components/inputFields/TextInputField/textInputField";
-import { getDownloadableUrl, handleUpdateImage } from "../../../setup/utils/firebase/uploadFile";
+import { getDownloadableUrl, handleUpdateImage } from "../utils/uploadFile";
 import { UserContext } from "../../../features/auth/context/UserContext";
-import { deleteCMSItem, deleteItemFromStorage } from "../../../setup/utils/firebase/deleteItem";
+import { deleteCMSItem, deleteItemFromStorage } from "../utils/deleteItem";
 import { useModal } from "../../../setup/context/modal.context";
 // ! save rename function
 export const handleSaveRename = async (uid, role, file, newFileName, originalFileExtension, closeModal, setAnchorEl, mainDirectoryName) => {

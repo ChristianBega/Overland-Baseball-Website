@@ -1,6 +1,6 @@
 import { doc, setDoc, writeBatch, collection, serverTimestamp } from "firebase/firestore";
 
-import { db } from "./index.firebase";
+import { db } from "../../../setup/utils/firebase/index.firebase";
 import { v4 as uuidv4 } from "uuid";
 
 export const addCMSItem = async (userUid, role, data, type) => {
@@ -16,7 +16,6 @@ export const addCMSItem = async (userUid, role, data, type) => {
       createdByUserUid: userUid,
       ...filteredData,
       // Todo:  versionHistory : array of dates & ids pointing to version/references of the data in a collection that deletes every 30 days
-
     });
     return { success: true, id: cmsItemDocRef.id, message: "Created Item successfully!" };
   } catch (error) {

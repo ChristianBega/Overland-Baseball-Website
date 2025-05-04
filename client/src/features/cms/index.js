@@ -38,3 +38,10 @@ export { CmsBulkActionProvider } from "./context/CmsBulkActions.context";
 export { CmsCreateItemProvider } from "./context/CmsCreate.context";
 export { CmsDeleteItemProvider } from "./context/CmsDelete.context";
 export { CmsEditItemProvider } from "./context/CmsEdit.context";
+
+// Utils
+export { bulkAddToFirebase, addCMSItem } from "./utils/addItem";
+export { deleteCMSItem, deleteItemFromStorage, bulkDeleteFromFirebase } from "./utils/deleteItem";
+export { getDownloadableUrl, handleUpdateImage, handleUploadFile } from "./utils/uploadFile";
+export { fetchCMSItems, fetchCMSItemById, subscribeToCMSItems } from "./utils/getItem";
+export { updateCMSItem } from "./utils/editItem";

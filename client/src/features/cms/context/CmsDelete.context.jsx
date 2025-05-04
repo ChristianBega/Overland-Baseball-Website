@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
-import { deleteCMSItem, deleteItemFromStorage } from "../../../setup/utils/firebase/deleteItem";
+import { deleteCMSItem, deleteItemFromStorage } from "../utils/deleteItem";
 import { UserContext } from "../../../features/auth/context/UserContext";
 
 export const CmsDeleteItemContext = createContext({

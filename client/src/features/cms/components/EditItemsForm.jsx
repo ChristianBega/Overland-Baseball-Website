@@ -15,8 +15,8 @@ import documentsItemInputFieldsConfig from "../data/addDocument.config.json";
 // Components
 import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
 // Utils
-import { handleUploadFile } from "../../../setup/utils/firebase/uploadFile";
-import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
+import { handleUploadFile } from "../utils/uploadFile";
+import { updateCMSItem } from "../utils/editItem";
 import { handleSaveRename } from "./CmsMediaStorageFileMenuOptions";
 
 const EditItemsForm = ({ ...props }) => {

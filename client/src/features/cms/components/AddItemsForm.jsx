@@ -5,8 +5,8 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../components/inputFields/inputFields";
 // Utils
-import { handleUploadFile } from "../../../setup/utils/firebase/uploadFile";
-import { addCMSItem } from "../../../setup/utils/firebase/addItem";
+import { handleUploadFile } from "../utils/uploadFile";
+import { addCMSItem } from "../utils/addItem";
 // Configs
 import scheduleItemInputFieldsConfig from "../data/addScheduleItem.config.json";
 import rosterItemInputFieldsConfig from "../data/addRosterItem.config.json";

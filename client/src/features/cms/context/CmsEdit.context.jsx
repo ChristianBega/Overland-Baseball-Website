@@ -5,8 +5,8 @@ import { useLocation } from "react-router-dom";
 import { handleSaveRename } from "../../../features/cms/components/CmsMediaStorageFileMenuOptions";
 // Utils & Helpers
 import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
-import { updateCMSItem } from "../../../setup/utils/firebase/editItem";
-import { handleUploadFile } from "../../../setup/utils/firebase/uploadFile";
+import { updateCMSItem } from "../utils/editItem";
+import { handleUploadFile } from "../utils/uploadFile";
 // Contexts
 import { UserContext } from "../../../features/auth/context/UserContext";
 

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { processCsvUpload } from "../helpers/processCsvUpload";
 import scheduleExpectedDataStructure from "../data/schedule.config.json";
 import eventExpectedDataStructure from "../data/event.config.json";
-import { bulkAddToFirebase } from "../../../setup/utils/firebase/addItem";
+import { bulkAddToFirebase } from "../utils/addItem";
 import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
 import rosterExpectedDataStructure from "../data/roster.config.json";
 import { StyledTableCell } from "../../../styles/index.styles";

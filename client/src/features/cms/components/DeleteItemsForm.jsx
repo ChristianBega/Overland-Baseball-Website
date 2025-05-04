@@ -1,6 +1,6 @@
 import { Box, Button, TableRow } from "@mui/material";
 import React, { useState } from "react";
-import { bulkDeleteFromFirebase, bulkDeleteItemsFromStorage } from "../../../setup/utils/firebase/deleteItem";
+import { bulkDeleteFromFirebase, bulkDeleteItemsFromStorage } from "../utils/deleteItem";
 import FormStatusIndicator from "../../../components/statusIndicators/formStatusIndicator";
 import InputFieldComponent from "../../../components/inputFields/inputFields";
 import { Table, TableBody, TableContainer, TableHead } from "@mui/material";

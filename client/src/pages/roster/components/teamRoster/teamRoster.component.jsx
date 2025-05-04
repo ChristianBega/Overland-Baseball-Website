@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { Grid, Paper, TableBody, TableHead, TableCell, Typography, Box, Stack } from "@mui/material";
 
 // Components
-import { fetchCMSItems } from "../../../../setup/utils/firebase/getItem.jsx";
+import { fetchCMSItems } from "../../../../features/cms/utils/getItem";
 import { useQuery } from "@tanstack/react-query";
 import SectionLayout from "../../../../components/reusableComponents/sectionLayout/sectionLayout.component.jsx";
 import CustomPagination from "../../../../components/reusableComponents/pagination/pagination.jsx";

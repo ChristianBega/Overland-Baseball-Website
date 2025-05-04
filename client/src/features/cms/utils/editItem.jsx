@@ -1,5 +1,5 @@
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "./index.firebase"; // Import your db config
+import { db } from "../../../setup/utils/firebase/index.firebase"; // Import your db config
 
 /**
  * Partially updates an item in the Firestore collection.

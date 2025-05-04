@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchCMSItems } from "../../../setup/utils/firebase/getItem";
+import { fetchCMSItems } from "../utils/getItem";
 
 export const useFetchCMSItemsList = (type) => {
   const [data, setData] = useState(null);
