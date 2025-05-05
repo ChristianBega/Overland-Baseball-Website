@@ -5,7 +5,8 @@ import { Container, Typography } from "@mui/material";
 // Components
 import SignUpForm from "../components/SignUpForm";
 import SignInForm from "../components/SignInForm";
-import PasswordResetPage from "../../../pages/passwordReset/passwordReset.page";
+// import PasswordResetPage from "../../../pages/passwordReset/passwordReset.page";
+import PasswordResetPage from "../pages/PasswordResetPage";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
 
 const authPageContent = {

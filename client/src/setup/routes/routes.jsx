@@ -11,15 +11,19 @@ import { PageLoader } from "../../features/ui";
 import HomePage from "../../pages/home/home.page";
 
 // Lazy load all other pages
-const BoostersPage = lazy(() => import("../../pages/boosters/boosters.page"));
+// const BoostersPage = lazy(() => import("../../pages/boosters/boosters.page"));
+const BoostersPage = lazy(() => import("../../features/boosters/pages/BoostersPage"));
+
 const EventsPage = lazy(() => import("../../pages/events/events.page"));
 const RosterPage = lazy(() => import("../../pages/roster/roster.page"));
-const AlumniPage = lazy(() => import("../../pages/alumni/alumni.page"));
+// const AlumniPage = lazy(() => import("../../pages/alumni/alumni.page"));
+const AlumniPage = lazy(() => import("../../features/alumni/pages/AlumniPage"));
 const SponsorsPage = lazy(() => import("../../pages/sponsors/sponsors.page"));
 // const AuthenticationPage = lazy(() => import("../../pages/authentication/authentication.page"));
 const AuthenticationPage = lazy(() => import("../../features/auth/pages/AuthPage"));
 
-const PasswordResetPage = lazy(() => import("../../pages/passwordReset/passwordReset.page"));
+// const PasswordResetPage = lazy(() => import("../../pages/passwordReset/passwordReset.page"));
+const PasswordResetPage = lazy(() => import("../../features/auth/pages/PasswordResetPage"));
 const Page404 = lazy(() => import("../../pages/404/404.page"));
 
 // Lazy load protected pages

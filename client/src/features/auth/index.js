@@ -8,6 +8,7 @@ export { default as SignUpForm } from "./components/SignUpForm";
 
 // Page exports
 export { default as AuthPage } from "./pages/AuthPage";
+export { default as PasswordResetPage } from "./pages/PasswordResetPage";
 
 // Context exports
 export { AuthProvider, useAuth } from "./context/AuthContext";

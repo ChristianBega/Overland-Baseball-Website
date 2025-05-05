@@ -1,16 +1,16 @@
 import React from "react";
 import { Container, Grid, Typography, useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import ImageOne from "../../assets/unformated/kenny-nguy-n-fSrlWGw7d9g-unsplash.jpg";
-import ImageTwo from "../../assets/unformated/frankie-lopez-CtgjUuLQ0JA-unsplash.jpg";
-import ImageThree from "../../assets/unformated/tim-mossholder-vdhNO4mGQ14-unsplash.jpg";
+import ImageOne from "../../../assets/unformated/kenny-nguy-n-fSrlWGw7d9g-unsplash.jpg";
+import ImageTwo from "../../../assets/unformated/frankie-lopez-CtgjUuLQ0JA-unsplash.jpg";
+import ImageThree from "../../../assets/unformated/tim-mossholder-vdhNO4mGQ14-unsplash.jpg";
 
 // Components
 // import Donations from "../components/boosters/donations.component";
 // import Wishlist from "../components/boosters/wishlist.component";
 // import CashAppQRcode from "../components/boosters/cashAppQRcode.component";
-import BoosterImageSlider from "./components/imageSlider/boosterImageSlider.component";
-import TextComponent from "../../features/ui/components/TextComponent";
+import BoosterImageSlider from "../components/ImageSlider";
+import TextComponent from "../../ui/components/TextComponent";
 
 const boostersDataMissionStatement = {
   id: "missionStatement",

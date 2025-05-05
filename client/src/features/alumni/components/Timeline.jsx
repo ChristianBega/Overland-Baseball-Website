@@ -1,10 +1,9 @@
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import baseballIcon from "../../../../assets/baseball-icon.png";
-import "./timeline.styles.css";
-import PlaceHolderImage from "../../../../assets/coachRosterPlaceHolder.jpg";
-import SectionLayout from "../../../../features/ui/components/SectionLayout";
+import baseballIcon from "../../../assets/baseball-icon.png";
+import PlaceHolderImage from "../../../assets/coachRosterPlaceHolder.jpg";
+import SectionLayout from "../../../features/ui/components/SectionLayout";
 const BaseballIcon = () => <img width="100%" height="100%" src={baseballIcon} alt="baseball icon" />;
 
 const DateTypography = ({ text }) => (
