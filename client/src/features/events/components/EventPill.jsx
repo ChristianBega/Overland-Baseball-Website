@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { getEventColor } from "./utils";
+import { getEventColor } from "./EventUtils";
 import CircleIcon from "@mui/icons-material/Circle";
 /**
  * EventPill displays a single event in a calendar day cell

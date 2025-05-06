@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
-import EventPill from "./eventPill";
-import { isToday, isPastDate } from "./utils";
+import EventPill from "./EventPill";
+import { isToday, isPastDate } from "./EventUtils";
 import { useTheme } from "@emotion/react";
-import { useModal } from "../../../../features/ui";
-import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
-import CalendarSignUpMobile from "./calendarSignUpMobile";
-import { CalendarContext } from "../../../../setup/context/components/calendar.context";
+import { useModal } from "../../../features/ui";
+import EventSignUpForm from "./EventSignUpForm";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import CalendarSignUpMobile from "./EventCalendarSignUpMobile";
+import { CalendarContext } from "../../../setup/context/components/calendar.context";
 
 /**
  * Component for other month days (previous or next month)

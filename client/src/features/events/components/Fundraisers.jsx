@@ -2,8 +2,8 @@ import React from "react";
 import Grid from "@mui/material/Grid/Grid";
 import { Typography } from "@mui/material";
 
-import BentoLayout from "../../../../features/ui/components/BentoLayout.";
-import SectionLayout from "../../../../features/ui/components/SectionLayout";
+import BentoLayout from "../../../features/ui/components/BentoLayout.";
+import SectionLayout from "../../../features/ui/components/SectionLayout";
 
 export default function Fundraisers({ fundraiserEvents }) {
   return (

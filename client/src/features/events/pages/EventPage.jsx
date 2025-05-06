@@ -1,12 +1,12 @@
 import { Container, Grid } from "@mui/material";
 import React from "react";
 
-import EventsView from "./components/eventsView/eventsView";
-import PlayerEvent from "./components/playerEvent/playerEvent.component";
+import EventsView from "../components/EventView";
+import PlayerEvent from "../components/PlayerEvent";
 
-import useMediaQueries from "../../setup/utils/helpers/useMediaQueries.utils";
-import { useRealtimeData } from "../../hooks/useRealtimeData";
-import Fundraisers from "./components/fundraisers/fundraisers.component";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import { useRealtimeData } from "../../../hooks/useRealtimeData";
+import Fundraisers from "../components/Fundraisers";
 export default function EventsPage() {
   const { isLg } = useMediaQueries();
   const { data, isLoading, error } = useRealtimeData("events");

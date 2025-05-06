@@ -2,12 +2,12 @@ import React from "react";
 import { useTheme } from "@emotion/react";
 import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import InputFieldComponent from "../../../../features/ui/components/InputFields";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
 // import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
-import { StyledTableCell, StyledTableRow } from "../../../../styles/index.styles";
+import { StyledTableCell, StyledTableRow } from "../../../styles/index.styles";
 // import { formatDate } from "../../../../../setup/utils/helpers/formatDate";
 // import { convertTo24HourFormat } from "../../../../../setup/utils/helpers/convertTo24HourFormat";
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 
 export default function EventItems({ ...props }) {
   const { isMd } = useMediaQueries();

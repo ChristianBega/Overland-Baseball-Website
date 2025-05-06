@@ -1,8 +1,8 @@
 import { Grid, Typography } from "@mui/material";
 import React from "react";
-import SectionLayout from "../../../../features/ui/components/SectionLayout";
-import EventCalendar from "./eventCalendar";
-import { useRealtimeData } from "../../../../hooks/useRealtimeData";
+import SectionLayout from "../../../features/ui/components/SectionLayout";
+import EventCalendar from "./EventCalendar";
+import { useRealtimeData } from "../../../hooks/useRealtimeData";
 
 export default function Events() {
   const { data, isLoading, error } = useRealtimeData("events");

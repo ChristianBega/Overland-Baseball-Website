@@ -1,15 +1,15 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button, Box, Typography, Stack, Grid } from "@mui/material";
-import formConfig from "./eventSignUp.config.json";
-import InputFieldComponent from "../../../../features/ui/components/InputFields";
-import useEmailService from "../../../../hooks/useEmailServices";
-import { FormStatusIndicator } from "../../../../features/ui";
+import formConfig from "../data/eventSignUp.config.json";
+import InputFieldComponent from "../../../features/ui/components/InputFields";
+import useEmailService from "../../../hooks/useEmailServices";
+import { FormStatusIndicator } from "../../../features/ui";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useTheme } from "@emotion/react";
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   const { isSm } = useMediaQueries();
   const theme = useTheme();

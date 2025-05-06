@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Paper } from "@mui/material";
-import CalendarHeader from "./calendarHeader";
-import CalendarGrid from "./calendarGrid";
-import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
-import { useModal } from "../../../../features/ui";
+import CalendarGrid from "./EventCalendarGrid";
+import EventSignUpForm from "./EventSignUpForm";
+import { useModal } from "../../../features/ui";
 
 /**
  * Main Calendar component designed to work directly with Firebase events

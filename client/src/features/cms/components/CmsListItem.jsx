@@ -20,8 +20,9 @@ import { Typography, TableRow } from "@mui/material";
 // Components
 import TeamRoosterItem from "../../../pages/roster/components/teamRosterItem/teamRosterItem.component";
 import ScheduleItem from "../../../pages/home/components/schedule/components/scheduleItem/scheduleItem.component";
-import EventItems from "../../../pages/events/components/eventItems/eventItems.component";
-import DocumentCard from "../../../pages/documents/components/documentCard/documentCard.component";
+// import EventItems from "../../../pages/events/components/eventItems/eventItems.component";
+import { EventItems } from "../../events";
+import DocumentCard from "../../../features/documents/components/DocumentCard";
 import ActionButtonsCell from "./CmsListItemActionButton";
 import CheckboxCell from "./CmsListItemCheckbox";
 import DeleteButtonCell from "./CmsListItemDeleteButton";

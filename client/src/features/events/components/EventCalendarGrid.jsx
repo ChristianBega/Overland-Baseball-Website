@@ -1,9 +1,9 @@
 import React from "react";
 import { Grid, Box } from "@mui/material";
-import CalendarDay from "./calendarDay";
-import { getDaysInMonth, getFirstDayOfMonth, getWeekDayNames, formatDateForComparison, filterEventsForDate } from "./utils";
+import CalendarDay from "./EventCalendarDay";
+import { getDaysInMonth, getFirstDayOfMonth, getWeekDayNames, formatDateForComparison, filterEventsForDate } from "./EventUtils";
 import { useTheme } from "@emotion/react";
-import CalendarHeader from "./calendarHeader";
+import CalendarHeader from "./EventCalendarHeader";
 
 /**
  * CalendarGrid component that displays a month of days

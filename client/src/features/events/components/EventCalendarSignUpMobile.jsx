@@ -1,7 +1,7 @@
 import { Button, IconButton, List, ListItemButton, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import EventSignUpForm from "../eventSignUpForm/eventSignUpForm";
-import { CalendarContext } from "../../../../setup/context/components/calendar.context";
+import EventSignUpForm from "./EventSignUpForm";
+import { CalendarContext } from "../../../setup/context/components/calendar.context";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 const EventList = ({ events, handleSelectMobileEvent }) => {
   return (
