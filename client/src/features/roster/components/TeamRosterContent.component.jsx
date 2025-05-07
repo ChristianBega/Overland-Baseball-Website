@@ -2,8 +2,8 @@ import React from "react";
 // MUI
 import { styled } from "@mui/material";
 // Assets
-import PlaceHolderImage from "../../../../../../assets/rosterPlaceHolder.png";
-import useMediaQueries from "../../../../../../setup/utils/helpers/useMediaQueries.utils";
+import PlaceHolderImage from "../../../assets/rosterPlaceHolder.png";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 // Utils
 
 // Styled components using proper table elements
@@ -40,7 +40,7 @@ const InfoText = styled("span")({
   color: "#1a2b4f",
 });
 
-const TeamContentViewOnly = ({ data, isCmsItem }) => {
+const TeamRosterContent = ({ data, isCmsItem }) => {
   const { isMd } = useMediaQueries();
   const { playerImage, position, height, weight, handed, number, name, year, yearAbbr } = data;
 
@@ -76,4 +76,4 @@ const TeamContentViewOnly = ({ data, isCmsItem }) => {
   );
 };
 
-export default TeamContentViewOnly;
+export default TeamRosterContent;

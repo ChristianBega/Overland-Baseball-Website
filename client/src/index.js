@@ -12,7 +12,7 @@ import { CmsProvider } from "./features/cms/context/CmsContext";
 import { ModalProvider } from "./features/ui";
 import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
 import { DateNavigatorProvider } from "./pages/home/components/schedule/components/dateNavigator/dateNavigator.context";
-import { CalendarProvider } from "./setup/context/components/calendar.context";
+import { CalendarProvider } from "./features/events/index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

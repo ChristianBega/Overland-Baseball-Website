@@ -16,7 +16,7 @@ const BoostersPage = lazy(() => import("../../features/boosters/pages/BoostersPa
 
 // const EventsPage = lazy(() => import("../../pages/events/events.page"));
 const EventsPage = lazy(() => import("../../features/events/pages/EventPage"));
-const RosterPage = lazy(() => import("../../pages/roster/roster.page"));
+const RosterPage = lazy(() => import("../../features/roster/pages/RosterPage"));
 // const AlumniPage = lazy(() => import("../../pages/alumni/alumni.page"));
 const AlumniPage = lazy(() => import("../../features/alumni/pages/AlumniPage"));
 const SponsorsPage = lazy(() => import("../../pages/sponsors/sponsors.page"));

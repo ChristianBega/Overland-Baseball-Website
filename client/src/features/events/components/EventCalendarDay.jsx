@@ -7,7 +7,7 @@ import { useModal } from "../../../features/ui";
 import EventSignUpForm from "./EventSignUpForm";
 import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
 import CalendarSignUpMobile from "./EventCalendarSignUpMobile";
-import { CalendarContext } from "../../../setup/context/components/calendar.context";
+import { CalendarContext } from "../../../features/events/context/calendar.context";
 
 /**
  * Component for other month days (previous or next month)

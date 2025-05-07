@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Grid } from "@mui/material";
-import useMediaQueries from "../../setup/utils/helpers/useMediaQueries.utils";
-import TeamRoster from "./components/teamRoster/teamRoster.component";
-import Staff from "./components/staff/staff.component";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import TeamRoster from "../components/TeamRoster.jsx";
+import Staff from "../components/Staff.jsx";
 
 export default function RosterPage() {
   const { isLg } = useMediaQueries();

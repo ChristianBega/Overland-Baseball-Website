@@ -18,7 +18,7 @@ import React, { useContext } from "react";
 // Mui
 import { Typography, TableRow } from "@mui/material";
 // Components
-import TeamRoosterItem from "../../../pages/roster/components/teamRosterItem/teamRosterItem.component";
+import TeamRoosterItem from "../../../features/roster/components/TeamRosterItem.jsx";
 import ScheduleItem from "../../../pages/home/components/schedule/components/scheduleItem/scheduleItem.component";
 // import EventItems from "../../../pages/events/components/eventItems/eventItems.component";
 import { EventItems } from "../../events";

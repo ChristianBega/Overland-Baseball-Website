@@ -1,12 +1,11 @@
-import "./teamRosterItem.styles.css";
+import "./TeamRosterItem.styles.css";
 import { useTheme } from "@emotion/react";
 // import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
 // import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 // import { CmsOperationStatus } from "../../../../features/cms";
-import { StyledTableRow } from "../../../../styles/index.styles";
+import { StyledTableRow } from "../../../styles/index.styles";
 
-import TeamContentViewOnly from "./components/rosterContentViewOnly/teamContentViewOnly.component";
-import TeamContentEditable from "./components/rosterContentEditable/teamContentEditable.component";
+import TeamRosterContent from "./TeamRosterContent.component";
 
 export default function TeamRoosterItem({ ...props }) {
   const theme = useTheme();
@@ -29,7 +28,7 @@ export default function TeamRoosterItem({ ...props }) {
         )
       ) : ( */}
       <StyledTableRow>
-        <TeamContentViewOnly theme={theme} {...props} />
+        <TeamRosterContent theme={theme} {...props} />
       </StyledTableRow>
       {/* )} */}
     </>

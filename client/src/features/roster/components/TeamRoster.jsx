@@ -2,13 +2,13 @@ import React, { useState, useCallback } from "react";
 import { Grid, Paper, TableBody, TableHead, TableCell, Typography, Box, Stack } from "@mui/material";
 
 // Components
-import { fetchCMSItems } from "../../../../features/cms/utils/getItem";
+import { fetchCMSItems } from "../../../features/cms/utils/getItem";
 import { useQuery } from "@tanstack/react-query";
-import SectionLayout from "../../../../features/ui/components/SectionLayout";
-import CustomPagination from "../../../../features/ui/components/Pagination";
-import SearchFilterComponent from "../../../../features/ui/components/SearchFilter";
-import useMediaQueries from "../../../../setup/utils/helpers/useMediaQueries.utils.jsx";
-import headerMap from "./rosterHeaderMap.config.jsx";
+import SectionLayout from "../../../features/ui/components/SectionLayout";
+import CustomPagination from "../../../features/ui/components/Pagination";
+import SearchFilterComponent from "../../../features/ui/components/SearchFilter";
+import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils.jsx";
+import headerMap from "../data/rosterHeaderMap.config.jsx";
 import { useTheme } from "@emotion/react";
 import {
   RosterContainer,
@@ -20,7 +20,7 @@ import {
   // PlayerNumber,
   TableHeader,
   PlayerImage,
-} from "./teamRoster.styles.jsx";
+} from "./TeamRoster.styles.jsx";
 
 export default function TeamRoster() {
   const theme = useTheme();
