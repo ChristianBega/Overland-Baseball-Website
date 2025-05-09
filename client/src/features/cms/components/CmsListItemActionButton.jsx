@@ -13,7 +13,7 @@ import { useModal } from "../../../features/ui";
 // import CmsForm from "../../../cmsForm/cmsForm";
 import CmsForm from "../components/CmsForm";
 // Hooks
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { useUrlQueryParams } from "../../../utils/helpers/useUrlQueryParams";
 const ActionButtonsCell = ({ id, values, type }) => {
   const { openModal, closeModal } = useModal();
   const { currentUserProfile } = useContext(UserContext);

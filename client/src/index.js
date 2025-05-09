@@ -10,8 +10,8 @@ import { UserProvider } from "./features/auth/context/UserContext";
 import { CmsProvider } from "./features/cms/context/CmsContext";
 
 import { ModalProvider } from "./features/ui";
-import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
-import { DateNavigatorProvider } from "./pages/home/components/schedule/components/dateNavigator/dateNavigator.context";
+// import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
+import { ThemeToggleProvider } from "./features/themeShowcase/context/ThemeToggler.context";
 import { CalendarProvider } from "./features/events/index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -24,9 +24,7 @@ root.render(
           <CmsProvider>
             <CalendarProvider>
               <ModalProvider>
-                <DateNavigatorProvider>
-                  <App />
-                </DateNavigatorProvider>
+                <App />
               </ModalProvider>
             </CalendarProvider>
           </CmsProvider>

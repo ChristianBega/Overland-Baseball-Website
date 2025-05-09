@@ -3,7 +3,7 @@ import { StyledTableCell } from "../../../styles/index.styles";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const CheckboxCell = ({ isSelected, id, values }) => {
   const { isSm } = useMediaQueries();

@@ -10,7 +10,7 @@ import ContactUs from "./ContactUs";
 import Socials from "../../../features/ui/components/Socials.";
 
 // Context
-import { ThemeToggleContext } from "../../../setup/context/components/themeToggler.context";
+import { ThemeToggleContext } from "../../../features/themeShowcase/context/ThemeToggler.context";
 
 // Assets
 import footerBg from "../../../assets/footer/footer-bg-sm.svg";

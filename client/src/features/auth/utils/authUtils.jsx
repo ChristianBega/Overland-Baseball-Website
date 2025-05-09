@@ -1,4 +1,4 @@
-import { auth, db } from "../../../setup/utils/firebase/index.firebase";
+import { auth, db } from "../../../utils/firebase/index.firebase";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ROLES } from "../utils/roles";

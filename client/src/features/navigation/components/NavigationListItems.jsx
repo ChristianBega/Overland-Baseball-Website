@@ -7,7 +7,7 @@ import { Link, Stack, Typography } from "@mui/material";
 // import { UserContext } from "../../../setup/context/user.context";
 import { UserContext } from "../../../features/auth/context/UserContext";
 // Utils & Helpers
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import { signOutUser } from "../../../features/auth/utils/authUtils";
 // Styled components
 import { StyledList, StyledListItem } from "./NavigationListItems.styles";

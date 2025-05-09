@@ -4,7 +4,7 @@ import React from "react";
 import EventsView from "../components/EventView";
 import PlayerEvent from "../components/PlayerEvent";
 
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import Fundraisers from "../components/Fundraisers";
 export default function EventsPage() {

@@ -15,7 +15,7 @@ import MenuItemComponent from "./MenuItem";
 import { CmsContext } from "../../../features/cms/context/CmsContext";
 import { UserContext } from "../../../features/auth/context/UserContext";
 // Utilities & Hooks
-import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
+import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { containerVariants } from "../../../setup/framerAnimations/dashboardMenu";
 import useMenuLogic from "../hooks/useMenuLogic";
 

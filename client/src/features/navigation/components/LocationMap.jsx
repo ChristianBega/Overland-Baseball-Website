@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Grid, Typography, Link } from "@mui/material";
 import { useTheme } from "@emotion/react";
 // Utils
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const styles = {
   typography: {

@@ -6,8 +6,8 @@ import styled from "@emotion/styled";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 
 import { StyledTableCell, StyledTableRow } from "../../../styles/index.styles";
-import { formatServerTimestamp } from "../../../setup/utils/helpers/formatDate";
-import { formatFileSize } from "../../../setup/utils/helpers/formatFileSize";
+import { formatServerTimestamp } from "../../../utils/helpers/formatDate";
+import { formatFileSize } from "../../../utils/helpers/formatFileSize";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   textAlign: "center",

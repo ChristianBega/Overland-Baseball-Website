@@ -12,7 +12,7 @@ import DirectoryExplorer from "./CmsMediaStorageDirectoryExplorer";
 import { useModal } from "../../../features/ui";
 // Utils & Helpers
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // icons
 import { Close as CloseIcon } from "@mui/icons-material";
 

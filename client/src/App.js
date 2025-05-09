@@ -6,9 +6,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { FooterNavigation } from "./features/navigation";
 // import Navigation from "./components/navigation/navigation.jsx";
 import Navigation from "./features/navigation/components/Navigation.jsx";
-
-import { ThemeToggleContext, ThemeToggleProvider } from "./setup/context/components/themeToggler.context.jsx";
-import AppRoutes from "./setup/routes/routes";
+import { ThemeToggleContext, ThemeToggleProvider } from "./features/themeShowcase/context/ThemeToggler.context";
+import AppRoutes from "./routes.jsx";
 
 const queryClient = new QueryClient();
 

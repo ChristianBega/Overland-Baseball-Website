@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useModal } from "../../../features/ui";
 import { CmsMediaStorage } from "../../../features/cms";
-import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
+import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { UserContext } from "../../../features/auth/context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";

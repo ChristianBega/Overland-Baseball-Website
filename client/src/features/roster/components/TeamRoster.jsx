@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
 import CustomPagination from "../../../features/ui/components/Pagination";
 import SearchFilterComponent from "../../../features/ui/components/SearchFilter";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils.jsx";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils.jsx";
 import headerMap from "../data/rosterHeaderMap.config.jsx";
 import { useTheme } from "@emotion/react";
 import {

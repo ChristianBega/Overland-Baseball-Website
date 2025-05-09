@@ -17,7 +17,7 @@ import { Box, Divider, IconButton, Stack } from "@mui/material";
 import { StyledDrawerMenu } from "../styles/index.styles";
 import NavigationListItems from "./NavigationListItems";
 // Utils
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import Socials from "../../../features/ui/components/Socials.";
 
 const menuItems = [

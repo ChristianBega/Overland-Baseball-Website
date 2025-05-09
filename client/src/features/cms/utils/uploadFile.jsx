@@ -1,4 +1,4 @@
-import { storage, db } from "../../../setup/utils/firebase/index.firebase";
+import { storage, db } from "../../../utils/firebase/index.firebase";
 import { ref, uploadBytesResumable, getDownloadURL, getStorage, uploadBytes, deleteObject } from "firebase/storage";
 import { doc, setDoc, serverTimestamp, collection } from "firebase/firestore";
 

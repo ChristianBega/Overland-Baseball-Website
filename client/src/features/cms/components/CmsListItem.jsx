@@ -19,7 +19,7 @@ import React, { useContext } from "react";
 import { Typography, TableRow } from "@mui/material";
 // Components
 import TeamRoosterItem from "../../../features/roster/components/TeamRosterItem.jsx";
-import ScheduleItem from "../../../pages/home/components/schedule/components/scheduleItem/scheduleItem.component";
+import ScheduleItem from "../../../features/home/components/ScheduleItem";
 // import EventItems from "../../../pages/events/components/eventItems/eventItems.component";
 import { EventItems } from "../../events";
 import DocumentCard from "../../../features/documents/components/DocumentCard";
@@ -31,8 +31,8 @@ import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.contex
 import { UserContext } from "../../../features/auth/context/UserContext";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
 // Utils & Helpers
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import { useUrlQueryParams } from "../../../utils/helpers/useUrlQueryParams";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const CmsListItem = ({ values, id }) => {
   let queryParams = useUrlQueryParams();

@@ -12,7 +12,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import NavigationListItems from "./NavigationListItems";
 import { StyledDrawerMenu } from "../styles/index.styles";
 // Utils
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";  
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const menuItems = [
   { label: "Sign In", url: "/authentication/sign-in", icon: <SignInIcon /> },

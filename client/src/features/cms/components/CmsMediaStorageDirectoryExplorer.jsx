@@ -2,7 +2,7 @@ import React from "react";
 // MUI
 import { Button, Stack, Typography } from "@mui/material";
 // Helpers
-import { convertToTitleCase } from "../../../setup/utils/helpers/convertText";
+import { convertToTitleCase } from "../../../utils/helpers/convertText";
 // Icons
 import FolderIcon from "@mui/icons-material/Folder";
 import { StyledDirectoryButton, StyledDirectoryButtonContainer } from "./CmsMediaStorageDirectoryExplorer.styles";

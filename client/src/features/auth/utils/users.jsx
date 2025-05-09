@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../../setup/utils/firebase/index.firebase";
+import { db } from "../../../utils/firebase/index.firebase";
 
 export const getCurrentUserProfile = async (userUid, setCurrentUser) => {
   if (!userUid) return;

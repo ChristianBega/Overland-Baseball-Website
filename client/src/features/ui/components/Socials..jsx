@@ -10,7 +10,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import styled from "@emotion/styled";
 // Images
 import OverlandLogo from "../../../assets/overlandLogo_3.webp";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 const socialData = [
   {
     linkName: "twitter",

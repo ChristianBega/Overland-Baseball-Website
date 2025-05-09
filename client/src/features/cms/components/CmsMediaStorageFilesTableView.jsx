@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import FileMenuOptions from "./CmsMediaStorageFileMenuOptions";
 import PreviewIcon from "@mui/icons-material/Preview";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
-import { formatFileSize } from "../../../setup/utils/helpers/formatFileSize";
-import { formatServerTimestamp } from "../../../setup/utils/helpers/formatDate";
+import { formatFileSize } from "../../../utils/helpers/formatFileSize";
+import { formatServerTimestamp } from "../../../utils/helpers/formatDate";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   textAlign: "center",
   "& > *": {

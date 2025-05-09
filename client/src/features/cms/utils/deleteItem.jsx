@@ -1,6 +1,6 @@
 import { doc, deleteDoc, writeBatch } from "firebase/firestore";
 
-import { db } from "../../../setup/utils/firebase/index.firebase";
+import { db } from "../../../utils/firebase/index.firebase";
 import { deleteObject, getStorage, ref } from "firebase/storage";
 
 export const deleteCMSItem = async (userUid, role, docId, type) => {

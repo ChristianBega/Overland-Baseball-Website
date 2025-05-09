@@ -5,7 +5,7 @@ import { isToday, isPastDate } from "./EventUtils";
 import { useTheme } from "@emotion/react";
 import { useModal } from "../../../features/ui";
 import EventSignUpForm from "./EventSignUpForm";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import CalendarSignUpMobile from "./EventCalendarSignUpMobile";
 import { CalendarContext } from "../../../features/events/context/calendar.context";
 

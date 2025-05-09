@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Grid } from "@mui/material";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import TeamRoster from "../components/TeamRoster.jsx";
 import Staff from "../components/Staff.jsx";
 

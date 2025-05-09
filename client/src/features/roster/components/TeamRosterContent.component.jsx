@@ -3,7 +3,7 @@ import React from "react";
 import { styled } from "@mui/material";
 // Assets
 import PlaceHolderImage from "../../../assets/rosterPlaceHolder.png";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // Utils
 
 // Styled components using proper table elements

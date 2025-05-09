@@ -1,6 +1,6 @@
 import { doc, setDoc, writeBatch, collection, serverTimestamp } from "firebase/firestore";
 
-import { db } from "../../../setup/utils/firebase/index.firebase";
+import { db } from "../../../utils/firebase/index.firebase";
 import { v4 as uuidv4 } from "uuid";
 
 export const addCMSItem = async (userUid, role, data, type) => {

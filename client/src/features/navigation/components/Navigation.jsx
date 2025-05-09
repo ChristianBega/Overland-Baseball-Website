@@ -8,7 +8,7 @@ import OverlandLogo from "./Logo";
 import Account from "./Account";
 import NavigationMenu from "./NavigationMenu";
 // Custom Hooks
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // Styles
 import { StyledToolbar } from "../styles/index.styles";
 import { useLocation } from "react-router-dom";

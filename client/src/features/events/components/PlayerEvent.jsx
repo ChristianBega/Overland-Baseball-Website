@@ -11,11 +11,11 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import CircleIcon from "@mui/icons-material/Circle";
 import { useTheme } from "@emotion/react";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // import Form from "../../../../../components/forms/form.component";
 import { useModal } from "../../../features/ui";
-import { formatTime } from "../../../setup/utils/helpers/formatTime";
-import { formatDateTimeForCalendar } from "../../../setup/utils/helpers/formatDate";
+import { formatTime } from "../../../utils/helpers/formatTime";
+import { formatDateTimeForCalendar } from "../../../utils/helpers/formatDate";
 import EventSignUpForm from "./EventSignUpForm";
 
 const iconStyles = {

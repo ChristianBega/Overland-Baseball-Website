@@ -9,9 +9,9 @@ import { useModal } from "../../../features/ui";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
 // Helpers & Utils
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
-import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import { useUrlQueryParams } from "../../../utils/helpers/useUrlQueryParams";
+import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // Icons
 import PlusIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";

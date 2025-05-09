@@ -10,7 +10,7 @@ import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
 import { StyledTableCell } from "../../../styles/index.styles";
 import CmsTableViewHeader from "./CmsItemTableViewHeader";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import CustomPagination from "../../../features/ui/components/Pagination";
 import SearchFilterComponent from "../../../features/ui/components/SearchFilter";
 import { useLocation } from "react-router-dom";

@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { StyledTableCell } from "../../../styles/index.styles";
 import { Typography } from "@mui/material";
-import { convertToTitleCase } from "../../../setup/utils/helpers/convertText";
-import { useUrlQueryParams } from "../../../setup/utils/helpers/useUrlQueryParams";
+import { convertToTitleCase } from "../../../utils/helpers/convertText";
+import { useUrlQueryParams } from "../../../utils/helpers/useUrlQueryParams";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
-import useMediaQueries from "../../../setup/utils/helpers/useMediaQueries.utils";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const isLgHeaderConfigMap = {
   schedule: ["delete", "date & time", "team logo", "", "opponent logo", "opponent & location", "edit"],

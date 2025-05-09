@@ -1,5 +1,5 @@
 import { collection, doc, getDoc, getDocs, onSnapshot } from "firebase/firestore";
-import { db } from "../../../setup/utils/firebase/index.firebase";
+import { db } from "../../../utils/firebase/index.firebase";
 
 export const fetchCMSItems = async (type) => {
   if (!type) {

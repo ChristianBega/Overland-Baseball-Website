@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 // import { handleSaveRename } from "../../../components/contentManagementSystem/cmsMediaStorage/components/fileMenuOptions/fileMenuOptions";
 import { handleSaveRename } from "../../../features/cms/components/CmsMediaStorageFileMenuOptions";
 // Utils & Helpers
-import { useCheckAuthorization } from "../../../setup/utils/helpers/checkAuthorization";
+import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { updateCMSItem } from "../utils/editItem";
 import { handleUploadFile } from "../utils/uploadFile";
 // Contexts

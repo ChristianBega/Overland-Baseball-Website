@@ -8,7 +8,7 @@ import MediaPreviewManager from "./CmsMediaStorageMediaPreviewManager";
 import { UserContext } from "../../../features/auth/context/UserContext";
 // Utils & Helpers
 import { handleUploadFile } from "../utils/uploadFile";
-import { scrollTo } from "../../../setup/utils/helpers/scrollTo";
+import { scrollTo } from "../../../utils/helpers/scrollTo";
 
 const AddNewItem = () => {
   const { currentUserProfile } = useContext(UserContext);
