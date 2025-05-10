@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
-import { StyledTableCell } from "../../../styles/index.styles";
+import { StyledTableCell } from "../../../utils/theme/index.styles";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { CmsDeleteItemContext } from "../../../features/cms/context/CmsDelete.context";
 import { Button } from "@mui/material";

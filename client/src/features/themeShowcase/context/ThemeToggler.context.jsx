@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { darkTheme } from "../../../styles/themes/dark.theme";
-import { defaultTheme } from "../../../styles/themes/index.theme";
+import { darkTheme } from "../../../utils/theme/dark.theme";
+import { defaultTheme } from "../../../utils/theme/index.theme";
 import { CssBaseline, GlobalStyles } from "@mui/material";
 import { merge } from "lodash";
 export const ThemeToggleContext = createContext({

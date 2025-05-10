@@ -3,7 +3,7 @@ import { useTheme } from "@emotion/react";
 // import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
 // import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 // import { CmsOperationStatus } from "../../../../features/cms";
-import { StyledTableRow } from "../../../styles/index.styles";
+import { StyledTableRow } from "../../../utils/theme/index.styles";
 
 import TeamRosterContent from "./TeamRosterContent.component";
 

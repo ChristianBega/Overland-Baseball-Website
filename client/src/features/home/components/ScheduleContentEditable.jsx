@@ -5,7 +5,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import InputFieldComponent from "../../ui/components/InputFields";
 import { CmsUploadItem } from "../../cms";
 
-import { LogoImage, StyledTableCell } from "../../../styles/index.styles";
+import { LogoImage, StyledTableCell } from "../../../utils/theme/index.styles";
 // Utils & Helpers
 import { formatDate } from "../../../utils/helpers/formatDate";
 import { convertTo24HourFormat } from "../../../utils/helpers/convertTo24HourFormat";

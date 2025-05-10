@@ -1,7 +1,7 @@
 // MUI
 import { Box, Button } from "@mui/material";
 // Styles
-import { StyledTableCell } from "../../../styles/index.styles";
+import { StyledTableCell } from "../../../utils/theme/index.styles";
 // Icons
 import { Edit as EditIcon } from "@mui/icons-material";
 // Context

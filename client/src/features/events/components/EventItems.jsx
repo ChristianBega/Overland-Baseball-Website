@@ -4,7 +4,7 @@ import { IconButton, Typography, Stack } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 // import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
-import { StyledTableCell, StyledTableRow } from "../../../styles/index.styles";
+import { StyledTableCell, StyledTableRow } from "../../../utils/theme/index.styles";
 // import { formatDate } from "../../../../../utils/helpers/formatDate";
 // import { convertTo24HourFormat } from "../../../../../utils/helpers/convertTo24HourFormat";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";

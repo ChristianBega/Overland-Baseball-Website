@@ -1,7 +1,7 @@
 import { Container, Grid, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { motion } from "framer-motion";
-import { containerVariants } from "../../../setup/framerAnimations/transitions";
+import { containerVariants } from "../../../utils/animations/transitions";
 // import { playerDocuments } from "../../websiteData/documents/documents.data";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import DocumentCard from "../components/DocumentCard";

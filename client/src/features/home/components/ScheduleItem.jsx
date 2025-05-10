@@ -3,7 +3,7 @@ import React from "react";
 // import CmsOperationStatus from "../../../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import ScheduleContentEditable from "./ScheduleContentEditable";
 // Styles
-import { StyledTableRow } from "../../../styles/index.styles";
+import { StyledTableRow } from "../../../utils/theme/index.styles";
 // Utils & Helpers
 import { formatDateToLongString } from "../../../utils/helpers/formatDateToString";
 import ScheduleContentViewOnly from "./ScheduleContentViewOnly";

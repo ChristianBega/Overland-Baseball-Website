@@ -2,7 +2,7 @@
 // import ErrorIcon from "@mui/icons-material/Error";
 // import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 // import { useTheme } from "@mui/material/styles";
-// import { StyledTableCell } from "../../../styles/index.styles";
+// import { StyledTableCell } from "../../../utils/theme/index.styles";
 
 // export const StatusMessage = ({ status, message }) => {
 //   const theme = useTheme();

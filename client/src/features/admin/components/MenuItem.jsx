@@ -1,6 +1,6 @@
 // Framer Motion
 import { motion } from "framer-motion";
-import { itemVariants } from "../../../setup/framerAnimations/dashboardMenu";
+import { itemVariants } from "../../../utils/animations/dashboardMenu";
 // Styles
 import { IconBox, StyledMenuItem } from "./DashboardSideBarMenu.styles";
 // MUI

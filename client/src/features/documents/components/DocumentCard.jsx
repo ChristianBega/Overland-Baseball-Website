@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 // import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 
-import { StyledTableCell, StyledTableRow } from "../../../styles/index.styles";
+import { StyledTableCell, StyledTableRow } from "../../../utils/theme/index.styles";
 import { formatServerTimestamp } from "../../../utils/helpers/formatDate";
 import { formatFileSize } from "../../../utils/helpers/formatFileSize";
 

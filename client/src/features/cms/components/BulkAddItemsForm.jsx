@@ -7,7 +7,7 @@ import eventExpectedDataStructure from "../data/event.config.json";
 import { bulkAddToFirebase } from "../utils/addItem";
 import { FormStatusIndicator } from "../../../features/ui";
 import rosterExpectedDataStructure from "../data/roster.config.json";
-import { StyledTableCell } from "../../../styles/index.styles";
+import { StyledTableCell } from "../../../utils/theme/index.styles";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 
 const BulkAddItemsForm = ({ ...props }) => {

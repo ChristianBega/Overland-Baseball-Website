@@ -8,7 +8,7 @@ import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
-import { StyledTableCell } from "../../../styles/index.styles";
+import { StyledTableCell } from "../../../utils/theme/index.styles";
 import CmsTableViewHeader from "./CmsItemTableViewHeader";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import CustomPagination from "../../../features/ui/components/Pagination";

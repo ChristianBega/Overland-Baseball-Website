@@ -7,7 +7,7 @@ import AlternativeAuthCta from "./AlternativeAuthCta";
 // MUI
 import { Button, Typography, Link as MuiLink, Grid } from "@mui/material";
 // Styles
-import { StyledForm } from "../../../styles/index.styles";
+import { StyledForm } from "../../../utils/theme/index.styles";
 // Utils & Hooks
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../utils/authUtils";
 // Config

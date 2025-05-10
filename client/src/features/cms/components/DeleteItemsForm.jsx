@@ -4,7 +4,7 @@ import { bulkDeleteFromFirebase, bulkDeleteItemsFromStorage } from "../utils/del
 import { FormStatusIndicator } from "../../../features/ui";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
-import { StyledTableCell } from "../../../styles/index.styles";
+import { StyledTableCell } from "../../../utils/theme/index.styles";
 import { styled } from "@mui/material/styles";
 
 //! Add column width configurations

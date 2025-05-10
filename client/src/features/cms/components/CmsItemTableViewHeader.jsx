@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyledTableCell } from "../../../styles/index.styles";
+import { StyledTableCell } from "../../../utils/theme/index.styles";
 import { Typography } from "@mui/material";
 import { convertToTitleCase } from "../../../utils/helpers/convertText";
 import { useUrlQueryParams } from "../../../utils/helpers/useUrlQueryParams";

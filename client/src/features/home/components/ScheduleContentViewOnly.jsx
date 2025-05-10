@@ -3,7 +3,7 @@ import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // MUI
 import { Stack, Typography } from "@mui/material";
 // Assets
-import { LogoImage } from "../../../styles/index.styles";
+import { LogoImage } from "../../../utils/theme/index.styles";
 import overland from "../../../assets/overlandLogo2.webp";
 // Icons
 import LocationOnIcon from "@mui/icons-material/LocationOn";
