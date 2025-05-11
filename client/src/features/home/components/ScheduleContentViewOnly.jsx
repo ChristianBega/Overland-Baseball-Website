@@ -115,11 +115,11 @@ const TeamLogo = ({ logo, teamName }) => {
   );
 };
 
-const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventId, ref }) => {
+const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventId, ref, isPast }) => {
   const { time, location, date, opponent, home } = data;
   const theme = useTheme();
   return (
-    <ScheduleCard ref={ref} id={eventId} variant="schedule-view-only" isMobile>
+    <ScheduleCard isPast={isPast} ref={ref} id={eventId} variant="schedule-view-only" isMobile>
       <DateDisplay month={formattedDateMonth} day={formattedDateDay} />
 
       <Stack sx={{ width: "100%" }}>
@@ -154,13 +154,13 @@ const MobileScheduleItem = ({ data, formattedDateMonth, formattedDateDay, eventI
   );
 };
 
-const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index, eventId, ref }) => {
+const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index, eventId, ref, isPast }) => {
   const { time, location, opponentIcon, home, date, opponent } = data;
   const theme = useTheme();
 
   return (
     <Stack direction="column" sx={{ "&:not(:first-child)": { marginTop: "2rem" } }} gap={1}>
-      <ScheduleCard ref={ref} id={eventId} variant="schedule-view-only" isDesktop>
+      <ScheduleCard isPast={isPast} ref={ref} id={eventId} variant="schedule-view-only" isDesktop>
         <DateDisplay month={formattedDateMonth} day={formattedDateDay} />
 
         <Stack sx={{ width: "100%" }} direction="row" spacing={1.5} alignItems="center" justifyContent="space-between">
@@ -216,7 +216,7 @@ const DesktopScheduleItem = ({ data, formattedDateMonth, formattedDateDay, index
 };
 
 const ScheduleContentViewOnly = ({ data, eventId, index, ref }) => {
-  const { location, date } = data;
+  const { location, date, isPast } = data;
   const { isTablet } = useMediaQueries();
   const formattedDate = formatDateToLongString(date);
   const formattedDateMonth = formattedDate.split(" ")[0];
@@ -229,6 +229,7 @@ const ScheduleContentViewOnly = ({ data, eventId, index, ref }) => {
     eventId,
     ref,
     index,
+    isPast,
   };
 
   // ! move this logic into a handleNavigatingToCalendarOrMap func

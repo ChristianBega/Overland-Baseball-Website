@@ -58,6 +58,7 @@ export const handleUploadFile = (file, userUid, setProgress, onCancel, mainDirec
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
+          // ! Instead of using the subDirectoryName/mainDirectoryName, we should use a static name like "mediaStorage" and then include the cmsType in the document to make it more flexible
           const cmsItemDocRef = doc(collection(db, subDirectoryName ? subDirectoryName : mainDirectoryName));
           const docId = cmsItemDocRef.id;
           await setDoc(cmsItemDocRef, {
@@ -70,6 +71,8 @@ export const handleUploadFile = (file, userUid, setProgress, onCancel, mainDirec
             fileType: file.type,
             sourceDirectory: subDirectoryName,
             mainDirectory: mainDirectoryName,
+            // ! cmsType - determines the type of cmsItem the asset is associated with
+            // cmsType
           });
 
           resolve({ success: true, message: "Uploaded file successfully", url: downloadURL });

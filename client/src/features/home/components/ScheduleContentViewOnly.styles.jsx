@@ -115,12 +115,21 @@ export const StatusChip = styled(Chip)(({ theme, isHome }) => ({
   },
 }));
 
-export const ScheduleCard = styled(Card)(({ theme, isMobile, isDesktop }) => ({
+export const ScheduleCard = styled(Card)(({ theme, isMobile, isDesktop, isPast }) => ({
   justifyContent: "flex-start",
   gap: "1rem",
   padding: ".75rem",
   ...(isDesktop && {
     alignItems: "center",
+  }),
+  ...(isPast && {
+    opacity: 0.8,
+    filter: "grayscale(30%)",
+    backgroundColor: "rgba(0, 0, 0, 0.03)",
+    transition: "all 0.2s ease-in-out",
+    "&:hover": {
+      cursor: "not-allowed",
+    },
   }),
 }));
 

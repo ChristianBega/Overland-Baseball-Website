@@ -12,6 +12,7 @@ import { convertTo24HourFormat } from "../../../utils/helpers/convertTo24HourFor
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // Assets
 import overland from "../../../assets/homePage/teamLogos/overland.webp";
+import { TeamLogoAvatar } from "./ScheduleContentViewOnly.styles";
 
 const ScheduleContentEditable = ({ ...props }) => {
   const { isEditable, editableData, handleChange, isCmsItem, data } = props;
@@ -71,7 +72,7 @@ const ScheduleContentEditable = ({ ...props }) => {
             </Stack>
           </Box>
         ) : (
-          <LogoImage component="img" src={opponentIcon} />
+          <>{opponentIcon ? <LogoImage component="img" src={opponentIcon} /> : <TeamLogoAvatar>{opponent.charAt(0)}</TeamLogoAvatar>}</>
         )}
       </StyledTableCell>
       {isMd && (

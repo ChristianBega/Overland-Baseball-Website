@@ -9,7 +9,7 @@ import { formatDateToLongString } from "../../../utils/helpers/formatDateToStrin
 import ScheduleContentViewOnly from "./ScheduleContentViewOnly";
 
 export default function ScheduleItem({ ...props }) {
-  const { data, isEditable, editableData, isLoading = false, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
+  const { data, isEditable, editableData, isLoading = false, isError, isSuccess, renderAsRow = true, isCmsItem, isPast } = props;
   const currentData = isEditable ? editableData : data;
   const { date } = currentData || {};
   const formattedDate = formatDateToLongString(date);
