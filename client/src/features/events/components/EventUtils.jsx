@@ -67,19 +67,23 @@ export const filterEventsForDate = (events, dateString) => {
  * @param {string} eventType - Event type from Firebase
  * @returns {Object} Color object with text and background colors
  */
+
 export const getEventColor = (eventType) => {
   switch (eventType) {
     case "fundraiser":
-      return "#11770dc3";
+      return "#4CBB17";
+    // return "#34D399";
     case "featured":
-      return "#ed6c45a6";
+      return "#FBBF24";
     case "regular":
-      return "#0d29775a";
+      return "#1555b4";
+    // return "#3B82F6";
+    case "player":
+      return "#EF4444";
     default:
-      return "#ed454599";
+      return "#94A3B8";
   }
 };
-
 /**
  * Check if a date is in the past
  * @param {number} year - The year

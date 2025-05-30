@@ -15,31 +15,34 @@ import { useRoleCheck } from "../../../hooks/useRoleCheck";
 import { ROLES } from "../../../features/auth/utils/roles";
 const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
   const { currentUserProfile } = useContext(UserContext);
+  console.log("currentUserProfile", currentUserProfile);
   const { isAuthenticated, hasRole } = useRoleCheck();
   const [currentMenuItems, setCurrentMenuItems] = useState(menuItems);
   const { isLg } = useMediaQueries();
   const navigate = useNavigate();
   const currentUrl = window.location.pathname;
   const filterMenuItems = (items) => {
-    // First filter based on authentication status
-    let filteredItems = items.filter((item) => {
+    const menuPermissions = {
+      "Dashboard": [ROLES.ADMIN, ROLES.COACH],
+      "Documents": [ROLES.ADMIN, ROLES.COACH, ROLES.PLAYER],
+      // Add other menu items with their allowed roles if needed
+    };
+
+    return items.filter((item) => {
+      // Hide "Sign Out" if not authenticated, hide "Sign In"/"Sign Up" if authenticated
       if (!isAuthenticated) {
-        return !["Sign Out", "Settings"].includes(item.label);
+        if (["Sign Out"].includes(item.label)) return false;
+      } else {
+        if (["Sign In", "Sign Up"].includes(item.label)) return false;
       }
-      return !["Sign In", "Sign Up"].includes(item.label);
-    });
 
-    return filteredItems.filter((item) => {
-      const menuPermissions = {
-        "Dashboard": [ROLES.ADMIN, ROLES.COACH],
-        "Documents": [ROLES.ADMIN, ROLES.COACH, ROLES.PLAYER],
-        // ! Add other menu items with their allowed roles if needed
-      };
-
+      // If the item requires certain roles, only show if authenticated and has the role
       if (menuPermissions[item.label]) {
-        return menuPermissions[item.label].some((role) => !hasRole(role));
+        if (!isAuthenticated) return false;
+        return menuPermissions[item.label].some((role) => hasRole(role));
       }
 
+      // Otherwise, show the item
       return true;
     });
   };

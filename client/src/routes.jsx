@@ -26,7 +26,9 @@ const AuthenticationPage = lazy(() => import("./features/auth/pages/AuthPage"));
 
 // const PasswordResetPage = lazy(() => import("../../pages/passwordReset/passwordReset.page"));
 const PasswordResetPage = lazy(() => import("./features/auth/pages/PasswordResetPage"));
-const { Error404Page } = lazy(() => import("./features/error"));
+
+// const { Error404Page  } = lazy(() => import("./features/error/pages/404Page"));
+const Error404Page = lazy(() => import("./features/error/pages/404Page"));
 
 // Lazy load protected pages
 const DocumentsPage = lazy(() => import("./features/documents/pages/DocumentsPage"));

@@ -27,7 +27,7 @@ const menuItems = [
   { label: "Alumni", url: "/alumni", icon: <GroupsIcon fontSize="small" /> },
   { label: "Dashboard", url: "/dashboard", icon: <AdminPanelSettingsIcon fontSize="small" /> },
   // { label: "Boosters", url: "/boosters", icon: <SportsIcon fontSize="large" /> },
-  // { label: "Documents", url: "/documents", icon: <TopicIcon fontSize="large" /> },
+  { label: "Documents", url: "/documents", icon: <GroupsIcon fontSize="large" /> },
   // { label: "Sponsors", url: "/sponsors" },
 ];
 

@@ -18,7 +18,7 @@ const menuItems = [
   { label: "Sign In", url: "/authentication/sign-in", icon: <SignInIcon /> },
   { label: "Sign Up", url: "/authentication/sign-up", icon: <SignUpIcon /> },
   { label: "Sign Out", url: "/", icon: <SignOutIcon /> },
-  { label: "Settings", url: "/settings", icon: <SettingsIcon /> },
+  // { label: "Settings", url: "/settings", icon: <SettingsIcon /> },
   // { label: "Theme Showcase", url: "/theme-showcase", icon: <SettingsIcon /> },
 ];
 

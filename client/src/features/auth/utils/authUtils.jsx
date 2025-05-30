@@ -12,13 +12,17 @@ googleProvider.setCustomParameters({
 const updateLastLogin = async (uid) => {
   const userDocRef = doc(db, "users", uid);
   try {
-    await setDoc(
-      userDocRef,
-      {
-        lastLoginTimestamp: new Date().toISOString(),
-      },
-      { merge: true }
-    );
+    // ! need to make sure we dont override the user data, but just update the last login timestamp
+    const userSnapshot = await getDoc(userDocRef);
+    if (userSnapshot.exists()) {
+      await setDoc(
+        userDocRef,
+        {
+          lastLoginTimestamp: new Date().toISOString(),
+        },
+        { merge: true }
+      );
+    }
   } catch (error) {
     console.error("Error updating last login:", error);
   }

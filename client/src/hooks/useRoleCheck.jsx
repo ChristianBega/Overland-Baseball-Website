@@ -10,7 +10,7 @@ export const useRoleCheck = () => {
       return false;
     }
     const hasPermission = ROLE_HIERARCHY[currentUserProfile.role]?.includes(requiredRole) || false;
-    return !hasPermission;
+    return hasPermission;
   };
 
   const checkMultipleRoles = (requiredRoles) => {

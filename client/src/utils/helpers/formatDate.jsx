@@ -19,13 +19,12 @@ export const formatDateString = (dateString) => {
 };
 // format iso 8061 to read
 export const formatDateTimeForCalendar = (dateTime) => {
-  const year = dateTime.slice(0, 4);
-  const month = dateTime.slice(4, 6) - 1;
-  const day = parseInt(dateTime.slice(6, 8), 10);
-
-  const date = new Date(Date.UTC(year, month, day));
+  if (!dateTime) return "";
+  const date = new Date(dateTime);
+  if (isNaN(date)) return "";
 
   const monthName = date.toLocaleString("en-US", { month: "long" });
+  const day = date.getDate();
 
   const getDaySuffix = (day) => {
     if (day > 3 && day < 21) return "th";

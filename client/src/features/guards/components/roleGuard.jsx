@@ -12,8 +12,8 @@ const RoleGuard = ({ children, allowedRoles }) => {
 
   // Check if user has any of the allowed roles
   const hasPermission = checkMultipleRoles(allowedRoles);
-  if (hasPermission) {
-    return <Navigate to={"/404"} replace />;
+  if (!hasPermission) {
+    return <Navigate to="/*" replace />;
   }
 
   return children;
