@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCMSItems, subscribeToCMSItems } from "../setup/utils/firebase/getItem";
+import { fetchCMSItems, subscribeToCMSItems } from "../features/cms/utils/getItem";
 
 export function useRealtimeData(collectionName) {
   const [realTimeData, setRealTimeData] = useState(null);

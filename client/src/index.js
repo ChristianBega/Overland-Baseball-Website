@@ -1,15 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { AuthProvider } from "./setup/context/authentication.context";
-import { UserProvider } from "./setup/context/user.context";
-import { CmsProvider } from "./setup/context/cmsContext/cms.context";
-import { ModalProvider } from "./setup/context/modal.context";
-import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
-import { DateNavigatorProvider } from "./pages/home/components/schedule/components/dateNavigator/dateNavigator.context";
-import { CalendarProvider } from "./setup/context/components/calendar.context";
+import { AuthProvider } from "./features/auth/context/AuthContext";
+import { UserProvider } from "./features/auth/context/UserContext";
+// import { UserProvider } from "./setup/context/user.context";
+// import { CmsProvider } from "./setup/context/cmsContext/cms.context";
+import { CmsProvider } from "./features/cms/context/CmsContext";
+
+import { ModalProvider } from "./features/ui";
+// import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
+import { ThemeToggleProvider } from "./features/themeShowcase/context/ThemeToggler.context";
+import { CalendarProvider } from "./features/events/index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,9 +24,7 @@ root.render(
           <CmsProvider>
             <CalendarProvider>
               <ModalProvider>
-                <DateNavigatorProvider>
-                  <App />
-                </DateNavigatorProvider>
+                <App />
               </ModalProvider>
             </CalendarProvider>
           </CmsProvider>
