@@ -1,7 +1,7 @@
 import { Container, Grid } from "@mui/material";
 import React from "react";
 // Components
-import Hero from "../components/Hero";
+import Hero from "../components/Hero copy";
 import News from "../components/News";
 import Events from "../components/Events";
 import Schedule from "../components/Schedule";

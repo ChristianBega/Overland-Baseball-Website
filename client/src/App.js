@@ -18,7 +18,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeToggleProvider theme={currentTheme}>
         <Router>
-          <Navigation />
+          {/* <Navigation /> */}
           <AppRoutes />
           <FooterNavigation />
         </Router>
