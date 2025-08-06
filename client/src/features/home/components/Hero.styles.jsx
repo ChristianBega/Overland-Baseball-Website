@@ -1,59 +1,69 @@
-export const styles = {
-  section: {
-    backgroundSize: "cover",
-    backgroundPosition: "center top",
-    textAlign: "center",
-    color: "#fff",
-    padding: "2rem 1rem",
-    minHeight: "550px",
-    height: "calc(80vh - 64px)",
-    "@media (min-width: 600px)": {
-      minHeight: "600px",
-    },
-    "@media (min-width: 662px)": {
-      minHeight: "600px",
-    },
-    "@media (min-width: 900px)": {
-      minHeight: "650px",
-    },
-    "@media (min-width: 1200px)": {
-      // height: "700px",
-    },
-    "@media (min-width: 1400px)": {
-      height: "700px",
-    },
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
+import { styled, Typography } from "@mui/material";
+import SectionLayout from "../../ui/components/SectionLayout";
+
+export const StyledSectionLayout = styled(SectionLayout)(({ theme, backgroundImage }) => ({
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingBottom: "3rem",
+  backgroundImage: `url(${backgroundImage})`,
+  borderRadius: "20px",
+  overflow: "hidden",
+  backgroundSize: "cover",
+  backgroundPosition: "center center",
+  textAlign: "center",
+  color: "#fff",
+  height: "100%",
+  display: "flex",
+  position: "relative",
+  minHeight: "800px",
+  [theme.breakpoints.up("sm")]: {
+    minHeight: "600px",
   },
-  typography: {
-    zIndex: 1000,
-    fontFamily: "Varsity Regular",
-    fontSize: "85px",
-    lineHeight: "65px",
-    marginBottom: 0,
-    color: "#ffffff",
-    textTransform: "lowercase",
+  [theme.breakpoints.up("662")]: {
+    minHeight: "600px",
+  },
+  [theme.breakpoints.up("md")]: {
+    minHeight: "650px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    height: "720px",
+  },
+  [theme.breakpoints.up("xl")]: {
+    height: "850px",
+  },
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
     width: "100%",
+    height: "100%",
+    background: `linear-gradient(135deg, rgba(9, 31, 64, 0.6) 0%, rgba(9, 31, 64, 0.6) 50%, rgba(9, 31, 64, 0.6) 100%)`,
+  },
+}));
+
+export const StyledHeroTypography = styled(Typography)(({ theme }) => ({
+  zIndex: 1000,
+  fontFamily: "Varsity Regular",
+  fontSize: "85px",
+  lineHeight: "65px",
+  color: "#ffffff",
+  textTransform: "lowercase",
+  width: "100%",
+  marginBottom: "1rem",
+  // marginTop: "80px",
+  [theme.breakpoints.up("sm")]: {
+    fontSize: "105px",
+    lineHeight: "85px",
+  },
+  [theme.breakpoints.up("md")]: {
+    fontSize: "115px",
+    lineHeight: "105px",
+  },
+  [theme.breakpoints.up("lg")]: {
     marginTop: "80px",
-    "@media (min-width: 600px)": {
-      fontSize: "105px",
-      lineHeight: "85px",
-    },
-    "@media (min-width: 900px)": {
-      fontSize: "115px",
-      lineHeight: "105px",
-    },
-    "@media (min-width: 1200px)": {
-      marginTop: "80px",
-      fontSize: "130px",
-      lineHeight: "110px",
-    },
+    fontSize: "130px",
+    lineHeight: "110px",
   },
-  text: {
-    zIndex: 1000,
-    marginTop: "1rem",
-    maxWidth: 590,
-    margin: "2rem auto 0 auto",
-  },
-};
+}));
