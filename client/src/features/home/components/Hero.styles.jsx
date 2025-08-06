@@ -27,10 +27,10 @@ export const StyledSectionLayout = styled(SectionLayout)(({ theme, backgroundIma
     minHeight: "650px",
   },
   [theme.breakpoints.up("lg")]: {
-    // height: "700px",
+    height: "720px",
   },
   [theme.breakpoints.up("xl")]: {
-    height: "700px",
+    height: "850px",
   },
   "&::before": {
     content: '""',
@@ -48,7 +48,6 @@ export const StyledHeroTypography = styled(Typography)(({ theme }) => ({
   fontFamily: "Varsity Regular",
   fontSize: "85px",
   lineHeight: "65px",
-  marginBottom: 0,
   color: "#ffffff",
   textTransform: "lowercase",
   width: "100%",
