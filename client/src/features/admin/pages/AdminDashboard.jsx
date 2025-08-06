@@ -13,6 +13,7 @@ import { CmsContext } from "../../../features/cms/context/CmsContext";
 import { CmsDeleteItemProvider } from "../../../features/cms/context/CmsDelete.context";
 // import { ModalProvider } from "../../setup/context/modal.context";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
+import { Navigation } from "../../navigation";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
 
@@ -26,28 +27,31 @@ const AdminDashboardPage = () => {
   }, [currentItem, currentUserProfile.role, currentUserProfile.uid]);
 
   return (
-    <Container sx={{ display: "flex", justifyContent: " center" }} id="admin-dashboard-page" component="main" aria-label="Admin Dashboard Page">
-      {currentUserProfile.role !== "admin" && currentUserProfile.role !== "coach" ? null : (
-        <SectionLayout id="admin-dashboard-section" aria-label="Admin Dashboard Section" marginBlock>
-          <Grid id="dashboard-main-grid" container maxWidth="lg">
-            <DashboardSideBarMenu />
-            <CmsBulkActionProvider>
-              <MediaStorageProvider>
-                <CmsCreateItemProvider>
-                  <CmsEditItemProvider>
-                    <CmsDeleteItemProvider>
-                      {/* <ModalProvider> */}
-                      {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
-                      {/* </ModalProvider> */}
-                    </CmsDeleteItemProvider>
-                  </CmsEditItemProvider>
-                </CmsCreateItemProvider>
-              </MediaStorageProvider>
-            </CmsBulkActionProvider>
-          </Grid>
-        </SectionLayout>
-      )}
-    </Container>
+    <>
+      <Navigation />
+      <Container sx={{ display: "flex", justifyContent: " center" }} id="admin-dashboard-page" component="main" aria-label="Admin Dashboard Page">
+        {currentUserProfile.role !== "admin" && currentUserProfile.role !== "coach" ? null : (
+          <SectionLayout id="admin-dashboard-section" aria-label="Admin Dashboard Section" marginBlock>
+            <Grid id="dashboard-main-grid" container maxWidth="lg">
+              <DashboardSideBarMenu />
+              <CmsBulkActionProvider>
+                <MediaStorageProvider>
+                  <CmsCreateItemProvider>
+                    <CmsEditItemProvider>
+                      <CmsDeleteItemProvider>
+                        {/* <ModalProvider> */}
+                        {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
+                        {/* </ModalProvider> */}
+                      </CmsDeleteItemProvider>
+                    </CmsEditItemProvider>
+                  </CmsCreateItemProvider>
+                </MediaStorageProvider>
+              </CmsBulkActionProvider>
+            </Grid>
+          </SectionLayout>
+        )}
+      </Container>
+    </>
   );
 };
 

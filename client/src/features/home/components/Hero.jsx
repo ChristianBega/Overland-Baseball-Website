@@ -16,7 +16,7 @@ const Hero = () => {
   const { isSm, isLg } = useMediaQueries();
   return (
     <StyledSectionLayout
-      customMargin={!isSm ? "1rem !important" : "2rem !important"}
+      customMargin={!isSm ? "1rem 1rem 0rem 1rem !important" : "2rem 2rem 0rem 2rem !important"}
       id="hero"
       aria-label="Hero Section"
       component="section"

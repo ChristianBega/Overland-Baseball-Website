@@ -5,6 +5,7 @@ import { containerVariants } from "../../../utils/animations/transitions";
 // import { playerDocuments } from "../../websiteData/documents/documents.data";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import DocumentCard from "../components/DocumentCard";
+import { Navigation } from "../../navigation";
 export default function DocumentsPage() {
   const { data, isLoading, error } = useRealtimeData("documents");
   const theme = useTheme();
@@ -24,34 +25,37 @@ export default function DocumentsPage() {
   }
 
   return (
-    <Container
-      component={motion.section}
-      initial={containerVariants.hidden}
-      animate={containerVariants.visible}
-      exit={containerVariants.exit}
-      transition={containerVariants.transition}
-      id="documents-section"
-      style={{ display: "flex", justifyContent: " center", marginBlock: theme.spacing(5) }}
-    >
-      <Grid
-        id="main-grid"
-        container
-        maxWidth="xl"
-        spacing={{ xs: 4, md: 6 }}
-        sx={{ justifyContent: " center", display: "flex", flexDirection: "column", alignItems: "center" }}
+    <>
+      <Navigation />
+      <Container
+        component={motion.section}
+        initial={containerVariants.hidden}
+        animate={containerVariants.visible}
+        exit={containerVariants.exit}
+        transition={containerVariants.transition}
+        id="documents-section"
+        style={{ display: "flex", justifyContent: " center", marginBlock: theme.spacing(5) }}
       >
-        <div>
-          <Typography typography="h1" component="h1">
-            Documents
-          </Typography>
-        </div>
-        <div>
-          {data.map((document, index) => (
-            <DocumentCard key={index} data={document} isCard={true} />
-          ))}
-        </div>
-        {/* <DocumentsGrid /> */}
-      </Grid>
-    </Container>
+        <Grid
+          id="main-grid"
+          container
+          maxWidth="xl"
+          spacing={{ xs: 4, md: 6 }}
+          sx={{ justifyContent: " center", display: "flex", flexDirection: "column", alignItems: "center" }}
+        >
+          <div>
+            <Typography typography="h1" component="h1">
+              Documents
+            </Typography>
+          </div>
+          <div>
+            {data.map((document, index) => (
+              <DocumentCard key={index} data={document} isCard={true} />
+            ))}
+          </div>
+          {/* <DocumentsGrid /> */}
+        </Grid>
+      </Container>
+    </>
   );
 }
