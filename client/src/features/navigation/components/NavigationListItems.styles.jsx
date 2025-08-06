@@ -1,7 +1,6 @@
-import { List, ListItem, styled } from "@mui/material";
+import { Link, List, ListItem, styled, Typography } from "@mui/material";
 
 export const StyledList = styled(List)(({ theme, navListType }) => ({
-  color: theme.palette.primary.main,
   display: "flex",
   flexDirection: "column",
   marginBlock: "2rem",
@@ -9,7 +8,7 @@ export const StyledList = styled(List)(({ theme, navListType }) => ({
 
   [theme.breakpoints.up("lg")]: {
     flexDirection: navListType === "account-menu" ? "column" : "row",
-    marginBlock: "0",
+    marginBlock: navListType === "account-menu" ? "2rem" : "0",
 
     justifyContent: "space-evenly",
   },
@@ -46,14 +45,26 @@ export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl
   }),
   ...(currentUrl !== url && {
     color: "#f1f1f18e !important",
-    "& .active-link": {
-      color: "#f1f1f18e !important",
-    },
     "& .inactive-link": {
       color: "#9b9b9bb7 !important",
       [theme.breakpoints.up("lg")]: {
-        color: `${theme.palette.secondary.main} !important`,
+        color: "#d4d4d4 !important",
+      },
+      textDecoration: "none !important",
+      "&:hover": {
+        transition: "all .3s ease-in-out",
+        color: "#00ff2fce !important",
       },
     },
   }),
+}));
+
+export const StyledNavigationLink = styled(Link)(({ theme, currentUrl, url }) => ({
+  ...(currentUrl === url && {
+    textDecoration: "underline !important",
+  }),
+}));
+
+export const StyledNavigationTypography = styled(Typography)(({ theme }) => ({
+  fontSize: "16px",
 }));

@@ -554,10 +554,10 @@ export const defaultTheme = {
           ":hover": {
             cursor: "pointer",
             transform: "scale(1.1)",
-            "& svg": {
-              filter: "drop-shadow(0px 0px 10px #00ff2fce)",
-              transition: "all .3s ease-In-Out",
-            },
+            // "& svg": {
+            //   filter: "drop-shadow(0px 0px 10px #00ff2fce)",
+            //   transition: "all .3s ease-In-Out",
+            // },
           },
           transition: "all .3s ease-In-Out",
         },
@@ -620,26 +620,25 @@ export const defaultTheme = {
           fontFamily: "Work Sans",
           lineHeight: "22px",
           fontSize: "22px",
-          "&.normal-shadow": {
-            ":hover": {
-              // filter: "drop-shadow(0px 0px 10px #fff)",
-              "& svg": {
-                // filter: "drop-shadow(0px 0px 10px #fff)",
-              },
-            },
-          },
+          // "&.normal-shadow": {
+          //   ":hover": {
+          //     // filter: "drop-shadow(0px 0px 10px #fff)",
+          //     "& svg": {
+          //       // filter: "drop-shadow(0px 0px 10px #fff)",
+          //     },
+          //   },
+          // },
           ":hover": {
             cursor: "pointer",
             color: "#00ff2fce",
-            // filter: "drop-shadow(0px 0px 10px #00ff2fce)",
-            "& svg": {
-              // filter: "drop-shadow(0px 0px 10px #00ff2fce)",
-            },
-            // transform: "scale(1.01)",
+            // "& svg": {
+            //   // filter: "drop-shadow(0px 0px 10px #00ff2fce)",
+            // },
           },
           transition: "all .3s ease-in-out",
           "@media (min-width: 1200px)": {
             fontSize: "18px",
+            // color: "#ffffff",
           },
         },
       },

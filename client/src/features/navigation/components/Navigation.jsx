@@ -1,8 +1,6 @@
 // React and Hooks
 import React from "react";
-import { Box, Slide, useScrollTrigger } from "@mui/material";
-// Material UI Components
-import { AppBar } from "@mui/material";
+import { Slide, useScrollTrigger } from "@mui/material";
 // Components
 import OverlandLogo from "./Logo";
 import Account from "./Account";
@@ -10,8 +8,7 @@ import NavigationMenu from "./NavigationMenu";
 // Custom Hooks
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // Styles
-import { StyledToolbar } from "../styles/index.styles";
-import { useTheme } from "@emotion/react";
+import { StyledAppBar, StyledToolbar } from "./Navigation.styles";
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -29,36 +26,16 @@ function HideOnScroll(props) {
 const Navigation = (props) => {
   const { isLg } = useMediaQueries();
 
-  const theme = useTheme();
   return (
     <>
       <HideOnScroll {...props}>
-        <AppBar
-          id="navigation"
-          position="sticky"
-          component="nav"
-          sx={{
-            background: "radial-gradient(circle, #082463 0%, rgba(9,31,64,1) 100%)",
-            backdropFilter: "blur(10px)",
-            padding: "1rem",
-            boxShadow: "0 0 10px 5px rgba(0, 0, 0, .4)",
-            [theme.breakpoints.up("lg")]: {
-              padding: "1.5rem",
-            },
-            ...(props.isTransparent && {
-              background: "transparent",
-              backdropFilter: "none",
-              boxShadow: "none",
-            }),
-          }}
-        >
+        <StyledAppBar id="navigation" position="sticky" component="nav" isTransparent={props.isTransparent}>
           <StyledToolbar>
-            {isLg && <OverlandLogo />}
+            <OverlandLogo />
             <NavigationMenu />
-            {!isLg && <OverlandLogo />}
-            <Account />
+            {isLg && <Account />}
           </StyledToolbar>
-        </AppBar>
+        </StyledAppBar>
       </HideOnScroll>
     </>
   );
