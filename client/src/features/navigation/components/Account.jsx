@@ -54,9 +54,15 @@ const Account = () => {
 
   return (
     <>
-      <StyledAccountIconButton size="large" onClick={handleOpen}>
-        <AccountCircleIcon color="text.secondary2" />
-      </StyledAccountIconButton>
+      {isAuthenticated ? (
+        <StyledAccountIconButton size="large" onClick={handleOpen}>
+          <AccountCircleIcon color="text.secondary2" />
+        </StyledAccountIconButton>
+      ) : (
+        <Button size="small" onClick={handleSignIn} variant="contained" color="secondary">
+          Sign In
+        </Button>
+      )}
       <StyledDrawerMenu open={openMenu} anchor="right" onClose={handleClose}>
         <StyledAccountCloseButton variant="square" onClick={handleClose} color="primary" aria-label="exit menu">
           <CloseIcon fontSize="large" />
@@ -64,15 +70,9 @@ const Account = () => {
         <FooterLogo textColor="primary.main" noHover={true} />
         <NavigationListItems menuItems={menuItems} handleClose={handleClose} navListType="account-menu" />
         <ButtonBlock sx={{ paddingInline: "1rem" }}>
-          {isAuthenticated ? (
-            <Button onClick={handleSignOut} variant="contained" color="error">
-              Sign Out
-            </Button>
-          ) : (
-            <Button onClick={handleSignIn} variant="contained" color="secondary">
-              Sign In
-            </Button>
-          )}
+          <Button onClick={handleSignOut} variant="contained" color="error">
+            Sign Out
+          </Button>
         </ButtonBlock>
       </StyledDrawerMenu>
     </>
