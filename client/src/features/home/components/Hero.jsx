@@ -37,12 +37,9 @@ const Hero = () => {
           Welcome to the official site of the Overland Trailblazers Baseball Team! Find game schedules, events, news, and ways to support our players.
           Start exploring below!
         </Typography>
-        <ButtonBlock direction={isSm ? "row" : "column"} spacing={2} justifyContent="center" mt={4} sx={{ paddingInline: { xs: "1rem", md: "0" } }}>
-          <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up" size="large">
+        <ButtonBlock mt={4} sx={{ paddingInline: { xs: "1rem", md: "0" } }}>
+          <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up" size="large" fullWidth>
             Join Our Community
-          </Button>
-          <Button variant="outlined" color="secondary" component={RouterLink} to="/boosters/volunteer" size="large">
-            Interested in volunteering?
           </Button>
         </ButtonBlock>
       </TextBlock>
