@@ -76,36 +76,70 @@ export const defaultTheme = {
     },
     h2: {
       fontWeight: "600",
-      textTransform: "uppercase",
       fontFamily: "Anuphan, serif",
-      letterSpacing: ".2rem",
-      fontSize: "2rem", // 30px
+      letterSpacing: ".175rem",
+
+      fontSize: "1.875rem", // 30px (mobile)
+      lineHeight: "1.3", // Better line height ratio
       marginBottom: "1.375rem",
-      // marginBlock: "1rem",
       "@media (min-width: 600px)": {
-        fontSize: "2.25rem", // 36px
-        lineHeight: "2.25rem",
+        fontSize: "2.25rem", // 36px (tablet)
+        lineHeight: "2.75rem", // 44px
       },
       "@media (min-width: 900px)": {
-        fontSize: "2.5rem", // 40px
-        lineHeight: "2.9375rem",
+        fontSize: "2.5rem", // 40px (desktop)
+        lineHeight: "3rem", // 48px
       },
     },
+    // h2: {
+    //   fontWeight: "600",
+    //   textTransform: "uppercase",
+    //   fontFamily: "Anuphan, serif",
+    //   letterSpacing: ".2rem",
+    //   fontSize: "2rem", // 30px
+    //   marginBottom: "1.375rem",
+    //   // marginBlock: "1rem",
+    //   "@media (min-width: 600px)": {
+    //     fontSize: "2.25rem", // 36px
+    //     lineHeight: "2.25rem",
+    //   },
+    //   "@media (min-width: 900px)": {
+    //     fontSize: "2.5rem", // 40px
+    //     lineHeight: "2.9375rem",
+    //   },
+    // },
     h3: {
       fontWeight: "600",
       fontFamily: "Anuphan, serif",
-      fontSize: "1.625rem", // 26px
-      // textTransform: "none",
-      letterSpacing: ".1rem",
+      fontSize: "1.25rem", // 20px (mobile)
+      letterSpacing: ".075rem",
+
+      // letterSpacing: ".05rem",
+      lineHeight: "1.5",
       "@media (min-width: 600px)": {
-        fontSize: "1.75rem", // 28px
-        lineHeight: "2.25rem",
+        fontSize: "1.375rem", // 22px (tablet)
+        lineHeight: "1.875rem", // 30px
       },
       "@media (min-width: 900px)": {
-        fontSize: "2rem", // 32px
-        lineHeight: "2.5rem",
+        fontSize: "1.5625rem", // 25px (desktop - golden ratio from 40px)
+        lineHeight: "2.125rem", // 34px
       },
     },
+    // h3: {
+    //   fontWeight: "600",
+    //   fontFamily: "Anuphan, serif",
+    //   fontSize: "1.625rem", // 26px
+    //   // textTransform: "none",
+    //   letterSpacing: ".1rem",
+    //   "@media (min-width: 600px)": {
+    //     fontSize: "1.75rem", // 28px
+    //     lineHeight: "2.25rem",
+    //   },
+    //   "@media (min-width: 900px)": {
+    //     fontSize: "2rem", // 32px
+    //     lineHeight: "2.5rem",
+    //   },
+    // },
     h4: {
       fontFamily: "Anuphan, serif",
       fontSize: "1.25rem",
@@ -152,17 +186,17 @@ export const defaultTheme = {
       },
     },
     p: {
-      fontWeight: "400",
+      fontWeight: "300",
       fontFamily: "Work Sans",
       fontSize: "16px",
-      lineHeight: "24px",
+      lineHeight: "28px",
       marginBottom: "1.25rem",
       "@media (min-width: 600px)": {
-        lineHeight: "24px",
+        lineHeight: "28px",
       },
       "@media (min-width: 900px)": {
         fontSize: "18px",
-        lineHeight: "28px",
+        // lineHeight: "28px",
       },
     },
 

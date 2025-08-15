@@ -57,7 +57,7 @@ const NewsImageSlider = () => {
   }, []);
 
   return (
-    <Box sx={{ position: "relative", width: "100%", height: { xs: "345px" } }}>
+    <Box sx={{ position: "relative", width: "100%", height: { xs: "345px", md: "460px" } }}>
       <AnimatePresence>
         <motion.img
           key={imageSliderData[currentIndex].imageUrl.original}
@@ -70,7 +70,7 @@ const NewsImageSlider = () => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            borderRadius: "4px",
+            borderRadius: "20px",
             boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.3)",
           }}
           src={imageSliderData[currentIndex].imageUrl.original}

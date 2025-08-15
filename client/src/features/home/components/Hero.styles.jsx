@@ -7,7 +7,6 @@ export const StyledSectionLayout = styled(SectionLayout)(({ theme, backgroundIma
   alignItems: "center",
   paddingBottom: "3rem",
   backgroundImage: `url(${backgroundImage})`,
-  borderRadius: "20px",
   overflow: "hidden",
   backgroundSize: "cover",
   backgroundPosition: "center center",
@@ -18,15 +17,19 @@ export const StyledSectionLayout = styled(SectionLayout)(({ theme, backgroundIma
   position: "relative",
   minHeight: "800px",
   [theme.breakpoints.up("sm")]: {
+    borderRadius: "20px",
     minHeight: "600px",
   },
   [theme.breakpoints.up("662")]: {
     minHeight: "600px",
   },
   [theme.breakpoints.up("md")]: {
+    borderRadius: "20px",
     minHeight: "650px",
   },
   [theme.breakpoints.up("lg")]: {
+    // justifyContent: "flex-start",
+    // alignItems: "flex-start",
     height: "720px",
   },
   [theme.breakpoints.up("xl")]: {
