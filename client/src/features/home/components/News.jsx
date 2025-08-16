@@ -10,10 +10,12 @@ import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import NewsImageSlider from "../components/NewsImageSlider";
 import TextBlock from "../../ui/components/TextBlock";
 import ButtonBlock from "../../ui/components/ButtonBlock";
+import SectionHeader from "../../ui/components/SectionHeader";
+import { useTheme } from "@emotion/react";
 
 export default function News() {
   const { isMd, isSm, isLg } = useMediaQueries();
-
+  const theme = useTheme();
   return (
     <Grid item xs={12}>
       <Grid container columnSpacing={isLg ? 6 : 4}>
@@ -29,9 +31,7 @@ export default function News() {
               justifyContent={isSm ? "flex-start" : "center"}
               sx={{ textAlign: { xs: "center", sm: "left" } }}
             >
-              <Typography typography="h2" component="h2">
-                Blazer News
-              </Typography>
+              <SectionHeader title="Blazer News" subtitle="Stay Connected with Your Trailblazers" color={theme.palette.secondary.main} />
               <Typography component="p" typography="p">
                 Welcome to the official site of Overland Baseball in Aurora, Colorado! At Overland, we're dedicated to building strong, skilled
                 players through a focus on fundamentals, targeted training, and continuous improvement. Our Trailblazers Baseball program is rapidly

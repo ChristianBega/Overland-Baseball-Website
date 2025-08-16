@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { Container, Divider, Grid } from "@mui/material";
 import React from "react";
 // Components
 import Hero from "../components/Hero";

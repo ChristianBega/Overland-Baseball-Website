@@ -23,6 +23,7 @@ const Hero = () => {
       backgroundImage={medley2}
     >
       <Navigation isTransparent={true} />
+      {/* TODO: remove inline css to styled component */}
       <TextBlock
         sx={{
           zIndex: 500,
@@ -40,7 +41,8 @@ const Hero = () => {
           <br />
           Blazers
         </StyledHeroTypography>
-        <Typography component="p" variant="p" sx={{ maxWidth: { xs: "600px", lg: "950px" }, paddingInline: { xs: ".5rem", md: "0" } }}>
+        {/* TODO: remove inline css to styled component */}
+        <Typography component="p" variant="p" sx={{ maxWidth: { xs: "600px", lg: "950px" }, paddingInline: { xs: ".5rem", md: "0" }, color: "#fff" }}>
           Welcome to the official site of the Overland Trailblazers Baseball Team! Find game schedules, events, news, and ways to support our players.
           Start exploring below!
         </Typography>

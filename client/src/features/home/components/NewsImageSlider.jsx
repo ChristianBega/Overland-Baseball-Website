@@ -57,8 +57,10 @@ const NewsImageSlider = () => {
   }, []);
 
   return (
-    <Box sx={{ position: "relative", width: "100%", height: { xs: "345px", md: "460px" } }}>
+    // TODO: remove inline css to styled component
+    <Box sx={{ position: "relative", width: "100%", height: { xs: "375px", md: "453px" } }}>
       <AnimatePresence>
+        {/* TODO: remove inline css to styled component */}
         <motion.img
           key={imageSliderData[currentIndex].imageUrl.original}
           initial={{ opacity: 0 }}

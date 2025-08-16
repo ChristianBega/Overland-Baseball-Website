@@ -78,7 +78,7 @@ export const defaultTheme = {
       fontWeight: "600",
       fontFamily: "Anuphan, serif",
       letterSpacing: ".175rem",
-
+      color: "#091F40",
       fontSize: "1.875rem", // 30px (mobile)
       lineHeight: "1.3", // Better line height ratio
       marginBottom: "1.375rem",
@@ -109,6 +109,7 @@ export const defaultTheme = {
     //   },
     // },
     h3: {
+      color: "#091F40",
       fontWeight: "600",
       fontFamily: "Anuphan, serif",
       fontSize: "1.25rem", // 20px (mobile)
@@ -186,6 +187,7 @@ export const defaultTheme = {
       },
     },
     p: {
+      color: "#333333",
       fontWeight: "300",
       fontFamily: "Work Sans",
       fontSize: "16px",
@@ -195,7 +197,7 @@ export const defaultTheme = {
         lineHeight: "28px",
       },
       "@media (min-width: 900px)": {
-        fontSize: "18px",
+        // fontSize: "18px",
         // lineHeight: "28px",
       },
     },
@@ -384,6 +386,45 @@ export const defaultTheme = {
             "& svg": {
               fontSize: "1rem",
             },
+          },
+        },
+        minimal: {
+          backgroundColor: "#f7f7f8",
+          border: "1px solid #d7d8e0",
+          borderRadius: "20px",
+          padding: "8px 16px",
+          fontSize: "14px",
+          lineHeight: "14px",
+          fontWeight: "500",
+          textTransform: "none",
+          display: "flex",
+          alignItems: "center",
+          "&:hover": {
+            background: "rgba(151, 152, 152, 0.08)",
+            boxShadow: "0px 0px 10px 0px rgb(79, 216, 16)",
+            backgroundColor: "#4CBB17",
+            color: "#fff",
+            transition: "all .3s ease-in-out",
+          },
+        },
+        circle: {
+          borderRadius: "50%",
+          padding: "0px",
+          fontSize: "14px",
+          lineHeight: "14px",
+          fontWeight: "500",
+          backgroundColor: "#f7f7f8",
+          border: "1px solid #d7d8e0",
+          minHeight: "45px !important",
+          minWidth: "45px !important",
+          maxHeight: "45px !important",
+          maxWidth: "45px !important",
+          "&:hover": {
+            background: "rgba(151, 152, 152, 0.08)",
+            boxShadow: "0px 0px 10px 0px rgb(79, 216, 16)",
+            backgroundColor: "#4CBB17",
+            color: "#fff",
+            transition: "all .3s ease-in-out",
           },
         },
       },
