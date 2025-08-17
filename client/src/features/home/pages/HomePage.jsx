@@ -1,10 +1,10 @@
-import { Container, Divider, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import React from "react";
 // Components
 import Hero from "../components/Hero";
 import News from "../components/News";
 import Events from "../components/Events";
-import Schedule from "../components/Schedule copy";
+import Schedule from "../components/Schedule";
 import ContactUs from "../components/ContactUs";
 // import Sponsors from "../../../components/sponsors/sponsors.component";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";

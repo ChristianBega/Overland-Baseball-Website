@@ -1,14 +1,16 @@
 // Common styles for all input fields
+// Todo: rename this to inputStyles so it's more clear what it's for
 export const commonInputStyles = {
   width: "100%",
   padding: "8px 12px",
   border: "1px solid #e0e0e0",
-  borderRadius: "4px",
+  backgroundColor: "#ffffff",
   color: "rgba(0, 0, 0, 0.87)",
-  backgroundColor: "transparent",
   fontSize: "14px",
   outline: "none",
+  borderRadius: "8px",
   transition: "border-color 0.2s ease",
+
   "&:hover": {
     borderColor: "#000000",
   },
@@ -16,6 +18,7 @@ export const commonInputStyles = {
     borderColor: "#1976d2",
     borderWidth: "2px",
   },
+  // why is placeholder styling not applying to the input field?
 };
 
 // Common label styles

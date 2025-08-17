@@ -10,9 +10,9 @@ import {
   StyledRightButton,
   StyledScrollHint,
   StyledEmptyState,
-} from "./GameSlider.styles";
+} from "./ScheduleSlider.styles";
 
-const GameSlider = ({ games, onGameClick, showNavigation = true, showScrollHint = true }) => {
+const ScheduleSlider = ({ games, onGameClick, showNavigation = true, showScrollHint = true }) => {
   const sliderRef = useRef(null);
   const isMouseDown = useRef(false);
   const startX = useRef(0);
@@ -121,4 +121,4 @@ const GameSlider = ({ games, onGameClick, showNavigation = true, showScrollHint 
   );
 };
 
-export default GameSlider;
+export default ScheduleSlider;

@@ -491,74 +491,24 @@ export const defaultTheme = {
         },
       },
     },
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          minWidth: "300px",
-          width: "100%",
-          // maxWidth: "400px",
-          // maxHeight: "35px",
-          fontSize: "14px",
-          padding: "0",
 
-          input: {
-            "&.Mui-disabled": {
-              cursor: "not-allowed",
-            },
-            "&.MuiInput-input": {
-              paddingLeft: "4px",
-            },
-            "&.MuiFilledInput-input": {
-              paddingTop: "10px",
-              paddingLeft: "6px",
-            },
-            "&.MuiOutlinedInput-input": {
-              // Styles for outlined input
-              paddingTop: "8px",
-              paddingLeft: "8px",
-              paddingBottom: "8px",
-            },
-            "&.MuiInputBase-inputMultiline": {
-              paddingTop: "8px",
-              paddingLeft: "8px",
-              paddingBottom: "8px",
-              // maxHeight: "100px",
-              border: "1px solid red",
-            },
-          },
-        },
-      },
-    },
-    MuiInput: {
+    MuiCssBaseline: {
       styleOverrides: {
-        root: {
-          "&::placeholder": {
-            opacity: 1,
-          },
-          fontSize: "14px",
-        },
-        filled: {
-          borderLeft: "1px solid red",
-          backgroundColor: "#ffffff",
-          "&::before": {
-            background: "#fe00e9",
-            backgroundColor: "#fe00e9",
-            backgroundImage: "linear-gradient(153deg, rgba(9,31,64,0.6487119437939111) 51%, rgba(0,154,78,0.6510538641686183) 98%)",
-          },
-          "&::after": {
-            background: "#fe00e9",
-            backgroundColor: "#fe00e9",
-            backgroundImage: "linear-gradient(153deg, rgba(9,31,64,0.6487119437939111) 51%, rgba(0,154,78,0.6510538641686183) 98%)",
-          },
-        },
-        underline: {
-          // borderBottom: "1px solid #ff0000",
-          "&::before": {
-            borderBottom: "1px solid #ffffff",
+        body: {
+          "& input::placeholder, & textarea::placeholder, & select::placeholder": {
+            color: "#8c8ea4 !important",
+            opacity: "1 !important",
+            fontSize: "14px !important",
+            fontFamily: "Work Sans !important",
+            fontWeight: "400 !important",
+            lineHeight: "1.5 !important",
+            letterSpacing: "0.01em !important",
           },
         },
       },
     },
+
+    // ... existing code ...
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -860,96 +810,3 @@ export const defaultTheme = {
     },
   },
 };
-// linkText: {
-//   ":hover": {
-//     cursor: "pointer",
-//     transform: "scale(1.1)",
-//   },
-// },
-// linkTextDesktop: {
-//   fontFamily: "Work Sans",
-//   lineHeight: "18px",
-//   fontSize: "20px",
-//   textDecoration: "none",
-//   ":hover": {
-//     cursor: "pointer",
-//     transform: "scale(1.1)",
-//   },
-//   transition: "all .3s ease-in-out",
-// },
-// linkTextMobile: {
-//   textDecoration: "none",
-//   fontFamily: "Work Sans",
-//   lineHeight: "22px",
-//   fontSize: "28px",
-//   ":hover": {
-//     cursor: "pointer",
-//     transform: "scale(1.1)",
-//   },
-//   transition: "all .3s ease-in-out",
-// },
-// MuiGrid: {},
-// MuiCard: {
-//   // Styles for card components
-// },
-// MuiTable: {
-//   // Styles for tables
-// },
-// MuiDialog: {
-//   // Styles for modals
-// },
-// MuiAlert: {
-//   // Styles for alert messages
-// },
-// MuiAppBar: {
-//   // Styles for the app bar
-// },
-// MuiToolbar: {
-//   // Styles for toolbars
-// },
-
-// MuiTypography: {
-//   // Styles for typography elements
-// },
-// MuiPaper: {
-//   // Styles for paper components
-// },
-// MuiList: {
-//   // Styles for lists
-// },
-// MuiMenu: {
-//   // Styles for menus
-// },
-// MuiSnackbar: {
-//   // Styles for snackbars
-// },
-// MuiTooltip: {
-//   // Styles for tooltips
-// },
-// MuiCheckbox: {
-//   // Styles for checkboxes
-// },
-// MuiRadio: {
-//   // Styles for radio buttons
-// },
-// MuiSwitch: {
-//   // Styles for switches
-// },
-// MuiAvatar: {
-//   // Styles for avatar components
-// },
-// MuiBadge: {
-//   // Styles for badge components
-// },
-// MuiStepper: {
-//   // Styles for stepper components
-// },
-// MuiCircularProgress: {
-//   // Styles for circular progress indicators
-// },
-// MuiLinearProgress: {
-//   // Styles for linear progress indicators
-// },
-// MuiGrid: {
-//   // Styles for grid components
-// },

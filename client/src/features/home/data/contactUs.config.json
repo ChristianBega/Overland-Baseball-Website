@@ -3,7 +3,7 @@
     "name": "fullName",
     "label": "Full Name",
     "type": "text",
-    "placeholder": "Enter your full name...",
+    "placeholder": "Enter Full Name (Required)",
     "rules": {
       "required": "Full name is required *"
     }
@@ -12,7 +12,7 @@
     "name": "email",
     "label": "Email",
     "type": "email",
-    "placeholder": "Enter your email...",
+    "placeholder": "Enter Email Address (Required)",
     "rules": {
       "required": "Email is required *",
       "pattern": {
@@ -25,7 +25,7 @@
     "name": "phone",
     "label": "Phone",
     "type": "tel",
-    "placeholder": "Enter your phone number...",
+    "placeholder": "Enter Phone Number (Required)",
     "rules": {
       "required": "Phone number is required *",
       "pattern": {
@@ -38,7 +38,7 @@
     "name": "message",
     "label": "Message",
     "type": "textarea",
-    "placeholder": "Enter your message...",
+    "placeholder": "Enter Message (Required)",
     "rules": {
       "required": "Message is required *"
     }
