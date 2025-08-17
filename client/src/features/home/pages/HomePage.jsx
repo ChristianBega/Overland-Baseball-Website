@@ -4,7 +4,7 @@ import React from "react";
 import Hero from "../components/Hero";
 import News from "../components/News";
 import Events from "../components/Events";
-import Schedule from "../components/Schedule";
+import Schedule from "../components/Schedule copy";
 import ContactUs from "../components/ContactUs";
 // import Sponsors from "../../../components/sponsors/sponsors.component";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
