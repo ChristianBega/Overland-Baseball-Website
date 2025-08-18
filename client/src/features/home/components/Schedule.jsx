@@ -1,26 +1,18 @@
 import { useTheme } from "@emotion/react";
 import React, { useMemo } from "react";
 // MUI
-import { Grid, Typography, Box, Stack } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 // Components
 import SectionLayout from "../../ui/components/SectionLayout";
-import ScheduleItem from "../components/ScheduleItem";
-// import DateNavigator from "./components/dateNavigator/dateNavigator.component";
+import SectionHeader from "../../ui/components/SectionHeader";
+import ScheduleSlider from "./ScheduleSlider";
+import { StyledScheduleSectionLayout } from "./Schedule.styles";
 // Hooks
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
-// Icons
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function Schedule() {
   const theme = useTheme();
   const { data, isLoading, error } = useRealtimeData("schedule");
-  // ! - if the date is in the past, we want to not show it??
-  // ! - but, if the user is using the dateNavigator, and they are on a past date, we want to show it??
-
-  // 1. if date is in the past, append to end of data array and style as "grayed out"
-  // 2. if the date is not in the past, and is current or future, organize by date chronologically
-  // const sortByDate = (data) => data?.sort((a, b) => new Date(a.date) - new Date(b.date));
-  // const sortedData = data ? sortByDate([...data]) : [];
 
   const sortedData = useMemo(() => {
     if (!data) return [];
@@ -47,59 +39,56 @@ export default function Schedule() {
     // Combine with future events first, then past events
     return [...futureEvents, ...pastEvents];
   }, [data]);
-  //! update this status with our custom status component
+
+  const handleGameClick = (gameData) => {
+    const { date, opponent, location } = gameData;
+    // time,
+    const calendarUrl = `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(
+      `Overland vs ${opponent}`
+    )}&dates=${date}&details=${encodeURIComponent(`Baseball game against ${opponent}`)}&location=${encodeURIComponent(location)}`;
+    window.open(calendarUrl, "_blank");
+  };
+
   if (isLoading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+    return (
+      <Grid item xs={12}>
+        <SectionLayout id="schedule-section" aria-label="Schedule Section">
+          <Box display="flex" justifyContent="center" alignItems="center" height="200px">
+            <Typography>Loading schedule...</Typography>
+          </Box>
+        </SectionLayout>
+      </Grid>
+    );
   }
 
   if (error) {
     return (
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <Typography variant="h6" color="error">
-          {error ? "Error with real-time updates" : "Error fetching/caching the data"}
-        </Typography>
-      </div>
+      <Grid item xs={12}>
+        <SectionLayout id="schedule-section" aria-label="Schedule Section">
+          <Box textAlign="center" py={4}>
+            <Typography variant="h6" color="error">
+              {error ? "Error with real-time updates" : "Error fetching/caching the data"}
+            </Typography>
+          </Box>
+        </SectionLayout>
+      </Grid>
     );
   }
 
   return (
     <Grid item xs={12}>
-      <SectionLayout id="schedule-section" aria-label="Schedule Section">
-        <Typography variant="h2" component="h2">
-          Schedule
-        </Typography>
-        {/* <DateNavigator events={sortedData} /> */}
-        <Box
-          sx={{
-            padding: ".5rem",
-            maxHeight: "425px",
-            overflowY: "auto",
-            scrollbarWidth: "none",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-            [theme.breakpoints.up("md")]: {
-              maxHeight: "525px",
-            },
-            [theme.breakpoints.up("laptop")]: {
-              maxHeight: "635px",
-            },
-          }}
-        >
-          {sortedData.map((gameData, index) => (
-            <ScheduleItem data={gameData} key={index} index={index} isPast={gameData.isPast} />
-          ))}
-        </Box>
-        <Stack direction="column" alignItems="center" justifyContent="center" mt={2}>
-          <Typography component="span" variant="span" sx={{ color: theme.palette.secondary.main }}>
-            Continue Scrolling
-          </Typography>
-          <KeyboardArrowDownIcon sx={{ color: theme.palette.secondary.main }} />
-        </Stack>
-      </SectionLayout>
+      <StyledScheduleSectionLayout id="schedule-section" aria-label="Schedule Section">
+        <SectionHeader
+          title="Upcoming Games"
+          subtitle="2025-2026 Season"
+          color={theme.palette.secondary.main}
+          textAlign="center"
+          justifyContent="center"
+          sx={{ mb: 4 }}
+        />
+
+        <ScheduleSlider games={sortedData} onGameClick={handleGameClick} showNavigation={true} />
+      </StyledScheduleSectionLayout>
     </Grid>
   );
 }

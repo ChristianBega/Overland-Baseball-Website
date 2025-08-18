@@ -13,36 +13,43 @@ import medley2 from "../../../assets/imagesSlider/Medleyhitting.webp";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const Hero = () => {
-  const { isSm, isLg } = useMediaQueries();
+  const { isXl } = useMediaQueries();
   return (
     <StyledSectionLayout
-      customMargin={!isSm ? "1rem 1rem 0rem 1rem !important" : "2rem 2rem 0rem 2rem !important"}
+      marginZero={true}
+      // customMargin={!isSm ? "0rem 0rem 0rem 0rem !important" : "2rem 2rem 0rem 2rem !important"}
       id="hero"
       aria-label="Hero Section"
       component="section"
       backgroundImage={medley2}
     >
       <Navigation isTransparent={true} />
+      {/* TODO: remove inline css to styled component */}
       <TextBlock
-        sx={{ zIndex: 500, textAlign: isLg ? "left" : "center", maxWidth: "1164px", minWidth: { lg: "1164px" } }}
-        justifyContent={isLg ? "flex-start" : "center"}
-        alignItems={isLg ? "flex-start" : "center"}
+        sx={{
+          zIndex: 500,
+          textAlign: isXl ? "left" : "center",
+          maxWidth: "1184px",
+          minWidth: { lg: "1100", xl: "1184px" },
+          marginLeft: { xl: "48px" },
+          marginTop: { lg: "100px" },
+        }}
+        justifyContent={isXl ? "flex-start" : "center"}
+        alignItems={isXl ? "flex-start" : "center"}
       >
         <StyledHeroTypography variant="h1" component="h1" gutterBottom>
           <span style={{ fontSize: "45%", lineHeight: "0.45" }}>Home Of The</span>
           <br />
           Blazers
         </StyledHeroTypography>
-        <Typography component="p" variant="p" sx={{ maxWidth: { xs: "600px", lg: "950px" }, paddingInline: { xs: ".5rem", md: "0" } }}>
+        {/* TODO: remove inline css to styled component */}
+        <Typography component="p" variant="p" sx={{ maxWidth: { xs: "600px", lg: "950px" }, paddingInline: { xs: ".5rem", md: "0" }, color: "#fff" }}>
           Welcome to the official site of the Overland Trailblazers Baseball Team! Find game schedules, events, news, and ways to support our players.
           Start exploring below!
         </Typography>
-        <ButtonBlock direction={isSm ? "row" : "column"} spacing={2} justifyContent="center" mt={4} sx={{ paddingInline: { xs: "1rem", md: "0" } }}>
-          <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up" size="large">
+        <ButtonBlock sx={{ paddingInline: { xs: "1rem", md: "0" } }}>
+          <Button variant="contained" color="secondary" component={RouterLink} to="/authentication/sign-up" size="large" fullWidth>
             Join Our Community
-          </Button>
-          <Button variant="outlined" color="secondary" component={RouterLink} to="/boosters/volunteer" size="large">
-            Interested in volunteering?
           </Button>
         </ButtonBlock>
       </TextBlock>

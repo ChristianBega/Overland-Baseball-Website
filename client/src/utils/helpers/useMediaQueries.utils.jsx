@@ -34,6 +34,9 @@ const useMediaQueries = () => {
   const isLgDown = useMediaQuery(theme.breakpoints.down("lg"), {
     defaultMatches: true,
   });
+  const isFormHeaderAndDown = useMediaQuery(theme.breakpoints.down("formHeader"), {
+    defaultMatches: true,
+  });
 
   const isEventCalendarDown = useMediaQuery(theme.breakpoints.down("eventCalendar"), {
     defaultMatches: true,
@@ -51,6 +54,7 @@ const useMediaQueries = () => {
     isMdDown,
     isLgDown,
     isEventCalendarDown,
+    isFormHeaderAndDown,
   };
 };
 

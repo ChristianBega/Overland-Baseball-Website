@@ -10,6 +10,7 @@ export const defaultTheme = {
       // main: "#009A4E",
       light: "#21c067",
       dark: "#007f3b",
+      hover: "#4FD810",
     },
     accent: {
       accentOne: "rgba(9,31,64,.8)",
@@ -76,36 +77,71 @@ export const defaultTheme = {
     },
     h2: {
       fontWeight: "600",
-      textTransform: "uppercase",
       fontFamily: "Anuphan, serif",
-      letterSpacing: ".2rem",
-      fontSize: "2rem", // 30px
+      letterSpacing: ".175rem",
+      color: "#091F40",
+      fontSize: "1.875rem", // 30px (mobile)
+      lineHeight: "1.3", // Better line height ratio
       marginBottom: "1.375rem",
-      // marginBlock: "1rem",
       "@media (min-width: 600px)": {
-        fontSize: "2.25rem", // 36px
-        lineHeight: "2.25rem",
+        fontSize: "2.25rem", // 36px (tablet)
+        lineHeight: "2.75rem", // 44px
       },
       "@media (min-width: 900px)": {
-        fontSize: "2.5rem", // 40px
-        lineHeight: "2.9375rem",
+        fontSize: "2.5rem", // 40px (desktop)
+        lineHeight: "3rem", // 48px
       },
     },
+    // h2: {
+    //   fontWeight: "600",
+    //   textTransform: "uppercase",
+    //   fontFamily: "Anuphan, serif",
+    //   letterSpacing: ".2rem",
+    //   fontSize: "2rem", // 30px
+    //   marginBottom: "1.375rem",
+    //   // marginBlock: "1rem",
+    //   "@media (min-width: 600px)": {
+    //     fontSize: "2.25rem", // 36px
+    //     lineHeight: "2.25rem",
+    //   },
+    //   "@media (min-width: 900px)": {
+    //     fontSize: "2.5rem", // 40px
+    //     lineHeight: "2.9375rem",
+    //   },
+    // },
     h3: {
+      color: "#091F40",
       fontWeight: "600",
       fontFamily: "Anuphan, serif",
-      fontSize: "1.625rem", // 26px
-      // textTransform: "none",
-      letterSpacing: ".1rem",
+      fontSize: "1.25rem", // 20px (mobile)
+      letterSpacing: ".075rem",
+
+      // letterSpacing: ".05rem",
+      lineHeight: "1.5",
       "@media (min-width: 600px)": {
-        fontSize: "1.75rem", // 28px
-        lineHeight: "2.25rem",
+        fontSize: "1.375rem", // 22px (tablet)
+        lineHeight: "1.875rem", // 30px
       },
       "@media (min-width: 900px)": {
-        fontSize: "2rem", // 32px
-        lineHeight: "2.5rem",
+        fontSize: "1.5625rem", // 25px (desktop - golden ratio from 40px)
+        lineHeight: "2.125rem", // 34px
       },
     },
+    // h3: {
+    //   fontWeight: "600",
+    //   fontFamily: "Anuphan, serif",
+    //   fontSize: "1.625rem", // 26px
+    //   // textTransform: "none",
+    //   letterSpacing: ".1rem",
+    //   "@media (min-width: 600px)": {
+    //     fontSize: "1.75rem", // 28px
+    //     lineHeight: "2.25rem",
+    //   },
+    //   "@media (min-width: 900px)": {
+    //     fontSize: "2rem", // 32px
+    //     lineHeight: "2.5rem",
+    //   },
+    // },
     h4: {
       fontFamily: "Anuphan, serif",
       fontSize: "1.25rem",
@@ -152,16 +188,13 @@ export const defaultTheme = {
       },
     },
     p: {
-      fontWeight: "400",
+      color: "#333333",
+      fontWeight: "300",
       fontFamily: "Work Sans",
       fontSize: "16px",
-      lineHeight: "24px",
+      lineHeight: "28px",
       marginBottom: "1.25rem",
       "@media (min-width: 600px)": {
-        lineHeight: "24px",
-      },
-      "@media (min-width: 900px)": {
-        fontSize: "18px",
         lineHeight: "28px",
       },
     },
@@ -352,6 +385,45 @@ export const defaultTheme = {
             },
           },
         },
+        minimal: {
+          backgroundColor: "#f7f7f8",
+          border: "1px solid #d7d8e0",
+          borderRadius: "20px",
+          padding: "8px 16px",
+          fontSize: "14px",
+          lineHeight: "14px",
+          fontWeight: "500",
+          textTransform: "none",
+          display: "flex",
+          alignItems: "center",
+          "&:hover": {
+            background: "rgba(151, 152, 152, 0.08)",
+            boxShadow: "0px 0px 10px 0px rgb(79, 216, 16)",
+            backgroundColor: "#4CBB17",
+            color: "#fff",
+            transition: "all .3s ease-in-out",
+          },
+        },
+        circle: {
+          borderRadius: "50%",
+          padding: "0px",
+          fontSize: "14px",
+          lineHeight: "14px",
+          fontWeight: "500",
+          backgroundColor: "#f7f7f8",
+          border: "1px solid #d7d8e0",
+          minHeight: "45px !important",
+          minWidth: "45px !important",
+          maxHeight: "45px !important",
+          maxWidth: "45px !important",
+          "&:hover": {
+            background: "rgba(151, 152, 152, 0.08)",
+            boxShadow: "0px 0px 10px 0px rgb(79, 216, 16)",
+            backgroundColor: "#4CBB17",
+            color: "#fff",
+            transition: "all .3s ease-in-out",
+          },
+        },
       },
     },
     MuiModal: {
@@ -416,74 +488,23 @@ export const defaultTheme = {
         },
       },
     },
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          minWidth: "300px",
-          width: "100%",
-          // maxWidth: "400px",
-          // maxHeight: "35px",
-          fontSize: "14px",
-          padding: "0",
 
-          input: {
-            "&.Mui-disabled": {
-              cursor: "not-allowed",
-            },
-            "&.MuiInput-input": {
-              paddingLeft: "4px",
-            },
-            "&.MuiFilledInput-input": {
-              paddingTop: "10px",
-              paddingLeft: "6px",
-            },
-            "&.MuiOutlinedInput-input": {
-              // Styles for outlined input
-              paddingTop: "8px",
-              paddingLeft: "8px",
-              paddingBottom: "8px",
-            },
-            "&.MuiInputBase-inputMultiline": {
-              paddingTop: "8px",
-              paddingLeft: "8px",
-              paddingBottom: "8px",
-              // maxHeight: "100px",
-              border: "1px solid red",
-            },
-          },
-        },
-      },
-    },
-    MuiInput: {
+    MuiCssBaseline: {
       styleOverrides: {
-        root: {
-          "&::placeholder": {
-            opacity: 1,
-          },
-          fontSize: "14px",
-        },
-        filled: {
-          borderLeft: "1px solid red",
-          backgroundColor: "#ffffff",
-          "&::before": {
-            background: "#fe00e9",
-            backgroundColor: "#fe00e9",
-            backgroundImage: "linear-gradient(153deg, rgba(9,31,64,0.6487119437939111) 51%, rgba(0,154,78,0.6510538641686183) 98%)",
-          },
-          "&::after": {
-            background: "#fe00e9",
-            backgroundColor: "#fe00e9",
-            backgroundImage: "linear-gradient(153deg, rgba(9,31,64,0.6487119437939111) 51%, rgba(0,154,78,0.6510538641686183) 98%)",
-          },
-        },
-        underline: {
-          // borderBottom: "1px solid #ff0000",
-          "&::before": {
-            borderBottom: "1px solid #ffffff",
+        body: {
+          "& input::placeholder, & textarea::placeholder, & select::placeholder": {
+            color: "#8c8ea4 !important",
+            opacity: "1 !important",
+            fontSize: "14px !important",
+            fontFamily: "Work Sans !important",
+            fontWeight: "400 !important",
+            lineHeight: "1.5 !important",
+            letterSpacing: "0.01em !important",
           },
         },
       },
     },
+
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -636,10 +657,10 @@ export const defaultTheme = {
             // },
           },
           transition: "all .3s ease-in-out",
-          "@media (min-width: 1200px)": {
-            fontSize: "18px",
-            // color: "#ffffff",
-          },
+          // "@media (min-width: 1200px)": {
+          //   fontSize: "18px",
+          //   // color: "#ffffff",
+          // },
         },
       },
     },
@@ -785,96 +806,3 @@ export const defaultTheme = {
     },
   },
 };
-// linkText: {
-//   ":hover": {
-//     cursor: "pointer",
-//     transform: "scale(1.1)",
-//   },
-// },
-// linkTextDesktop: {
-//   fontFamily: "Work Sans",
-//   lineHeight: "18px",
-//   fontSize: "20px",
-//   textDecoration: "none",
-//   ":hover": {
-//     cursor: "pointer",
-//     transform: "scale(1.1)",
-//   },
-//   transition: "all .3s ease-in-out",
-// },
-// linkTextMobile: {
-//   textDecoration: "none",
-//   fontFamily: "Work Sans",
-//   lineHeight: "22px",
-//   fontSize: "28px",
-//   ":hover": {
-//     cursor: "pointer",
-//     transform: "scale(1.1)",
-//   },
-//   transition: "all .3s ease-in-out",
-// },
-// MuiGrid: {},
-// MuiCard: {
-//   // Styles for card components
-// },
-// MuiTable: {
-//   // Styles for tables
-// },
-// MuiDialog: {
-//   // Styles for modals
-// },
-// MuiAlert: {
-//   // Styles for alert messages
-// },
-// MuiAppBar: {
-//   // Styles for the app bar
-// },
-// MuiToolbar: {
-//   // Styles for toolbars
-// },
-
-// MuiTypography: {
-//   // Styles for typography elements
-// },
-// MuiPaper: {
-//   // Styles for paper components
-// },
-// MuiList: {
-//   // Styles for lists
-// },
-// MuiMenu: {
-//   // Styles for menus
-// },
-// MuiSnackbar: {
-//   // Styles for snackbars
-// },
-// MuiTooltip: {
-//   // Styles for tooltips
-// },
-// MuiCheckbox: {
-//   // Styles for checkboxes
-// },
-// MuiRadio: {
-//   // Styles for radio buttons
-// },
-// MuiSwitch: {
-//   // Styles for switches
-// },
-// MuiAvatar: {
-//   // Styles for avatar components
-// },
-// MuiBadge: {
-//   // Styles for badge components
-// },
-// MuiStepper: {
-//   // Styles for stepper components
-// },
-// MuiCircularProgress: {
-//   // Styles for circular progress indicators
-// },
-// MuiLinearProgress: {
-//   // Styles for linear progress indicators
-// },
-// MuiGrid: {
-//   // Styles for grid components
-// },

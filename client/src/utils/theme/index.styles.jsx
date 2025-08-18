@@ -88,6 +88,25 @@ export const LogoImage = styled(Box)(({ theme }) => ({
   },
 }));
 
+export const TeamLogo = styled(Box)(({ theme }) => ({
+  width: "55px",
+  height: "55px",
+  display: "flex",
+  objectFit: "contain",
+  borderRadius: "50%",
+  // margin: "auto",
+  "&.logo-image-square": {
+    borderRadius: "0",
+  },
+  "&.logo-image-opponent": {
+    margin: "auto 1.5rem auto 0",
+  },
+  [theme.breakpoints.up("md")]: {
+    width: "65px",
+    height: "65px",
+  },
+}));
+
 // Forms
 export const StyledForm = styled("form")(({ theme }) => ({
   width: "100%",

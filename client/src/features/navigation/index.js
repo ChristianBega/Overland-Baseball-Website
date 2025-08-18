@@ -10,5 +10,5 @@ export { default as ContactUs } from "./components/ContactUs";
 export { default as CopyRight } from "./components/CopyRight";
 export { default as FooterLogo } from "./components/FooterLogo";
 export { default as LocationMap } from "./components/LocationMap";
-export { default as FooterNavigation } from "./components/FooterNavigation";
+export { default as FooterNavigation } from "./components/FooterNavigation copy.jsx";
 export { default as ScrollToTop } from "./components/ScrollToTop";

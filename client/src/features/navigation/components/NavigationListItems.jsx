@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // MUI components
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 // Contexts
 import { UserContext } from "../../../features/auth/context/UserContext";
 // Utils & Helpers
@@ -11,7 +11,7 @@ import { signOutUser } from "../../../features/auth/utils/authUtils";
 import { useRoleCheck } from "../../../hooks/useRoleCheck";
 import { ROLES } from "../../../features/auth/utils/roles";
 // Components
-import { StyledList, StyledListItem, StyledNavigationLink, StyledNavigationTypography } from "./NavigationListItems.styles";
+import { StyledList, StyledListItem, StyledNavigationLink } from "./NavigationListItems.styles";
 
 const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
   const { currentUserProfile } = useContext(UserContext);
@@ -62,12 +62,28 @@ const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
 
   return (
     <StyledList navListType={navListType}>
-      {currentMenuItems?.map(({ label, url, icon }) => (
+      {currentMenuItems?.map(({ label, url, icon, href }) => (
         <StyledListItem url={url} currentUrl={currentUrl} navListType={navListType} key={label} onClick={handleClick} id={label} data-url={url}>
-          <StyledNavigationLink component={RouterLink} key={label} currentUrl={currentUrl} url={url}>
+          {/* if no url but href, use normal link */}
+          <StyledNavigationLink
+            component={!url ? "a" : RouterLink}
+            key={label}
+            currentUrl={currentUrl}
+            url={url}
+            href={href}
+            target={href ? "_blank" : "_self"}
+            rel={href ? "noopener noreferrer" : ""}
+          >
             <Stack direction="row" alignItems="center" gap={1} className={currentUrl === url ? "active-link" : "inactive-link"}>
               {isLg && navListType === "navigation-menu" ? null : <>{icon}</>}
-              <StyledNavigationTypography variant="h6">{label}</StyledNavigationTypography>
+              <Typography
+                component="span"
+                variant="p"
+                className={navListType === "navigation-menu-footer" ? "light-text" : ""}
+                sx={{ fontSize: "16px", marginBottom: "0", color: "inherit !important" }}
+              >
+                {label}
+              </Typography>
             </Stack>
           </StyledNavigationLink>
         </StyledListItem>
