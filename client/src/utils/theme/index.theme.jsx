@@ -10,6 +10,7 @@ export const defaultTheme = {
       // main: "#009A4E",
       light: "#21c067",
       dark: "#007f3b",
+      hover: "#4FD810",
     },
     accent: {
       accentOne: "rgba(9,31,64,.8)",
@@ -195,10 +196,6 @@ export const defaultTheme = {
       marginBottom: "1.25rem",
       "@media (min-width: 600px)": {
         lineHeight: "28px",
-      },
-      "@media (min-width: 900px)": {
-        // fontSize: "18px",
-        // lineHeight: "28px",
       },
     },
 
@@ -508,7 +505,6 @@ export const defaultTheme = {
       },
     },
 
-    // ... existing code ...
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -661,10 +657,10 @@ export const defaultTheme = {
             // },
           },
           transition: "all .3s ease-in-out",
-          "@media (min-width: 1200px)": {
-            fontSize: "18px",
-            // color: "#ffffff",
-          },
+          // "@media (min-width: 1200px)": {
+          //   fontSize: "18px",
+          //   // color: "#ffffff",
+          // },
         },
       },
     },

@@ -17,14 +17,14 @@ export const StyledSectionLayout = styled(SectionLayout)(({ theme, backgroundIma
   position: "relative",
   minHeight: "800px",
   [theme.breakpoints.up("sm")]: {
-    borderRadius: "20px",
+    // borderRadius: "20px",
     minHeight: "600px",
   },
   [theme.breakpoints.up("662")]: {
     minHeight: "600px",
   },
   [theme.breakpoints.up("md")]: {
-    borderRadius: "20px",
+    // borderRadius: "20px",
     minHeight: "650px",
   },
   [theme.breakpoints.up("lg")]: {

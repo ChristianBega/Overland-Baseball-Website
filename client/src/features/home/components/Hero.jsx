@@ -13,10 +13,11 @@ import medley2 from "../../../assets/imagesSlider/Medleyhitting.webp";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const Hero = () => {
-  const { isSm, isXl } = useMediaQueries();
+  const { isXl } = useMediaQueries();
   return (
     <StyledSectionLayout
-      customMargin={!isSm ? "0rem 0rem 0rem 0rem !important" : "2rem 2rem 0rem 2rem !important"}
+      marginZero={true}
+      // customMargin={!isSm ? "0rem 0rem 0rem 0rem !important" : "2rem 2rem 0rem 2rem !important"}
       id="hero"
       aria-label="Hero Section"
       component="section"
