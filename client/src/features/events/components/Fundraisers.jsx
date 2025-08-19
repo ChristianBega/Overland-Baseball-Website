@@ -2,8 +2,8 @@ import React from "react";
 import Grid from "@mui/material/Grid/Grid";
 import { Typography } from "@mui/material";
 
-import BentoLayout from "../../../features/ui/components/BentoLayout.";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
+import EventList from "../../home/components/EventList";
 
 export default function Fundraisers({ fundraiserEvents }) {
   return (
@@ -12,7 +12,7 @@ export default function Fundraisers({ fundraiserEvents }) {
         <Typography typography="h2" component="h2">
           Upcoming fundraisers
         </Typography>
-        <BentoLayout gridItemsData={fundraiserEvents} />
+        <EventList events={fundraiserEvents} />
       </SectionLayout>
     </Grid>
   );

@@ -1,11 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { TeamLogo } from "../../../utils/theme/index.styles";
-import overland from "../../../assets/overlandLogo2.webp";
-import { formatDateToLongString } from "../../../utils/helpers/formatDateToString";
 import { convertTo12HourFormat } from "../../../utils/helpers/convertTo24HourFormat";
-import TextBlock from "../../ui/components/TextBlock";
 import { StatusChip, TeamLogoAvatar } from "./ScheduleContentViewOnly.styles";
 import overlandLogo from "../../../assets/homePage/teamLogos/overland.webp";
 import {
@@ -22,10 +18,8 @@ import {
 } from "./GameCard.styles";
 
 const GameCard = ({ data, onClick }) => {
-  const theme = useTheme();
   const { date, time, opponent, opponentIcon, location, home, isPast } = data;
 
-  const formattedDate = formatDateToLongString(date);
   const formattedTime = convertTo12HourFormat(time);
 
   // Format date for display (e.g., "March 6, 2025")
