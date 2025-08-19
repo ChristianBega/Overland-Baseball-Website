@@ -49,6 +49,9 @@ export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl
   // if current url is the same as the url - aka active link
   ...(currentUrl === url && {
     background: "linear-gradient(180deg, #5f5f5f1b 20%, #b3b3b311 40%)",
+    ...(navListType === "navigation-menu-footer" && {
+      background: "transparent",
+    }),
   }),
   // if current url is not the same as the url - aka inactive link
   ...(currentUrl !== url && {
@@ -81,6 +84,9 @@ export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl
 export const StyledNavigationLink = styled(Link)(({ theme, currentUrl, url, navListType }) => ({
   ...(currentUrl === url && {
     textDecoration: "underline !important",
+  }),
+  ...(navListType === "navigation-menu-footer" && {
+    textDecoration: "none !important",
   }),
 }));
 
