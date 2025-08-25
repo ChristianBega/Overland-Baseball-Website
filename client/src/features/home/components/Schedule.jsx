@@ -6,7 +6,8 @@ import { Grid, Typography, Box } from "@mui/material";
 import SectionLayout from "../../ui/components/SectionLayout";
 import SectionHeader from "../../ui/components/SectionHeader";
 import ScheduleSlider from "./ScheduleSlider";
-import { StyledScheduleSectionLayout } from "./Schedule.styles";
+import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.styles";
+// import { StyledScheduleSectionLayout } from "./Schedule.styles";
 // Hooks
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
 
@@ -77,7 +78,7 @@ export default function Schedule() {
 
   return (
     <Grid item xs={12}>
-      <StyledScheduleSectionLayout id="schedule-section" aria-label="Schedule Section">
+      <StyledSectionLayoutWrapper id="schedule-section" aria-label="Schedule Section">
         <SectionHeader
           title="Upcoming Games"
           subtitle="2025-2026 Season"
@@ -88,7 +89,7 @@ export default function Schedule() {
         />
 
         <ScheduleSlider games={sortedData} onGameClick={handleGameClick} showNavigation={true} />
-      </StyledScheduleSectionLayout>
+      </StyledSectionLayoutWrapper>
     </Grid>
   );
 }

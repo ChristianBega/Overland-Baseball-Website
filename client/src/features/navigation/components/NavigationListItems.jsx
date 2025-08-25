@@ -74,7 +74,12 @@ const NavigationListItems = ({ menuItems, handleClose, navListType }) => {
             target={href ? "_blank" : "_self"}
             rel={href ? "noopener noreferrer" : ""}
           >
-            <Stack direction="row" alignItems="center" gap={1} className={currentUrl === url ? "active-link" : "inactive-link"}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              gap={1}
+              className={currentUrl === url && navListType !== "navigation-menu-footer" ? "active-link" : "inactive-link"}
+            >
               {isLg && navListType === "navigation-menu" ? null : <>{icon}</>}
               <Typography
                 component="span"

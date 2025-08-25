@@ -129,7 +129,7 @@ export default function FooterNavigation() {
             </Link>
             <Box sx={{ border: theme.palette.accent.accentOne, padding: ".5rem 1rem", backgroundColor: "rgba(255, 255, 255, 0.1)" }}>
               <Typography component="span" variant="p" color="text.secondary" sx={{ fontStyle: "italic", textTransform: "uppercase" }}>
-                Home Of The Blazes <span aria-hidden="true">•</span> Est. 1978
+                Home Of The Blazers <span aria-hidden="true">•</span> Est. 1978
               </Typography>
             </Box>
           </Stack>

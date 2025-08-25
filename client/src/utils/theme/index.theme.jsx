@@ -61,10 +61,10 @@ export const defaultTheme = {
     fontFamily: "Work Sans",
     h1: {
       // fontFamily: "Anuphan, serif",
-      textTransform: "uppercase",
       letterSpacing: ".2rem",
       fontSize: "2.25rem", // 36px
       lineHeight: "2.5rem",
+
       // marginBlock: "2rem",
       "@media (min-width: 600px)": {
         fontSize: "2.625rem", // 42px
@@ -442,14 +442,7 @@ export const defaultTheme = {
         },
       },
     },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          padding: "1rem",
-          // color: "#091F40",
-        },
-      },
-    },
+
     MuiInputLabel: {
       styleOverrides: {
         root: {
@@ -565,6 +558,21 @@ export const defaultTheme = {
             "&:hover": {
               cursor: "pointer",
               transform: "scale(1.1)",
+            },
+            transition: "all .3s ease-in-out",
+          },
+        },
+        // create a new vairant - cicle - should have white background, circle, and on hover green secondary.main
+        {
+          props: { variant: "circle" },
+          style: {
+            backgroundColor: "#efefef",
+            borderRadius: "50%",
+            "&:hover": {
+              backgroundColor: "#4CBB17",
+              "& svg": {
+                color: "#fff",
+              },
             },
             transition: "all .3s ease-in-out",
           },

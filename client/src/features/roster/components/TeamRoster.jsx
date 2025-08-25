@@ -1,32 +1,32 @@
+// MUI components
 import React, { useState, useCallback } from "react";
-import { Grid, Paper, TableBody, TableHead, TableCell, Typography, Box, Stack } from "@mui/material";
+import { Grid, TableBody, TableHead, TableCell, Box } from "@mui/material";
 
 // Components
-import { fetchCMSItems } from "../../../features/cms/utils/getItem";
+import { fetchCMSItems } from "../../cms/utils/getItem";
 import { useQuery } from "@tanstack/react-query";
-import SectionLayout from "../../../features/ui/components/SectionLayout";
-import CustomPagination from "../../../features/ui/components/Pagination";
-import SearchFilterComponent from "../../../features/ui/components/SearchFilter";
+import SectionLayout from "../../ui/components/SectionLayout";
+import TextBlock from "../../ui/components/TextBlock";
+import CustomPagination from "../../ui/components/Pagination";
+import SearchFilterComponent from "../../ui/components/SearchFilter";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils.jsx";
 import headerMap from "../data/rosterHeaderMap.config.jsx";
 import { useTheme } from "@emotion/react";
 import {
-  RosterContainer,
-  FixedColumnTable,
-  ScrollableTable,
-  ScrollContainer,
-  PlayerAvatar,
-  PlayerLink,
-  // PlayerNumber,
-  TableHeader,
-  PlayerImage,
-} from "./TeamRoster.styles.jsx";
+  StyledTableContainer,
+  StyledFixedTable,
+  StyledScrollableTable,
+  StyledScrollContainer,
+  StyledTableHeader,
+  StyledTableCell,
+} from "../../ui/components/DataTable";
+import { StyledPlayerAvatar, StyledPlayerLink, StyledPlayerImage } from "./TeamRoster.styles";
+import SectionHeader from "../../ui/components/SectionHeader";
 
 export default function TeamRoster() {
   const theme = useTheme();
   const { isMd } = useMediaQueries();
   const [page, setPage] = useState(1);
-  // const itemsPerPage = 9;
   const [filteredData, setFilteredData] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(9);
 
@@ -38,6 +38,7 @@ export default function TeamRoster() {
     queryKey: ["roster"],
     queryFn: () => fetchCMSItems("roster"),
   });
+
   // Reset to page 1 when filter changes
   const handleFilteredDataChange = useCallback((newFilteredData) => {
     setFilteredData(newFilteredData);
@@ -45,7 +46,11 @@ export default function TeamRoster() {
   }, []);
 
   if (isLoading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+    return (
+      <TextBlock direction="row" justifyContent="center" alignItems="center" sx={{ height: "100vh" }}>
+        Loading...
+      </TextBlock>
+    );
   }
 
   if (error) {
@@ -55,11 +60,6 @@ export default function TeamRoster() {
   // Function to get the first letter of player's name for avatar
   const getPlayerInitial = (name) => {
     return name.charAt(0);
-  };
-
-  // Function to determine row background color
-  const getRowBackground = (index) => {
-    return index % 2 === 0 ? "white" : "#f5f5f5";
   };
 
   // Calculate pagination
@@ -84,13 +84,21 @@ export default function TeamRoster() {
     weight: "Weight",
   };
 
-  // console.log("filteredData", players);
   return (
-    <Grid item sx={{ overflowX: "hidden" }}>
+    <Grid item xs={12}>
       <SectionLayout id="roster-section" aria-label="Roster Section">
-        <Typography variant="h2" component="h2" sx={{ mb: 3 }}>
-          Current Roster
-        </Typography>
+        <SectionHeader
+          className="remove-uppercase"
+          title="Current Roster"
+          titleProps={{ component: "h1", variant: "h1" }}
+          subtitle="Varsity 2025-2026"
+          color={theme.palette.secondary.main}
+          sx={{
+            flexDirection: { xs: "column", lg: "row" },
+            alignItems: { xs: "flex-start", lg: "center" },
+            gap: { xs: 2, lg: 0 },
+          }}
+        />
 
         <SearchFilterComponent
           data={players || []}
@@ -99,83 +107,103 @@ export default function TeamRoster() {
           customFieldLabels={customFieldLabels}
           showQuickFilters={true}
           quickFilterField="team"
-          placeholder="Find a player..."
-          sx={{ mb: 2 }}
+          placeholder="Find a Player..."
+          sx={{ width: "100%", mb: 3 }}
         />
-        <Paper elevation={0} sx={{ maxWidth: "100%" }}>
-          <RosterContainer>
-            <Box>
-              <FixedColumnTable>
+
+        {/* Gray background wrapper */}
+        <Box
+          sx={{
+            backgroundColor: "#f8f9fa",
+            borderRadius: "16px",
+            padding: "20px",
+            border: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <StyledTableContainer>
+            {/* Fixed Name Column */}
+            <StyledFixedTable>
+              <TableHead sx={{ padding: "0 !important" }}>
+                <StyledTableHeader isSplitTable={true} tableSection="fixed">
+                  <TableCell
+                    colSpan={2}
+                    sx={{
+                      borderRight: `1px solid ${theme.palette.divider}`,
+                      minHeight: "60px",
+                      height: "60px",
+                      padding: "12px 1.5rem !important",
+                    }}
+                  >
+                    Name
+                  </TableCell>
+                </StyledTableHeader>
+              </TableHead>
+              <TableBody sx={{ borderRight: `1px solid ${theme.palette.divider}` }}>
+                {paginatedPlayers.map((player, index) => (
+                  <tr key={player.id} style={{ backgroundColor: "#f8f9fa" }}>
+                    <StyledTableCell sx={{ width: 48, height: 67, padding: "12px 1.5rem !important" }} index={index} length={paginatedPlayers.length}>
+                      {player.playerImage ? (
+                        <StyledPlayerImage src={player.playerImage} alt={player.name} />
+                      ) : (
+                        <StyledPlayerAvatar>{getPlayerInitial(player.name)}</StyledPlayerAvatar>
+                      )}
+                    </StyledTableCell>
+                    <StyledTableCell sx={{ height: 60 }} index={index} length={paginatedPlayers.length}>
+                      <StyledPlayerLink>{player.name}</StyledPlayerLink>
+                    </StyledTableCell>
+                  </tr>
+                ))}
+              </TableBody>
+            </StyledFixedTable>
+
+            {/* Scrollable Data Columns */}
+            <StyledScrollContainer>
+              <StyledScrollableTable>
                 <TableHead>
-                  <TableHeader>
-                    <TableCell
-                      colSpan={2}
-                      sx={{
-                        borderRight: `1px solid ${theme.palette.borders.primary}`,
-                        fontWeight: "bold",
-                        padding: 1.5,
-                        minHeight: "61px",
-                        height: "65px",
-                      }}
-                    >
-                      Name
-                    </TableCell>
-                  </TableHeader>
-                </TableHead>
-                <TableBody sx={{ borderRight: `1px solid ${theme.palette.borders.primary}` }}>
-                  {paginatedPlayers.map((player, index) => (
-                    <tr key={player.id} style={{ backgroundColor: getRowBackground(index) }}>
-                      <TableCell style={{ width: 48, height: 65, verticalAlign: "middle" }}>
-                        {player.playerImage ? (
-                          <PlayerImage src={player.playerImage} alt={player.name} />
-                        ) : (
-                          <PlayerAvatar>{getPlayerInitial(player.name)}</PlayerAvatar>
-                        )}
-                      </TableCell>
+                  <StyledTableHeader isSplitTable={true} tableSection="scrollable">
+                    {["Pos", "Bat", "Thw", "Year", "Height", "Weight"].map((field) => (
                       <TableCell
+                        key={field}
                         sx={{
-                          verticalAlign: "middle",
-                          height: 65,
+                          padding: theme.spacing(2),
+                          minHeight: "60px",
+                          height: "60px",
                         }}
                       >
-                        <Stack direction="row" spacing={1} justifyContent="space-between">
-                          <PlayerLink>{player.name}</PlayerLink>
-                        </Stack>
+                        {checkHeaderText(field)}
                       </TableCell>
-                    </tr>
-                  ))}
-                </TableBody>
-              </FixedColumnTable>
-            </Box>
-
-            {/* Scrollable right table with stats */}
-            <ScrollContainer>
-              <ScrollableTable>
-                <TableHead>
-                  <TableHeader>
-                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Pos")}</TableCell>
-                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Bat")}</TableCell>
-                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Thw")}</TableCell>
-                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Year")}</TableCell>
-                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Height")}</TableCell>
-                    <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{checkHeaderText("Weight")}</TableCell>
-                  </TableHeader>
+                    ))}
+                  </StyledTableHeader>
                 </TableHead>
                 <TableBody>
                   {paginatedPlayers.map((player, index) => (
-                    <tr key={player.id} style={{ backgroundColor: getRowBackground(index) }}>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.position}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.bat || "update"}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{player.throw || "update"}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px" }}>{isMd ? player.year : player.yearAbbr}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "70px" }}>{player.height}</TableCell>
-                      <TableCell sx={{ padding: 1.5, minHeight: "61px", height: "65px", minWidth: "80px" }}>{player.weight}</TableCell>
+                    <tr key={player.id} style={{ backgroundColor: "#f8f9fa" }}>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
+                        {player.position}
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
+                        {player.bat || "update"}
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
+                        {player.throw || "update"}
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
+                        {isMd ? player.year : player.yearAbbr}
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ height: 67, minWidth: "70px" }} index={index} length={paginatedPlayers.length}>
+                        {player.height}
+                      </StyledTableCell>
+                      <StyledTableCell sx={{ height: 67, minWidth: "80px" }} index={index} length={paginatedPlayers.length}>
+                        {player.weight}
+                      </StyledTableCell>
                     </tr>
                   ))}
                 </TableBody>
-              </ScrollableTable>
-            </ScrollContainer>
-          </RosterContainer>
+              </StyledScrollableTable>
+            </StyledScrollContainer>
+          </StyledTableContainer>
+
+          {/* Pagination */}
           <CustomPagination
             totalItems={players?.length || 0}
             itemsPerPage={itemsPerPage}
@@ -184,7 +212,7 @@ export default function TeamRoster() {
             setItemsPerPage={setItemsPerPage}
             itemsPerPageBase={9}
           />
-        </Paper>
+        </Box>
       </SectionLayout>
     </Grid>
   );

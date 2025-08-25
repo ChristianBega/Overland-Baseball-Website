@@ -1,10 +1,8 @@
+// MUI components
 import { styled } from "@mui/material";
 import { Box } from "@mui/material";
 
-// Only keep roster-specific player styling components
-// All table components moved to DataTable.jsx for reusability
-
-// Player avatar styling - roster specific
+// Player avatar styling
 export const StyledPlayerAvatar = styled(Box)(({ theme }) => ({
   width: 36,
   height: 36,
@@ -17,11 +15,11 @@ export const StyledPlayerAvatar = styled(Box)(({ theme }) => ({
   fontWeight: "bold",
 }));
 
-// Player name link styling - roster specific
+// Player name link styling
 export const StyledPlayerLink = styled("p")(({ theme }) => ({
   color: theme.palette.primary.main,
   textDecoration: "none",
-  fontWeight: 600, // Use the bolder weight for better hierarchy
+  fontWeight: 600, // Bold for hierarchy as requested
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
@@ -35,7 +33,7 @@ export const StyledPlayerLink = styled("p")(({ theme }) => ({
   },
 }));
 
-// Player image styling - roster specific
+// Player image styling
 export const StyledPlayerImage = styled("img")({
   width: 36,
   height: 36,

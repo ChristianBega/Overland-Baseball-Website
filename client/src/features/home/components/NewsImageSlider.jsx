@@ -4,10 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { Box } from "@mui/material";
 // Slider Images
-import aleman2 from "../../../assets/imagesSlider/Aleman2.webp";
-import aleman2Sm from "../../../assets/imagesSlider/mobileImages/Aleman2-sm.webp";
-
-import aleman2Md from "../../../assets/imagesSlider/tabletImages/Aleman2-md.webp";
 
 import bega from "../../../assets/imagesSlider/Bega1.webp";
 import begaSm from "../../../assets/imagesSlider/mobileImages/Bega1-sm.webp";
@@ -33,10 +29,6 @@ import medley3 from "../../../assets/imagesSlider/Medley3.webp";
 import medley3Sm from "../../../assets/imagesSlider/mobileImages/Medley3-sm.webp";
 import medley3Md from "../../../assets/imagesSlider/tabletImages/Medley3-md.webp";
 const imageSliderData = [
-  {
-    imageUrl: { small: aleman2Sm, medium: aleman2Md, original: aleman2 },
-    description: "Right handed batter Aleman taking a huge swing at home plate.",
-  },
   { imageUrl: { small: begaSm, medium: begaMd, original: bega }, description: "Bega pitching..." },
   { imageUrl: { small: bega3Sm, medium: bega3Md, original: bega3 }, description: "Bega first base..." },
   { imageUrl: { small: coxSm, medium: coxMd, original: cox }, description: "Cox fielding..." },

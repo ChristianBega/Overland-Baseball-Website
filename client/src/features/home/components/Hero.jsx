@@ -8,21 +8,15 @@ import { StyledHeroTypography, StyledSectionLayout } from "./Hero.styles";
 // MUI
 import { Button, Typography } from "@mui/material";
 // Assets
-import medley2 from "../../../assets/imagesSlider/Medleyhitting.webp";
+import alemanHeroImage from "../../../assets/imagesSlider/AlemanHeroImage.jpg";
+
 // Utils
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const Hero = () => {
   const { isXl } = useMediaQueries();
   return (
-    <StyledSectionLayout
-      marginZero={true}
-      // customMargin={!isSm ? "0rem 0rem 0rem 0rem !important" : "2rem 2rem 0rem 2rem !important"}
-      id="hero"
-      aria-label="Hero Section"
-      component="section"
-      backgroundImage={medley2}
-    >
+    <StyledSectionLayout marginZero={true} id="hero" aria-label="Hero Section" component="section" backgroundImage={alemanHeroImage}>
       <Navigation isTransparent={true} />
       {/* TODO: remove inline css to styled component */}
       <TextBlock
