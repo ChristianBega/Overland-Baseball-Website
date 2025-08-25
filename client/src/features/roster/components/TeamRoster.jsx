@@ -1,6 +1,6 @@
 // MUI components
 import React, { useState, useCallback } from "react";
-import { Grid, Paper, TableBody, TableHead, TableCell, Box } from "@mui/material";
+import { Grid, TableBody, TableHead, TableCell, Box } from "@mui/material";
 
 // Components
 import { fetchCMSItems } from "../../cms/utils/getItem";
@@ -25,7 +25,7 @@ import SectionHeader from "../../ui/components/SectionHeader";
 
 export default function TeamRoster() {
   const theme = useTheme();
-  const { isMd, isLg } = useMediaQueries();
+  const { isMd } = useMediaQueries();
   const [page, setPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(9);
@@ -62,11 +62,6 @@ export default function TeamRoster() {
     return name.charAt(0);
   };
 
-  // Function to determine row background color
-  const getRowBackground = (index) => {
-    return index % 2 === 0 ? "white" : "#f5f5f5";
-  };
-
   // Calculate pagination
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -93,8 +88,11 @@ export default function TeamRoster() {
     <Grid item xs={12}>
       <SectionLayout id="roster-section" aria-label="Roster Section">
         <SectionHeader
+          className="remove-uppercase"
           title="Current Roster"
+          titleProps={{ component: "h1", variant: "h1" }}
           subtitle="Varsity 2025-2026"
+          color={theme.palette.secondary.main}
           sx={{
             flexDirection: { xs: "column", lg: "row" },
             alignItems: { xs: "flex-start", lg: "center" },

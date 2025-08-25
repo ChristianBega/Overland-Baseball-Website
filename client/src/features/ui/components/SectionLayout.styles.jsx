@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
-import SectionLayout from "../../ui/components/SectionLayout";
+import SectionLayout from "./SectionLayout";
 
-export const StyledScheduleSectionLayout = styled(SectionLayout)(({ theme }) => ({
+export const StyledSectionLayoutWrapper = styled(SectionLayout)(({ theme }) => ({
   backgroundColor: "#f8f9fa",
   paddingTop: theme.spacing(6),
   paddingBottom: theme.spacing(6),
