@@ -103,7 +103,7 @@ export const StyledTableCell = styled("td", {
   borderBottom: `1px solid ${theme.palette.divider}`,
   verticalAlign: "middle",
   ...(index === length - 1 && {
-    borderBottom: "1px solid #fff !important",
+    borderBottom: "1px solid #F8F9FA !important",
     // backgroundColor: "red",
   }),
 }));
