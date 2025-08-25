@@ -9,6 +9,7 @@ const PaginationContainer = styled(Box)({
   padding: "16px",
   backgroundColor: "#1a2b4f",
   color: "#fff",
+  borderRadius: "16px",
 });
 
 const ItemsPerPage = styled(Typography)({

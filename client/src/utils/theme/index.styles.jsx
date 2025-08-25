@@ -1,5 +1,6 @@
 import { Box, styled, TableCell, TableRow } from "@mui/material";
 
+// TODO: Once we redesign all tables to use new DataTable.jsx, we can remove the StyledTableRow and StyledTableCell components
 // Table Styles
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(even)": {
