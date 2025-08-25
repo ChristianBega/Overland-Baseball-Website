@@ -442,14 +442,7 @@ export const defaultTheme = {
         },
       },
     },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          padding: "1rem",
-          // color: "#091F40",
-        },
-      },
-    },
+
     MuiInputLabel: {
       styleOverrides: {
         root: {

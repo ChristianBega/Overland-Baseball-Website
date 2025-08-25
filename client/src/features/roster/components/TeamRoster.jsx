@@ -123,15 +123,15 @@ export default function TeamRoster() {
           <StyledTableContainer>
             {/* Fixed Name Column */}
             <StyledFixedTable>
-              <TableHead>
+              <TableHead sx={{ padding: "0 !important" }}>
                 <StyledTableHeader isSplitTable={true} tableSection="fixed">
                   <TableCell
                     colSpan={2}
                     sx={{
                       borderRight: `1px solid ${theme.palette.divider}`,
-                      padding: theme.spacing(2),
                       minHeight: "60px",
                       height: "60px",
+                      padding: "12px 1.5rem !important",
                     }}
                   >
                     Name
@@ -141,7 +141,7 @@ export default function TeamRoster() {
               <TableBody sx={{ borderRight: `1px solid ${theme.palette.divider}` }}>
                 {paginatedPlayers.map((player, index) => (
                   <tr key={player.id} style={{ backgroundColor: "#f8f9fa" }}>
-                    <StyledTableCell sx={{ width: 48, height: 66.5 }} index={index} length={paginatedPlayers.length}>
+                    <StyledTableCell sx={{ width: 48, height: 67, padding: "12px 1.5rem !important" }} index={index} length={paginatedPlayers.length}>
                       {player.playerImage ? (
                         <StyledPlayerImage src={player.playerImage} alt={player.name} />
                       ) : (
@@ -178,22 +178,22 @@ export default function TeamRoster() {
                 <TableBody>
                   {paginatedPlayers.map((player, index) => (
                     <tr key={player.id} style={{ backgroundColor: "#f8f9fa" }}>
-                      <StyledTableCell sx={{ height: 66.5 }} index={index} length={paginatedPlayers.length}>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
                         {player.position}
                       </StyledTableCell>
-                      <StyledTableCell sx={{ height: 66.5 }} index={index} length={paginatedPlayers.length}>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
                         {player.bat || "update"}
                       </StyledTableCell>
-                      <StyledTableCell sx={{ height: 66.5 }} index={index} length={paginatedPlayers.length}>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
                         {player.throw || "update"}
                       </StyledTableCell>
-                      <StyledTableCell sx={{ height: 66.5 }} index={index} length={paginatedPlayers.length}>
+                      <StyledTableCell sx={{ height: 67 }} index={index} length={paginatedPlayers.length}>
                         {isMd ? player.year : player.yearAbbr}
                       </StyledTableCell>
-                      <StyledTableCell sx={{ height: 66.5, minWidth: "70px" }} index={index} length={paginatedPlayers.length}>
+                      <StyledTableCell sx={{ height: 67, minWidth: "70px" }} index={index} length={paginatedPlayers.length}>
                         {player.height}
                       </StyledTableCell>
-                      <StyledTableCell sx={{ height: 66.5, minWidth: "80px" }} index={index} length={paginatedPlayers.length}>
+                      <StyledTableCell sx={{ height: 67, minWidth: "80px" }} index={index} length={paginatedPlayers.length}>
                         {player.weight}
                       </StyledTableCell>
                     </tr>

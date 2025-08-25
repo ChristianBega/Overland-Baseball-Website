@@ -8,6 +8,7 @@ export const StyledTableContainer = styled(Box)(({ theme }) => ({
   width: "100%",
   borderRadius: theme.shape.borderRadius,
   overflow: "hidden",
+  // hide scrollbar
 }));
 
 // Fixed column table styling
@@ -40,6 +41,11 @@ export const StyledScrollableTable = styled("table")(({ theme }) => ({
 export const StyledScrollContainer = styled(Box)({
   overflowX: "auto",
   flexGrow: 1,
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  scrollbarWidth: "none",
+  msOverflowStyle: "none",
 });
 
 // Themed table header row with conditional rounded corners

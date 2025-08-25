@@ -65,6 +65,18 @@
       "dependencies": ["@mui/material styled"],
       "notes": "Provides consistent 4rem->8rem margins across breakpoints, use for all major page sections"
     },
+    "StyledSectionLayoutWrapper": {
+      "purpose": "Enhanced SectionLayout with gray background styling for highlighted sections",
+      "usage": "Use when you need a section with a distinctive gray background wrapper - extends SectionLayout functionality",
+      "props": {
+        "required": ["id", "ariaLabel", "children"],
+        "optional": ["All SectionLayout props", "marginBlock", "marginZero", "customMargin", "sx"]
+      },
+      "example": "<StyledSectionLayoutWrapper id='featured' ariaLabel='Featured section'>{content}</StyledSectionLayoutWrapper>",
+      "location": "/src/features/ui/components/SectionLayout.styles.jsx",
+      "dependencies": ["SectionLayout", "@mui/material styled"],
+      "notes": "Provides light gray background (#f8f9fa), padding, rounded corners (20px), and subtle border. Built on top of SectionLayout component"
+    },
     "SectionHeader": {
       "purpose": "Consistent header pattern with title, subtitle, and optional CTA",
       "usage": "Use for all section headings instead of manual Typography combinations",
@@ -76,6 +88,18 @@
       "location": "/src/features/ui/components/SectionHeader.jsx",
       "dependencies": ["TextBlock", "@mui/material Typography, Stack"],
       "notes": "Includes TextBlock internally, provides uppercase subtitle styling and flex layout"
+    },
+    "SocialIcons": {
+      "purpose": "Reusable social media icons component with customizable theming and responsive behavior",
+      "usage": "Use for displaying social media links with consistent styling and hover effects - preferred over manual icon implementations",
+      "props": {
+        "required": [],
+        "optional": ["icons", "spacing", "size", "color", "variant", "...rest"]
+      },
+      "example": "<SocialIcons icons={customIcons} spacing={3} size='large' color='primary.main' />",
+      "location": "/src/features/ui/components/SocialIcons.jsx",
+      "dependencies": ["@mui/material IconButton, Stack, useTheme", "@mui/icons-material", "useMediaQueries"],
+      "notes": "Includes default Facebook/Instagram/Twitter icons, supports theme color notation (e.g., 'secondary.main'), responsive margin with useMediaQueries, flexible icon array with name/icon/link structure"
     },
     "Container": {
       "purpose": "MUI Container for main page content with semantic HTML",
@@ -234,6 +258,17 @@
   "changelog": {
     "format": "Track major rule changes",
     "entries": [
+      {
+        "date": "2025-08-24",
+        "changes": [
+          "Added SocialIcons component for reusable social media icon displays",
+          "Added StyledSectionLayoutWrapper for gray background section styling",
+          "Enhanced UI components library with theme-aware social icons",
+          "Documented responsive behavior and customization options for SocialIcons",
+          "Established pattern for styled component extensions of base components"
+        ],
+        "reason": "New component additions for improved UI consistency and social media integration"
+      },
       {
         "date": "2025-08-24",
         "changes": [
