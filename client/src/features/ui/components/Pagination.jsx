@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Pagination, Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import styled from "@emotion/styled";
 
@@ -59,6 +59,10 @@ const CustomPagination = ({ totalItems, itemsPerPage, currentPage, onPageChange,
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
   };
+
+  useEffect(() => {
+    setItemsPerPage(itemsPerPageBase);
+  }, [itemsPerPageBase, setItemsPerPage]);
 
   return (
     <PaginationContainer>

@@ -34,6 +34,7 @@ export const defaultTheme = {
     },
 
     background: {
+      light: "#F8F9FA",
       default: "#ffffff",
       paper: "#ffffff",
     },

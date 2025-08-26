@@ -1,8 +1,17 @@
 import React, { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
-import { Box, TextField, MenuItem, Chip, Stack, Menu } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { MenuItem, Chip, InputAdornment } from "@mui/material";
+// Styled Components
+import {
+  StyledSearchContainer,
+  StyledQuickFiltersStack,
+  StyledSearchIcon,
+  StyledClearIcon,
+  StyledSearchField,
+  StyledFilterMenu,
+  StyledFilterStatusStack,
+  StyledResultsCount,
+} from "./SearchFilter.styles";
 
 /**
  * Material UI styled search and filter component for CMS tables
@@ -82,10 +91,10 @@ const MuiSearchFilterComponent = ({
     setSearchTerm(e.target.value);
   };
 
-  // Modified handler for filter button click
-  const handleFilterClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // // Modified handler for filter button click
+  // const handleFilterClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -119,9 +128,9 @@ const MuiSearchFilterComponent = ({
   };
 
   return (
-    <Box sx={{ width: "100%", ...sx }}>
+    <StyledSearchContainer sx={sx}>
       {showQuickFilters && quickFilterField && quickFilterValues.length > 0 && (
-        <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: "wrap", gap: 1 }}>
+        <StyledQuickFiltersStack direction="row" spacing={1}>
           {quickFilterValues.map((value) => (
             <Chip
               key={value}
@@ -132,119 +141,68 @@ const MuiSearchFilterComponent = ({
               clickable
             />
           ))}
-        </Stack>
+        </StyledQuickFiltersStack>
       )}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          border: "1px solid rgba(0, 0, 0, 0.23)", // MUI default border color
-          borderRadius: "4px",
-          "&:hover": {
-            borderColor: "rgba(0, 0, 0, 0.87)", // MUI hover border color
-          },
+
+      <StyledSearchField
+        fullWidth
+        placeholder={placeholder}
+        value={searchTerm}
+        onChange={handleSearchChange}
+        variant="outlined"
+        size="small"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <StyledSearchIcon />
+            </InputAdornment>
+          ),
+          endAdornment: searchTerm && (
+            <InputAdornment position="end">
+              <StyledClearIcon onClick={clearFilters} />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      {/* Filter Menu */}
+      <StyledFilterMenu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
         }}
       >
-        {/* Filter Selector */}
-        <Box
-          onClick={handleFilterClick}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            padding: "6px 8px",
-            cursor: "pointer",
-            borderRight: "1px solid rgba(0, 0, 0, 0.23)",
-            minWidth: "125px",
-            "&:hover": {
-              bgcolor: "rgba(0, 0, 0, 0.04)",
-            },
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              fontSize: "0.875rem",
-              maxWidth: "100px", // Limit width
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-            }}
-          >
-            <KeyboardArrowDownIcon sx={{ ml: 0.5, flexShrink: 0 }} />
-            {filterKey !== "all" ? getFieldDisplayName(filterKey) : "Filter by"}
-          </Box>
-        </Box>
-
-        {/* Search Input */}
-        <TextField
-          fullWidth
-          placeholder={placeholder}
-          value={searchTerm}
-          onChange={handleSearchChange}
-          variant="standard" // Changed to standard to remove double borders
-          size="small"
-          InputProps={{
-            disableUnderline: true, // Remove the underline
-            endAdornment: searchTerm && <ClearIcon color="action" sx={{ cursor: "pointer", mr: 1 }} onClick={clearFilters} />,
-            sx: {
-              padding: "6px 8px",
-              "& input": {
-                padding: 0,
-              },
-            },
-          }}
-        />
-
-        {/* Filter Menu */}
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-          sx={{
-            maxHeight: "200px",
-            mt: "0.5rem",
-            "& .MuiPaper-root": {
-              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-              minWidth: "150px",
-            },
-          }}
-        >
-          <MenuItem onClick={() => handleFilterKeyChange("all")} selected={filterKey === "all"}>
-            All Fields
+        <MenuItem onClick={() => handleFilterKeyChange("all")} selected={filterKey === "all"}>
+          All Fields
+        </MenuItem>
+        {availableFilterFields.map((key) => (
+          <MenuItem key={key} onClick={() => handleFilterKeyChange(key)} selected={filterKey === key}>
+            {getFieldDisplayName(key)}
           </MenuItem>
-          {availableFilterFields.map((key) => (
-            <MenuItem key={key} onClick={() => handleFilterKeyChange(key)} selected={filterKey === key}>
-              {getFieldDisplayName(key)}
-            </MenuItem>
-          ))}
-        </Menu>
-      </Box>
-
-      {/* Quick Filter Chips */}
+        ))}
+      </StyledFilterMenu>
 
       {/* Filter Status Indicator */}
       {searchTerm && (
-        <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+        <StyledFilterStatusStack direction="row" spacing={1}>
           <Chip
             size="small"
             label={`${filterKey === "all" ? "All fields" : getFieldDisplayName(filterKey)}: "${searchTerm}"`}
             onDelete={clearFilters}
           />
-          <Box sx={{ ml: 1, fontSize: "0.875rem" }}>
+          <StyledResultsCount>
             {filteredData.length} of {data.length} items
-          </Box>
-        </Stack>
+          </StyledResultsCount>
+        </StyledFilterStatusStack>
       )}
-    </Box>
+    </StyledSearchContainer>
   );
 };
 

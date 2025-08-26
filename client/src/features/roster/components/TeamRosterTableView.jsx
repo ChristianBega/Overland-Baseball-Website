@@ -1,0 +1,116 @@
+import React from "react";
+import PropTypes from "prop-types";
+import { TableBody, TableHead } from "@mui/material";
+// Components
+import {
+  StyledTableContainer,
+  StyledFixedTable,
+  StyledScrollableTable,
+  StyledScrollContainer,
+  StyledTableHeader,
+} from "../../ui/components/DataTable";
+import { StyledPlayerAvatar, StyledPlayerLink, StyledPlayerImage } from "./TeamRoster.styles";
+// Styled Components
+import {
+  StyledTableWrapper,
+  StyledTableHeadFixed,
+  StyledTableBodyFixed,
+  StyledNameHeaderCell,
+  StyledDataHeaderCell,
+  StyledTableRowWithBackground,
+  StyledAvatarCell,
+  StyledNameCell,
+  StyledDataCell,
+  StyledDataCellWithMinWidth,
+} from "./TeamRosterTableView.styles";
+// Utils
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import headerMap from "../data/rosterHeaderMap.config.jsx";
+
+const TeamRosterTableView = ({ players = [] }) => {
+  const { isMd } = useMediaQueries();
+
+  // Function to get the first letter of player's name for avatar
+  const getPlayerInitial = (name) => {
+    return name.charAt(0);
+  };
+
+  const checkHeaderText = (field) => {
+    if (!field) return;
+    return isMd ? headerMap[field].full : headerMap[field].abbr;
+  };
+
+  return (
+    <StyledTableWrapper>
+      <StyledTableContainer>
+        {/* Fixed Name Column */}
+        <StyledFixedTable>
+          <StyledTableHeadFixed>
+            <StyledTableHeader isSplitTable={true} tableSection="fixed">
+              <StyledNameHeaderCell colSpan={2}>Name</StyledNameHeaderCell>
+            </StyledTableHeader>
+          </StyledTableHeadFixed>
+          <StyledTableBodyFixed>
+            {players.map((player, index) => (
+              <StyledTableRowWithBackground key={player.id}>
+                <StyledAvatarCell index={index} length={players.length}>
+                  {player.playerImage ? (
+                    <StyledPlayerImage src={player.playerImage} alt={player.name} />
+                  ) : (
+                    <StyledPlayerAvatar>{getPlayerInitial(player.name)}</StyledPlayerAvatar>
+                  )}
+                </StyledAvatarCell>
+                <StyledNameCell index={index} length={players.length}>
+                  <StyledPlayerLink>{player.name}</StyledPlayerLink>
+                </StyledNameCell>
+              </StyledTableRowWithBackground>
+            ))}
+          </StyledTableBodyFixed>
+        </StyledFixedTable>
+
+        {/* Scrollable Data Columns */}
+        <StyledScrollContainer>
+          <StyledScrollableTable>
+            <TableHead>
+              <StyledTableHeader isSplitTable={true} tableSection="scrollable">
+                {["Pos", "Bat", "Thw", "Year", "Height", "Weight"].map((field) => (
+                  <StyledDataHeaderCell key={field}>{checkHeaderText(field)}</StyledDataHeaderCell>
+                ))}
+              </StyledTableHeader>
+            </TableHead>
+            <TableBody>
+              {players.map((player, index) => (
+                <StyledTableRowWithBackground key={player.id}>
+                  <StyledDataCell index={index} length={players.length}>
+                    {player.position}
+                  </StyledDataCell>
+                  <StyledDataCell index={index} length={players.length}>
+                    {player.bat || "update"}
+                  </StyledDataCell>
+                  <StyledDataCell index={index} length={players.length}>
+                    {player.throw || "update"}
+                  </StyledDataCell>
+                  <StyledDataCell index={index} length={players.length}>
+                    {isMd ? player.year : player.yearAbbr}
+                  </StyledDataCell>
+                  <StyledDataCellWithMinWidth minWidth="70px" index={index} length={players.length}>
+                    {player.height}
+                  </StyledDataCellWithMinWidth>
+                  <StyledDataCellWithMinWidth minWidth="80px" index={index} length={players.length}>
+                    {player.weight}
+                  </StyledDataCellWithMinWidth>
+                </StyledTableRowWithBackground>
+              ))}
+            </TableBody>
+          </StyledScrollableTable>
+        </StyledScrollContainer>
+      </StyledTableContainer>
+    </StyledTableWrapper>
+  );
+};
+
+TeamRosterTableView.propTypes = {
+  players: PropTypes.array.isRequired,
+};
+
+export default TeamRosterTableView;
