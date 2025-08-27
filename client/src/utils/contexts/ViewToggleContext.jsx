@@ -11,7 +11,7 @@ export const useViewToggle = () => {
   return context;
 };
 
-export const ViewToggleProvider = ({ children, defaultView = "table" }) => {
+export const ViewToggleProvider = ({ children, defaultView = "grid" }) => {
   const [view, setView] = useState(defaultView);
 
   const toggleView = (newView) => {
@@ -25,11 +25,7 @@ export const ViewToggleProvider = ({ children, defaultView = "table" }) => {
     isGridView: view === "grid",
   };
 
-  return (
-    <ViewToggleContext.Provider value={value}>
-      {children}
-    </ViewToggleContext.Provider>
-  );
+  return <ViewToggleContext.Provider value={value}>{children}</ViewToggleContext.Provider>;
 };
 
 ViewToggleProvider.propTypes = {

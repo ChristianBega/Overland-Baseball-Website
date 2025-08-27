@@ -123,7 +123,7 @@ const TeamRosterContent = () => {
               currentPage={page}
               onPageChange={setPage}
               setItemsPerPage={setItemsPerPage}
-              itemsPerPageBase={12}
+              itemsPerPageBase={9}
             />
           </Box>
         )}
@@ -135,7 +135,7 @@ const TeamRosterContent = () => {
 // Main component with context provider
 export default function TeamRoster() {
   return (
-    <ViewToggleProvider defaultView="table">
+    <ViewToggleProvider defaultView="grid">
       <TeamRosterContent />
     </ViewToggleProvider>
   );

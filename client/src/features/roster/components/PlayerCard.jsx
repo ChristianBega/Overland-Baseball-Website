@@ -42,7 +42,7 @@ const PlayerCard = ({ player, ...rest }) => {
           )}
         </StyledImageContainer>
 
-        <TextBlock spacing={2} alignItems="center" mt={2}>
+        <TextBlock spacing={2} alignItems="center" justifyContent="center" mt={2} sx={{ width: "100%", mt: { xs: 2 } }}>
           <TextBlock direction="row" justifyContent="space-between" alignItems="center" sx={{ width: "100%" }}>
             <Stack direction="row" justifyContent="flex-start" alignItems="center" gap={1}>
               <StyledPositionBadge variant="body2" component="span">

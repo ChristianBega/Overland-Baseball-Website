@@ -5,8 +5,11 @@ import { StyledTableCell } from "../../ui/components/DataTable";
 // Main table wrapper with background and border
 export const StyledTableWrapper = styled(Box)(({ theme }) => ({
   backgroundColor: "#f8f9fa",
-  borderRadius: "16px",
-  padding: "20px",
+  borderRadius: "12px",
+  padding: "12px",
+  [theme.breakpoints.up("md")]: {
+    padding: "20px",
+  },
   border: `1px solid ${theme.palette.divider}`,
 }));
 
@@ -23,9 +26,11 @@ export const StyledTableBodyFixed = styled(TableBody)(({ theme }) => ({
 // Name header cell with specific styling
 export const StyledNameHeaderCell = styled(TableCell)(({ theme }) => ({
   borderRight: `1px solid ${theme.palette.divider}`,
-  minHeight: "60px",
+
+  [theme.breakpoints.up("md")]: {
+    padding: "12px 1.5rem !important",
+  },
   height: "60px",
-  padding: "12px 1.5rem !important",
 }));
 
 // Data header cells in scrollable section
@@ -41,11 +46,14 @@ export const StyledTableRowWithBackground = styled("tr")({
 });
 
 // Avatar cell extending StyledTableCell to inherit index/length logic
-export const StyledAvatarCell = styled(StyledTableCell)({
+export const StyledAvatarCell = styled(StyledTableCell)(({ theme }) => ({
   width: 48,
   height: 67,
-  padding: "12px 1.5rem !important",
-});
+  // padding: "12px 1.5rem !important",
+  [theme.breakpoints.up("md")]: {
+    padding: "12px 1.5rem !important",
+  },
+}));
 
 // Name cell extending StyledTableCell
 export const StyledNameCell = styled(StyledTableCell)({

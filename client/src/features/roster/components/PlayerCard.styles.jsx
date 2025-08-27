@@ -1,9 +1,12 @@
 import { styled } from "@mui/material/styles";
 import { Card, CardContent, CardMedia, Typography, Box } from "@mui/material";
 export const StyledPlayerCard = styled(Card)(({ theme, isTablet }) => ({
-  maxWidth: "100%",
-  [theme.breakpoints.down("sm")]: {
-    maxWidth: "325px",
+  maxWidth: "335px",
+  [theme.breakpoints.up("sm")]: {
+    maxWidth: "345px",
+  },
+  [theme.breakpoints.up("lg")]: {
+    maxWidth: "355px",
   },
   margin: "0 auto",
   padding: theme.spacing(2),
@@ -34,14 +37,17 @@ export const StyledImageContainer = styled(Box)({
     borderRadius: "12px",
   },
 });
-export const StyledPlayerImage = styled(CardMedia)({
+export const StyledPlayerImage = styled(CardMedia)(({ theme }) => ({
   width: "100%",
-  height: "176px",
+  height: "200px",
   objectFit: "cover",
   backgroundPosition: "center",
   borderRadius: "12px",
   boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.15)",
-});
+  [theme.breakpoints.up("lg")]: {
+    height: "225px",
+  },
+}));
 export const StyledPlaceholderImage = styled(StyledPlayerImage)({
   borderRadius: "20px",
 });

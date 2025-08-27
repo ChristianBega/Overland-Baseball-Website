@@ -64,27 +64,27 @@ export const StyledTableHeader = styled(TableRow, {
   // Only add rounded corners for non-split tables
   ...(!isSplitTable && {
     "& th:first-of-type": {
-      borderTopLeftRadius: "16px",
-      borderBottomLeftRadius: "16px",
+      borderTopLeftRadius: "10px",
+      borderBottomLeftRadius: "10px",
     },
     "& th:last-of-type": {
-      borderTopRightRadius: "16px",
-      borderBottomRightRadius: "16px",
+      borderTopRightRadius: "10px",
+      borderBottomRightRadius: "10px",
     },
   }),
   // For split tables, only round specific corners with more radius
   ...(isSplitTable &&
     tableSection === "fixed" && {
       "& th:first-of-type": {
-        borderTopLeftRadius: "16px",
-        borderBottomLeftRadius: "16px",
+        borderTopLeftRadius: "10px",
+        borderBottomLeftRadius: "10px",
       },
     }),
   ...(isSplitTable &&
     tableSection === "scrollable" && {
       "& th:last-of-type": {
-        borderTopRightRadius: "16px",
-        borderBottomRightRadius: "16px",
+        borderTopRightRadius: "10px",
+        borderBottomRightRadius: "10px",
       },
     }),
 }));

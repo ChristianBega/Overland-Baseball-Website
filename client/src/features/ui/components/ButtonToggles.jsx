@@ -5,11 +5,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 // Context
 import { useViewToggle } from "../../../utils/contexts/ViewToggleContext";
 // Styled Components
-import {
-  StyledButtonTogglesContainer,
-  StyledToggleButton,
-  StyledToggleIcon,
-} from "./ButtonToggles.styles";
+import { StyledButtonTogglesContainer, StyledToggleButton, StyledToggleIcon } from "./ButtonToggles.styles";
 
 const ButtonToggles = ({ tableIcon = FormatListBulletedIcon, gridIcon = GridViewIcon }) => {
   const { view, setView, isTableView, isGridView } = useViewToggle();
@@ -18,24 +14,7 @@ const ButtonToggles = ({ tableIcon = FormatListBulletedIcon, gridIcon = GridView
   const GridIcon = gridIcon;
 
   return (
-    <StyledButtonTogglesContainer
-      direction="row"
-      justifyContent="space-evenly"
-      alignItems="center"
-    >
-      <StyledToggleButton
-        title="Table View"
-        variant={isTableView ? "contained" : "minimal"}
-        size="small"
-        onClick={() => setView("table")}
-        color="secondary"
-        isActive={isTableView}
-      >
-        <StyledToggleIcon>
-          <TableIcon />
-        </StyledToggleIcon>
-      </StyledToggleButton>
-      
+    <StyledButtonTogglesContainer direction="row" justifyContent="space-evenly" alignItems="center">
       <StyledToggleButton
         title="Grid View"
         variant={isGridView ? "contained" : "minimal"}
@@ -46,6 +25,18 @@ const ButtonToggles = ({ tableIcon = FormatListBulletedIcon, gridIcon = GridView
       >
         <StyledToggleIcon>
           <GridIcon />
+        </StyledToggleIcon>
+      </StyledToggleButton>
+      <StyledToggleButton
+        title="Table View"
+        variant={isTableView ? "contained" : "minimal"}
+        size="small"
+        onClick={() => setView("table")}
+        color="secondary"
+        isActive={isTableView}
+      >
+        <StyledToggleIcon>
+          <TableIcon />
         </StyledToggleIcon>
       </StyledToggleButton>
     </StyledButtonTogglesContainer>
