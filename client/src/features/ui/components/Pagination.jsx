@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import { Pagination, Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import styled from "@emotion/styled";
 
-const PaginationContainer = styled(Box)({
+const PaginationContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   padding: "16px",
-  backgroundColor: "#1a2b4f",
+  background: theme.palette.gradients.primary,
   color: "#fff",
-  borderRadius: "16px",
+  borderRadius: "10px",
   marginTop: "32px",
-});
+}));
 
 const ItemsPerPage = styled(Typography)({
   color: "#fff",

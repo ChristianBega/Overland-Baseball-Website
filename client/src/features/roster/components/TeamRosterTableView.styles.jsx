@@ -26,6 +26,7 @@ export const StyledTableBodyFixed = styled(TableBody)(({ theme }) => ({
 // Name header cell with specific styling
 export const StyledNameHeaderCell = styled(TableCell)(({ theme }) => ({
   borderRight: `1px solid ${theme.palette.divider}`,
+  background: theme.palette.gradients.primaryShortToLeft,
 
   [theme.breakpoints.up("md")]: {
     padding: "12px 1.5rem !important",
@@ -36,6 +37,7 @@ export const StyledNameHeaderCell = styled(TableCell)(({ theme }) => ({
 // Data header cells in scrollable section
 export const StyledDataHeaderCell = styled(TableCell)(({ theme }) => ({
   padding: theme.spacing(2),
+  background: "transparent",
   minHeight: "60px",
   height: "60px",
 }));

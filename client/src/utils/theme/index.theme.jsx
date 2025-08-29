@@ -38,6 +38,12 @@ export const defaultTheme = {
       default: "#ffffff",
       paper: "#ffffff",
     },
+    gradients: {
+      primary: "radial-gradient(circle, #082463 0%, rgba(9, 31, 64, 1) 100%)",
+      primaryShortToLeft: "linear-gradient(to left, #082463 2%, rgba(9, 31, 64, 1) 50%)",
+      primaryToRight: "linear-gradient(to right, #082463 70%, rgba(9, 31, 64, 1) 100%)",
+      primaryToLeft: "linear-gradient(to left, #082463 0%, rgba(9, 31, 64, 1) 100%)",
+    },
   },
   breakpoints: {
     values: {

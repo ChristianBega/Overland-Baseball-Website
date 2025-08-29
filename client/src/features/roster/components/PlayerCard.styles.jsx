@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import { Card, CardContent, CardMedia, Typography, Box } from "@mui/material";
 export const StyledPlayerCard = styled(Card)(({ theme, isTablet }) => ({
-  maxWidth: "335px",
+  maxWidth: "400px",
   [theme.breakpoints.up("sm")]: {
     maxWidth: "345px",
   },
@@ -39,7 +39,7 @@ export const StyledImageContainer = styled(Box)({
 });
 export const StyledPlayerImage = styled(CardMedia)(({ theme }) => ({
   width: "100%",
-  height: "200px",
+  height: "250px",
   objectFit: "cover",
   backgroundPosition: "center",
   borderRadius: "12px",

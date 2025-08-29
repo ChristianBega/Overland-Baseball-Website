@@ -52,7 +52,7 @@ export const StyledScrollContainer = styled(Box)({
 export const StyledTableHeader = styled(TableRow, {
   shouldForwardProp: (prop) => prop !== "isSplitTable" && prop !== "tableSection",
 })(({ theme, isSplitTable, tableSection }) => ({
-  backgroundColor: theme.palette.primary.main,
+  // backgroundColor: theme.palette.primary.main,
   "& th": {
     color: theme.palette.primary.contrastText,
     fontWeight: 600,

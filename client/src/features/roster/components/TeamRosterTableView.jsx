@@ -26,9 +26,12 @@ import {
 // Utils
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import headerMap from "../data/rosterHeaderMap.config.jsx";
+import CustomPagination from "../../ui/components/Pagination.jsx";
+import { useTheme } from "@emotion/react";
 
-const TeamRosterTableView = ({ players = [] }) => {
+const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPage, onPageChange, setItemsPerPage }) => {
   const { isMd } = useMediaQueries();
+  const theme = useTheme();
 
   // Function to get the first letter of player's name for avatar
   const getPlayerInitial = (name) => {
@@ -47,7 +50,9 @@ const TeamRosterTableView = ({ players = [] }) => {
         <StyledFixedTable>
           <StyledTableHeadFixed>
             <StyledTableHeader isSplitTable={true} tableSection="fixed">
-              <StyledNameHeaderCell colSpan={2}>Name</StyledNameHeaderCell>
+              <StyledNameHeaderCell colSpan={2} backgroundType="primaryToRight">
+                Name
+              </StyledNameHeaderCell>
             </StyledTableHeader>
           </StyledTableHeadFixed>
           <StyledTableBodyFixed>
@@ -71,7 +76,7 @@ const TeamRosterTableView = ({ players = [] }) => {
         {/* Scrollable Data Columns */}
         <StyledScrollContainer>
           <StyledScrollableTable>
-            <TableHead>
+            <TableHead sx={{ background: `${theme.palette.gradients.primaryToRight} !important` }}>
               <StyledTableHeader isSplitTable={true} tableSection="scrollable">
                 {["Pos", "Bat", "Thw", "Year", "Height", "Weight"].map((field) => (
                   <StyledDataHeaderCell key={field}>{checkHeaderText(field)}</StyledDataHeaderCell>
@@ -105,12 +110,26 @@ const TeamRosterTableView = ({ players = [] }) => {
           </StyledScrollableTable>
         </StyledScrollContainer>
       </StyledTableContainer>
+      <CustomPagination
+        totalItems={totalItems}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+        setItemsPerPage={setItemsPerPage}
+        itemsPerPageBase={9}
+      />
     </StyledTableWrapper>
   );
 };
 
 TeamRosterTableView.propTypes = {
   players: PropTypes.array.isRequired,
+  playersOriginal: PropTypes.array.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  setItemsPerPage: PropTypes.func.isRequired,
 };
 
 export default TeamRosterTableView;

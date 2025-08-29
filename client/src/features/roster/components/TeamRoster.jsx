@@ -101,14 +101,14 @@ const TeamRosterContent = () => {
         {/* Table View */}
         {view === "table" && (
           <>
-            <TeamRosterTableView players={paginatedPlayers} />
-            <CustomPagination
-              totalItems={players?.length || 0}
+            <TeamRosterTableView
+              players={paginatedPlayers}
+              // Pass pagination props
+              totalItems={(filteredData.length > 0 ? filteredData : players)?.length || 0}
               itemsPerPage={itemsPerPage}
               currentPage={page}
               onPageChange={setPage}
               setItemsPerPage={setItemsPerPage}
-              itemsPerPageBase={9}
             />
           </>
         )}
