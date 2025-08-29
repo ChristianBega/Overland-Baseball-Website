@@ -122,8 +122,9 @@ const TeamRosterContent = () => {
               itemsPerPage={itemsPerPage}
               currentPage={page}
               onPageChange={setPage}
-              setItemsPerPage={setItemsPerPage}
-              itemsPerPageBase={9}
+              setItemsPerPage={() => {}}
+              showItemsPerPage={false}
+              isTransparent={true}
             />
           </Box>
         )}
