@@ -52,7 +52,7 @@ export const StyledScrollContainer = styled(Box)({
 export const StyledTableHeader = styled(TableRow, {
   shouldForwardProp: (prop) => prop !== "isSplitTable" && prop !== "tableSection",
 })(({ theme, isSplitTable, tableSection }) => ({
-  backgroundColor: theme.palette.primary.main,
+  // backgroundColor: theme.palette.primary.main,
   "& th": {
     color: theme.palette.primary.contrastText,
     fontWeight: 600,
@@ -64,27 +64,27 @@ export const StyledTableHeader = styled(TableRow, {
   // Only add rounded corners for non-split tables
   ...(!isSplitTable && {
     "& th:first-of-type": {
-      borderTopLeftRadius: "16px",
-      borderBottomLeftRadius: "16px",
+      borderTopLeftRadius: "10px",
+      borderBottomLeftRadius: "10px",
     },
     "& th:last-of-type": {
-      borderTopRightRadius: "16px",
-      borderBottomRightRadius: "16px",
+      borderTopRightRadius: "10px",
+      borderBottomRightRadius: "10px",
     },
   }),
   // For split tables, only round specific corners with more radius
   ...(isSplitTable &&
     tableSection === "fixed" && {
       "& th:first-of-type": {
-        borderTopLeftRadius: "16px",
-        borderBottomLeftRadius: "16px",
+        borderTopLeftRadius: "10px",
+        borderBottomLeftRadius: "10px",
       },
     }),
   ...(isSplitTable &&
     tableSection === "scrollable" && {
       "& th:last-of-type": {
-        borderTopRightRadius: "16px",
-        borderBottomRightRadius: "16px",
+        borderTopRightRadius: "10px",
+        borderBottomRightRadius: "10px",
       },
     }),
 }));
@@ -103,7 +103,7 @@ export const StyledTableCell = styled("td", {
   borderBottom: `1px solid ${theme.palette.divider}`,
   verticalAlign: "middle",
   ...(index === length - 1 && {
-    borderBottom: "1px solid #fff !important",
+    borderBottom: "1px solid #F8F9FA !important",
     // backgroundColor: "red",
   }),
 }));

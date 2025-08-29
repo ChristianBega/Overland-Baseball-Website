@@ -1,3 +1,4 @@
+//TODO : ! used in the dashboard roster table, but we will be deleting this soon and using the DataTable.jsx component instead
 // import "./TeamRosterItem.styles.css";
 import { useTheme } from "@emotion/react";
 // import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
