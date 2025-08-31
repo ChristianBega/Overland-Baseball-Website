@@ -2,7 +2,7 @@ import { Container, Grid } from "@mui/material";
 import React from "react";
 
 import EventsView from "../components/EventView";
-import PlayerEvent from "../components/PlayerEvent";
+import PlayerEventView from "../components/PlayerEventView";
 
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import { useRealtimeData } from "../../../hooks/useRealtimeData";
@@ -19,22 +19,10 @@ export default function EventsPage() {
   return (
     <>
       <Navigation />
-      <Container
-        // component={motion.section}
-        // initial={containerVariants.hidden}
-        // animate={containerVariants.visible}
-        // exit={containerVariants.exit}
-        // transition={containerVariants.transition}
-        id="events-page"
-        component="main"
-        aria-label="Events Page"
-      >
+      <Container id="events-page" component="main" aria-label="Events Page">
         <Grid container id="events-main-grid" columnSpacing={isLg ? 6 : 4}>
           <EventsView />
-          {playerEvents.map((event, index) => (
-            <PlayerEvent key={event.id} data={event} rowReverse={index % 2 === 0 ? true : false} />
-          ))}
-
+          <PlayerEventView playerEvents={playerEvents} />
           <Fundraisers fundraiserEvents={fundraiserEvents} />
         </Grid>
       </Container>

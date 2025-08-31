@@ -20,6 +20,7 @@ export { default as SectionLayout } from "./components/SectionLayout";
 export { default as PageLoader } from "./components/PageLoader";
 export { default as Socials } from "./components/Socials.";
 export { default as TextComponent } from "./components/TextComponent";
+export { default as TextTruncate } from "./components/TextTruncate";
 export { default as ModalComponent } from "./components/modal";
 export { default as FormStatusIndicator } from "./components/FormStatusIndicator";
 // Context

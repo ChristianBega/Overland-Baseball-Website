@@ -73,14 +73,6 @@ export const StyledEventCardHeader = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export const StyledEventCardDescription = styled(Typography)(() => ({
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  display: "-webkit-box",
-  WebkitLineClamp: 4,
-  WebkitBoxOrient: "vertical",
-}));
-
 export const StyledCircleButton = styled(Button)(() => ({
   fontSize: "18px",
 }));
