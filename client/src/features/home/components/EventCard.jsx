@@ -1,12 +1,8 @@
 import React from "react";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
-import ButtonBlock from "../../ui/components/ButtonBlock";
 import TextBlock from "../../ui/components/TextBlock";
 import { Button, Typography } from "@mui/material";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { ArrowOutward } from "@mui/icons-material";
-import addToCalendarOrOpenMaps from "../../../utils/helpers/addToCalendarOrOpenMaps";
 import { formatDateTimeForCalendar } from "../../../utils/helpers/formatDate";
 import {
   StyledEventCard,
@@ -14,41 +10,9 @@ import {
   StyledEventCardImage,
   StyledEventCardBodyText,
   StyledEventCardHeader,
-  StyledEventCardDescription,
-  StyledIconButton,
 } from "./EventCard.styles";
-
-const EventCardCtas = ({ data }) => {
-  const { startDateTime, endDateTime, title, location } = data || {};
-  return (
-    <ButtonBlock spacing={2} direction="row">
-      <StyledIconButton
-        data-startDateTime={startDateTime}
-        data-endDateTime={endDateTime}
-        data-eventTitle={title}
-        data-eventLocation={location}
-        variant="minimal"
-        color="secondary"
-        startIcon={<CalendarMonthIcon />}
-        onClick={(e) => addToCalendarOrOpenMaps(e, "date")}
-      >
-        {formatDateTimeForCalendar(startDateTime)}
-      </StyledIconButton>
-      <StyledIconButton
-        data-startDateTime={startDateTime}
-        data-endDateTime={endDateTime}
-        data-eventTitle={title}
-        data-eventLocation={location}
-        variant="minimal"
-        color="secondary"
-        startIcon={<LocationOnIcon />}
-        onClick={(e) => addToCalendarOrOpenMaps(e, "location")}
-      >
-        {location}
-      </StyledIconButton>
-    </ButtonBlock>
-  );
-};
+import { EventCardCtas } from "../../ui/components/EventCtas";
+import { TextTruncate } from "../../ui";
 
 const EventCardNew = ({ event, onCardClick }) => {
   const { isMd } = useMediaQueries();
@@ -81,9 +45,8 @@ const EventCardNew = ({ event, onCardClick }) => {
               </Button>
             )}
           </StyledEventCardHeader>
-          <StyledEventCardDescription variant="p" component="p">
-            {event.description}
-          </StyledEventCardDescription>
+          <TextTruncate text={event.description} variant="body2" component="p" maxChars={isMd ? 200 : 175} sx={{ mb: 2 }} />
+
           {isMd && <EventCardCtas data={event} />}
         </TextBlock>
       </StyledEventCardBodyText>

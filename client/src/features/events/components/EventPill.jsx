@@ -29,6 +29,7 @@ const EventPill = ({ event, onClick }) => {
     >
       <Typography
         variant="body2"
+        component="h3"
         sx={{
           fontSize: { xs: "10px", sm: "10px", md: "12px" },
           color: colors.text,

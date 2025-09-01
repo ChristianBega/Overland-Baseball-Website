@@ -20,7 +20,17 @@ export { default as SectionLayout } from "./components/SectionLayout";
 export { default as PageLoader } from "./components/PageLoader";
 export { default as Socials } from "./components/Socials.";
 export { default as TextComponent } from "./components/TextComponent";
+export { default as TextTruncate } from "./components/TextTruncate";
 export { default as ModalComponent } from "./components/modal";
 export { default as FormStatusIndicator } from "./components/FormStatusIndicator";
+
+// Player/Card Components
+export { default as PlayerImage } from "./components/PlayerImage";
+export { default as StatItem } from "./components/StatItem";
+export { default as Badge } from "./components/Badge";
+export { default as SectionHeader } from "./components/SectionHeader";
+export { default as TextBlock } from "./components/TextBlock";
+export { default as ButtonBlock } from "./components/ButtonBlock";
+
 // Context
 export { default as ModalProvider, useModal } from "./context/modal.context";

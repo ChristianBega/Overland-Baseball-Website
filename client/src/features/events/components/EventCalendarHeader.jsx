@@ -31,7 +31,7 @@ const CalendarHeader = ({ currentDate, onPrevMonth, onNextMonth, onToday }) => {
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="h5" component="h3" sx={{ mb: 0 }}>
+        <Typography variant="h5" component="h2" sx={{ mb: 0 }}>
           {monthYearText}
         </Typography>
 

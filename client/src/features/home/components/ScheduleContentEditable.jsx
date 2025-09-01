@@ -72,7 +72,7 @@ const ScheduleContentEditable = ({ ...props }) => {
             </Stack>
           </Box>
         ) : (
-          <>{opponentIcon ? <LogoImage component="img" src={opponentIcon} /> : <TeamLogoAvatar>{opponent.charAt(0)}</TeamLogoAvatar>}</>
+          <>{opponentIcon ? <LogoImage component="img" src={opponentIcon} /> : <TeamLogoAvatar>{opponent?.charAt(0)}</TeamLogoAvatar>}</>
         )}
       </StyledTableCell>
       {isMd && (
