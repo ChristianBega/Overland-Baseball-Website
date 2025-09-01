@@ -1,16 +1,8 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
-import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
-import "react-vertical-timeline-component/style.min.css";
-import baseballIcon from "../../../assets/baseball-icon.png";
-import PlaceHolderImage from "../../../assets/coachRosterPlaceHolder.jpg";
-import SectionLayout from "../../../features/ui/components/SectionLayout";
-const BaseballIcon = () => <img width="100%" height="100%" src={baseballIcon} alt="baseball icon" />;
-
-const DateTypography = ({ text }) => (
-  <Typography component="h2" variant="h2" sx={{ color: { xs: "white !important", lg: "black !important" } }}>
-    {text}
-  </Typography>
-);
+import React from "react";
+import { SectionLayout, SectionHeader } from "../../ui";
+import AlumniCard from "./AlumniCard";
+import CustomTimeline from "./CustomTimeline";
+import { useTheme } from "@emotion/react";
 
 const timelineData = [
   {
@@ -123,7 +115,7 @@ const timelineData = [
   },
   {
     playerName: "Jose Clintron",
-    position: "Inside Field",
+    position: "Infielder",
     gradYear_Overland: "00/00/00",
     battingHand: "LH",
     throwingHand: "RH",
@@ -135,65 +127,54 @@ const timelineData = [
   },
 ];
 
+// Helper function to parse and sort birth dates
+const parseBirthDate = (birthDate) => {
+  if (!birthDate || birthDate.includes("x")) return new Date("1900-01-01");
+
+  // Handle different date formats
+  if (birthDate.includes("-")) {
+    // Format: "Feb-27-1973"
+    const [month, day, year] = birthDate.split("-");
+    return new Date(`${month} ${day}, ${year}`);
+  } else {
+    // Format: "Nov 06 1965" or "Oct 30 1970"
+    return new Date(birthDate);
+  }
+};
+
+// Sort alumni by birth date (oldest to newest)
+const sortAlumniByBirthDate = (alumni) => {
+  return [...alumni].sort((a, b) => {
+    const dateA = parseBirthDate(a.birthDate);
+    const dateB = parseBirthDate(b.birthDate);
+    return dateA - dateB;
+  });
+};
+
 export default function TimeLine() {
+  const theme = useTheme();
+  // Process and sort the timeline data
+  const sortedAlumni = sortAlumniByBirthDate(timelineData);
+
+  // Prepare timeline items with AlumniCard components
+  const timelineItems = sortedAlumni.map((alumni, index) => ({
+    ...alumni,
+    content: <AlumniCard key={`${alumni.playerName}-${index}`} alumni={alumni} />,
+  }));
+
   return (
     <SectionLayout className="time-line" id="alumni-timeline" aria-label="Alumni Timeline">
-      <Typography typography="h1" sx={{ textAlign: "center" }}>
-        ALUMNI TIMELINE
-      </Typography>
-      <VerticalTimeline layout="2-columns" lineColor="rgba(9,31,64,.8)">
-        <VerticalTimelineElement iconClassName="icon" iconStyle={{ display: "flex", justifyContent: "center", alignContent: "center" }} />
-        {timelineData.map((timelineEl, index) => (
-          <VerticalTimelineElement
-            key={index}
-            className="vertical-timeline-element--work"
-            contentStyle={{ background: "rgb(19, 53, 118,.86)", color: "#fff" }}
-            contentArrowStyle={{ borderRight: "7px solid  rgb(9, 46, 115)" }}
-            iconClassName="icon"
-            dateClassName="date"
-            date={<DateTypography text={timelineEl.statsYear} />}
-            iconStyle={{ display: "flex", justifyContent: "center", alignContent: "center" }}
-            icon={<BaseballIcon />}
-          >
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography component="h4" variant="h3" sx={{ textAlign: "center" }}>
-                  {timelineEl.playerName}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sx={{ display: "flex", justifyContent: "center", my: 4 }}>
-                <Stack direction="row" spacing={15} textAlign="center">
-                  <Typography component="h4">
-                    Born: <br /> {timelineEl.birthDate}
-                  </Typography>
-                  <Typography component="h4">
-                    Graduated: <br /> {timelineEl.gradYear_Overland}
-                  </Typography>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} display="flex" justifyContent="center">
-                <Box component="img" src={PlaceHolderImage} sx={{ width: "285px", height: "285px" }}></Box>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} sx={{ mt: 4, mb: 4, textAlign: "center" }}>
-              <Stack sx={{ justifyContent: "space-between", width: "100%", textAlign: "center" }} direction={{ xs: "row", sm: "row" }}>
-                <Typography component="p">
-                  Position:
-                  <br /> {timelineEl.position}
-                </Typography>
-                <Typography component="p">
-                  League:
-                  <br /> {timelineEl.higherLevel}
-                </Typography>
-                <Typography component="p">
-                  College: <br /> {timelineEl.college}
-                </Typography>
-              </Stack>
-            </Grid>
-          </VerticalTimelineElement>
-        ))}
-        <VerticalTimelineElement iconClassName="icon" iconStyle={{ display: "flex", justifyContent: "center", alignContent: "center" }} />
-      </VerticalTimeline>
+      <SectionHeader
+        title="Alumni Timeline"
+        subtitle="Celebrating our baseball legacy"
+        titleProps={{ variant: "h1", component: "h1" }}
+        color={theme.palette.secondary.main}
+        // color={theme.palette.accent.main}
+        sx={{ mb: 4, textAlign: "center" }}
+        justifyContent="center"
+      />
+
+      <CustomTimeline items={timelineItems} groupByYear={true} />
     </SectionLayout>
   );
 }

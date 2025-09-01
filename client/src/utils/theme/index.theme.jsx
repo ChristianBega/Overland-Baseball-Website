@@ -43,6 +43,7 @@ export const defaultTheme = {
       primaryShortToLeft: "linear-gradient(to left, #082463 2%, rgba(9, 31, 64, 1) 50%)",
       primaryToRight: "linear-gradient(to right, #082463 70%, rgba(9, 31, 64, 1) 100%)",
       primaryToLeft: "linear-gradient(to left, #082463 0%, rgba(9, 31, 64, 1) 100%)",
+      primaryToTop: "linear-gradient(to top, #082463 0%, rgba(9, 31, 64, 1) 100%)",
     },
   },
   breakpoints: {
