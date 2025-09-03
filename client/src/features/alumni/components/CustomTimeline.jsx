@@ -1,82 +1,14 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import { styled } from "@mui/material/styles";
-import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
-// import baseballIcon from "../../../assets/baseball-icon.png";
+
 import TimelineProgressBar from "./TimelineProgressBar";
-
-const TimelineContainer = styled(Box)(({ theme }) => ({
-  position: "relative",
-  // padding: theme.spacing(4, 0),
-  maxWidth: "1200px",
-  margin: "0 auto",
-}));
-
-const TimelineItemContainer = styled(motion.div)(({ theme, isMobile, isLeft }) => ({
-  position: "relative",
-  marginBottom: theme.spacing(6),
-  width: "100%",
-  [theme.breakpoints.up("md")]: {
-    width: isMobile ? "100%" : "calc(50% - 20px)",
-    marginLeft: !isMobile && isLeft ? "0" : !isMobile && !isLeft ? "calc(50% + 20px)" : "0",
-  },
-}));
-
-// const TimelineIcon = styled(motion.div)(({ theme, isLeft }) => ({
-//   position: "absolute",
-//   left: isLeft ? "calc(100% + 20px)" : "-20px",
-//   top: theme.spacing(2),
-//   width: "32px",
-//   height: "32px",
-//   borderRadius: "50%",
-//   backgroundColor: theme.palette.primary.main,
-//   border: `3px solid ${theme.palette.background.paper}`,
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   transform: "translateX(-50%)",
-//   zIndex: 3,
-//   boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-//   "& img": {
-//     width: "18px",
-//     height: "18px",
-//     filter: "brightness(0) invert(1)",
-//   },
-// }));
-
-// Remove TimelineYear styled component since we're not using individual year badges anymore
-
-const TimelineContent = styled(motion.div)(({ theme, isMobile }) => ({
-  marginLeft: isMobile ? theme.spacing(8) : 0,
-  marginTop: theme.spacing(1),
-  [theme.breakpoints.up("md")]: {
-    marginLeft: isMobile ? theme.spacing(8) : 0,
-  },
-}));
-
-const YearHeader = styled(motion.div)(({ theme }) => ({
-  textAlign: "center",
-  marginBottom: theme.spacing(4),
-  position: "relative",
-  zIndex: 2,
-  "& .year-badge": {
-    display: "inline-block",
-    background: theme.palette.gradients.primary,
-    border: `3px solid ${theme.palette.background.paper}`,
-    // backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-    padding: theme.spacing(1, 3),
-    borderRadius: "25px",
-    fontSize: "24px",
-    fontWeight: "700",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-  },
-}));
+import { TimelineContainer, TimelineItemContainer, TimelineContent, YearHeader } from "./CustomTimeline.styles";
+import { timelineAnimations } from "../animations/timelineAnimations";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const CustomTimeline = ({ items, groupByYear = true }) => {
-  const { isMobile } = useMediaQueries();
   const timelineRef = useRef(null);
 
   // Group items by year if needed
@@ -89,60 +21,8 @@ const CustomTimeline = ({ items, groupByYear = true }) => {
       }, {})
     : { "All": items };
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      scale: 0.9,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  // const iconVariants = {
-  //   hidden: { scale: 0, rotate: -180 },
-  //   visible: {
-  //     scale: 1,
-  //     rotate: 0,
-  //     transition: {
-  //       duration: 0.5,
-  //       delay: 0.3,
-  //       ease: "backOut",
-  //     },
-  //   },
-  // };
-
-  const yearHeaderVariants = {
-    hidden: { opacity: 0, y: -30, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
+  // Extract animation variants from animations file
+  const { container: containerVariants, item: itemVariants, yearHeader: yearHeaderVariants } = timelineAnimations;
 
   let itemIndex = 0;
 
@@ -177,7 +57,6 @@ const CustomTimeline = ({ items, groupByYear = true }) => {
                 return (
                   <TimelineItemContainer
                     key={`${item.playerName}-${index}`}
-                    isMobile={isMobile}
                     isLeft={isLeft}
                     variants={itemVariants}
                     initial="hidden"
@@ -191,9 +70,7 @@ const CustomTimeline = ({ items, groupByYear = true }) => {
                       </TimelineIcon>
                     )} */}
 
-                    <TimelineContent isMobile={isMobile} variants={itemVariants}>
-                      {item.content}
-                    </TimelineContent>
+                    <TimelineContent variants={itemVariants}>{item.content}</TimelineContent>
                   </TimelineItemContainer>
                 );
               })}
