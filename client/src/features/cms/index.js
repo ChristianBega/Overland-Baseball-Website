@@ -14,7 +14,7 @@ export { default as EditItemsForm } from "./components/EditItemsForm";
 export { default as CmsOptionsPanel } from "./components/CmsOptionsPanel";
 export { default as CmsSeasonTabOptions } from "./components/CmsSeasonTabOptions";
 export { default as CmsItemTableView } from "./components/CmsItemTableView";
-export { default as CmsItemTableViewHeader } from "./components/CmsItemTableViewHeader";
+export { default as CmsItemTableViewHeader } from "./components/[Deprecated]CmsItemTableViewHeader";
 export { default as CmsListItem } from "./components/CmsListItem";
 export { default as CmsListItemActionButton } from "./components/CmsListItemActionButton";
 export { default as CmsListItemCheckbox } from "./components/CmsListItemCheckbox";

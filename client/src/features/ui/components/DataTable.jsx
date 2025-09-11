@@ -52,6 +52,8 @@ export const StyledScrollContainer = styled(Box)({
 export const StyledTableHeader = styled(TableRow, {
   shouldForwardProp: (prop) => prop !== "isSplitTable" && prop !== "tableSection",
 })(({ theme, isSplitTable, tableSection }) => ({
+  height: "55px",
+
   // backgroundColor: theme.palette.primary.main,
   "& th": {
     color: theme.palette.primary.contrastText,
@@ -106,4 +108,10 @@ export const StyledTableCell = styled("td", {
     borderBottom: "1px solid #F8F9FA !important",
     // backgroundColor: "red",
   }),
+}));
+
+// Table cell with minimum width support for CMS tables
+export const StyledTableCellWithWidth = styled(StyledTableCell)(({ minWidth }) => ({
+  minWidth: minWidth || "auto",
+  whiteSpace: "nowrap", // Prevent text wrapping in cells with fixed widths
 }));

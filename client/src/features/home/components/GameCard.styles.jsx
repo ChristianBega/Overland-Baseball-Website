@@ -1,4 +1,4 @@
-import { Card, Typography, Stack, Box } from "@mui/material";
+import { Card, Typography, Stack, Box, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const StyledGameCard = styled(Card)(({ theme, isPast }) => ({
@@ -111,4 +111,33 @@ export const StyledOpponentName = styled(Typography)(({ theme }) => ({
 export const StyledHiddenText = styled(Typography)(({ theme }) => ({
   position: "absolute",
   left: "-10000px",
+}));
+
+export const StatusChip = styled(Chip)(({ theme, isHome }) => ({
+  fontSize: "12px",
+  backgroundColor: isHome ? theme.palette.secondary.main : `#09255d`,
+  height: "20px",
+  "& .MuiChip-label": {
+    color: "#fff",
+  },
+  [theme.breakpoints.up("sm")]: {
+    height: "30px",
+  },
+}));
+
+export const TeamLogoAvatar = styled(Box)(({ theme, sx }) => ({
+  width: 45,
+  height: 45,
+  borderRadius: "50%",
+  backgroundColor: theme.palette.grey[300],
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.palette.grey[600],
+  fontWeight: "bold",
+  [theme.breakpoints.up("laptop")]: {
+    width: 50,
+    height: 50,
+    ...sx,
+  },
 }));

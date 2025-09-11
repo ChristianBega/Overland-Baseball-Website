@@ -1,7 +1,7 @@
 // MUI
 import { Box, Button } from "@mui/material";
 // Styles
-import { StyledTableCell } from "../../../utils/theme/index.styles";
+import { StyledTableCell } from "../../ui/components/DataTable";
 // Icons
 import { Edit as EditIcon } from "@mui/icons-material";
 // Context
@@ -14,6 +14,7 @@ import { useModal } from "../../../features/ui";
 import CmsForm from "../components/CmsForm";
 // Hooks
 import { useUrlQueryParams } from "../../../utils/helpers/useUrlQueryParams";
+import { StyledDataHeaderCell } from "../../roster/components/TeamRosterTableView.styles";
 const ActionButtonsCell = ({ id, values, type }) => {
   const { openModal, closeModal } = useModal();
   const { currentUserProfile } = useContext(UserContext);
@@ -42,8 +43,9 @@ const ActionButtonsCell = ({ id, values, type }) => {
   };
 
   return (
-    <StyledTableCell className="table-header-cell-narrow" sx={{ padding: { xs: ".5rem .5rem .5rem 0", md: ".5rem 1rem" } }}>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+    // Todo: need to change to datatable styling
+    <StyledDataHeaderCell>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         {(role === "admin" || role === "coach") && (
           <Button
             variant="contained"
@@ -53,12 +55,13 @@ const ActionButtonsCell = ({ id, values, type }) => {
             onClick={() => handleModalStartEditing(id, values[0])}
             type="button"
             aria-label="edit item"
+            sx={{ ml: 1 }}
           >
             <EditIcon />
           </Button>
         )}
       </Box>
-    </StyledTableCell>
+    </StyledDataHeaderCell>
   );
 };
 

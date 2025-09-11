@@ -5,6 +5,8 @@ import { Box } from "@mui/material";
 // All table components moved to DataTable.jsx for reusability
 
 // Player avatar styling - roster specific
+
+// Todo - change to use TeamLogoAvatar or vice versa
 export const StyledPlayerAvatar = styled(Box)(({ theme }) => ({
   width: 36,
   height: 36,

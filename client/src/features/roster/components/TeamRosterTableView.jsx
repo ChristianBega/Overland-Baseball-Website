@@ -50,7 +50,7 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
         <StyledFixedTable>
           <StyledTableHeadFixed>
             <StyledTableHeader isSplitTable={true} tableSection="fixed">
-              <StyledNameHeaderCell colSpan={2} backgroundType="primaryToRight">
+              <StyledNameHeaderCell colSpan={2} backgroundType={theme.palette.gradients.primaryToLeft}>
                 Name
               </StyledNameHeaderCell>
             </StyledTableHeader>
@@ -90,10 +90,10 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
                     {player.position}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
-                    {player.bat || "update"}
+                    {player.bat || "N/A"}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
-                    {player.throw || "update"}
+                    {player.throw || "N/A"}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
                     {isMd ? player.year : player.yearAbbr}

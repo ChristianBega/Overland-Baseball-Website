@@ -1,3 +1,4 @@
+// Todo: instead of using the currentItem, which tracks the current item being edited, use pages?
 import React, { useRef, useContext } from "react";
 import { useTheme } from "@emotion/react";
 // Material UI components and icons
@@ -51,7 +52,7 @@ const DashboardSideBarMenu = () => {
   };
 
   return (
-    <Grid item xs={12} lg={12}>
+    <Grid item xs={12} sx={{ marginTop: "2rem" }}>
       <MenuWrapper id="menu-wrapper" onBlur={handleBlur} tabIndex={-1} ref={menuRef}>
         <StyledMenuDropDownButton id="menu-dropdown-button" onClick={toggleMenu} isOpen={isOpen}>
           <Stack direction="row" alignItems="center">

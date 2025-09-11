@@ -1,3 +1,4 @@
+// Todo: This needs to be simplified.... we have 3 different components (eventItems, ScheduleItem, TeamRosterItem) that are all essentially the same thing... just different data. Instead we should have a universal component that can be used for all or just leverage existing dataTable component (like roster component)
 import React from "react";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // MUI
@@ -16,7 +17,7 @@ import {
   ScheduleCard,
   TeamLogoContainer,
   TeamLogoAvatar,
-} from "./ScheduleContentViewOnly.styles";
+} from "./[Deprecated]ScheduleContentViewOnly.styles";
 import { formatDateString } from "../../../utils/helpers/formatDate";
 import { convertTo12HourFormat } from "../../../utils/helpers/convertTo24HourFormat";
 import { useTheme } from "@emotion/react";
