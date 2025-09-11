@@ -34,6 +34,7 @@ import {
   StyledTableRowWithBackground,
   StyledTableWrapper,
 } from "../../roster/components/TeamRosterTableView.styles";
+import CheckboxCell from "./CmsListItemCheckbox";
 
 const CmsItemTableView = ({ currentItem }) => {
   const theme = useTheme();
@@ -142,14 +143,7 @@ const CmsItemTableView = ({ currentItem }) => {
                 {paginatedData?.length > 0 ? (
                   paginatedData.map((item, index) => (
                     <StyledTableRowWithBackground key={`${currentItem}-fixed-${index}`}>
-                      <StyledTableCell>
-                        <InputFieldComponent
-                          type="checkbox"
-                          checked={selectedItems.some((selectedItem) => selectedItem.id === item.id)}
-                          onChange={() => {}}
-                          // Todo: fix - this should be working, but its not
-                        />
-                      </StyledTableCell>
+                      <CheckboxCell isSelected={selectedItems.some((selectedItem) => selectedItem.id === item.id)} id={item.id} values={[item]} />
                       <CmsListItem id={item.id} indexz={index} values={[item]} section="fixed" />
                     </StyledTableRowWithBackground>
                   ))

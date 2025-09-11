@@ -90,10 +90,10 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
                     {player.position}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
-                    {player.bat || "update"}
+                    {player.bat || "N/A"}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
-                    {player.throw || "update"}
+                    {player.throw || "N/A"}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
                     {isMd ? player.year : player.yearAbbr}

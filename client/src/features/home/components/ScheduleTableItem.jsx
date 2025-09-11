@@ -3,9 +3,8 @@ import { Typography, Stack } from "@mui/material";
 import { LogoImage } from "../../../utils/theme/index.styles";
 import { StyledTableCell } from "../../ui/components/DataTable";
 import { TeamLogoAvatar } from "./GameCard.styles";
-import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import overland from "../../../assets/homePage/teamLogos/overland.webp";
-import { StyledDataCell, StyledDataCellWithMinWidth } from "../../roster/components/TeamRosterTableView.styles";
+import { StyledDataCellWithMinWidth } from "../../roster/components/TeamRosterTableView.styles";
 import { TextTruncate } from "../../ui";
 
 // Fixed section - Matchup only
