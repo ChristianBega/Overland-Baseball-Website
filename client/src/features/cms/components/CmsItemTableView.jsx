@@ -1,5 +1,6 @@
+// Todo: We could find a better way to showcase the data on the page, rather than relying on the table data view.... the issue we face with the data table is its hard to manage different types of data... not a true CMS, rather a DMS....
 import React, { useContext, useState, useCallback, useEffect } from "react";
-import { Box, Grid, Paper, Stack, Table, TableBody, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Grid, Stack, TableBody, TableHead } from "@mui/material";
 import CmsListItem from "./CmsListItem";
 // import CmsListItem from "../../../components/contentManagementSystem/cmsListItem/cmsListItem";
 // import CmsOptionsPanel from "../cmsOptionsPanel";
@@ -8,13 +9,34 @@ import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActions.context";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 import { CmsEditItemContext } from "../../../features/cms/context/CmsEdit.context";
-import { StyledTableCell } from "../../../utils/theme/index.styles";
-import CmsTableViewHeader from "./CmsItemTableViewHeader";
+// import { StyledTableCell } from "../../../utils/theme/index.styles";
+import {
+  StyledTableContainer,
+  StyledScrollableTable,
+  StyledTableHeader,
+  StyledTableRow,
+  StyledFixedTable,
+  StyledScrollContainer,
+  StyledTableCell,
+} from "../../ui/components/DataTable";
+
+import CmsTableHeader from "./CmsTableHeader";
+import ActionButtonsCell from "./CmsListItemActionButton";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import CustomPagination from "../../../features/ui/components/Pagination";
 import SearchFilterComponent from "../../../features/ui/components/SearchFilter";
 import { useLocation } from "react-router-dom";
+import { useTheme } from "@emotion/react";
+import {
+  StyledNameHeaderCell,
+  StyledTableBodyFixed,
+  StyledTableHeadFixed,
+  StyledTableRowWithBackground,
+  StyledTableWrapper,
+} from "../../roster/components/TeamRosterTableView.styles";
+
 const CmsItemTableView = ({ currentItem }) => {
+  const theme = useTheme();
   const [page, setPage] = useState(1);
   const { search } = useLocation();
   const urlParams = new URLSearchParams(search);
@@ -80,10 +102,9 @@ const CmsItemTableView = ({ currentItem }) => {
   }
 
   return (
-    <Grid item xs={12} lg={12}>
+    <Grid item xs={12} sx={{ marginBottom: "2rem" }}>
       <Box sx={{ marginTop: "2rem" }} role="region" aria-label={`${currentItem?.linkName || "Content"} management table`}>
         <Stack direction={isSm ? "row" : "column"} justifyContent="space-between" spacing={2} sx={{ marginBottom: "1rem" }}>
-          {/* Replace the disabled search input with our reusable search filter */}
           <SearchFilterComponent
             data={originalData || []}
             onFilteredDataChange={handleFilteredDataChange}
@@ -96,37 +117,80 @@ const CmsItemTableView = ({ currentItem }) => {
           <CmsOptionsPanel />
         </Stack>
 
-        <TableContainer component={Paper}>
-          <Table stickyHeader aria-label={`${currentItem?.linkName || "Content"} table`}>
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "red" }}>
-                <StyledTableCell className="table-cell-dark table-header-cell-narrow" role="columnheader" scope="col" aria-label="Select all items">
-                  <InputFieldComponent
-                    customColor="white"
-                    disabled={editableItemData}
-                    type="checkbox"
-                    checked={dataToDisplay?.length > 0 ? dataToDisplay?.length === selectedItems?.length : selectedItems?.length > 0}
-                    onChange={(event) => handleSelectAll(event, dataToDisplay)}
-                    inputProps={{
-                      "aria-label": "Select all items",
-                    }}
-                  />
-                </StyledTableCell>
-                <CmsTableViewHeader />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {paginatedData?.length > 0 ? (
-                paginatedData.map((item, index) => <CmsListItem key={`${currentItem}-${index}`} id={item.id} indexz={index} values={[item]} />)
-              ) : (
-                <TableRow>
-                  <StyledTableCell colSpan={100} align="center" role="cell">
-                    {originalData?.length > 0 ? "No matching results found" : "No data available"}
-                  </StyledTableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+        <StyledTableWrapper>
+          <StyledTableContainer>
+            {/* Fixed Column Section */}
+            <StyledFixedTable>
+              <StyledTableHeadFixed>
+                <StyledTableHeader isSplitTable={true} tableSection="fixed">
+                  <StyledNameHeaderCell aria-label="Select all items" backgroundType={theme.palette.primary.main}>
+                    <InputFieldComponent
+                      customColor="white"
+                      disabled={editableItemData}
+                      type="checkbox"
+                      checked={dataToDisplay?.length > 0 ? dataToDisplay?.length === selectedItems?.length : selectedItems?.length > 0}
+                      onChange={(event) => handleSelectAll(event, dataToDisplay)}
+                      inputProps={{
+                        "aria-label": "Select all items",
+                      }}
+                    />
+                  </StyledNameHeaderCell>
+                  <CmsTableHeader dataType={itemType} section="fixed" />
+                </StyledTableHeader>
+              </StyledTableHeadFixed>
+              <StyledTableBodyFixed>
+                {paginatedData?.length > 0 ? (
+                  paginatedData.map((item, index) => (
+                    <StyledTableRowWithBackground key={`${currentItem}-fixed-${index}`}>
+                      <StyledTableCell>
+                        <InputFieldComponent
+                          type="checkbox"
+                          checked={selectedItems.some((selectedItem) => selectedItem.id === item.id)}
+                          onChange={() => {}}
+                          // Todo: fix - this should be working, but its not
+                        />
+                      </StyledTableCell>
+                      <CmsListItem id={item.id} indexz={index} values={[item]} section="fixed" />
+                    </StyledTableRowWithBackground>
+                  ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell colSpan={100} align="center" role="cell">
+                      {originalData?.length > 0 ? "No matching results found" : "No data available"}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
+              </StyledTableBodyFixed>
+            </StyledFixedTable>
+
+            {/* Scrollable Column Section */}
+            <StyledScrollContainer>
+              <StyledScrollableTable>
+                <TableHead sx={{ background: `${theme.palette.gradients.primaryToRight} !important` }}>
+                  <StyledTableHeader isSplitTable={true} tableSection="scrollable">
+                    <CmsTableHeader dataType={itemType} section="scrollable" />
+                  </StyledTableHeader>
+                </TableHead>
+                <TableBody>
+                  {paginatedData?.length > 0 ? (
+                    paginatedData.map((item, index) => (
+                      <StyledTableRowWithBackground key={`${currentItem}-scrollable-${index}`}>
+                        <CmsListItem id={item.id} indexz={index} values={[item]} section="scrollable" />
+                        <ActionButtonsCell id={item.id} values={[item]} type={itemType} />
+                      </StyledTableRowWithBackground>
+                    ))
+                  ) : (
+                    <StyledTableRow>
+                      <StyledTableCell colSpan={100} align="center" role="cell">
+                        No data
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  )}
+                </TableBody>
+              </StyledScrollableTable>
+            </StyledScrollContainer>
+          </StyledTableContainer>
+
           <CustomPagination
             totalItems={dataToDisplay?.length || 0}
             itemsPerPage={itemsPerPage}
@@ -135,7 +199,7 @@ const CmsItemTableView = ({ currentItem }) => {
             setItemsPerPage={setItemsPerPage}
             itemsPerPageBase={6}
           />
-        </TableContainer>
+        </StyledTableWrapper>
       </Box>
     </Grid>
   );

@@ -103,18 +103,6 @@ export const TeamLogoContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-export const StatusChip = styled(Chip)(({ theme, isHome }) => ({
-  fontSize: "12px",
-  backgroundColor: isHome ? theme.palette.secondary.main : `#09255d`,
-  height: "20px",
-  "& .MuiChip-label": {
-    color: "#fff",
-  },
-  [theme.breakpoints.up("sm")]: {
-    height: "30px",
-  },
-}));
-
 export const ScheduleCard = styled(Card)(({ theme, isMobile, isDesktop, isPast }) => ({
   justifyContent: "flex-start",
   gap: "1rem",
@@ -131,20 +119,4 @@ export const ScheduleCard = styled(Card)(({ theme, isMobile, isDesktop, isPast }
       cursor: "not-allowed",
     },
   }),
-}));
-
-export const TeamLogoAvatar = styled(Box)(({ theme }) => ({
-  width: 45,
-  height: 45,
-  borderRadius: "50%",
-  backgroundColor: theme.palette.grey[300],
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: theme.palette.grey[600],
-  fontWeight: "bold",
-  [theme.breakpoints.up("laptop")]: {
-    width: 50,
-    height: 50,
-  },
 }));

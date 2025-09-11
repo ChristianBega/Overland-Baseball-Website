@@ -16,12 +16,11 @@
 // 6. undo feature for the user to undo their changes. last for 30 seconds.
 import React, { useContext } from "react";
 // Mui
-import { Typography, TableRow } from "@mui/material";
+import { Typography } from "@mui/material";
 // Components
-import TeamRoosterItem from "../../../features/roster/components/TeamRosterItem.jsx";
-import ScheduleItem from "../../../features/home/components/ScheduleItem";
-// import EventItems from "../../../pages/events/components/eventItems/eventItems.component";
-import { EventItems } from "../../events";
+import RosterTableItem from "../../../features/roster/components/RosterTableItem";
+import ScheduleTableItem from "../../../features/home/components/ScheduleTableItem";
+import EventsTableItem from "../../../features/events/components/EventsTableItem";
 import DocumentCard from "../../../features/documents/components/DocumentCard";
 import ActionButtonsCell from "./CmsListItemActionButton";
 import CheckboxCell from "./CmsListItemCheckbox";
@@ -33,13 +32,14 @@ import { CmsBulkActionContext } from "../../../features/cms/context/CmsBulkActio
 // Utils & Helpers
 import { useUrlQueryParams } from "../../../utils/helpers/useUrlQueryParams";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import { StyledTableRow } from "../../ui/components/DataTable";
 
-const CmsListItem = ({ values, id }) => {
+const CmsListItem = ({ values, id, section }) => {
   let queryParams = useUrlQueryParams();
-  const { isLg, isMd } = useMediaQueries();
+  const { isMd } = useMediaQueries();
   let type = queryParams.get("type");
   const { currentUserProfile } = useContext(UserContext);
-  const { editableItemId, editableItemData, handleFieldChange, cmsOperationStatus } = useContext(CmsEditItemContext);
+  const { editableItemId } = useContext(CmsEditItemContext);
   const { selectedItems } = useContext(CmsBulkActionContext);
   const { role } = currentUserProfile;
   const isEditing = editableItemId === id;
@@ -51,38 +51,39 @@ const CmsListItem = ({ values, id }) => {
     type: type,
   };
 
-  const renderEditableCmsItem = () => {
+  const renderCmsItem = (section) => {
     if (!values || values.length === 0) {
       return <Typography>No content available</Typography>;
     }
+
+    // Props for split table sections
     const props = {
-      isEditable: isEditing,
-      editableData: editableItemData,
-      handleChange: handleFieldChange,
-      isLoading: isEditing && cmsOperationStatus.loading,
-      isError: isEditing && cmsOperationStatus.error,
-      isSuccess: isEditing && cmsOperationStatus.success,
       isCmsItem: true,
-      renderAsRow: false,
+      section: section,
     };
-    const editableCmsItemsMap = {
-      schedule: values.map((value, index) => <ScheduleItem key={index + id} data={value} {...props} />),
-      roster: values.map((value, index) => <TeamRoosterItem key={index + id} data={value} {...props} />),
-      events: values.map((value, index) => <EventItems key={index + id} data={value} {...props} />),
+
+    const cmsItemsMap = {
+      schedule: values.map((value, index) => <ScheduleTableItem key={index + id} data={value} {...props} />),
+      roster: values.map((value, index) => <RosterTableItem key={index + id} data={value} {...props} />),
+      events: values.map((value, index) => <EventsTableItem key={index + id} data={value} {...props} />),
       documents: values.map((value, index) => <DocumentCard isCard={false} key={index + id} data={value} {...props} />),
     };
-    return editableCmsItemsMap[type];
+    return cmsItemsMap[type];
   };
 
+  // For split tables, just return the content without wrapper
+  if (section) {
+    return renderCmsItem(section);
+  }
+
+  // Fallback for non-split tables (shouldn't be used in new implementation)
   return (
     <>
-      <TableRow sx={{ width: "100%", "&:nth-of-type(even)": { backgroundColor: "#f2f2f2" } }}>
-        <CheckboxCell isSelected={isItemSelected} {...commonTableCellProps} />
-        {isEditingNew && (role === "admin" || role === "coach") && <DeleteButtonCell {...commonTableCellProps} />}
-        {renderEditableCmsItem()}
-
-        <ActionButtonsCell {...commonTableCellProps} />
-      </TableRow>
+      {/* <StyledTableRow> */}
+      <CheckboxCell isSelected={isItemSelected} {...commonTableCellProps} />
+      {renderCmsItem()}
+      <ActionButtonsCell {...commonTableCellProps} />
+      {/* </StyledTableRow> */}
     </>
   );
 };

@@ -16,7 +16,6 @@ import SectionLayout from "../../../features/ui/components/SectionLayout";
 import { Navigation } from "../../navigation";
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
-
   const { currentUserProfile } = useContext(UserContext);
   const { currentItem } = useContext(CmsContext);
   useEffect(() => {
@@ -29,26 +28,26 @@ const AdminDashboardPage = () => {
   return (
     <>
       <Navigation />
-      <Container sx={{ display: "flex", justifyContent: " center" }} id="admin-dashboard-page" component="main" aria-label="Admin Dashboard Page">
+      <Container id="admin-dashboard-page" component="main" aria-label="Admin Dashboard Page">
         {currentUserProfile.role !== "admin" && currentUserProfile.role !== "coach" ? null : (
-          <SectionLayout id="admin-dashboard-section" aria-label="Admin Dashboard Section" marginBlock>
-            <Grid id="dashboard-main-grid" container maxWidth="lg">
-              <DashboardSideBarMenu />
-              <CmsBulkActionProvider>
-                <MediaStorageProvider>
-                  <CmsCreateItemProvider>
-                    <CmsEditItemProvider>
-                      <CmsDeleteItemProvider>
-                        {/* <ModalProvider> */}
-                        {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
-                        {/* </ModalProvider> */}
-                      </CmsDeleteItemProvider>
-                    </CmsEditItemProvider>
-                  </CmsCreateItemProvider>
-                </MediaStorageProvider>
-              </CmsBulkActionProvider>
-            </Grid>
-          </SectionLayout>
+          // <SectionLayout id="admin-dashboard-section" aria-label="Admin Dashboard Section" marginBlock>
+          <Grid id="dashboard-main-grid" container>
+            <DashboardSideBarMenu />
+            <CmsBulkActionProvider>
+              <MediaStorageProvider>
+                <CmsCreateItemProvider>
+                  <CmsEditItemProvider>
+                    <CmsDeleteItemProvider>
+                      {/* <ModalProvider> */}
+                      {currentItem?.linkName === "dashboard" ? <AdminQuickTasksView /> : <CmsItemTableView currentItem={currentItem} />}
+                      {/* </ModalProvider> */}
+                    </CmsDeleteItemProvider>
+                  </CmsEditItemProvider>
+                </CmsCreateItemProvider>
+              </MediaStorageProvider>
+            </CmsBulkActionProvider>
+          </Grid>
+          // </SectionLayout>
         )}
       </Container>
     </>

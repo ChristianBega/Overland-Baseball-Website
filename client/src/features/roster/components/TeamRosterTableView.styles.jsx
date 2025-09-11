@@ -24,22 +24,28 @@ export const StyledTableBodyFixed = styled(TableBody)(({ theme }) => ({
 }));
 
 // Name header cell with specific styling
-export const StyledNameHeaderCell = styled(TableCell)(({ theme }) => ({
+export const StyledNameHeaderCell = styled(TableCell)(({ theme, backgroundType }) => ({
   borderRight: `1px solid ${theme.palette.divider}`,
   background: theme.palette.gradients.primaryShortToLeft,
-
   [theme.breakpoints.up("md")]: {
     padding: "12px 1.5rem !important",
   },
   height: "60px",
+  ...(backgroundType && {
+    background: backgroundType,
+  }),
 }));
 
 // Data header cells in scrollable section
-export const StyledDataHeaderCell = styled(TableCell)(({ theme }) => ({
+export const StyledDataHeaderCell = styled(TableCell)(({ theme, minWidth, isEditCell }) => ({
   padding: theme.spacing(2),
   background: "transparent",
   minHeight: "60px",
   height: "60px",
+  ...(isEditCell && {
+    width: "100px",
+    textAlign: "center",
+  }),
 }));
 
 // Table row with background

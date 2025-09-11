@@ -1,4 +1,5 @@
 //TODO : ! used in the dashboard roster table, but we will be deleting this soon and using the DataTable.jsx component instead
+// Todo: This needs to be simplified.... we have 3 different components (eventItems, ScheduleItem, TeamRosterItem) that are all essentially the same thing... just different data. Instead we should have a universal component that can be used for all or just leverage existing dataTable component (like roster component)
 import React from "react";
 // MUI
 import { styled } from "@mui/material";

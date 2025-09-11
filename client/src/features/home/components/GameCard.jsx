@@ -2,7 +2,6 @@ import React from "react";
 import { Stack } from "@mui/material";
 import { TeamLogo } from "../../../utils/theme/index.styles";
 import { convertTo12HourFormat } from "../../../utils/helpers/convertTo24HourFormat";
-import { StatusChip, TeamLogoAvatar } from "./ScheduleContentViewOnly.styles";
 import overlandLogo from "../../../assets/homePage/teamLogos/overland.webp";
 import {
   StyledGameCard,
@@ -15,6 +14,8 @@ import {
   StyledTimeDisplay,
   StyledOpponentName,
   StyledHiddenText,
+  StatusChip,
+  TeamLogoAvatar,
 } from "./GameCard.styles";
 
 const GameCard = ({ data, onClick }) => {

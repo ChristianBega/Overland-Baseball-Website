@@ -1,10 +1,11 @@
+// Todo: needs to be a grid item
 import React, { useContext } from "react";
-import { useModal } from "../../../features/ui";
+import { SectionLayout, useModal } from "../../../features/ui";
 import { CmsMediaStorage } from "../../../features/cms";
 import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { UserContext } from "../../../features/auth/context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 // import { initializeBulkAddFields } from "../../../../../setup/utils/firebase/helper";
 
 const quickTaskConfig = [
@@ -94,9 +95,12 @@ const AdminQuickTasksView = () => {
   };
 
   return (
-    <div
+    <Grid
+      item
+      xs={12}
+      lg={12}
       style={{
-        marginTop: "2rem",
+        marginBlock: "2rem",
         border: "2px solid grey",
         width: "100%",
         height: 600,
@@ -129,7 +133,7 @@ const AdminQuickTasksView = () => {
           </Typography>
         </Box>
       ))}
-    </div>
+    </Grid>
   );
 };
 
