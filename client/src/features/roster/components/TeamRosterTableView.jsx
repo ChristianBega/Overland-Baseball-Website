@@ -50,7 +50,7 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
         <StyledFixedTable>
           <StyledTableHeadFixed>
             <StyledTableHeader isSplitTable={true} tableSection="fixed">
-              <StyledNameHeaderCell colSpan={2} backgroundType="primaryToRight">
+              <StyledNameHeaderCell colSpan={2} backgroundType={theme.palette.gradients.primaryToLeft}>
                 Name
               </StyledNameHeaderCell>
             </StyledTableHeader>
