@@ -50,6 +50,7 @@ export const defaultTheme = {
     values: {
       xs: 0,
       formHeader: 404,
+      mobileLg: 425,
       xs2: 550,
       sm: 600,
       heroSvg: 662,

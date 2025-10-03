@@ -4,7 +4,8 @@ import { Divider } from "@mui/material";
 import { EventSignUpForm } from "../../events";
 import { useModal } from "../../ui";
 
-const EventList = ({ events }) => {
+const EventList = ({ events, eventsStrapi }) => {
+  console.log("eventsStrapi", eventsStrapi);
   const { openModal, closeModal } = useModal();
   const handleSelectedCardClick = (e, id) => {
     e.stopPropagation();
@@ -16,7 +17,7 @@ const EventList = ({ events }) => {
   return (
     // TODO: Might need to be a list component (ul > li )
     <div>
-      {events.map((event, index) => (
+      {eventsStrapi?.map((event, index) => (
         <>
           <EventCard key={event.id} event={event} onCardClick={handleSelectedCardClick} />
           {index !== events.length - 1 && <Divider sx={{ margin: "2rem 0" }} />}

@@ -16,36 +16,37 @@ import { TextTruncate } from "../../ui";
 
 const EventCardNew = ({ event, onCardClick }) => {
   const { isMd } = useMediaQueries();
+  const { eventImage, startDateTime, description, location, title, id } = event;
   return (
     <StyledEventCard
-      onClick={!isMd && ((e) => onCardClick(e, event.id))}
+      onClick={!isMd && ((e) => onCardClick(e, id))}
       role="button"
       tabIndex={0}
       aria-pressed={false}
-      aria-label={`Sign Up for ${event.title} on ${formatDateTimeForCalendar(event.startDateTime)} at ${event.location}`}
+      aria-label={`Sign Up for ${title} on ${formatDateTimeForCalendar(startDateTime)} at ${location}`}
     >
       <StyledEventCardImageContainer>
-        <StyledEventCardImage component="img" src={event.eventImage} alt="event" />
+        <StyledEventCardImage component="img" src={eventImage.url} alt="event" />
       </StyledEventCardImageContainer>
       {!isMd && <EventCardCtas data={event} />}
       <StyledEventCardBodyText>
         <TextBlock justifyContent="space-between" gap={2}>
           <StyledEventCardHeader>
             <Typography variant="h3" component="h3">
-              {event.title}
+              {title}
             </Typography>
             {isMd && (
               <Button
                 variant="circle"
                 color="secondary"
-                aria-label={`Sign Up for ${event.title} on ${formatDateTimeForCalendar(event.startDateTime)} at ${event.location}`}
-                onClick={(e) => onCardClick(e, event.id)}
+                aria-label={`Sign Up for ${title} on ${formatDateTimeForCalendar(startDateTime)} at ${location}`}
+                onClick={(e) => onCardClick(e, id)}
               >
                 <ArrowOutward sx={{ fontSize: "18px" }} />
               </Button>
             )}
           </StyledEventCardHeader>
-          <TextTruncate text={event.description} variant="body2" component="p" maxChars={isMd ? 200 : 175} sx={{ mb: 2 }} />
+          <TextTruncate text={description} variant="body2" component="p" maxChars={isMd ? 200 : 175} sx={{ mb: 2 }} />
 
           {isMd && <EventCardCtas data={event} />}
         </TextBlock>

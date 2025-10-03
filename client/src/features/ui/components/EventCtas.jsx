@@ -5,11 +5,14 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import addToCalendarOrOpenMaps from "../../../utils/helpers/addToCalendarOrOpenMaps";
 import { formatDateTimeForCalendar } from "../../../utils/helpers/formatDate";
+import TextTruncate from "./TextTruncate";
+import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 export const EventCardCtas = ({ data, variant = "minimal", ...rest }) => {
   const { startDateTime, endDateTime, title, location } = data || {};
+  const { isSm, isMobileLg } = useMediaQueries();
   return (
-    <ButtonBlock spacing={1} direction="row" sx={{ ...rest?.sx }}>
+    <ButtonBlock spacing={1} direction={isMobileLg ? "row" : "column"} sx={{ ...rest?.sx }}>
       <StyledIconButton
         data-startDateTime={startDateTime}
         data-endDateTime={endDateTime}
@@ -20,7 +23,13 @@ export const EventCardCtas = ({ data, variant = "minimal", ...rest }) => {
         startIcon={<CalendarMonthIcon />}
         onClick={(e) => addToCalendarOrOpenMaps(e, "date")}
       >
-        {formatDateTimeForCalendar(startDateTime)}
+        <TextTruncate
+          text={formatDateTimeForCalendar(startDateTime)}
+          variant="body2"
+          component="p"
+          maxChars={!isMobileLg ? 15 : !isSm ? 20 : 30}
+          showButton={false}
+        />
       </StyledIconButton>
       <StyledIconButton
         data-startDateTime={startDateTime}
@@ -32,7 +41,7 @@ export const EventCardCtas = ({ data, variant = "minimal", ...rest }) => {
         startIcon={<LocationOnIcon />}
         onClick={(e) => addToCalendarOrOpenMaps(e, "location")}
       >
-        {location}
+        <TextTruncate text={location} variant="body2" component="p" maxChars={!isMobileLg ? 15 : !isSm ? 20 : 30} showButton={false} />
       </StyledIconButton>
     </ButtonBlock>
   );

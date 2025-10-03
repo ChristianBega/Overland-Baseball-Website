@@ -5,12 +5,12 @@ import { Button, Grid } from "@mui/material";
 //  Components
 import SectionLayout from "../../ui/components/SectionLayout";
 // Utilities
-import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import SectionHeader from "../../ui/components/SectionHeader";
 import EventList from "./EventList";
 import ButtonBlock from "../../ui/components/ButtonBlock";
 import { Link } from "react-router-dom";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 
 const ExploreAllEventsButton = ({ marginTop }) => {
   return (
@@ -25,12 +25,13 @@ const ExploreAllEventsButton = ({ marginTop }) => {
 const Events = () => {
   const { isMd } = useMediaQueries();
   const theme = useTheme();
-  const { data, isLoading, error } = useRealtimeData("events");
-  const featuredEvents = data?.filter((event) => event.eventType === "featured");
+  const { data, loading, error } = useStrapiCollection("events", { filters: { gameType: "Featured" } });
+  // const { data, loading, error } = useStrapiCollection("events", { filters: { gameType: "Player" } });w
+  // const { data, loading, error } = useStrapiCollection("events", { filters: { gameType: "Fundraiser" } });
 
   // TODO: add loading and error components
-  if (isLoading) return "loading...";
-  if (error) return "error...";
+  if (loading) return "loading...";
+  if (error) return { error };
 
   return (
     // todo: remove inline css to styled component
@@ -43,7 +44,7 @@ const Events = () => {
           cta={isMd && <ExploreAllEventsButton marginTop={0} />}
         />
 
-        <EventList events={featuredEvents} />
+        <EventList events={data} eventsStrapi={data} />
         {!isMd && <ExploreAllEventsButton marginTop={4} />}
       </SectionLayout>
     </Grid>
