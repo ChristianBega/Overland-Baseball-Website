@@ -26,8 +26,6 @@ const Events = () => {
   const { isMd } = useMediaQueries();
   const theme = useTheme();
   const { data, loading, error } = useStrapiCollection("events", { filters: { gameType: "Featured" } });
-  // const { data, loading, error } = useStrapiCollection("events", { filters: { gameType: "Player" } });w
-  // const { data, loading, error } = useStrapiCollection("events", { filters: { gameType: "Fundraiser" } });
 
   // TODO: add loading and error components
   if (loading) return "loading...";

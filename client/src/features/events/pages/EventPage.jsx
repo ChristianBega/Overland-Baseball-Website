@@ -5,17 +5,24 @@ import EventsView from "../components/EventView";
 import PlayerEventView from "../components/PlayerEventView";
 
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
-import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import Fundraisers from "../components/Fundraisers";
 import { Navigation } from "../../navigation";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 export default function EventsPage() {
   const { isLg } = useMediaQueries();
-  const { data, isLoading, error } = useRealtimeData("events");
-  const playerEvents = data?.filter((event) => event.eventType === "player");
-  const fundraiserEvents = data?.filter((event) => event.eventType === "fundraiser");
+  const {
+    data: playerEvents,
+    loading: playerEventsLoading,
+    error: playerEventsError,
+  } = useStrapiCollection("events", { filters: { gameType: "Player" } });
+  const {
+    data: fundraiserEvents,
+    loading: fundraiserEventsLoading,
+    error: fundraiserEventsError,
+  } = useStrapiCollection("events", { filters: { gameType: "Fundraiser" } });
 
-  if (isLoading) return "loading...";
-  if (error) return "error...";
+  if (playerEventsLoading || fundraiserEventsLoading) return "loading...";
+  if (playerEventsError || fundraiserEventsError) return "error...";
   return (
     <>
       <Navigation />

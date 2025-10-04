@@ -7,11 +7,9 @@ import PlayerEventToggles from "./PlayerEventToggles";
 import PlayerEventCard from "./PlayerEventCard";
 import { useModal } from "../../ui";
 import EventSignUpForm from "./EventSignUpForm";
-import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const PlayerEventView = ({ playerEvents = [] }) => {
   const theme = useTheme();
-  const { isLg } = useMediaQueries();
   const { openModal, closeModal } = useModal();
   const [currentSeason, setCurrentSeason] = useState("Spring");
 
@@ -23,10 +21,9 @@ const PlayerEventView = ({ playerEvents = [] }) => {
     openModal(<EventSignUpForm data={eventData} currentSeason={season} closeModal={closeModal} />);
   };
 
-  // Filter events that have active data for the current season
+  // Filter events that have matching season data
   const filteredEvents = playerEvents.filter((event) => {
-    const seasonData = event.seasons?.[currentSeason.toLowerCase()];
-    return seasonData?.active === true;
+    return event.seasonData?.some((season) => season.seasonName === currentSeason);
   });
 
   return (

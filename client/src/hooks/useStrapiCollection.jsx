@@ -21,7 +21,6 @@ export const useStrapiCollection = (collection, options = {}) => {
         } else {
           response = await strapiServices.findMany(collection, queryParams);
         }
-        console.log("response", response);
         setData(response.data || response);
       } catch (err) {
         setError(err.message);
