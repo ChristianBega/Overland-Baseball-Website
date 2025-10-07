@@ -1,7 +1,6 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { TeamLogo } from "../../../utils/theme/index.styles";
-import { convertTo12HourFormat } from "../../../utils/helpers/convertTo24HourFormat";
 import overlandLogo from "../../../assets/homePage/teamLogos/overland.webp";
 import {
   StyledGameCard,
@@ -17,33 +16,30 @@ import {
   StatusChip,
   TeamLogoAvatar,
 } from "./GameCard.styles";
+import { formatDateTimeForCalendar } from "../../../utils/helpers/formatDate";
+import addToCalendarOrOpenMaps from "../../../utils/helpers/addToCalendarOrOpenMaps";
 
-const GameCard = ({ data, onClick }) => {
-  const { date, time, opponent, opponentIcon, location, home, isPast } = data;
-
-  const formattedTime = convertTo12HourFormat(time);
-
-  // Format date for display (e.g., "March 6, 2025")
-  const displayDate = new Date(date).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+const GameCard = ({ data }) => {
+  const { opponent, location, isPast, startDateTime, endDateTime, away, opponentIcon } = data;
+  const formattedTime = new Date(startDateTime).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
-
-  const isHomeGame = home === "TRUE" || home === true;
-
-  const handleCardClick = () => {
-    if (!isPast && onClick) {
-      onClick(data);
-    }
-  };
+  const displayDate = formatDateTimeForCalendar(startDateTime);
+  const descriptionAndAriaLabel = `Overland vs ${opponent} on ${displayDate} at ${formattedTime} at ${location}. ${away ? "Away" : "Home"} game.`;
 
   return (
     <StyledGameCard
-      onClick={handleCardClick}
+      onClick={!isPast && ((e) => addToCalendarOrOpenMaps(e, "date"))}
       role="article"
-      aria-label={`Game: Overland vs ${opponent} on ${displayDate} at ${formattedTime} at ${location}. ${isHomeGame ? "Home" : "Away"} game.`}
+      aria-label={descriptionAndAriaLabel}
       isPast={isPast}
+      data-startDateTime={startDateTime}
+      data-endDateTime={endDateTime}
+      data-eventTitle={`Overland vs ${opponent}`}
+      data-eventLocation={location}
+      data-eventDescription={descriptionAndAriaLabel}
     >
       {/* Header: Semantic structure with visual design priorities */}
       <StyledCardHeader>
@@ -75,21 +71,17 @@ const GameCard = ({ data, onClick }) => {
           {/* Hidden "vs" for screen readers */}
           <StyledHiddenText>versus</StyledHiddenText>
 
-          <StatusChip label={isHomeGame ? "Home" : "Away"} color="success" isHome={isHomeGame} size="small" />
+          <StatusChip label={away ? "Away" : "Home"} color="success" isHome={away} size="small" />
         </StyledTimeStatusStack>
 
         {/* Opponent Team */}
         <StyledTeamStack>
-          {opponentIcon ? (
-            <TeamLogo component="img" src={opponentIcon} alt={`${opponent} team logo`} sx={{ mb: 1 }} />
+          {opponentIcon?.url ? (
+            <TeamLogo component="img" src={opponentIcon.url} alt={`${opponent} team logo`} sx={{ mb: 1 }} />
           ) : (
             <TeamLogoAvatar sx={{ mb: 1 }}>{opponent.charAt(0)}</TeamLogoAvatar>
           )}
-          <StyledOpponentName
-            variant="body2"
-            component="span"
-            title={opponent} // Tooltip for full team name
-          >
+          <StyledOpponentName variant="body2" component="span" title={opponent}>
             {opponent}
           </StyledOpponentName>
         </StyledTeamStack>

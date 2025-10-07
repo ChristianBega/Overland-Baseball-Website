@@ -12,7 +12,7 @@ import {
   StyledEmptyState,
 } from "./ScheduleSlider.styles";
 
-const ScheduleSlider = ({ games, onGameClick, showNavigation = true, showScrollHint = true }) => {
+const ScheduleSlider = ({ games, showNavigation = true, showScrollHint = true }) => {
   const sliderRef = useRef(null);
   const isMouseDown = useRef(false);
   const startX = useRef(0);
@@ -70,13 +70,6 @@ const ScheduleSlider = ({ games, onGameClick, showNavigation = true, showScrollH
     }
   };
 
-  const handleGameClick = (gameData) => {
-    if (onGameClick) {
-      onGameClick(gameData);
-    }
-    console.log("Game clicked:", gameData);
-  };
-
   if (!games || games.length === 0) {
     return <StyledEmptyState>No games scheduled</StyledEmptyState>;
   }
@@ -104,7 +97,7 @@ const ScheduleSlider = ({ games, onGameClick, showNavigation = true, showScrollH
           onMouseMove={handleMouseMove}
         >
           {games.map((game, index) => (
-            <GameCard key={game.id || `game-${index}`} data={game} onClick={handleGameClick} />
+            <GameCard key={game.id || `game-${index}`} data={game} />
           ))}
         </StyledSliderWrapper>
       </StyledSliderContainer>

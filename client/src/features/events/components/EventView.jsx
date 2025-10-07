@@ -2,18 +2,18 @@ import { Grid, Typography } from "@mui/material";
 import React from "react";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
 import EventCalendar from "./EventCalendar";
-import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import SectionHeader from "../../ui/components/SectionHeader";
 import { useTheme } from "@emotion/react";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 
 export default function Events() {
-  const { data, isLoading, error } = useRealtimeData("events");
+  const { data, loading, error } = useStrapiCollection("events");
   const theme = useTheme();
 
   const handleEventClick = (event) => {
     console.log("Event clicked:", event);
   };
-  if (isLoading) {
+  if (loading) {
     return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
   }
 
@@ -36,6 +36,7 @@ export default function Events() {
           color={theme.palette.secondary.main}
           sx={{ mb: 3 }}
         />
+        {/* Todo - complete refactor, child components need to be updated to use the new data */}
         <EventCalendar events={data} onEventClick={handleEventClick} />
       </SectionLayout>
     </Grid>

@@ -15,6 +15,7 @@ import TeamRosterGridView from "./TeamRosterGridView.jsx";
 import TeamRosterTableView from "./TeamRosterTableView.jsx";
 // Context
 import { ViewToggleProvider, useViewToggle } from "../../../utils/contexts/ViewToggleContext";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection.jsx";
 
 // Inner component that uses the context
 const TeamRosterContent = () => {
@@ -32,6 +33,9 @@ const TeamRosterContent = () => {
     queryKey: ["roster"],
     queryFn: () => fetchCMSItems("roster"),
   });
+
+  // Todo - complete refactor, child components need to be updated to use the new data
+  // const { data, loading, error: errorStrapi } = useStrapiCollection("rosters");
 
   // Reset to page 1 when filter changes
   const handleFilteredDataChange = useCallback((newFilteredData) => {
