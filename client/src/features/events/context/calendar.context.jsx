@@ -16,7 +16,7 @@ export const CalendarProvider = ({ children }) => {
   const [mobileCurrentEventId, setMobileCurrentEventId] = useState(null);
 
   const handleSelectMobileEvent = (e) => {
-    setMobileCurrentEventId(e.target.id);
+    setMobileCurrentEventId(Number(e.target.id));
     setMobileCurrentSignUpStatus("signUp");
   };
 

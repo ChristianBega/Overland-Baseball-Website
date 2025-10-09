@@ -8,24 +8,24 @@ import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 
 export default function Events() {
   const { data, loading, error } = useStrapiCollection("events");
+  const { data: schedules, loading: schedulesLoading, error: schedulesError } = useStrapiCollection("schedules");
+
   const theme = useTheme();
 
-  const handleEventClick = (event) => {
-    console.log("Event clicked:", event);
-  };
-  if (loading) {
+  if (loading || schedulesLoading) {
     return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
   }
 
-  if (error) {
+  if (error || schedulesError) {
     return (
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <Typography variant="h6" color="error">
-          {error ? "Error with real-time updates" : "Error fetching/caching the data"}
+          {error ? "Error with real-time updates" : schedulesError ? "Error fetching/caching the data " : "Error fetching/caching the data"}
         </Typography>
       </div>
     );
   }
+
   return (
     <Grid item xs={12}>
       <SectionLayout id="events-section" aria-label="Events Section">
@@ -36,8 +36,7 @@ export default function Events() {
           color={theme.palette.secondary.main}
           sx={{ mb: 3 }}
         />
-        {/* Todo - complete refactor, child components need to be updated to use the new data */}
-        <EventCalendar events={data} onEventClick={handleEventClick} />
+        <EventCalendar events={[...data, ...schedules]} />
       </SectionLayout>
     </Grid>
   );
