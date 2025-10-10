@@ -60,13 +60,13 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
               <StyledTableRowWithBackground key={player.id}>
                 <StyledAvatarCell index={index} length={players.length}>
                   {player.playerImage ? (
-                    <StyledPlayerImage src={player.playerImage} alt={player.name} />
+                    <StyledPlayerImage src={player.playerImage[0].url} alt={player.name} />
                   ) : (
                     <StyledPlayerAvatar>{getPlayerInitial(player.name)}</StyledPlayerAvatar>
                   )}
                 </StyledAvatarCell>
                 <StyledNameCell index={index} length={players.length}>
-                  <StyledPlayerLink>{player.name}</StyledPlayerLink>
+                  <StyledPlayerLink>{player.fullName}</StyledPlayerLink>
                 </StyledNameCell>
               </StyledTableRowWithBackground>
             ))}
@@ -90,19 +90,19 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
                     {player.position}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
-                    {player.bat || "N/A"}
+                    {player.bats || "N/A"}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
-                    {player.throw || "N/A"}
+                    {player.throws || "N/A"}
                   </StyledDataCell>
                   <StyledDataCell index={index} length={players.length}>
-                    {isMd ? player.year : player.yearAbbr}
+                    {isMd ? player.year : player.yearAbbreviation}
                   </StyledDataCell>
                   <StyledDataCellWithMinWidth minWidth="70px" index={index} length={players.length}>
                     {player.height}
                   </StyledDataCellWithMinWidth>
                   <StyledDataCellWithMinWidth minWidth="80px" index={index} length={players.length}>
-                    {player.weight}
+                    {player.weight}lbs
                   </StyledDataCellWithMinWidth>
                 </StyledTableRowWithBackground>
               ))}
