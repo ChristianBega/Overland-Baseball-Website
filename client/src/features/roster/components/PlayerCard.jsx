@@ -28,7 +28,7 @@ import {
 } from "./PlayerCard.styles";
 
 const PlayerCard = ({ player, ...rest }) => {
-  const { name, position, playerImage, bats, throws, yearAbbreviation, height, weight } = player;
+  const { name, position, playerImage, bats, throws, yearAbbreviation, heightFeet, heightInches, weight } = player;
   const { isTablet } = useMediaQueries();
 
   return (
@@ -73,7 +73,7 @@ const PlayerCard = ({ player, ...rest }) => {
             </StyledStatItem>
             <StyledStatItem variant="small" component="span">
               <StyledStatIconLarge src={HeightIcon} alt="height" />
-              {height}
+              {heightFeet}'' {heightInches}'
             </StyledStatItem>
           </TextBlock>
         </TextBlock>

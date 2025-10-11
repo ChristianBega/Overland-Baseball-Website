@@ -99,7 +99,7 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
                     {isMd ? player.year : player.yearAbbreviation}
                   </StyledDataCell>
                   <StyledDataCellWithMinWidth minWidth="70px" index={index} length={players.length}>
-                    {player.height}
+                    {player.heightFeet}'' {player.heightInches}'
                   </StyledDataCellWithMinWidth>
                   <StyledDataCellWithMinWidth minWidth="80px" index={index} length={players.length}>
                     {player.weight}lbs
