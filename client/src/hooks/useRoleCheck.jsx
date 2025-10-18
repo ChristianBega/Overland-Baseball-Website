@@ -1,3 +1,4 @@
+// ! FIREBASE is deprecating.... might remove soon....
 import { ROLES, ROLE_HIERARCHY } from "../features/auth/utils/roles";
 
 import { useContext } from "react";

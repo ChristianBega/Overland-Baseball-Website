@@ -17,6 +17,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 // Creating authentication, Firestore, and storage instances
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+// ! DEPRECATED - STORAGE IS NOT USED IN THIS PROJECT ANYMORE - REMOVE SOON!!!!
 const storage = getStorage(firebaseApp);
 
 export { firebaseApp, auth, db, storage };

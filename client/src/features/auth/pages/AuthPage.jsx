@@ -8,6 +8,7 @@ import SignInForm from "../components/SignInForm";
 // import PasswordResetPage from "../../../pages/passwordReset/passwordReset.page";
 import PasswordResetPage from "../pages/PasswordResetPage";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
+import { Navigation } from "../../navigation";
 
 const authPageContent = {
   "/authentication/sign-in": {
@@ -32,22 +33,25 @@ const AuthenticationPage = () => {
   const { heading, paragraph, form } = authPageContent[location.pathname] || {};
 
   return (
-    <Container component="main" id="authentication-page" aria-label="Authentication Page">
-      <SectionLayout
-        id={`${location.pathname.split("/").pop()}-form`}
-        aria-label={`${heading} Form`}
-        marginBlock={true}
-        sx={{ maxWidth: "600px", marginInline: "auto" }}
-      >
-        <Typography variant="h2" component="h2">
-          {heading}
-        </Typography>
-        <Typography variant="p" component="p">
-          {paragraph}
-        </Typography>
-        {form}
-      </SectionLayout>
-    </Container>
+    <>
+      <Navigation />
+      <Container component="main" id="authentication-page" aria-label="Authentication Page">
+        <SectionLayout
+          id={`${location.pathname.split("/").pop()}-form`}
+          aria-label={`${heading} Form`}
+          marginBlock={true}
+          sx={{ maxWidth: "600px", marginInline: "auto" }}
+        >
+          <Typography variant="h2" component="h2">
+            {heading}
+          </Typography>
+          <Typography variant="p" component="p">
+            {paragraph}
+          </Typography>
+          {form}
+        </SectionLayout>
+      </Container>
+    </>
   );
 };
 

@@ -1,3 +1,4 @@
+// ! FIREBASE is deprecating.... might remove soon....
 export const ROLES = {
   USER: "user",
   PARENT: "parent",

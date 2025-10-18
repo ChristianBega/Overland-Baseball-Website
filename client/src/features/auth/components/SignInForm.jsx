@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // Components
 import AlternativeAuthCta from "./AlternativeAuthCta";
 // MUI
-import { Button, Typography, Link as MuiLink, Grid } from "@mui/material";
+import { Button, Typography, Link as MuiLink, Grid, Alert } from "@mui/material";
 // React Hook Form
 import { Controller, useForm } from "react-hook-form";
 // Config
@@ -11,11 +11,12 @@ import signInInputFields from "../data/signInInputFields.config.json";
 // Utils & Hooks
 import { signInAuthWithEmailAndPassword } from "../utils/authUtils";
 import { StyledForm } from "../../../utils/theme/index.styles";
-// import InputFieldComponent from "../../../features/ui/components/InputFields";
 import InputFieldComponent from "../../../features/ui/components/InputFields";
 
 const SignInForm = () => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+
   const {
     control,
     handleSubmit,
@@ -25,6 +26,8 @@ const SignInForm = () => {
 
   const handleSignUpForm = async (data) => {
     const { email, password } = data;
+    setErrorMessage(""); // Clear previous errors
+
     try {
       await signInAuthWithEmailAndPassword(email, password);
       reset();
@@ -32,22 +35,34 @@ const SignInForm = () => {
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
-          alert("Incorrect Password!");
+          setErrorMessage("Incorrect password. Please try again.");
           break;
         case "auth/user-not-found":
-          alert("Sorry, no user found!");
+          setErrorMessage("No account found with this email.");
           break;
         case "auth/invalid-login-credentials":
-          alert("Please recheck your email/password!");
+          setErrorMessage("Invalid email or password. Please try again.");
+          break;
+        case "auth/invalid-email":
+          setErrorMessage("Please enter a valid email address.");
           break;
         default:
-          alert(error);
+          setErrorMessage("An error occurred. Please try again.");
+          console.error("Sign-in error:", error);
       }
     }
   };
 
   return (
     <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-in-form" aria-label="Sign In Form">
+      {/* Error Message Display */}
+      {errorMessage && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {errorMessage}
+        </Alert>
+      )}
+
+      {/* Email/Password Form Fields */}
       <Grid container direction="column" spacing={2} mb={4}>
         {signInInputFields.map((config, index) => (
           <Grid key={index + config.name} item xs={12}>
@@ -66,7 +81,6 @@ const SignInForm = () => {
                   value={field.value}
                   onChange={field.onChange}
                   error={errors[config.name]}
-                  // variant="outlined"
                   helperText={errors.player_name?.message}
                   {...field}
                 />
@@ -75,14 +89,21 @@ const SignInForm = () => {
           </Grid>
         ))}
       </Grid>
+
+      {/* Forgot Password Link */}
       <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/password-reset"} aria-label="Forgot Password Link">
         Forgot your password?
       </MuiLink>
-      <Button id="sign-in-form" type="submit" variant="contained" color="secondary" aria-label="Sign In Button" sx={{ mt: 2 }}>
+
+      {/* Sign In Button */}
+      <Button id="sign-in-form" type="submit" variant="contained" color="secondary" aria-label="Sign In Button" fullWidth sx={{ mt: 2 }}>
         Sign In
       </Button>
+
+      {/* Alternative Auth CTA */}
       <AlternativeAuthCta />
 
+      {/* Sign Up Link */}
       <Typography component="span" variant="span" textAlign="center">
         Don't have an account?{" "}
         <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/sign-up"} aria-label="Create Account Link">
@@ -94,16 +115,3 @@ const SignInForm = () => {
 };
 
 export default SignInForm;
-// {
-//   "name": "password",
-//   "label": "Blazer Number",
-//   "placeholder": "Enter blazer number here...",
-//   "type": "password",
-//   "rules": {
-//     "required": "Blazer Number is required *",
-//     "pattern": {
-//       "value": "^(?=.*\\d).{8,}$",
-//       "message": "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=!)"
-//     }
-//   }
-// },

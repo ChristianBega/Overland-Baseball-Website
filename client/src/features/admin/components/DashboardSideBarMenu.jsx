@@ -1,3 +1,4 @@
+// ! DEPRECATED - REMOVE SOON!!!!
 // Todo: instead of using the currentItem, which tracks the current item being edited, use pages?
 import React, { useRef, useContext } from "react";
 import { useTheme } from "@emotion/react";

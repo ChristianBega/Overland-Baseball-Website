@@ -1,3 +1,4 @@
+// ! DEPRECATED - REMOVE SOON!!!!
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCMSItems, subscribeToCMSItems } from "../features/cms/utils/getItem";
