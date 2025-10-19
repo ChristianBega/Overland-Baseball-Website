@@ -49,6 +49,8 @@ jobs:
           REACT_APP_STORAGE_BUCKET: ${{ secrets.REACT_APP_STORAGE_BUCKET }}
           REACT_APP_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
           REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
+          REACT_APP_STRAPI_URL: ${{ secrets.REACT_APP_STRAPI_URL }}
+          REACT_APP_STRAPI_AUTH_LOGIN_PORTAL: ${{ secrets.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL }}
       - name: Deploy to S3
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
