@@ -1,11 +1,10 @@
-const STRAPI_URL = process.env.REACT_APP_STRAPI_URL || "http://localhost:1337";
+const STRAPI_URL = process.env.NODE_ENV === "development" ? "http://localhost:1337" : process.env.REACT_APP_STRAPI_URL;
 
 class StrapiService {
   // Helper method for API requests
   async request(endpoint, options = {}) {
     try {
       const url = `${STRAPI_URL}/api${endpoint}`;
-      console.log("Requesting:", url);
 
       const response = await fetch(url, {
         ...options,
