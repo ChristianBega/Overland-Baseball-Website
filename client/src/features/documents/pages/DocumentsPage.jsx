@@ -2,27 +2,10 @@ import { Container, Grid, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { motion } from "framer-motion";
 import { containerVariants } from "../../../utils/animations/transitions";
-// import { playerDocuments } from "../../websiteData/documents/documents.data";
-import { useRealtimeData } from "../../../hooks/useRealtimeData";
-import DocumentCard from "../components/DocumentCard";
 import { Navigation } from "../../navigation";
 export default function DocumentsPage() {
-  const { data, isLoading, error } = useRealtimeData("documents");
+  // const { data, isLoading, error } = useRealtimeData("documents");
   const theme = useTheme();
-  //! update this status with our custom status component
-  if (isLoading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
-  }
-
-  if (error) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <Typography variant="h6" color="error">
-          {error ? "Error with real-time updates" : "Error fetching/caching the data"}
-        </Typography>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -49,9 +32,10 @@ export default function DocumentsPage() {
             </Typography>
           </div>
           <div>
-            {data.map((document, index) => (
+            <p>Documents Coming Soon</p>
+            {/* {data.map((document, index) => (
               <DocumentCard key={index} data={document} isCard={true} />
-            ))}
+            ))} */}
           </div>
           {/* <DocumentsGrid /> */}
         </Grid>

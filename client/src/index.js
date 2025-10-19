@@ -5,9 +5,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./features/auth/context/AuthContext";
 import { UserProvider } from "./features/auth/context/UserContext";
-// import { UserProvider } from "./setup/context/user.context";
-// import { CmsProvider } from "./setup/context/cmsContext/cms.context";
-import { CmsProvider } from "./features/cms/context/CmsContext";
 
 import { ModalProvider } from "./features/ui";
 // import { ThemeToggleProvider } from "./setup/context/components/themeToggler.context";
@@ -21,13 +18,11 @@ root.render(
     <AuthProvider>
       <UserProvider>
         <ThemeToggleProvider>
-          <CmsProvider>
-            <CalendarProvider>
-              <ModalProvider>
-                <App />
-              </ModalProvider>
-            </CalendarProvider>
-          </CmsProvider>
+          <CalendarProvider>
+            <ModalProvider>
+              <App />
+            </ModalProvider>
+          </CalendarProvider>
         </ThemeToggleProvider>
       </UserProvider>
     </AuthProvider>
