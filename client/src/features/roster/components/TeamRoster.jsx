@@ -2,8 +2,7 @@
 import React, { useState, useCallback } from "react";
 import { Grid, Box, Stack } from "@mui/material";
 // Components
-import { fetchCMSItems } from "../../cms/utils/getItem";
-import { useQuery } from "@tanstack/react-query";
+
 import SectionLayout from "../../ui/components/SectionLayout";
 import TextBlock from "../../ui/components/TextBlock";
 import CustomPagination from "../../ui/components/Pagination";
@@ -15,6 +14,7 @@ import TeamRosterGridView from "./TeamRosterGridView.jsx";
 import TeamRosterTableView from "./TeamRosterTableView.jsx";
 // Context
 import { ViewToggleProvider, useViewToggle } from "../../../utils/contexts/ViewToggleContext";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection.jsx";
 
 // Inner component that uses the context
 const TeamRosterContent = () => {
@@ -24,16 +24,8 @@ const TeamRosterContent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(9);
 
-  const {
-    data: players,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["roster"],
-    queryFn: () => fetchCMSItems("roster"),
-  });
+  const { data: players, loading: isLoading, error } = useStrapiCollection("rosters");
 
-  // Reset to page 1 when filter changes
   const handleFilteredDataChange = useCallback((newFilteredData) => {
     setFilteredData(newFilteredData);
     setPage(1);
@@ -83,7 +75,6 @@ const TeamRosterContent = () => {
             gap: { xs: 2, lg: 0 },
           }}
         />
-
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ gap: 2, my: 3 }}>
           <SearchFilterComponent
             data={players || []}
@@ -97,7 +88,6 @@ const TeamRosterContent = () => {
           />
           <ButtonToggles />
         </Stack>
-
         {/* Table View */}
         {view === "table" && (
           <>
@@ -112,7 +102,6 @@ const TeamRosterContent = () => {
             />
           </>
         )}
-
         {/* Grid View */}
         {view === "grid" && (
           <Box>

@@ -1,4 +1,4 @@
-import { Button, IconButton, List, ListItemButton, Typography } from "@mui/material";
+import { IconButton, List, ListItemButton, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import EventSignUpForm from "./EventSignUpForm";
 import { CalendarContext } from "../../../features/events/context/calendar.context";
@@ -11,7 +11,7 @@ const EventList = ({ events, handleSelectMobileEvent }) => {
       </Typography>
       {events.map((event) => (
         <ListItemButton sx={{ border: "1px solid #e0e0e0", mb: ".5rem" }} key={event.id} id={event.id} onClick={(e) => handleSelectMobileEvent(e)}>
-          {event.title}
+          {event.title || `Overland vs ${event.opponent}`}
         </ListItemButton>
       ))}
     </List>

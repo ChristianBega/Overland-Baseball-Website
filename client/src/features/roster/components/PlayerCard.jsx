@@ -28,7 +28,7 @@ import {
 } from "./PlayerCard.styles";
 
 const PlayerCard = ({ player, ...rest }) => {
-  const { name, position, playerImage, batting, throwing, yearAbbr, height, weight } = player;
+  const { name, position, playerImage, bats, throws, yearAbbreviation, heightFeet, heightInches, weight } = player;
   const { isTablet } = useMediaQueries();
 
   return (
@@ -36,7 +36,7 @@ const PlayerCard = ({ player, ...rest }) => {
       <StyledCardContent>
         <StyledImageContainer>
           {playerImage ? (
-            <StyledPlayerImage component="img" src={playerImage} alt={`${name}`} />
+            <StyledPlayerImage component="img" src={playerImage[0].url} alt={`${name}`} />
           ) : (
             <StyledPlaceholderImage component="img" src={PlaceHolderImage} alt={`${name}`} />
           )}
@@ -52,28 +52,28 @@ const PlayerCard = ({ player, ...rest }) => {
                 {name}
               </StyledPlayerName>
             </Stack>
-            <StyledYearBadge variant="small">{yearAbbr}</StyledYearBadge>
+            <StyledYearBadge variant="small">{yearAbbreviation}</StyledYearBadge>
           </TextBlock>
 
           <TextBlock direction="row" justifyContent="space-between" alignItems="center" sx={{ width: "100%", textAlign: "left" }}>
             <StyledStatItem variant="small" component="span">
               <StyledStatIcon src={BaseBallBatIcon} alt="batting" />
-              {batting || "update"}
+              {bats || "update"}
             </StyledStatItem>
             <StyledStatItem variant="small" component="span">
               <StyledStatIconLarge src={BaseBallIcon} alt="throwing" />
-              {throwing || "update"}
+              {throws || "update"}
             </StyledStatItem>
           </TextBlock>
 
           <TextBlock direction="row" justifyContent="flex-start" alignItems="center" sx={{ width: "100%", textAlign: "left" }}>
             <StyledStatItem variant="small" component="span">
               <StyledStatIconLarge src={WeightIcon} alt="weight" />
-              {weight}
+              {weight}lbs
             </StyledStatItem>
             <StyledStatItem variant="small" component="span">
               <StyledStatIconLarge src={HeightIcon} alt="height" />
-              {height}
+              {heightFeet}'' {heightInches}'
             </StyledStatItem>
           </TextBlock>
         </TextBlock>

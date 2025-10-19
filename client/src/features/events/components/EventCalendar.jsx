@@ -9,10 +9,9 @@ import { useModal } from "../../../features/ui";
  *
  * @param {Object} props
  * @param {Array} props.events - Array of Firebase event objects
- * @param {Function} props.onEventClick - Optional handler for event clicks
  */
 
-const Calendar = ({ events = [], onEventClick }) => {
+const Calendar = ({ events = [] }) => {
   // State for tracking currently displayed month/year
   const [currentDate, setCurrentDate] = useState(new Date());
   const { openModal, closeModal } = useModal();

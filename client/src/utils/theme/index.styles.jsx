@@ -102,10 +102,10 @@ export const TeamLogo = styled(Box)(({ theme }) => ({
   "&.logo-image-opponent": {
     margin: "auto 1.5rem auto 0",
   },
-  [theme.breakpoints.up("md")]: {
-    width: "65px",
-    height: "65px",
-  },
+  // [theme.breakpoints.up("md")]: {
+  //   width: "65px",
+  //   height: "65px",
+  // },
 }));
 
 // Forms

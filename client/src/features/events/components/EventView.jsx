@@ -2,30 +2,30 @@ import { Grid, Typography } from "@mui/material";
 import React from "react";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
 import EventCalendar from "./EventCalendar";
-import { useRealtimeData } from "../../../hooks/useRealtimeData";
 import SectionHeader from "../../ui/components/SectionHeader";
 import { useTheme } from "@emotion/react";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 
 export default function Events() {
-  const { data, isLoading, error } = useRealtimeData("events");
+  const { data, loading, error } = useStrapiCollection("events");
+  const { data: schedules, loading: schedulesLoading, error: schedulesError } = useStrapiCollection("schedules");
+
   const theme = useTheme();
 
-  const handleEventClick = (event) => {
-    console.log("Event clicked:", event);
-  };
-  if (isLoading) {
+  if (loading || schedulesLoading) {
     return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
   }
 
-  if (error) {
+  if (error || schedulesError) {
     return (
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <Typography variant="h6" color="error">
-          {error ? "Error with real-time updates" : "Error fetching/caching the data"}
+          {error ? "Error with real-time updates" : schedulesError ? "Error fetching/caching the data " : "Error fetching/caching the data"}
         </Typography>
       </div>
     );
   }
+
   return (
     <Grid item xs={12}>
       <SectionLayout id="events-section" aria-label="Events Section">
@@ -36,7 +36,7 @@ export default function Events() {
           color={theme.palette.secondary.main}
           sx={{ mb: 3 }}
         />
-        <EventCalendar events={data} onEventClick={handleEventClick} />
+        <EventCalendar events={[...data, ...schedules]} />
       </SectionLayout>
     </Grid>
   );

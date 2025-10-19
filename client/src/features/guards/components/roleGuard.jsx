@@ -1,3 +1,4 @@
+// ! FIREBASE is deprecating.... might remove soon....
 import { Navigate, useLocation } from "react-router-dom";
 import { useRoleCheck } from "../../../hooks/useRoleCheck";
 

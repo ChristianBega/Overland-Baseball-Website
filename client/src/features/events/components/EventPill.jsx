@@ -40,7 +40,7 @@ const EventPill = ({ event, onClick }) => {
           maxWidth: "100%",
         }}
       >
-        {event.title}
+        {event.title || `Overland vs ${event.opponent}`}
       </Typography>
     </Box>
   );

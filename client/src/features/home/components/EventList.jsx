@@ -16,7 +16,7 @@ const EventList = ({ events }) => {
   return (
     // TODO: Might need to be a list component (ul > li )
     <div>
-      {events.map((event, index) => (
+      {events?.map((event, index) => (
         <>
           <EventCard key={event.id} event={event} onCardClick={handleSelectedCardClick} />
           {index !== events.length - 1 && <Divider sx={{ margin: "2rem 0" }} />}

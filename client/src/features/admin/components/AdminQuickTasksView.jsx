@@ -1,7 +1,6 @@
 // Todo: needs to be a grid item
 import React, { useContext } from "react";
-import { SectionLayout, useModal } from "../../../features/ui";
-import { CmsMediaStorage } from "../../../features/cms";
+import { useModal } from "../../../features/ui";
 import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { UserContext } from "../../../features/auth/context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -23,12 +22,7 @@ const quickTaskConfig = [
     action: (navigate) => navigate("/player-stats"),
     type: "navigate",
   },
-  {
-    task: "Media Storage",
-    component: <CmsMediaStorage />,
-    action: (openModal) => openModal(<CmsMediaStorage />, "mediaStorage"),
-    type: "modal",
-  },
+
   {
     task: "Events Sign Ups",
     component: "<Events />",
@@ -110,7 +104,6 @@ const AdminQuickTasksView = () => {
         overflow: "scroll",
       }}
     >
-      {/* <button onClick={() => initializeBulkAddFields()}>Initialize Bulk Add Fields</button> */}
       {quickTaskConfig.map((task, index) => (
         <Box
           key={index}
@@ -138,18 +131,3 @@ const AdminQuickTasksView = () => {
 };
 
 export default AdminQuickTasksView;
-// {
-//   task: "Attendance Tracking",
-//   component: "<AttendanceTracking />",
-//   action: (navigate) => navigate("/attendance-tracking"),
-// },
-// {
-//   task: "Chat/Direct Messaging",
-//   component: "<ChatDirectMessaging />",
-//   action: (navigate) => navigate("/chat-direct-messaging"),
-// },
-// {
-//   task: "Payment Tracking",
-//   component: "<PaymentTracking />",
-//   action: (navigate) => navigate("/payment-tracking"),
-// },

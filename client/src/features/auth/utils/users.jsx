@@ -1,3 +1,4 @@
+// ! DEPRECATED - REMOVE SOON!!!!
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../utils/firebase/index.firebase";
 

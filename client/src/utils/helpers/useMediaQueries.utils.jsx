@@ -7,6 +7,9 @@ const useMediaQueries = () => {
   const isXs = useMediaQuery(theme.breakpoints.up("xs"), {
     defaultMatches: true,
   });
+  const isMobileLg = useMediaQuery(theme.breakpoints.up("mobileLg"), {
+    defaultMatches: true,
+  });
   const isSm = useMediaQuery(theme.breakpoints.up("sm"), {
     defaultMatches: true,
   });
@@ -44,6 +47,7 @@ const useMediaQueries = () => {
 
   return {
     isXs,
+    isMobileLg,
     isSm,
     isTablet,
     isMd,

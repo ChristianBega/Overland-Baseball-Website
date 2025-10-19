@@ -37,8 +37,6 @@ const AdminDashboardPage = lazy(() => import("./features/admin/pages/AdminDashbo
 // const ThemeShowcase = lazy(() => import("./pages/themeShowcase/themeShowcase"));
 const { ThemeShowcase } = lazy(() => import("./features/themeShowcase"));
 
-const ManagePages = lazy(() => import("./features/cms/pages/MangePagesPage"));
-
 //TODO : Loading component for suspended content, build custom overland loading screen component later
 
 export default function AppRoutes() {
@@ -68,15 +66,6 @@ export default function AppRoutes() {
             element={
               <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.COACH]}>
                 <AdminDashboardPage />
-              </RoleGuard>
-            }
-          />
-
-          <Route
-            path="/manage-pages"
-            element={
-              <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.COACH]}>
-                <ManagePages />
               </RoleGuard>
             }
           />

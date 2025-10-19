@@ -5,16 +5,13 @@ import { EventCardCtas } from "../../ui/components/EventCtas";
 import ButtonBlock from "../../ui/components/ButtonBlock";
 
 const PlayerEventCard = ({ playerEvent, currentSeason, onRegister }) => {
-  const { title, eventImage, seasons } = playerEvent || {};
-  const currentSeasonData = seasons?.[currentSeason.toLowerCase()];
-  const playerEventContent = currentSeasonData?.playerEventContent;
-
-  // Get first paragraph for card description
-  const description = playerEventContent?.split(/\n\s*\n/)[0]?.trim() || "Event details coming soon...";
+  const { title, location, description } = playerEvent || {};
 
   const handleRegister = () => {
     onRegister(playerEvent, currentSeason);
   };
+
+  const seasonData = playerEvent?.seasonData?.find((season) => season.seasonName === currentSeason);
 
   return (
     <Card
@@ -28,20 +25,20 @@ const PlayerEventCard = ({ playerEvent, currentSeason, onRegister }) => {
     >
       <CardMedia
         component="img"
-        image={eventImage}
+        image={playerEvent.eventImage?.url}
         alt={title}
-        sx={{ objectFit: "cover", borderRadius: "12px", mb: 2, maxHeight: { sm: "375px" }, minHeight: { md: "262px" } }}
+        sx={{ objectFit: "cover", borderRadius: "12px", mb: 2, maxHeight: { sm: "375px", md: "262px" }, minHeight: { md: "262px" } }}
       />
 
       <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-        <EventCardCtas data={playerEvent} variant="minimalSmall" sx={{ mb: 1 }} />
+        <EventCardCtas data={{ ...seasonData, title: title, location: location }} variant="minimalSmall" sx={{ mb: 1 }} />
 
         <Typography variant="h3" component="h3" gutterBottom>
           {title}
         </Typography>
 
         <TextTruncate
-          text={description}
+          text={seasonData.description || description}
           maxChars={150}
           variant="body2"
           sx={{

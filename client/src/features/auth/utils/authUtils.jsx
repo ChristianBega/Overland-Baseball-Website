@@ -1,18 +1,34 @@
 import { auth, db } from "../../../utils/firebase/index.firebase";
-import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { 
+  GoogleAuthProvider, 
+  FacebookAuthProvider,
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  onAuthStateChanged 
+} from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ROLES } from "../utils/roles";
+
+// ==========================================
+// OAuth Providers
+// ==========================================
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
+const facebookProvider = new FacebookAuthProvider();
+
+// ==========================================
+// Helper Functions
+// ==========================================
+
 // Helper function to update last login
 const updateLastLogin = async (uid) => {
   const userDocRef = doc(db, "users", uid);
   try {
-    // ! need to make sure we dont override the user data, but just update the last login timestamp
     const userSnapshot = await getDoc(userDocRef);
     if (userSnapshot.exists()) {
       await setDoc(
@@ -28,11 +44,16 @@ const updateLastLogin = async (uid) => {
   }
 };
 
+// ==========================================
+// Email/Password Authentication
+// ==========================================
+
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
+// ⚠️ SECURITY FIX: Removed role parameter - always defaults to ROLES.USER
 export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) => {
   if (!userAuth) return;
 
@@ -43,18 +64,14 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
 
     if (!userSnapshot.exists()) {
       const { email, uid } = userAuth;
-      const { userName, role = ROLES.USER } = additionalInfo;
-
-      // Validate role
-      if (!Object.values(ROLES).includes(role)) {
-        throw new Error(`Invalid role: ${role}`);
-      }
+      // ✅ SECURITY: Only accept userName from additionalInfo, NEVER accept role
+      const { userName } = additionalInfo;
 
       const userData = {
         uid,
         email,
-        userName,
-        role,
+        userName: userName || email.split('@')[0], // Fallback to email username
+        role: ROLES.USER, // ✅ ALWAYS default to 'user' - no exceptions
         createdAtTimestamp: new Date().toISOString(),
         lastLoginTimestamp: new Date().toISOString(),
         accountStatus: "active",
@@ -92,3 +109,66 @@ export const onAuthStateChangedListener = (callback) =>
     }
     callback(user);
   });
+
+// ==========================================
+// OAuth Authentication (Google & Facebook)
+// ==========================================
+
+// Google Sign In
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    
+    // Create user document if it doesn't exist (with default role)
+    await createUserDocumentFromAuth(user, { 
+      userName: user.displayName || user.email.split('@')[0]
+    });
+    
+    await updateLastLogin(user.uid);
+    return result;
+  } catch (error) {
+    console.error("Google sign-in error:", error);
+    
+    // Handle specific errors
+    if (error.code === 'auth/popup-closed-by-user') {
+      throw new Error('Sign-in cancelled');
+    }
+    if (error.code === 'auth/popup-blocked') {
+      throw new Error('Pop-up blocked by browser. Please allow pop-ups and try again.');
+    }
+    
+    throw error;
+  }
+};
+
+// Facebook Sign In
+export const signInWithFacebook = async () => {
+  try {
+    const result = await signInWithPopup(auth, facebookProvider);
+    const user = result.user;
+    
+    // Create user document if it doesn't exist (with default role)
+    await createUserDocumentFromAuth(user, { 
+      userName: user.displayName || user.email.split('@')[0]
+    });
+    
+    await updateLastLogin(user.uid);
+    return result;
+  } catch (error) {
+    console.error("Facebook sign-in error:", error);
+    
+    // Handle specific errors
+    if (error.code === 'auth/popup-closed-by-user') {
+      throw new Error('Sign-in cancelled');
+    }
+    if (error.code === 'auth/popup-blocked') {
+      throw new Error('Pop-up blocked by browser. Please allow pop-ups and try again.');
+    }
+    if (error.code === 'auth/account-exists-with-different-credential') {
+      throw new Error('An account already exists with this email. Try signing in with a different method.');
+    }
+    
+    throw error;
+  }
+};
