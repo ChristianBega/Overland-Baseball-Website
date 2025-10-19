@@ -12,8 +12,8 @@ const quickTaskConfig = [
     task: "Manage Pages",
     component: "<ManagePages />",
     description: "View all pages on the website, edit them, add new pages, delete pages, etc...",
-    action: (navigate) => navigate("/manage-pages"),
-    type: "navigate",
+    action: (link) => window.open(process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL, "_blank"),
+    type: "link",
   },
   {
     task: "Player Stats",
@@ -85,6 +85,8 @@ const AdminQuickTasksView = () => {
       task.action(navigate);
     } else if (task.type === "modal") {
       task.action(openModal);
+    } else if (task.type === "link") {
+      task.action(process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL);
     }
   };
 

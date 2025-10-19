@@ -28,7 +28,7 @@ import {
 } from "./PlayerCard.styles";
 
 const PlayerCard = ({ player, ...rest }) => {
-  const { name, position, playerImage, bats, throws, yearAbbreviation, heightFeet, heightInches, weight } = player;
+  const { fullName, position, playerImage, bats, throws, yearAbbreviation, heightFeet, heightInches, weight } = player;
   const { isTablet } = useMediaQueries();
 
   return (
@@ -36,9 +36,9 @@ const PlayerCard = ({ player, ...rest }) => {
       <StyledCardContent>
         <StyledImageContainer>
           {playerImage ? (
-            <StyledPlayerImage component="img" src={playerImage[0].url} alt={`${name}`} />
+            <StyledPlayerImage component="img" src={playerImage[0].url} alt={`${fullName}`} />
           ) : (
-            <StyledPlaceholderImage component="img" src={PlaceHolderImage} alt={`${name}`} />
+            <StyledPlaceholderImage component="img" src={PlaceHolderImage} alt={`${fullName}`} />
           )}
         </StyledImageContainer>
 
@@ -49,7 +49,7 @@ const PlayerCard = ({ player, ...rest }) => {
                 {position}
               </StyledPositionBadge>
               <StyledPlayerName variant="body1" component="span">
-                {name}
+                {fullName}
               </StyledPlayerName>
             </Stack>
             <StyledYearBadge variant="small">{yearAbbreviation}</StyledYearBadge>

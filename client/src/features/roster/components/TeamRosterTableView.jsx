@@ -60,9 +60,9 @@ const TeamRosterTableView = ({ players = [], totalItems, itemsPerPage, currentPa
               <StyledTableRowWithBackground key={player.id}>
                 <StyledAvatarCell index={index} length={players.length}>
                   {player.playerImage ? (
-                    <StyledPlayerImage src={player.playerImage[0].url} alt={player.name} />
+                    <StyledPlayerImage src={player.playerImage[0].url} alt={player.fullName} />
                   ) : (
-                    <StyledPlayerAvatar>{getPlayerInitial(player.name)}</StyledPlayerAvatar>
+                    <StyledPlayerAvatar>{getPlayerInitial(player.fullName)}</StyledPlayerAvatar>
                   )}
                 </StyledAvatarCell>
                 <StyledNameCell index={index} length={players.length}>
