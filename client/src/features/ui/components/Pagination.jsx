@@ -85,8 +85,6 @@ const CustomPagination = ({
     setItemsPerPage(Number(event.target.value));
   };
 
-  console.log("showItemsPerPage", showItemsPerPage);
-
   useEffect(() => {
     setItemsPerPage(itemsPerPageBase);
   }, [itemsPerPageBase, setItemsPerPage]);

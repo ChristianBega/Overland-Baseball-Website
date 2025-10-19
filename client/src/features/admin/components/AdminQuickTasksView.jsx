@@ -12,15 +12,9 @@ const quickTaskConfig = [
     task: "Manage Pages",
     component: "<ManagePages />",
     description: "View all pages on the website, edit them, add new pages, delete pages, etc...",
-    action: (navigate) => navigate("/manage-pages"),
-    type: "navigate",
-  },
-  {
-    task: "Player Stats",
-    component: "<PlayerStats />",
-    description: "Coming soon - batting average, on base percentage, etc...",
-    action: (navigate) => navigate("/player-stats"),
-    type: "navigate",
+    action: (openLink, link) => openLink(link, "_blank"),
+    link: process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL,
+    type: "link",
   },
 
   {
@@ -77,6 +71,7 @@ const AdminQuickTasksView = () => {
   const { currentUserProfile } = useContext(UserContext);
   const { role } = currentUserProfile;
   const checkAuthorization = useCheckAuthorization();
+  const openLink = (link) => window.open(link, "_blank");
 
   const handleQuickTask = (task) => {
     if (!checkAuthorization(role)) return;
@@ -85,6 +80,8 @@ const AdminQuickTasksView = () => {
       task.action(navigate);
     } else if (task.type === "modal") {
       task.action(openModal);
+    } else if (task.type === "link") {
+      task.action(openLink, task.link);
     }
   };
 
