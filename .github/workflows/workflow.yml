@@ -51,6 +51,9 @@ jobs:
           REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
           REACT_APP_STRAPI_URL: ${{ secrets.REACT_APP_STRAPI_URL }}
           REACT_APP_STRAPI_AUTH_LOGIN_PORTAL: ${{ secrets.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL }}
+          REACT_APP_AWS_API_BASE_URL_DEV: ${{ secrets.REACT_APP_AWS_API_BASE_URL_DEV }}
+          REACT_APP_AWS_API_BASE_URL_PROD: ${{ secrets.REACT_APP_AWS_API_BASE_URL_PROD }}
+
       - name: Deploy to S3
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
