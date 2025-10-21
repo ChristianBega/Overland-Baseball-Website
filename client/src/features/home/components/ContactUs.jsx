@@ -27,11 +27,21 @@ export default function ContactUs() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (formData) => {
+    // ! find a more modular way to handle metadata, should exist on email service hook
+    formData.formMetaData = {
+      formType: "contactUs",
+      formName: "Contact Us",
+      formId: "contact-us-001",
+      source: "overlandbaseball.com",
+      pageUrl: window.location.href,
+      referrer: document.referrer,
+      submittedAt: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
     try {
-      await sendEmail(data);
+      await sendEmail(formData);
     } catch (error) {
-      console.error("Error submitting form:", error.response ? error.response.data : error.message);
+      console.error("Error submitting form:", error.response ? error.response.formData : error.message);
     }
   };
 

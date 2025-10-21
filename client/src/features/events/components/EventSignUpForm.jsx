@@ -23,6 +23,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   } = useForm();
 
   const onSubmit = (formData) => {
+    // ! find a more modular way to handle metadata, should exist on email service hook
     formData.formMetaData = {
       formType: "eventSignUp",
       formName: `${currentSeason} ${data.title}`,
