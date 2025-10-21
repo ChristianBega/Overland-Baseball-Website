@@ -36,7 +36,8 @@ export default function ContactUs() {
       source: "overlandbaseball.com",
       pageUrl: window.location.href,
       referrer: document.referrer,
-      submittedAt: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      submittedAt: new Date().toISOString(),
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
     try {
       await sendEmail(formData);
