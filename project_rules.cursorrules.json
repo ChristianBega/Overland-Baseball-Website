@@ -13,7 +13,7 @@
       "other": ["Firebase", "EmailJS", "Framer Motion", "PapaParse"]
     },
     "projectType": "team-website-with-cms",
-    "lastUpdated": "2025-08-24"
+    "lastUpdated": "2025-01-27"
   },
 
   "architecture": {
@@ -140,6 +140,18 @@
       "location": "/src/features/ui/components/DataTable.jsx",
       "dependencies": ["@mui/material styled", "theme", "shouldForwardProp for custom props"],
       "notes": "Centralized table styling - feature-specific player/content styling should remain in feature directories. Supports both split-table layouts (roster) and regular table layouts (future)"
+    },
+    "FormStatusIndicator": {
+      "purpose": "Display form submission status (loading/success/error) - not for validation errors",
+      "usage": "Use for submission feedback - validation errors shown inline via TextField helperText",
+      "props": {
+        "required": ["loading", "error"],
+        "optional": ["statusMessage", "statusCode", "success"]
+      },
+      "example": "<FormStatusIndicator statusMessage={response?.data?.message} statusCode={response?.status} loading={isLoading} error={!!error} />",
+      "location": "/src/features/ui/components/FormStatusIndicator.jsx",
+      "dependencies": ["@mui/material Box, CircularProgress, Typography, Stack", "@mui/icons-material ErrorIcon, CheckCircleIcon"],
+      "notes": "Shows loading spinner during submission, checkmark on success, error icon on failure. Inline field validation handled separately by TextField"
     }
   },
 
@@ -155,6 +167,72 @@
       "location": "/src/utils/helpers/useMediaQueries.utils.js",
       "dependencies": ["@emotion/react useTheme", "@mui/material useMediaQuery"],
       "notes": "Preferred over MUI breakpoint utilities - provides consistent responsive logic across components"
+    },
+    "useLocalRateLimiting": {
+      "purpose": "Client-side rate limiting using localStorage to prevent form spam",
+      "usage": "Track form submissions by identifier (email) with configurable time windows and automatic cleanup",
+      "returnValues": {
+        "canSubmit": "Boolean - whether user can submit",
+        "remainingAttempts": "Number of attempts remaining",
+        "timeUntilReset": "Milliseconds until rate limit resets",
+        "formattedTimeUntilReset": "Human-readable time (e.g., '45m')",
+        "checkRateLimit": "Function to manually check rate limit",
+        "recordAttempt": "Function to record a submission attempt"
+      },
+      "example": "const { canSubmit, remainingAttempts, formattedTimeUntilReset, recordAttempt } = useLocalRateLimiting(email, 3, 60*60*1000);",
+      "location": "/src/hooks/useLocalRateLimiting.jsx",
+      "dependencies": ["localStorage", "React useState/useCallback/useEffect"],
+      "notes": "Default: 3 attempts per hour. Automatically filters expired attempts. Updates countdown every minute."
+    },
+    "useAuthenticatedForm": {
+      "purpose": "Firebase authentication check for protected forms",
+      "usage": "Monitor Firebase auth state and enforce authentication requirements - use for Contact/Register forms",
+      "returnValues": {
+        "user": "Firebase user object or null",
+        "loading": "Boolean - auth check in progress",
+        "isAuthenticated": "Boolean - whether user is logged in",
+        "authError": "Error message if auth required but user not logged in"
+      },
+      "example": "const { user, isAuthenticated, authError } = useAuthenticatedForm(true);",
+      "location": "/src/hooks/useAuthenticatedForm.jsx",
+      "dependencies": ["firebase/auth", "utils/firebase/index.firebase"],
+      "notes": "Sets authError automatically if requireAuth=true and user not logged in. Unsubscribes on cleanup. Public forms (Sign In/Sign Up) should use requireAuth=false"
+    },
+    "useEmailService": {
+      "purpose": "Enhanced AWS SES email service with better error handling and state management",
+      "usage": "Send emails via AWS SES Lambda function with proper loading/error states - used by useFormSubmission",
+      "returnValues": {
+        "sendEmail": "Async function to send email data",
+        "loading": "Boolean - request in progress",
+        "error": "Error object with message, status, data",
+        "response": "Axios response object",
+        "clearStatus": "Function to clear error and response"
+      },
+      "example": "const { sendEmail, loading, error, response, clearStatus } = useEmailService(process.env.REACT_APP_AWS_API_BASE_URL_DEV);",
+      "location": "/src/hooks/useEmailService.jsx",
+      "dependencies": ["axios", "React useState/useCallback"],
+      "notes": "Posts to ${apiBaseUrl}/contact/forms/submit. Enhanced error context with status codes and detailed messages. Use clearStatus to reset state."
+    },
+    "useFormSubmission": {
+      "purpose": "Orchestrator hook combining auth, rate limiting, and email service for complete form management",
+      "usage": "Primary hook for all AWS SES forms (Contact/Register) - provides unified interface with all protections",
+      "returnValues": {
+        "handleSubmit": "Main submission function with all checks (auth → rate limit → email)",
+        "canSubmitForm": "Boolean - whether form can be submitted",
+        "isLoading": "Boolean - auth or email loading",
+        "error": "Combined error from auth/rate limit/email",
+        "response": "Email service response",
+        "showSuccessMessage": "Boolean - success message visible",
+        "clearAllStatus": "Function to clear all status messages",
+        "user": "Firebase user object",
+        "isAuthenticated": "Boolean - user logged in",
+        "remainingAttempts": "Remaining rate limit attempts",
+        "formattedTimeUntilReset": "Human-readable rate limit reset time"
+      },
+      "example": "const { handleSubmit, canSubmitForm, isLoading, error, showSuccessMessage, remainingAttempts } = useFormSubmission({ apiBaseUrl, requireAuth: true, rateLimitIdentifier: email, maxAttempts: 3, successDisplayDuration: 4000 });",
+      "location": "/src/hooks/useFormSubmission.jsx",
+      "dependencies": ["useEmailService", "useLocalRateLimiting", "useAuthenticatedForm"],
+      "notes": "Executes checks in order: auth → rate limit → email submission. Auto-displays success message, records attempts, handles all errors. For public forms use requireAuth=false and rateLimitIdentifier=null"
     }
   },
 
@@ -175,10 +253,53 @@
       "theming": "Custom palette with primary (#091F40), secondary (#4CBB17), comprehensive typography scale"
     },
     "forms": {
-      "validation": "React Hook Form with control/handleSubmit pattern",
-      "submission": "AWS SES via custom useEmailService hook + axios",
-      "errorDisplay": "Custom FormStatusIndicator component + hook-based error states",
-      "endpoint": "POST to ${apiBaseUrl}/contact/forms/submit"
+      "library": "React Hook Form",
+      "orchestration": "useFormSubmission hook - combines auth, rate limiting, and email service for AWS SES forms",
+      "validation": {
+        "method": "Config-driven JSON files with React Hook Form rules (see contactUs.config.json pattern)",
+        "timing": "mode: 'onBlur' (validate when leaving field), reValidateMode: 'onChange' (re-validate as typing)",
+        "display": "Material UI TextField with error and helperText props from fieldState.error",
+        "rules": "Use React Hook Form built-in rules: required, minLength, maxLength, pattern, validate",
+        "pattern": "ALWAYS use fieldState.error from Controller render, NOT errors object from useForm (better performance)"
+      },
+      "submission": {
+        "method": "AWS SES via useFormSubmission orchestrator hook",
+        "endpoint": "POST to ${apiBaseUrl}/contact/forms/submit",
+        "protection": "Firebase auth required (Contact/Register) + client-side rate limiting (3 submissions/hour)",
+        "flow": "Auth check → Rate limit check → Send email → Record attempt → Show success (4s) → Clear form"
+      },
+      "authentication": {
+        "protected": "Contact and Register forms require Firebase auth (requireAuth: true)",
+        "public": "Sign In and Sign Up forms are public (requireAuth: false)",
+        "check": "useAuthenticatedForm hook monitors Firebase auth state"
+      },
+      "rateLimit": {
+        "method": "Client-side localStorage tracking via useLocalRateLimiting hook",
+        "limit": "3 submissions per hour per email (configurable)",
+        "tracking": "By email address (rateLimitIdentifier parameter)",
+        "display": "MUI Alert showing remaining attempts and countdown (e.g., '2 submissions remaining', 'Try again in 45m')"
+      },
+      "errorDisplay": {
+        "validation": "Inline TextField helperText for field-level validation errors",
+        "submission": "FormStatusIndicator component for auth/rate limit/API errors",
+        "pattern": "Validation errors appear on blur, submission errors in banner above button"
+      },
+      "stateManagement": {
+        "loading": "Button disabled during submission (disabled={!canSubmitForm || isLoading}), CircularProgress in FormStatusIndicator",
+        "success": "Auto-clear form using reset() callback, show success message for 4 seconds (configurable)",
+        "error": "Inline validation errors + submission error banner + rate limit alert"
+      },
+      "bestPractices": [
+        "Use Material UI TextField directly - avoid custom input wrapper components (over-engineering for simple forms)",
+        "Config-driven validation in JSON files - maintains separation of concerns",
+        "Spread {...field} in TextField instead of manual onChange/onBlur/ref passing",
+        "Use fieldState.error from Controller, NOT errors[name] from useForm (better performance, cleaner code)",
+        "Simple validation rules (minLength/maxLength) preferred over complex regex patterns",
+        "Use type='tel' for phone inputs (provides mobile numeric keyboard)",
+        "Use multiline prop for textarea, NOT type='textarea'",
+        "Use variant='outlined' for consistent TextField styling",
+        "For public forms: requireAuth=false, rateLimitIdentifier=null in useFormSubmission"
+      ]
     },
     "layout": {
       "pageStructure": "Hero (optional, full-width) + Container + Grid for main content",
@@ -258,6 +379,27 @@
   "changelog": {
     "format": "Track major rule changes",
     "entries": [
+      {
+        "date": "2025-01-27",
+        "changes": [
+          "Complete form refactor for AWS SES integration (Contact & Register forms)",
+          "Created useLocalRateLimiting hook for client-side rate limiting (3 submissions/hour per email)",
+          "Created useAuthenticatedForm hook for Firebase authentication checks on protected forms",
+          "Enhanced useEmailService hook with better error handling and clearStatus functionality",
+          "Created useFormSubmission orchestrator hook combining auth, rate limiting, and email service",
+          "Migrated from custom InputFieldComponent to direct Material UI TextField usage",
+          "Implemented config-driven validation with contactUs.config.json pattern",
+          "Added real-time validation with onBlur mode and onChange revalidation",
+          "Implemented button disable states during submission and when rate limited",
+          "Added auto-clear form on successful submission with 4-second success message display",
+          "Added rate limit warning alerts showing remaining attempts and countdown timer",
+          "Updated validation strategy: simple minLength/maxLength rules instead of complex regex for phone numbers",
+          "Established pattern: use fieldState.error from Controller instead of errors object from useForm",
+          "Added FormStatusIndicator component documentation for submission status display",
+          "Documented best practices for form implementation and Material UI TextField integration"
+        ],
+        "reason": "Major form system refactor to add security (auth + rate limiting), improve UX (validation feedback, auto-clear), and establish reusable patterns for all AWS SES forms"
+      },
       {
         "date": "2025-08-24",
         "changes": [
