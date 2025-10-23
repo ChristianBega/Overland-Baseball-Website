@@ -16,6 +16,7 @@ import useFormSubmission from "../../../hooks/useFormSubmission";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 // Theme
 import { useTheme } from "@emotion/react";
+import { processFormRules } from "../../../utils/helpers/processFormRules";
 
 export default function ContactUs() {
   const theme = useTheme();
@@ -122,7 +123,7 @@ export default function ContactUs() {
                     <Controller
                       name={name}
                       control={control}
-                      rules={rules}
+                      rules={processFormRules(rules)}
                       render={({ field, fieldState: { error } }) => (
                         <TextField
                           {...field}

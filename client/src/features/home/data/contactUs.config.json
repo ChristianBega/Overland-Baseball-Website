@@ -6,9 +6,9 @@
     "placeholder": "Enter Full Name (Required)",
     "rules": {
       "required": "Full name is required *",
-      "minLength": {
-        "value": 2,
-        "message": "Full name must be at least 2 characters"
+      "pattern": {
+        "value": "^[a-zA-Z\\s'-]{2,50}$",
+        "message": "Name must be 2-50 characters (letters, spaces, hyphens, apostrophes only)"
       }
     }
   },
@@ -32,13 +32,9 @@
     "placeholder": "Enter Phone Number (10-15 digits)",
     "rules": {
       "required": "Phone number is required *",
-      "minLength": {
-        "value": 10,
-        "message": "Phone number must be at least 10 digits"
-      },
-      "maxLength": {
-        "value": 15,
-        "message": "Phone number cannot exceed 15 digits"
+      "pattern": {
+        "value": "^[0-9]{10,15}$",
+        "message": "Phone number must be 10-15 digits (numbers only)"
       }
     }
   },
@@ -52,6 +48,10 @@
       "minLength": {
         "value": 10,
         "message": "Message must be at least 10 characters"
+      },
+      "maxLength": {
+        "value": 600,
+        "message": "Message cannot exceed 600 characters"
       }
     }
   }
