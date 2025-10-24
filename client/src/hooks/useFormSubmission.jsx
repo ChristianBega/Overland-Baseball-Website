@@ -1,8 +1,10 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import useEmailServices from "./useEmailServices";
 import useLocalRateLimiting from "./useLocalRateLimiting";
 import useAuthenticatedForm from "./useAuthenticatedForm";
 
+//TODO: Refactor - this hook uses sendEmail directly, which limits how we can use this for all forms
+// The purpose of this hook should be to orchestrate any form submission on our site - contactUs, eventSignUp, signIn, signUp, etc. And allow us to configure different functionality dynamically for each form.
 /**
  * Orchestrates form submission with auth, rate limiting, and email service
  * @param {object} config - Configuration object
@@ -16,7 +18,6 @@ import useAuthenticatedForm from "./useAuthenticatedForm";
 const useFormSubmission = ({ apiBaseUrl, requireAuth = false, rateLimitIdentifier = null, maxAttempts = 3, successDisplayDuration = 4000 }) => {
   const [submissionError, setSubmissionError] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
   // Auth check
   const { user, loading: authLoading, isAuthenticated, authError } = useAuthenticatedForm(requireAuth);
 
