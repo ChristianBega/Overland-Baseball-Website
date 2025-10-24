@@ -1,29 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Button, Box, Typography, Stack, Grid } from "@mui/material";
+import { Button, Box, Typography, Stack, Grid, TextField, Alert } from "@mui/material";
 import formConfig from "../data/eventSignUp.config.json";
-import InputFieldComponent from "../../../features/ui/components/InputFields";
-import useEmailService from "../../../hooks/useEmailServices";
 import { FormStatusIndicator } from "../../../features/ui";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useTheme } from "@emotion/react";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import useFormSubmission from "../../../hooks/useFormSubmission";
+import { processFormRules } from "../../../utils/helpers/processFormRules";
 const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   const { isSm } = useMediaQueries();
   const theme = useTheme();
-  const { sendEmail, response, loading, error } = useEmailService(process.env.REACT_APP_AWS_API_BASE_URL_DEV);
   const currentSeasonData = data?.seasons?.[currentSeason?.toLowerCase()] || data;
+
   const {
     control,
-    handleSubmit,
-    formState: { errors },
+    handleSubmit: handleFormSubmit,
+    watch,
     reset,
-  } = useForm();
+  } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    defaultValues: {
+      playerName: "",
+      email: "",
+      playerPhone: "",
+      guardianName: "",
+      guardianEmail: "",
+      guardianPhone: "",
+    },
+  });
 
-  const onSubmit = (formData) => {
-    // ! find a more modular way to handle metadata, should exist on email service hook
+  // Watch email field for rate limiting
+  const emailValue = watch("email");
+
+  // Use form submission hook with all features
+  const { handleSubmit, canSubmitForm, isLoading, error, response, showSuccessMessage, remainingAttempts, formattedTimeUntilReset, clearAllStatus } =
+    useFormSubmission({
+      apiBaseUrl: process.env.REACT_APP_AWS_API_BASE_URL_DEV,
+      requireAuth: true, // Event signups require authentication
+      rateLimitIdentifier: emailValue, // Track by email
+      maxAttempts: 3,
+      successDisplayDuration: 4000, // Show success for 4 seconds
+    });
+
+  /**
+   * Handle form submission
+   */
+  const onSubmit = async (formData) => {
+    // Add form metadata
     formData.formMetaData = {
       formType: "eventSignUp",
       formName: `${currentSeason} ${data.title}`,
@@ -37,12 +64,29 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
     formData.location = currentSeasonData.location || data.location;
     formData.startDateTime = currentSeasonData.startDateTime;
     formData.endDateTime = currentSeasonData.endDateTime;
-    sendEmail(formData);
-    reset();
-    setTimeout(() => {
-      closeModal();
-    }, 3000);
+
+    // Submit with success callback
+    const result = await handleSubmit(formData, () => {
+      // Clear form on success
+      reset();
+      setTimeout(() => {
+        closeModal();
+      }, 3000);
+    });
+
+    if (result.success) {
+      console.log("Event signup submitted successfully:", result.data);
+    } else {
+      console.error("Event signup submission failed:", result.error);
+    }
   };
+
+  // Clear status when component unmounts
+  useEffect(() => {
+    return () => {
+      clearAllStatus();
+    };
+  }, [clearAllStatus]);
 
   // Updated helper component with improved styling
   const InfoItem = ({ icon, label, value }) => (
@@ -102,11 +146,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   const locationValue = currentSeasonData.location || data.location;
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ maxWidth: 800, mx: "auto" }}>
-      {/* <Typography variant="h4" component="h1" gutterBottom>
-        Event Sign Up Form
-      </Typography> */}
-
+    <Box component="form" onSubmit={handleFormSubmit(onSubmit)} sx={{ maxWidth: 800, mx: "auto" }}>
       <Stack
         direction="column"
         // alignItems="center"
@@ -169,45 +209,62 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
         </Box>
       </Stack>
 
-      <Grid container direction="column" spacing={2} mb={4}>
-        {formConfig.map((field, index) => (
-          <Grid key={index} item xs={12}>
+      {/* Form Fields */}
+      <Grid container spacing={2} mb={2}>
+        {formConfig.map(({ name, label, placeholder, type, rules }, index) => (
+          <Grid key={index + name} item xs={12}>
             <Controller
-              key={field.name}
-              name={field.name}
+              name={name}
               control={control}
-              rules={{
-                required: field.rules.required,
-                pattern: field.rules.pattern,
-              }}
-              render={({ field: formField }) => (
-                <InputFieldComponent
-                  type={field.type}
-                  label={field.label}
-                  placeholder={field.placeholder}
+              rules={processFormRules(rules)}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  type={type}
+                  label={label}
+                  placeholder={placeholder}
+                  variant="outlined"
                   fullWidth
-                  margin="normal"
-                  value={formField.value}
-                  onChange={formField.onChange}
-                  error={Boolean(errors[field.name])}
-                  helperText={errors[field.name]?.message}
-                  {...formField}
+                  value={field.value || ""}
+                  error={!!error}
+                  helperText={error?.message}
+                  disabled={isLoading}
                 />
               )}
             />
           </Grid>
         ))}
       </Grid>
-      {(loading || error || response) && (
-        <FormStatusIndicator statusMessage={response?.data?.message} statusCode={response?.status} loading={loading} error={error} />
+
+      {/* Rate Limit Warning */}
+      {canSubmitForm && remainingAttempts < 3 && (
+        <Box mb={2}>
+          <Alert severity="info" sx={{ fontSize: "0.875rem" }}>
+            {remainingAttempts === 0
+              ? `Submission limit reached. Try again in ${formattedTimeUntilReset}.`
+              : `${remainingAttempts} submission${remainingAttempts === 1 ? "" : "s"} remaining this hour.`}
+          </Alert>
+        </Box>
       )}
-      <Button type="submit" variant="contained" color="secondary" fullWidth sx={{ mt: 3 }}>
-        Submit
+
+      {/* Status Messages */}
+      {(isLoading || error || showSuccessMessage) && (
+        <Box mb={2}>
+          <FormStatusIndicator
+            statusMessage={showSuccessMessage ? response?.data?.message || "Event signup submitted successfully!" : error}
+            statusCode={response?.status}
+            loading={isLoading}
+            error={!!error}
+          />
+        </Box>
+      )}
+
+      {/* Submit Button */}
+      <Button type="submit" variant="contained" color="secondary" fullWidth disabled={!canSubmitForm || isLoading} sx={{ mt: 3 }}>
+        {isLoading ? "Submitting..." : "Submit"}
       </Button>
     </Box>
   );
 };
 
 export default EventSignUpForm;
-
-// 1. Input fields - Event name, player name, player email, player phone, parent/guardian name, parent/guardian email, parent/guardian phone

@@ -5,10 +5,10 @@
     "label": "User Name",
     "type": "text",
     "rules": {
-      "required": "User Name is required *",
+      "required": "User name is required *",
       "pattern": {
-        "value": "^[a-zA-Z]+$",
-        "message": "Invalid character or number *"
+        "value": "^[a-zA-Z\\s'-]{2,25}$",
+        "message": "Name must be 2-25 characters (letters, spaces, hyphens, apostrophes only)"
       }
     }
   },
@@ -20,8 +20,8 @@
     "rules": {
       "required": "Email is required *",
       "pattern": {
-        "value": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
-        "message": "Invalid email address *"
+        "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        "message": "Please enter a valid email address"
       }
     }
   },

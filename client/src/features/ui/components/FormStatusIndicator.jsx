@@ -7,6 +7,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { StyledFormStatusIndicatorContainer } from "./FormStatusIndicator.styles";
 
 const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, success }) => {
+  // const isAuthFormError = error && statusMessage === "You must be logged in to use this form.";
   return (
     <>
       {(statusMessage || success || loading || error || success) && (
@@ -28,7 +29,7 @@ const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, succes
             <Stack direction="row" spacing={1}>
               <ErrorIcon />
               <Typography variant="body1" color="error">
-                Error: {error?.message || error?.response?.data?.message || "An error occurred"}
+                Error: {statusMessage}
               </Typography>
             </Stack>
           )}

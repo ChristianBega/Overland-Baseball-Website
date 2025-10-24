@@ -5,7 +5,11 @@
     "type": "text",
     "placeholder": "Enter Full Name (Required)",
     "rules": {
-      "required": "Full name is required *"
+      "required": "Full name is required *",
+      "pattern": {
+        "value": "^[a-zA-Z\\s'-]{2,50}$",
+        "message": "Name must be 2-50 characters (letters, spaces, hyphens, apostrophes only)"
+      }
     }
   },
   {
@@ -17,7 +21,7 @@
       "required": "Email is required *",
       "pattern": {
         "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-        "message": "Invalid email address"
+        "message": "Please enter a valid email address"
       }
     }
   },
@@ -25,12 +29,12 @@
     "name": "phone",
     "label": "Phone",
     "type": "tel",
-    "placeholder": "Enter Phone Number (Required)",
+    "placeholder": "Enter Phone Number (10-15 digits)",
     "rules": {
       "required": "Phone number is required *",
       "pattern": {
-        "value": "^\\+?[0-9]{10,15}$",
-        "message": "Invalid phone number"
+        "value": "^[0-9]{10,15}$",
+        "message": "Phone number must be 10-15 digits (numbers only)"
       }
     }
   },
@@ -40,7 +44,15 @@
     "type": "textarea",
     "placeholder": "Enter Message (Required)",
     "rules": {
-      "required": "Message is required *"
+      "required": "Message is required *",
+      "minLength": {
+        "value": 10,
+        "message": "Message must be at least 10 characters"
+      },
+      "maxLength": {
+        "value": 600,
+        "message": "Message cannot exceed 600 characters"
+      }
     }
   }
 ]

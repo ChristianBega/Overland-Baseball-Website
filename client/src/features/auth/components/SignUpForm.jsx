@@ -1,96 +1,223 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // React Hook Form
 import { Controller, useForm } from "react-hook-form";
+// MUI
+import { Button, Typography, Link as MuiLink, Grid, TextField, Box, Alert, InputAdornment, IconButton } from "@mui/material";
 // Components
 import AlternativeAuthCta from "./AlternativeAuthCta";
-// MUI
-import { Button, Typography, Link as MuiLink, Grid } from "@mui/material";
+import { FormStatusIndicator } from "../../ui";
 // Styles
-import { StyledForm } from "../../../utils/theme/index.styles";
+import { StyledForm } from "../../ui/components/StyledForm";
 // Utils & Hooks
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../utils/authUtils";
+import { processFormRules } from "../../../utils/helpers/processFormRules";
+import useLocalRateLimiting from "../../../hooks/useLocalRateLimiting";
 // Config
 import signUpInputFields from "../data/signUpInputFields.config.json";
-import InputFieldComponent from "../../../features/ui/components/InputFields";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     control,
-    handleSubmit,
+    handleSubmit: handleFormSubmit,
+    watch,
     reset,
-    formState: { errors },
-  } = useForm();
-  const handleSignUpForm = async (data) => {
-    const { userName, email, password, confirmPassword } = data;
-    if (!userName || !email || !password || !confirmPassword) {
-      console.error("All fields are required");
+  } = useForm({
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    defaultValues: {
+      userName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  // Watch email and password for rate limiting and validation
+  const emailValue = watch("email");
+  const passwordValue = watch("password");
+
+  // Rate limiting hook (5 attempts per hour)
+  const { canSubmit, remainingAttempts, formattedTimeUntilReset, recordAttempt } = useLocalRateLimiting(emailValue, 5);
+
+  /**
+   * Handle sign up form submission
+   */
+  const onSubmit = async (data) => {
+    const { userName, email, password } = data;
+
+    // Clear previous messages
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    // Check rate limit
+    if (!canSubmit) {
+      setErrorMessage(`You've reached the submission limit. Please try again in ${formattedTimeUntilReset}.`);
       return;
     }
+
+    setIsLoading(true);
+
     try {
+      // Create Firebase user
       const { user } = await createAuthUserWithEmailAndPassword(email, password);
+
+      // Create user document in Firestore
       await createUserDocumentFromAuth(user, { userName });
+
+      // Record attempt for rate limiting
+      recordAttempt();
+
+      // Show success message
+      setSuccessMessage("Account created successfully! Redirecting...");
+
+      // Clear form
       reset();
-      navigate("/");
+
+      // Navigate to home after brief delay
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (error) {
+      // Record failed attempt for rate limiting
+      recordAttempt();
+
+      // Handle Firebase errors
       switch (error.code) {
-        case "auth/wrong-password":
-          alert("Incorrect Password");
-          break;
-        case "auth/user-not-found":
-          alert("No user found!");
+        case "auth/email-already-in-use":
+          setErrorMessage("An account with this email already exists.");
           break;
         case "auth/invalid-email":
-          alert("Invalid Email");
+          setErrorMessage("Please enter a valid email address.");
           break;
-        case "auth/invalid-login-credentials":
-          alert("Invalid Login In Credentials");
+        case "auth/weak-password":
+          setErrorMessage("Password is too weak. Please use a stronger password.");
+          break;
+        case "auth/operation-not-allowed":
+          setErrorMessage("Email/password accounts are not enabled. Please contact support.");
           break;
         default:
-          console.log(error);
+          setErrorMessage("An error occurred during sign up. Please try again.");
+          console.error("Sign-up error:", error);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  // Clear messages on unmount
+  useEffect(() => {
+    return () => {
+      setErrorMessage("");
+      setSuccessMessage("");
+    };
+  }, []);
+
   return (
-    <StyledForm onSubmit={handleSubmit(handleSignUpForm)} id="sign-up-form">
-      {/* <FormHeader formHeaderContent={"Sign Up Form"} /> */}
-      <Grid container direction="column" spacing={2} mb={4}>
-        {signUpInputFields.map((config, index) => (
-          <Grid key={index + config.name} item xs={12}>
+    <StyledForm component="form" onSubmit={handleFormSubmit(onSubmit)} id="sign-up-form" aria-label="Sign Up Form">
+      {/* Form Fields */}
+      <Grid container direction="column" spacing={2} mb={2}>
+        {signUpInputFields.map(({ name, label, placeholder, type, rules }, index) => (
+          <Grid key={index + name} item xs={12}>
             <Controller
-              required
-              key={index + config.name}
-              name={config.name}
+              name={name}
               control={control}
-              rules={config.rules}
-              render={({ field }) => (
-                <InputFieldComponent
-                  id={config.name}
-                  placeHolder={config.placeholder}
-                  type={config.type}
-                  label={config.label}
-                  fullWidth
-                  value={field.value}
-                  onChange={field.onChange}
-                  error={errors[config.name]}
-                  // variant="outlined"
-                  helperText={errors.player_name?.message}
+              rules={{
+                ...processFormRules(rules),
+                ...(name === "confirmPassword" && {
+                  validate: (value) => value === passwordValue || "Passwords do not match",
+                }),
+              }}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
                   {...field}
+                  type={
+                    name === "password"
+                      ? showPassword
+                        ? "text"
+                        : "password"
+                      : name === "confirmPassword"
+                      ? showConfirmPassword
+                        ? "text"
+                        : "password"
+                      : type
+                  }
+                  label={label}
+                  placeholder={placeholder}
+                  variant="outlined"
+                  fullWidth
+                  value={field.value || ""}
+                  error={!!error}
+                  helperText={error?.message}
+                  disabled={isLoading}
+                  InputProps={
+                    name === "password" || name === "confirmPassword"
+                      ? {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label={`toggle ${name} visibility`}
+                                onClick={() => {
+                                  if (name === "password") {
+                                    setShowPassword(!showPassword);
+                                  } else {
+                                    setShowConfirmPassword(!showConfirmPassword);
+                                  }
+                                }}
+                                edge="end"
+                              >
+                                {(name === "password" ? showPassword : showConfirmPassword) ? <Visibility /> : <VisibilityOff />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }
+                      : undefined
+                  }
                 />
               )}
             />
           </Grid>
         ))}
       </Grid>
-      <Button variant="contained" color="secondary" id="sign-up-form" aria-label="Sign Up Form" type="submit" sx={{ mt: 2, mb: 4 }}>
-        Sign Up
+
+      {/* Rate Limit Warning */}
+      {canSubmit && remainingAttempts < 5 && (
+        <Box mb={2}>
+          <Alert severity="info" sx={{ fontSize: "0.875rem" }}>
+            {remainingAttempts === 0
+              ? `Submission limit reached. Try again in ${formattedTimeUntilReset}.`
+              : `${remainingAttempts} attempt${remainingAttempts === 1 ? "" : "s"} remaining this hour.`}
+          </Alert>
+        </Box>
+      )}
+
+      {/* Status Messages */}
+      {(isLoading || errorMessage || successMessage) && (
+        <Box mb={2}>
+          <FormStatusIndicator success={!!successMessage} statusMessage={successMessage || errorMessage} loading={isLoading} error={!!errorMessage} />
+        </Box>
+      )}
+
+      {/* Sign Up Button */}
+      <Button type="submit" variant="contained" color="secondary" fullWidth disabled={!canSubmit || isLoading} sx={{ mt: 2, mb: 4 }}>
+        {isLoading ? "Creating Account..." : "Sign Up"}
       </Button>
+
+      {/* Alternative Auth CTA */}
       <AlternativeAuthCta />
-      <Typography component="span" textAlign="center">
+
+      {/* Sign In Link */}
+      <Typography component="span" variant="span" textAlign="center">
         Already have an account?{" "}
-        <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/sign-in"}>
+        <MuiLink variant="highlighted" component={RouterLink} to={"/authentication/sign-in"} aria-label="Sign In Link">
           Sign In
         </MuiLink>
       </Typography>

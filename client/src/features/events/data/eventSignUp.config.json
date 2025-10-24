@@ -2,70 +2,78 @@
   {
     "name": "playerName",
     "label": "Player Name",
-    "placeholder": "Enter player's full name...",
     "type": "text",
+    "placeholder": "Enter player's full name",
     "rules": {
-      "required": "Player name is required *"
+      "required": "Player name is required *",
+      "minLength": {
+        "value": 2,
+        "message": "Player name must be at least 2 characters"
+      }
     }
   },
   {
-    "name": "email",
+    "name": "playerEmail",
     "label": "Player Email",
-    "placeholder": "Enter player's email address...",
     "type": "email",
+    "placeholder": "Enter player's email address",
     "rules": {
       "required": "Player email is required *",
       "pattern": {
-        "value": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
-        "message": "Invalid email address *"
+        "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        "message": "Please enter a valid email address"
       }
     }
   },
   {
     "name": "playerPhone",
     "label": "Player Phone",
-    "placeholder": "Enter player's phone number...",
     "type": "tel",
+    "placeholder": "Enter player's phone number (10-15 digits)",
     "rules": {
       "required": "Player phone number is required *",
       "pattern": {
-        "value": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
-        "message": "Invalid phone number format *"
+        "value": "^[0-9]{10,15}$",
+        "message": "Phone number must be 10-15 digits (numbers only)"
       }
     }
   },
   {
     "name": "guardianName",
     "label": "Parent/Guardian Name",
-    "placeholder": "Enter parent/guardian's full name...",
     "type": "text",
+    "placeholder": "Enter parent/guardian's full name",
     "rules": {
-      "required": "Parent/Guardian name is required *"
+      "required": "Parent/Guardian name is required *",
+      "minLength": {
+        "value": 2,
+        "message": "Guardian name must be at least 2 characters"
+      }
     }
   },
   {
     "name": "guardianEmail",
     "label": "Parent/Guardian Email",
-    "placeholder": "Enter parent/guardian's email address...",
     "type": "email",
+    "placeholder": "Enter parent/guardian's email address",
     "rules": {
       "required": "Parent/Guardian email is required *",
       "pattern": {
-        "value": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
-        "message": "Invalid email address *"
+        "value": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        "message": "Please enter a valid email address"
       }
     }
   },
   {
     "name": "guardianPhone",
     "label": "Parent/Guardian Phone",
-    "placeholder": "Enter parent/guardian's phone number...",
     "type": "tel",
+    "placeholder": "Enter parent/guardian's phone number (10-15 digits)",
     "rules": {
       "required": "Parent/Guardian phone number is required *",
       "pattern": {
-        "value": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
-        "message": "Invalid phone number format *"
+        "value": "^[0-9]{10,15}$",
+        "message": "Phone number must be 10-15 digits (numbers only)"
       }
     }
   }
