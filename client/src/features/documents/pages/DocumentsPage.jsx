@@ -24,7 +24,7 @@ export default function DocumentsPage() {
           container
           maxWidth="xl"
           spacing={{ xs: 4, md: 6 }}
-          sx={{ justifyContent: " center", display: "flex", flexDirection: "column", alignItems: "center" }}
+          sx={{ justifyContent: " center", display: "flex", flexDirection: "column", alignItems: "center", minHeight: "80vh" }}
         >
           <div>
             <Typography typography="h1" component="h1">

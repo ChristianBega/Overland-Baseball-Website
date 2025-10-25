@@ -15,6 +15,7 @@ import TeamRosterTableView from "./TeamRosterTableView.jsx";
 // Context
 import { ViewToggleProvider, useViewToggle } from "../../../utils/contexts/ViewToggleContext";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection.jsx";
+import NoDataDisplay from "../../ui/components/NoDataDisplay.jsx";
 
 // Inner component that uses the context
 const TeamRosterContent = () => {
@@ -47,7 +48,6 @@ const TeamRosterContent = () => {
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedPlayers = filteredData.length > 0 ? filteredData.slice(startIndex, endIndex) : players ? players.slice(startIndex, endIndex) : [];
-
   // Define filter fields and labels
   const filterFields = ["name", "position", "bat", "throw", "year", "height", "weight"];
   const customFieldLabels = {
@@ -91,30 +91,40 @@ const TeamRosterContent = () => {
         {/* Table View */}
         {view === "table" && (
           <>
-            <TeamRosterTableView
-              players={paginatedPlayers}
-              // Pass pagination props
-              totalItems={(filteredData.length > 0 ? filteredData : players)?.length || 0}
-              itemsPerPage={itemsPerPage}
-              currentPage={page}
-              onPageChange={setPage}
-              setItemsPerPage={setItemsPerPage}
-            />
+            {paginatedPlayers.length > 0 ? (
+              <TeamRosterTableView
+                players={paginatedPlayers}
+                // Pass pagination props
+                totalItems={(filteredData.length > 0 ? filteredData : players)?.length || 0}
+                itemsPerPage={itemsPerPage}
+                currentPage={page}
+                onPageChange={setPage}
+                setItemsPerPage={setItemsPerPage}
+              />
+            ) : (
+              <NoDataDisplay title="No Players Available" message="Check back soon for updates!" />
+            )}
           </>
         )}
         {/* Grid View */}
         {view === "grid" && (
           <Box>
-            <TeamRosterGridView players={paginatedPlayers} />
-            <CustomPagination
-              totalItems={players?.length || 0}
-              itemsPerPage={itemsPerPage}
-              currentPage={page}
-              onPageChange={setPage}
-              setItemsPerPage={() => {}}
-              showItemsPerPage={false}
-              isTransparent={true}
-            />
+            {paginatedPlayers.length > 0 ? (
+              <>
+                <TeamRosterGridView players={paginatedPlayers} />
+                <CustomPagination
+                  totalItems={players?.length || 0}
+                  itemsPerPage={itemsPerPage}
+                  currentPage={page}
+                  onPageChange={setPage}
+                  setItemsPerPage={() => {}}
+                  showItemsPerPage={false}
+                  isTransparent={true}
+                />
+              </>
+            ) : (
+              <NoDataDisplay title="No Players Available" message="Check back soon for updates!" />
+            )}
           </Box>
         )}
       </SectionLayout>

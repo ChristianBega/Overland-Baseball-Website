@@ -9,6 +9,7 @@ import ScheduleSlider from "./ScheduleSlider";
 import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.styles";
 // Hooks
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
+import NoDataDisplay from "../../ui/components/NoDataDisplay";
 
 export default function Schedule() {
   const theme = useTheme();
@@ -22,7 +23,6 @@ export default function Schedule() {
     }));
     return dataWithPastFlag;
   }, [data]);
-
   if (loading) {
     return (
       <Grid item xs={12}>
@@ -61,7 +61,11 @@ export default function Schedule() {
           sx={{ mb: 4 }}
         />
 
-        <ScheduleSlider games={sortedData} showNavigation={true} />
+        {sortedData.length > 0 ? (
+          <ScheduleSlider games={sortedData} showNavigation={true} />
+        ) : (
+          <NoDataDisplay title="No Games Available" message="Check back soon for updates!" />
+        )}
       </StyledSectionLayoutWrapper>
     </Grid>
   );

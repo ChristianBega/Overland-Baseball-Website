@@ -7,6 +7,7 @@ import PlayerEventToggles from "./PlayerEventToggles";
 import PlayerEventCard from "./PlayerEventCard";
 import { useModal } from "../../ui";
 import EventSignUpForm from "./EventSignUpForm";
+import NoDataDisplay from "../../ui/components/NoDataDisplay";
 
 const PlayerEventView = ({ playerEvents = [] }) => {
   const theme = useTheme();
@@ -40,11 +41,17 @@ const PlayerEventView = ({ playerEvents = [] }) => {
         <PlayerEventToggles currentSeason={currentSeason} onSeasonChange={handleSeasonChange} playerEvents={playerEvents} />
 
         <Grid container spacing={2}>
-          {filteredEvents.map((event) => (
-            <Grid key={event.id} item xs={12} md={4} lg={4}>
-              <PlayerEventCard playerEvent={event} currentSeason={currentSeason} onRegister={handleRegister} />
+          {filteredEvents.length > 0 ? (
+            filteredEvents.map((event) => (
+              <Grid key={event.id} item xs={12} md={4} lg={4}>
+                <PlayerEventCard playerEvent={event} currentSeason={currentSeason} onRegister={handleRegister} />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12} md={8} lg={6}>
+              <NoDataDisplay title="No Events Available" message="Check back soon for updates!" />
             </Grid>
-          ))}
+          )}
         </Grid>
 
         {filteredEvents.length === 0 && (

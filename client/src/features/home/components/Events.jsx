@@ -11,6 +11,7 @@ import EventList from "./EventList";
 import ButtonBlock from "../../ui/components/ButtonBlock";
 import { Link } from "react-router-dom";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
+import NoDataDisplay from "../../ui/components/NoDataDisplay";
 
 const ExploreAllEventsButton = ({ marginTop }) => {
   return (
@@ -42,7 +43,11 @@ const Events = () => {
           cta={isMd && <ExploreAllEventsButton marginTop={0} />}
         />
 
-        <EventList events={data} eventsStrapi={data} />
+        {data.length > 0 ? (
+          <EventList events={data} eventsStrapi={data} />
+        ) : (
+          <NoDataDisplay title="No Events Available" message="Check back soon for updates!" />
+        )}
         {!isMd && <ExploreAllEventsButton marginTop={4} />}
       </SectionLayout>
     </Grid>
