@@ -1,11 +1,9 @@
 import React from "react";
+// Components
+import ForgotPasswordForm from "../components/ForgotPasswordForm";
 
 const PasswordResetPage = () => {
-  return (
-    <div style={{ minHeight: "100vh" }}>
-      <h1>Reset Password Page</h1>
-    </div>
-  );
+  return <ForgotPasswordForm />;
 };
 
 export default PasswordResetPage;
