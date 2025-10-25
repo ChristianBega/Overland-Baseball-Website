@@ -80,6 +80,7 @@ export const getEventColor = (eventType) => {
     // return "#3B82F6";
     case "player":
       return "#EF4444";
+    
     default:
       return "#94A3B8";
   }

@@ -25,7 +25,7 @@ const SponsorsPage = lazy(() => import("./features/sponsors/pages/SponsorsPage")
 const AuthenticationPage = lazy(() => import("./features/auth/pages/AuthPage"));
 
 // const PasswordResetPage = lazy(() => import("../../pages/passwordReset/passwordReset.page"));
-const PasswordResetPage = lazy(() => import("./features/auth/pages/PasswordResetPage"));
+// Note: PasswordResetPage is now rendered through AuthenticationPage, not directly
 
 // const { Error404Page  } = lazy(() => import("./features/error/pages/404Page"));
 const Error404Page = lazy(() => import("./features/error/pages/404Page"));
@@ -58,7 +58,7 @@ export default function AppRoutes() {
           {/* Authentication Routes */}
           <Route path="/authentication/sign-in" element={<AuthenticationPage />} />
           <Route path="/authentication/sign-up" element={<AuthenticationPage />} />
-          <Route path="/authentication/password-reset" element={<PasswordResetPage />} />
+          <Route path="/authentication/password-reset" element={<AuthenticationPage />} />
 
           {/* Admin & Coach Routes */}
           <Route

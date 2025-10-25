@@ -1,30 +1,27 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import React from "react";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
 import EventCalendar from "./EventCalendar";
 import SectionHeader from "../../ui/components/SectionHeader";
 import { useTheme } from "@emotion/react";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
+import DataStateDisplay from "../../ui/components/DataStateDisplay";
 
 export default function Events() {
-  const { data, loading, error } = useStrapiCollection("events");
-  const { data: schedules, loading: schedulesLoading, error: schedulesError } = useStrapiCollection("schedules");
+  const { data: events, loading: eventsLoading, error: eventsError, refetch: refetchEvents } = useStrapiCollection("events");
+  const { data: schedules, loading: schedulesLoading, error: schedulesError, refetch: refetchSchedules } = useStrapiCollection("schedules");
 
   const theme = useTheme();
 
-  if (loading || schedulesLoading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
-  }
+  // Combined states for all-or-nothing approach
+  const loading = eventsLoading || schedulesLoading;
+  const error = eventsError || schedulesError;
+  const combinedData = [...(events || []), ...(schedules || [])];
 
-  if (error || schedulesError) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <Typography variant="h6" color="error">
-          {error ? "Error with real-time updates" : schedulesError ? "Error fetching/caching the data " : "Error fetching/caching the data"}
-        </Typography>
-      </div>
-    );
-  }
+  const handleRetry = () => {
+    if (eventsError) refetchEvents();
+    if (schedulesError) refetchSchedules();
+  };
 
   return (
     <Grid item xs={12}>
@@ -36,7 +33,22 @@ export default function Events() {
           color={theme.palette.secondary.main}
           sx={{ mb: 3 }}
         />
-        <EventCalendar events={[...data, ...schedules]} />
+
+        <DataStateDisplay
+          isLoading={loading}
+          isError={!!error}
+          error={error}
+          isEmpty={combinedData.length === 0}
+          onRetry={handleRetry}
+          loadingMessage="Loading calendar..."
+          errorTitle="Unable to Load Calendar"
+          emptyProps={{
+            title: "No Events Scheduled",
+            message: "Check back soon for the season schedule!",
+          }}
+        >
+          <EventCalendar events={combinedData} />
+        </DataStateDisplay>
       </SectionLayout>
     </Grid>
   );

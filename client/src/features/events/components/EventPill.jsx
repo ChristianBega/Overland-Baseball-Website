@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { getEventColor } from "./EventUtils";
-import CircleIcon from "@mui/icons-material/Circle";
 /**
  * EventPill displays a single event in a calendar day cell
  *
@@ -10,8 +9,9 @@ import CircleIcon from "@mui/icons-material/Circle";
  * @param {Function} props.onClick - Optional click handler
  */
 const EventPill = ({ event, onClick }) => {
-  const colors = getEventColor(event.eventType);
-
+  console.log("event in EventPill", event);
+  const colors = getEventColor(event?.gameType?.toLowerCase());
+  const isGameEvent = event.opponent && (event.away || !event.away); // if there is an opponent and either away or home, it is a game event
   return (
     <Box
       sx={{
@@ -22,10 +22,10 @@ const EventPill = ({ event, onClick }) => {
         display: "flex",
         alignItems: "center",
         gap: 0.5,
-        cursor: onClick ? "pointer" : "default",
+        cursor: onClick && isGameEvent ? "pointer" : "default",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.25)",
       }}
-      onClick={onClick ? () => onClick(event) : undefined}
+      onClick={onClick && !isGameEvent ? () => onClick(event) : undefined}
     >
       <Typography
         variant="body2"

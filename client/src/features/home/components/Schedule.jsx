@@ -1,19 +1,21 @@
 import { useTheme } from "@emotion/react";
 import React, { useMemo } from "react";
 // MUI
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid } from "@mui/material";
 // Components
-import SectionLayout from "../../ui/components/SectionLayout";
 import SectionHeader from "../../ui/components/SectionHeader";
 import ScheduleSlider from "./ScheduleSlider";
 import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.styles";
 // Hooks
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
+import DataStateDisplay from "../../ui/components/DataStateDisplay";
 
 export default function Schedule() {
   const theme = useTheme();
-  const { data, loading, error } = useStrapiCollection("schedules");
+  const { data, loading, error, refetch } = useStrapiCollection("schedules");
+
   const isPastEvent = (endDateTime) => new Date(endDateTime) < new Date();
+
   const sortedData = useMemo(() => {
     if (!data) return [];
     const dataWithPastFlag = data.map((item) => ({
@@ -22,32 +24,6 @@ export default function Schedule() {
     }));
     return dataWithPastFlag;
   }, [data]);
-
-  if (loading) {
-    return (
-      <Grid item xs={12}>
-        <SectionLayout id="schedule-section" aria-label="Schedule Section">
-          <Box display="flex" justifyContent="center" alignItems="center" height="200px">
-            <Typography>Loading schedule...</Typography>
-          </Box>
-        </SectionLayout>
-      </Grid>
-    );
-  }
-
-  if (error) {
-    return (
-      <Grid item xs={12}>
-        <SectionLayout id="schedule-section" aria-label="Schedule Section">
-          <Box textAlign="center" py={4}>
-            <Typography variant="h6" color="error">
-              {error ? "Error with real-time updates" : "Error fetching/caching the data"}
-            </Typography>
-          </Box>
-        </SectionLayout>
-      </Grid>
-    );
-  }
 
   return (
     <Grid item xs={12}>
@@ -61,7 +37,21 @@ export default function Schedule() {
           sx={{ mb: 4 }}
         />
 
-        <ScheduleSlider games={sortedData} showNavigation={true} />
+        <DataStateDisplay
+          isLoading={loading}
+          isError={!!error}
+          error={error}
+          isEmpty={!sortedData || sortedData.length === 0}
+          onRetry={refetch}
+          loadingMessage="Loading schedule..."
+          errorTitle="Unable to Load Schedule"
+          emptyProps={{
+            title: "No Games Available",
+            message: "Check back soon for updates!",
+          }}
+        >
+          <ScheduleSlider games={sortedData} showNavigation={true} />
+        </DataStateDisplay>
       </StyledSectionLayoutWrapper>
     </Grid>
   );

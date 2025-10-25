@@ -5,6 +5,7 @@ export { default as AlternativeAuthCta } from "./components/AlternativeAuthCta";
 export { default as FormHeader } from "./components/FormHeader";
 export { default as SignInForm } from "./components/SignInForm";
 export { default as SignUpForm } from "./components/SignUpForm";
+export { default as ForgotPasswordForm } from "./components/ForgotPasswordForm";
 
 // Page exports
 export { default as AuthPage } from "./pages/AuthPage";
@@ -21,6 +22,7 @@ export {
   signInAuthWithEmailAndPassword,
   signOutUser,
   onAuthStateChangedListener,
+  sendPasswordResetEmailFirebase,
 } from "./utils/authUtils";
 
 // Constants exports
