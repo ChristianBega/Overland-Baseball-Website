@@ -1,24 +1,37 @@
 import React from "react";
 import Grid from "@mui/material/Grid/Grid";
-import { Typography } from "@mui/material";
 
 import SectionLayout from "../../../features/ui/components/SectionLayout";
 import EventList from "../../home/components/EventList";
 import SectionHeader from "../../ui/components/SectionHeader";
 import { useTheme } from "@emotion/react";
-import NoDataDisplay from "../../ui/components/NoDataDisplay";
+import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 
-export default function Fundraisers({ fundraiserEvents }) {
+export default function Fundraisers() {
   const theme = useTheme();
+  const { data: fundraiserEvents, loading, error, refetch } = useStrapiCollection("events", { filters: { gameType: "Fundraiser" } });
+
   return (
     <Grid id="fundraiser-and-events" item xs={12}>
       <SectionLayout id="fundraiser-and-events-section" aria-label="Fundraiser and Events Section" marginBlock={true}>
         <SectionHeader title="Upcoming Fundraisers" subtitle="Support Your Overland Trailblazers" color={theme.palette.secondary.main} />
-        {fundraiserEvents.length > 0 ? (
+
+        <DataStateDisplay
+          isLoading={loading}
+          isError={!!error}
+          error={error}
+          isEmpty={!fundraiserEvents || fundraiserEvents.length === 0}
+          onRetry={refetch}
+          loadingMessage="Loading fundraisers..."
+          errorTitle="Unable to Load Fundraisers"
+          emptyProps={{
+            title: "No Fundraisers Available",
+            message: "Check back soon for fundraising opportunities!",
+          }}
+        >
           <EventList events={fundraiserEvents} />
-        ) : (
-          <NoDataDisplay title="No Fundraisers Available" message="Check back soon for updates!" />
-        )}
+        </DataStateDisplay>
       </SectionLayout>
     </Grid>
   );

@@ -1,4 +1,4 @@
-const STRAPI_URL = process.env.NODE_ENV === "development" ? "http://localhost:1337" : process.env.REACT_APP_STRAPI_URL;
+const STRAPI_URL = process.env.NODE_ENV !== "development" ? "http://localhost:1337" : process.env.REACT_APP_STRAPI_URL;
 
 class StrapiService {
   // Helper method for API requests
