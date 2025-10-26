@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button, Box, Typography, Stack, Grid, TextField, Alert } from "@mui/material";
 import formConfig from "../data/eventSignUp.config.json";
-import { FormStatusIndicator } from "../../../features/ui";
+import { FormStatusIndicator, TextTruncate } from "../../../features/ui";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -10,6 +10,8 @@ import { useTheme } from "@emotion/react";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import useFormSubmission from "../../../hooks/useFormSubmission";
 import { processFormRules } from "../../../utils/helpers/processFormRules";
+import { formatDateString } from "../../../utils/helpers/formatDate";
+import { convertTo12HourFormat } from "../../../utils/helpers/convertToHourFormat";
 const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   const { isSm } = useMediaQueries();
   const theme = useTheme();
@@ -91,6 +93,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   // Updated helper component with improved styling
   const InfoItem = ({ icon, label, value }) => (
     <Stack
+      title={`${value.props.text}`}
       direction="row"
       spacing={1}
       sx={{ paddingTop: "4px", paddingBottom: "4px" }}
@@ -197,15 +200,37 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
             },
           }}
         >
-          <InfoItem icon={<CalendarMonthIcon />} label="DATE" value={currentSeasonData.startDateTime?.split("T")[0]} />
+          <InfoItem
+            icon={<CalendarMonthIcon />}
+            label="DATE"
+            value={
+              <TextTruncate text={formatDateString(currentSeasonData.startDateTime)} variant="body2" component="p" maxChars={20} showButton={false} />
+            }
+          />
 
           <InfoItem
             icon={<AccessTimeIcon />}
             label="TIME"
-            value={`${currentSeasonData.startDateTime?.split("T")[1]} - ${currentSeasonData.endDateTime?.split("T")[1]}`}
+            value={
+              <TextTruncate
+                text={`${convertTo12HourFormat(currentSeasonData.startDateTime?.split("T")[1])} - ${convertTo12HourFormat(
+                  currentSeasonData.endDateTime?.split("T")[1]
+                )}`}
+                variant="body2"
+                component="p"
+                maxChars={20}
+                showButton={false}
+              />
+            }
           />
 
-          {isSm && <InfoItem icon={<LocationOnIcon />} label="LOCATION" value={locationValue} />}
+          {isSm && (
+            <InfoItem
+              icon={<LocationOnIcon />}
+              label="LOCATION"
+              value={<TextTruncate text={locationValue} variant="body2" component="p" maxChars={20} showButton={false} />}
+            />
+          )}
         </Box>
       </Stack>
 
