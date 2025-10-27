@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import TimelineProgressBar from "./TimelineProgressBar";
 import { TimelineContainer, TimelineItemContainer, TimelineContent, YearHeader } from "./CustomTimeline.styles";
 import { timelineAnimations } from "../animations/timelineAnimations";
-import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import AlumniCard from "./AlumniCard";
 
 const CustomTimeline = ({ items, groupByYear = true }) => {
   const timelineRef = useRef(null);
@@ -56,21 +56,16 @@ const CustomTimeline = ({ items, groupByYear = true }) => {
 
                 return (
                   <TimelineItemContainer
-                    key={`${item.playerName}-${index}`}
+                    key={`${item.name}-${index}`}
                     isLeft={isLeft}
                     variants={itemVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-100px" }}
                   >
-                    {/* Only show timeline icon on desktop */}
-                    {/* {!isMobile && (
-                      <TimelineIcon isLeft={isLeft} variants={iconVariants}>
-                        <img src={baseballIcon} alt="Baseball icon" />
-                      </TimelineIcon>
-                    )} */}
-
-                    <TimelineContent variants={itemVariants}>{item.content}</TimelineContent>
+                    <TimelineContent variants={itemVariants}>
+                      <AlumniCard key={`${item.name}-${index}`} alumni={item} />
+                    </TimelineContent>
                   </TimelineItemContainer>
                 );
               })}
