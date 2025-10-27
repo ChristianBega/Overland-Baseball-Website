@@ -25,7 +25,7 @@ const TeamRosterContent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(9);
 
-  const { data: players, loading: isLoading, error, refetch } = useStrapiCollection("rosters");
+  const { data: players, loading: isLoading, error, refetch } = useStrapiCollection("rosters", { filters: { userType: "Player" } });
 
   const handleFilteredDataChange = useCallback((newFilteredData) => {
     setFilteredData(newFilteredData);

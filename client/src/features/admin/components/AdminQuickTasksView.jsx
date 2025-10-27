@@ -13,7 +13,8 @@ const quickTaskConfig = [
     component: "<ManagePages />",
     description: "View all pages on the website, edit them, add new pages, delete pages, etc...",
     action: (openLink, link) => openLink(link, "_blank"),
-    link: process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL,
+    // TODO: Add NODE_ENV check for production and development
+    link: process.env.NODE_ENV === "production" ? process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL : process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL_DEV,
     type: "link",
   },
 

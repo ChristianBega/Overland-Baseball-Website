@@ -9,8 +9,9 @@ import SocialIcons from "../../ui/components/SocialIcons";
 import PlaceHolderImage from "../../../assets/coachRosterPlaceHolder.jpg";
 // Utils
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import { Email } from "@mui/icons-material";
 
-const StaffCard = ({ title, name, image = PlaceHolderImage, socialIcons, ...rest }) => {
+const StaffCard = ({ title, name, image = PlaceHolderImage, socialIcons, coachEmail, ...rest }) => {
   const { isTablet } = useMediaQueries();
 
   return (
@@ -56,16 +57,17 @@ const StaffCard = ({ title, name, image = PlaceHolderImage, socialIcons, ...rest
               boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.15)",
             }}
           />
-          {socialIcons && (
-            <SocialIcons
-              variant="circle"
-              icons={socialIcons}
-              spacing={1}
-              size="small"
-              color="primary.main"
-              sx={{ mt: 1, mb: 0, justifyContent: "center", position: "absolute", bottom: "10px", left: 0, right: 0, zIndex: 10 }}
-            />
-          )}
+          {socialIcons ||
+            (coachEmail && (
+              <SocialIcons
+                variant="circle"
+                icons={(socialIcons || coachEmail) && [{ name: "email", icon: Email, link: `mailto:${coachEmail}` }]}
+                spacing={1}
+                size="small"
+                color="primary.main"
+                sx={{ mt: 1, mb: 0, justifyContent: "center", position: "absolute", bottom: "10px", left: 0, right: 0, zIndex: 10 }}
+              />
+            ))}
         </Box>
 
         <TextBlock spacing={2} alignItems="center" mt={2}>
