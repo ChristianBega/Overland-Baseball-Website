@@ -1,6 +1,6 @@
 // MUI Components
 import { IconButton, Stack, useTheme } from "@mui/material";
-import { Facebook, Instagram, Twitter } from "@mui/icons-material";
+import { Email, Facebook, Instagram, Twitter } from "@mui/icons-material";
 import React from "react";
 import PropTypes from "prop-types";
 // Utils
@@ -10,6 +10,7 @@ const defaultIcons = [
   { name: "facebook", icon: Facebook, link: "#" },
   { name: "instagram", icon: Instagram, link: "#" },
   { name: "twitter", icon: Twitter, link: "#" },
+  { name: "email", icon: Email, link: "#" },
 ];
 
 const SocialIcons = ({ icons = defaultIcons, spacing = 2, size = "medium", color = "secondary.main", ...rest }) => {

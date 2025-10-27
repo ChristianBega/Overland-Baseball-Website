@@ -1,7 +1,6 @@
 // MUI Components
 import { Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 // Components
 import SectionHeader from "../../ui/components/SectionHeader";
 import StaffCard from "./StaffCard";
@@ -10,6 +9,8 @@ import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import { Facebook, Instagram } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.styles";
+import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
+import DataStateDisplay from "../../ui/components/DataStateDisplay";
 
 // Mock social data for staff members
 const mockStaffData = [
@@ -45,21 +46,10 @@ const mockStaffData = [
 ];
 
 const Staff = ({ currentTeam = "varsity" }) => {
+  const { data: staff, loading: isLoading, error, refetch } = useStrapiCollection("rosters", { filters: { userType: "Coach" } });
+
   const { isLg, isTablet } = useMediaQueries();
-  const [currentStaff, setCurrentStaff] = useState([]);
   const theme = useTheme();
-
-  useEffect(() => {
-    const teamData = mockStaffData.find((team) => team.team === currentTeam);
-    if (teamData) {
-      // Convert team data to array of staff members, filtering out N/A entries
-      const staffArray = [teamData.coach, teamData.assistantCoach, ...(teamData.teamManager?.name !== "N/A" ? [teamData.teamManager] : [])].filter(
-        (staff) => staff.name && staff.name !== "N/A"
-      );
-
-      setCurrentStaff(staffArray);
-    }
-  }, [currentTeam]);
 
   // Determine grid spacing and columns based on breakpoints
   const getGridProps = () => {
@@ -69,6 +59,10 @@ const Staff = ({ currentTeam = "varsity" }) => {
   };
 
   const gridProps = getGridProps();
+
+  const filterHeadCoachFirst = staff.filter((staff) => staff.title === "Head Coach");
+  const filterAssistantCoachFirst = staff.filter((staff) => staff.title === "Assistant Coach");
+  const filteredStaff = [...filterHeadCoachFirst, ...filterAssistantCoachFirst];
 
   return (
     <Grid item xs={12}>
@@ -86,20 +80,35 @@ const Staff = ({ currentTeam = "varsity" }) => {
             />
           </Grid>
 
-          {/* Staff Cards */}
-          {currentStaff.map((staff, index) => (
-            <Grid item xs={gridProps.xs} sm={gridProps.sm} md={gridProps.md} key={`${staff.name}-${index}`}>
-              <StaffCard title={staff.title} name={staff.name} socialIcons={staff.socials.length > 0 ? staff.socials : undefined} />
-            </Grid>
-          ))}
+          <DataStateDisplay
+            isLoading={isLoading}
+            isError={!!error}
+            error={error}
+            isEmpty={!filteredStaff || filteredStaff.length === 0}
+            onRetry={refetch}
+            loadingMessage="Loading staff..."
+            errorTitle={"Unable to Load Staff"}
+            emptyProps={{
+              title: `No ${currentTeam.charAt(0).toUpperCase() + currentTeam.slice(1)} Staff Available`,
+              message: `No ${currentTeam.charAt(0).toUpperCase() + currentTeam.slice(1)} staff are available at the moment.`,
+            }}
+          >
+            {/* Staff Cards */}
+            {filteredStaff.map((staff, index) => (
+              <Grid item xs={gridProps?.xs} sm={gridProps?.sm} md={gridProps?.md} key={`${staff.fullName}-${index}`}>
+                <StaffCard
+                  title={staff.title}
+                  name={staff.fullName}
+                  coachEmail={staff.coachEmail}
+                  socialIcons={staff.coachEmail.length > 0 ? staff.email : undefined}
+                />
+              </Grid>
+            ))}
+          </DataStateDisplay>
         </Grid>
       </StyledSectionLayoutWrapper>
     </Grid>
   );
-};
-
-Staff.propTypes = {
-  currentTeam: PropTypes.string,
 };
 
 export default Staff;
