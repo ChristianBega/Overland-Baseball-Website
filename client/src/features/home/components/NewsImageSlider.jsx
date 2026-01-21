@@ -40,6 +40,16 @@ const imageSliderData = [
 const NewsImageSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Preload all images to prevent refetching during slider transitions
+  useEffect(() => {
+    imageSliderData.forEach((slide) => {
+      [slide.imageUrl.small, slide.imageUrl.medium, slide.imageUrl.original].forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    });
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % imageSliderData.length);
