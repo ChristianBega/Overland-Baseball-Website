@@ -9,7 +9,6 @@ import { getEventColor } from "./EventUtils";
  * @param {Function} props.onClick - Optional click handler
  */
 const EventPill = ({ event, onClick }) => {
-  console.log("event in EventPill", event);
   const colors = getEventColor(event?.gameType?.toLowerCase());
   const isGameEvent = event.opponent && (event.away || !event.away); // if there is an opponent and either away or home, it is a game event
   return (

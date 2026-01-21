@@ -27,7 +27,6 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
     reValidateMode: "onChange",
     defaultValues: {
       playerName: "",
-      email: "",
       playerPhone: "",
       guardianName: "",
       guardianEmail: "",
@@ -55,7 +54,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
     // Add form metadata
     formData.formMetaData = {
       formType: "eventSignUp",
-      formName: `${currentSeason} ${data.title}`,
+      formName: `${currentSeason || ""} ${data.title}`,
       formId: "evt-signup-001",
       source: "overlandbaseball.com",
       pageUrl: window.location.href,
