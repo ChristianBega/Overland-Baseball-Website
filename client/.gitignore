@@ -26,3 +26,4 @@ yarn-error.log*
 # Ignore .cursorrules files
 *.cursorrules
 project_rules.json
+.claude/

@@ -3,7 +3,7 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { ScrollToTop } from "./features/navigation";
-import { RoleGuard } from "./features/guards";
+import { RoleGuard, AuthRedirect } from "./features/guards";
 import { ROLES } from "./features/auth/utils/roles";
 import { PageLoader } from "./features/ui";
 
@@ -56,8 +56,8 @@ export default function AppRoutes() {
           <Route path="/sponsors" element={<SponsorsPage />} />
 
           {/* Authentication Routes */}
-          <Route path="/authentication/sign-in" element={<AuthenticationPage />} />
-          <Route path="/authentication/sign-up" element={<AuthenticationPage />} />
+          <Route path="/authentication/sign-in" element={<AuthRedirect><AuthenticationPage /></AuthRedirect>} />
+          <Route path="/authentication/sign-up" element={<AuthRedirect><AuthenticationPage /></AuthRedirect>} />
           <Route path="/authentication/password-reset" element={<AuthenticationPage />} />
 
           {/* Admin & Coach Routes */}
