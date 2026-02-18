@@ -21,7 +21,7 @@ const EventPill = ({ event, onClick }) => {
         display: "flex",
         alignItems: "center",
         gap: 0.5,
-        cursor: onClick && isGameEvent ? "pointer" : "default",
+        cursor: isGameEvent ? "not-allowed" : onClick ? "pointer" : "default",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.25)",
       }}
       onClick={onClick && !isGameEvent ? () => onClick(event) : undefined}

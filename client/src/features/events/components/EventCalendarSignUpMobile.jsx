@@ -9,11 +9,24 @@ const EventList = ({ events, handleSelectMobileEvent }) => {
       <Typography variant="h4" component="h3" mb={"1rem"}>
         Select An Event
       </Typography>
-      {events.map((event) => (
-        <ListItemButton sx={{ border: "1px solid #e0e0e0", mb: ".5rem" }} key={event.id} id={event.id} onClick={(e) => handleSelectMobileEvent(e)}>
-          {event.title || `Overland vs ${event.opponent}`}
-        </ListItemButton>
-      ))}
+      {events.map((event) => {
+        const isGameEvent = event.opponent && (event.away || !event.away); // Game events with opponents
+        return (
+          <ListItemButton
+            sx={{
+              border: "1px solid #e0e0e0",
+              mb: ".5rem",
+              cursor: isGameEvent ? "not-allowed" : "pointer",
+            }}
+            key={event.id}
+            id={event.id}
+            onClick={isGameEvent ? undefined : (e) => handleSelectMobileEvent(e)}
+            disabled={isGameEvent}
+          >
+            {event.title || `Overland vs ${event.opponent}`}
+          </ListItemButton>
+        );
+      })}
     </List>
   );
 };
