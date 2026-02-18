@@ -1,11 +1,14 @@
 // Todo: needs to be a grid item
+// MUI components
+import { Box, Grid, Typography } from "@mui/material";
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+// Components
 import { useModal } from "../../../features/ui";
+// Utils
 import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { UserContext } from "../../../features/auth/context/UserContext";
-import { useNavigate } from "react-router-dom";
-import { Box, Grid, Typography } from "@mui/material";
-// import { initializeBulkAddFields } from "../../../../../setup/utils/firebase/helper";
+import { auth } from "../../../utils/firebase/index.firebase";
 
 const quickTaskConfig = [
   {
@@ -13,11 +16,35 @@ const quickTaskConfig = [
     component: "<ManagePages />",
     description: "View all pages on the website, edit them, add new pages, delete pages, etc...",
     action: (openLink, link) => openLink(link, "_blank"),
-    // TODO: Add NODE_ENV check for production and development
     link: process.env.NODE_ENV === "production" ? process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL : process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL_DEV,
     type: "link",
   },
+  {
+    task: "Manage Cms AI",
+    component: "<ManagePages />",
+    description: "View all pages on the website, edit them, add new pages, delete pages, etc with AI assistance",
+    action: async () => {
+      try {
+        const token = await auth.currentUser.getIdToken();
 
+        const voiceCmsUrl = process.env.NODE_ENV === "production" ? process.env.REACT_APP_VOICE_CMS_URL : process.env.REACT_APP_VOICE_CMS_URL_DEV;
+
+        const res = await fetch(`${voiceCmsUrl}/api/auth/session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ idToken: token }),
+        });
+
+        if (!res.ok) throw new Error("Session creation failed");
+
+        window.open(voiceCmsUrl, "_blank");
+      } catch (err) {
+        console.error("Failed to open Voice CMS:", err);
+      }
+    },
+    type: "custom",
+  },
   {
     task: "Events Sign Ups",
     component: "<Events />",
@@ -32,38 +59,6 @@ const quickTaskConfig = [
     action: (navigate) => navigate("/user-management"),
     type: "navigate",
   },
-
-  // {
-  //   // ! take a picture of your game score, create a virtual version, allow for editing, sharing, and AI analysis of the game
-  //   task: "Game Score Cards",
-  //   component: "<GameScoreCards />",
-  //   description: "Coming soon - view all game score cards, add new game score cards, edit game score cards, delete game score cards...",
-  //   action: (navigate) => navigate("/game-score-cards"),
-  //   type: "navigate",
-  // },
-
-  // {
-  //   task: "Form Analytics",
-  //   component: "<FormAnalytics />",
-  //   description: "View all form submissions and their analytics - who's signed up for what, what events they've signed up for, etc...",
-  //   action: (navigate) => navigate("/form-analytics"),
-  //   type: "navigate",
-  // },
-
-  // {
-  //   task: "Incoming Emails",
-  //   component: "<IncomingEmails />",
-  //   description: "View all incoming emails, filter by sender, subject, date, etc...",
-  //   action: (navigate) => navigate("/incoming-emails"),
-  //   type: "navigate",
-  // },
-
-  // {
-  //   task: "Website Analytics (GA4 Tracking) - coming soon (page views, clicks, ecom tracker, cart, etc...)",
-  //   component: "<WebsiteAnalytics />",
-  //   action: (navigate) => navigate("/website-analytics"),
-  //   type: "navigate",
-  // },
 ];
 
 const AdminQuickTasksView = () => {
@@ -83,6 +78,8 @@ const AdminQuickTasksView = () => {
       task.action(openModal);
     } else if (task.type === "link") {
       task.action(openLink, task.link);
+    } else if (task.type === "custom") {
+      task.action();
     }
   };
 
