@@ -25,26 +25,43 @@ const quickTaskConfig = [
     description: "View all pages on the website, edit them, add new pages, delete pages, etc with AI assistance",
     action: async () => {
       try {
-        const token = await auth.currentUser.getIdToken();
-
+        const token = await auth.currentUser.getIdToken(/* forceRefresh */ true);
         const voiceCmsUrl = process.env.NODE_ENV === "production" ? process.env.REACT_APP_VOICE_CMS_URL : process.env.REACT_APP_VOICE_CMS_URL_DEV;
 
-        const res = await fetch(`${voiceCmsUrl}/api/auth/session`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ idToken: token }),
-        });
-
-        if (!res.ok) throw new Error("Session creation failed");
-
-        window.open(voiceCmsUrl, "_blank");
+        // Pass token as URL param — Railway middleware will verify it on load
+        window.open(`${voiceCmsUrl}?token=${token}`, "_blank");
       } catch (err) {
         console.error("Failed to open Voice CMS:", err);
       }
     },
     type: "custom",
   },
+  // {
+  //   task: "Manage Cms AI",
+  //   component: "<ManagePages />",
+  //   description: "View all pages on the website, edit them, add new pages, delete pages, etc with AI assistance",
+  //   action: async () => {
+  //     try {
+  //       const token = await auth.currentUser.getIdToken();
+
+  //       const voiceCmsUrl = process.env.NODE_ENV === "production" ? process.env.REACT_APP_VOICE_CMS_URL : process.env.REACT_APP_VOICE_CMS_URL_DEV;
+
+  //       const res = await fetch(`${voiceCmsUrl}/api/auth/session`, {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         credentials: "include",
+  //         body: JSON.stringify({ idToken: token }),
+  //       });
+
+  //       if (!res.ok) throw new Error("Session creation failed");
+
+  //       window.open(voiceCmsUrl, "_blank");
+  //     } catch (err) {
+  //       console.error("Failed to open Voice CMS:", err);
+  //     }
+  //   },
+  //   type: "custom",
+  // },
   {
     task: "Events Sign Ups",
     component: "<Events />",
