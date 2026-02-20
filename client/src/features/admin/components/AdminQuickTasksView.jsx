@@ -25,11 +25,22 @@ const quickTaskConfig = [
     description: "View all pages on the website, edit them, add new pages, delete pages, etc with AI assistance",
     action: async () => {
       try {
-        const token = await auth.currentUser.getIdToken(/* forceRefresh */ true);
-        const voiceCmsUrl = process.env.NODE_ENV === "production" ? process.env.REACT_APP_VOICE_CMS_URL : process.env.REACT_APP_VOICE_CMS_URL_DEV;
+        const voiceCmsUrl =
+          process.env.NODE_ENV === "production"
+            ? process.env.REACT_APP_VOICE_CMS_URL
+            : process.env.REACT_APP_VOICE_CMS_URL_DEV;
 
-        // Pass token as URL param — Railway middleware will verify it on load
-        window.open(`${voiceCmsUrl}?token=${token}`, "_blank");
+        // Open window IMMEDIATELY (synchronous) to satisfy mobile popup blockers
+        // Mobile browsers block window.open if called after an await
+        const newWindow = window.open("about:blank", "_blank");
+
+        // Now do the async work
+        const token = await auth.currentUser.getIdToken(/* forceRefresh */ true);
+
+        // Update the already-opened window's URL
+        if (newWindow) {
+          newWindow.location.href = `${voiceCmsUrl}?token=${token}`;
+        }
       } catch (err) {
         console.error("Failed to open Voice CMS:", err);
       }
