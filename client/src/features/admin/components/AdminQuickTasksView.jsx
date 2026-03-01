@@ -16,7 +16,7 @@ const quickTaskConfig = [
     component: "<ManagePages />",
     description: "View all pages on the website, edit them, add new pages, delete pages, etc...",
     action: (openLink, link) => openLink(link, "_blank"),
-    link: process.env.NODE_ENV === "production" ? process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL : process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL_DEV,
+    link: import.meta.env.MODE === "production" ? import.meta.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL : import.meta.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL_DEV,
     type: "link",
   },
   {
@@ -26,9 +26,9 @@ const quickTaskConfig = [
     action: async () => {
       try {
         const voiceCmsUrl =
-          process.env.NODE_ENV === "production"
-            ? process.env.REACT_APP_VOICE_CMS_URL
-            : process.env.REACT_APP_VOICE_CMS_URL_DEV;
+          import.meta.env.MODE === "production"
+            ? import.meta.env.REACT_APP_VOICE_CMS_URL
+            : import.meta.env.REACT_APP_VOICE_CMS_URL_DEV;
 
         // Open window IMMEDIATELY (synchronous) to satisfy mobile popup blockers
         // Mobile browsers block window.open if called after an await

@@ -40,7 +40,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   // Use form submission hook with all features
   const { handleSubmit, canSubmitForm, isLoading, error, response, showSuccessMessage, remainingAttempts, formattedTimeUntilReset, clearAllStatus } =
     useFormSubmission({
-      apiBaseUrl: process.env.REACT_APP_AWS_API_BASE_URL_DEV,
+      apiBaseUrl: import.meta.env.REACT_APP_AWS_API_BASE_URL_DEV,
       requireAuth: true, // Event signups require authentication
       rateLimitIdentifier: emailValue, // Track by email
       maxAttempts: 3,
