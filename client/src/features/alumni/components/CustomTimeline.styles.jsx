@@ -21,7 +21,6 @@ export const TimelineItemContainer = styled(motion.div)(({ theme, isLeft }) => (
 export const TimelineContent = styled(motion.div)(({ theme }) => ({
   marginTop: theme.spacing(1),
   [theme.breakpoints.up("md")]: {
-    marginLeft: theme.spacing(8),
     marginLeft: 0,
   },
 }));
