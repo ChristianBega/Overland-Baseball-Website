@@ -8,7 +8,6 @@ export { default as SelectInputField } from "./components/SelectInputField";
 export { default as TextAreaInputField } from "./components/TextAreaInputField";
 export { default as TextInputField } from "./components/TextInputField";
 export { default as TimeInputField } from "./components/TimeInputField";
-export { default as ToggleSwitchInputField } from "./components/ToggleSwitchInputField";
 export { default as InputFieldComponent } from "./components/InputFields";
 
 // Reusable Components
