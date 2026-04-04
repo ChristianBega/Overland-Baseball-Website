@@ -4,7 +4,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // Components
-import { useModal } from "../../../features/ui";
+import { useModal } from "../../../features/ui/context/modal.context";
 // Utils
 import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { UserContext } from "../../../features/auth/context/UserContext";

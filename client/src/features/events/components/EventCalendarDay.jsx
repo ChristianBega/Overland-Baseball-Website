@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import EventPill from "./EventPill";
 import { isToday, isPastDate } from "./EventUtils";
 import { useTheme } from "@emotion/react";
-import { useModal } from "../../../features/ui";
+import { useModal } from "../../../features/ui/context/modal.context";
 import EventSignUpForm from "./EventSignUpForm";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import CalendarSignUpMobile from "./EventCalendarSignUpMobile";
