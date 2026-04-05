@@ -5,7 +5,7 @@ import SectionLayout from "../../ui/components/SectionLayout";
 import SectionHeader from "../../ui/components/SectionHeader";
 import PlayerEventToggles from "./PlayerEventToggles";
 import PlayerEventCard from "./PlayerEventCard";
-import { useModal } from "../../ui";
+import { useModal } from "../../ui/context/modal.context";
 import EventSignUpForm from "./EventSignUpForm";
 import NoDataDisplay from "../../ui/components/NoDataDisplay";
 import DataStateDisplay from "../../ui/components/DataStateDisplay";

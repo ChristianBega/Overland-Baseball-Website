@@ -17,3 +17,5 @@ worktrees/
 .claude/tasks/
 .claude/datadump/
 .claude/parsed/
+PROMPT.md
+.dev-orc-prompt.txt
