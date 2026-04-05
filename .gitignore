@@ -11,3 +11,9 @@ node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# dev-orc managed
+worktrees/
+.claude/tasks/
+.claude/datadump/
+.claude/parsed/
