@@ -73,20 +73,6 @@ const quickTaskConfig = [
   //   },
   //   type: "custom",
   // },
-  {
-    task: "Events Sign Ups",
-    component: "<Events />",
-    description: "View all events sign ups, filter by event, user, date, etc...",
-    action: (navigate) => navigate("/events"),
-    type: "navigate",
-  },
-  {
-    task: "User Management",
-    component: "<CmsUserManagement />",
-    description: "Manage all users on the website - update, delete, add new users, manage roles, etc...",
-    action: (navigate) => navigate("/user-management"),
-    type: "navigate",
-  },
 ];
 
 const AdminQuickTasksView = () => {
