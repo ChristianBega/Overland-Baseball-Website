@@ -149,7 +149,6 @@ const DataStateDisplay = ({
                 mt: 2,
                 px: 4,
                 py: 1.5,
-                borderRadius: 1,
                 textTransform: "none",
                 fontWeight: 600,
                 fontSize: "1rem",

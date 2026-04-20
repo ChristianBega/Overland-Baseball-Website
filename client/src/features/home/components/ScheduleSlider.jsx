@@ -9,7 +9,6 @@ import {
   StyledLeftButton,
   StyledRightButton,
   StyledScrollHint,
-  StyledEmptyState,
 } from "./ScheduleSlider.styles";
 
 const ScheduleSlider = ({ games, showNavigation = true, showScrollHint = true }) => {
@@ -69,10 +68,6 @@ const ScheduleSlider = ({ games, showNavigation = true, showScrollHint = true })
       });
     }
   };
-
-  if (!games || games.length === 0) {
-    return <StyledEmptyState>No games scheduled</StyledEmptyState>;
-  }
 
   return (
     <Box>

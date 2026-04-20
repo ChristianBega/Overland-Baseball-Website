@@ -112,9 +112,3 @@ export const StyledScrollHint = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledEmptyState = styled(Box)(({ theme }) => ({
-  textAlign: "center",
-  paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(4),
-  color: theme.palette.text.secondary,
-}));
