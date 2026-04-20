@@ -22,7 +22,11 @@ export default function Schedule() {
       ...item,
       isPast: isPastEvent(item.endDateTime),
     }));
-    return dataWithPastFlag;
+    const upcoming = dataWithPastFlag.filter((item) => !item.isPast).sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+
+    const past = dataWithPastFlag.filter((item) => item.isPast).sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+
+    return [...upcoming, ...past];
   }, [data]);
 
   return (
