@@ -5,7 +5,7 @@ import EventCalendar from "./EventCalendar";
 import SectionHeader from "../../ui/components/SectionHeader";
 import { useTheme } from "@emotion/react";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
-import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { DataStateDisplay } from "../../ui";
 
 export default function Events() {
   const { data: events, loading: eventsLoading, error: eventsError, refetch: refetchEvents } = useStrapiCollection("events");

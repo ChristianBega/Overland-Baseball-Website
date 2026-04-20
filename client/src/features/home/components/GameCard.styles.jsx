@@ -12,7 +12,8 @@ export const StyledGameCard = styled(Card)(({ theme, isPast }) => ({
   gap: "1rem",
   cursor: "pointer",
   transition: "all 0.2s ease-in-out",
-  opacity: isPast ? 0.7 : 1,
+  opacity: isPast ? 0.5 : 1,
+  backgroundColor: isPast ? "rgba(0, 0, 0, 0.03)" : "transparent",
 
   "&:hover": {
     transform: isPast ? "none" : "translateY(-2px)",
@@ -119,6 +120,21 @@ export const StatusChip = styled(Chip)(({ theme, isHome }) => ({
   height: "20px",
   "& .MuiChip-label": {
     color: "#fff",
+  },
+  [theme.breakpoints.up("sm")]: {
+    height: "30px",
+  },
+}));
+
+export const PastStatusChip = styled(Chip)(({ theme }) => ({
+  fontSize: "12px",
+  height: "20px",
+  fontWeight: 600,
+  backgroundColor: theme.palette.error.main,
+  "& .MuiChip-label": {
+    color: theme.palette.error.contrastText,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
   },
   [theme.breakpoints.up("sm")]: {
     height: "30px",

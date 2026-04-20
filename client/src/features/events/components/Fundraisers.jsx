@@ -5,7 +5,7 @@ import SectionLayout from "../../../features/ui/components/SectionLayout";
 import EventList from "../../home/components/EventList";
 import SectionHeader from "../../ui/components/SectionHeader";
 import { useTheme } from "@emotion/react";
-import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { DataStateDisplay } from "../../ui";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 
 export default function Fundraisers() {

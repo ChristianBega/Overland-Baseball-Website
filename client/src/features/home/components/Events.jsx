@@ -11,7 +11,7 @@ import EventList from "./EventList";
 import ButtonBlock from "../../ui/components/ButtonBlock";
 import { Link } from "react-router-dom";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
-import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { DataStateDisplay } from "../../ui";
 
 const ExploreAllEventsButton = ({ marginTop }) => {
   return (

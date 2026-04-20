@@ -8,7 +8,7 @@ import ScheduleSlider from "./ScheduleSlider";
 import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.styles";
 // Hooks
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
-import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { DataStateDisplay } from "../../ui";
 
 export default function Schedule() {
   const theme = useTheme();
