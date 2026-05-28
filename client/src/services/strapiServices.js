@@ -1,17 +1,21 @@
 const STRAPI_URL = import.meta.env.MODE === "development" ? "http://localhost:1337" : import.meta.env.REACT_APP_STRAPI_URL;
+const DRAFT_MODE = import.meta.env.REACT_APP_STRAPI_DRAFT_MODE === "true";
+const API_TOKEN = import.meta.env.REACT_APP_STRAPI_API_TOKEN;
 
 class StrapiService {
   // Helper method for API requests
   async request(endpoint, options = {}) {
     try {
       const url = `${STRAPI_URL}/api${endpoint}`;
+      const headers = {
+        "Content-Type": "application/json",
+        ...(API_TOKEN && { Authorization: `Bearer ${API_TOKEN}` }),
+        ...options.headers,
+      };
 
       const response = await fetch(url, {
         ...options,
-        headers: {
-          "Content-Type": "application/json",
-          ...options.headers,
-        },
+        headers,
       });
 
       if (!response.ok) {
@@ -51,6 +55,10 @@ class StrapiService {
     // Start with populate=* as a default if not specified
     if (!params.populate) {
       params.populate = "*";
+    }
+
+    if (DRAFT_MODE && !params.status) {
+      params.status = "draft";
     }
 
     // Convert params object to URL query string
