@@ -35,7 +35,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   });
 
   // Watch email field for rate limiting
-  const emailValue = watch("email");
+  const emailValue = watch("guardianEmail");
 
   // Use form submission hook with all features
   const { handleSubmit, canSubmitForm, isLoading, error, response, showSuccessMessage, remainingAttempts, formattedTimeUntilReset, clearAllStatus } =
