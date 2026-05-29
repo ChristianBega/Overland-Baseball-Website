@@ -26,7 +26,7 @@ const EventCardNew = ({ event, onCardClick }) => {
       aria-label={`Sign Up for ${title} on ${formatDateTimeForCalendar(startDateTime)} at ${location}`}
     >
       <StyledEventCardImageContainer>
-        <StyledEventCardImage component="img" src={eventImage.url} alt="event" />
+        <StyledEventCardImage component="img" src={eventImage?.url} alt="event" />
       </StyledEventCardImageContainer>
       {!isMd && <EventCardCtas data={event} />}
       <StyledEventCardBodyText>

@@ -41,7 +41,7 @@ const AlumniCard = ({ alumni, ...rest }) => {
       {/* Player Image */}
       <StyledPlayerImageContainer>
         <PlayerImage
-          src={image.url}
+          src={image?.url}
           placeholderSrc={PlaceHolderImage}
           alt={`${name} alumni photo`}
           height="100%"
