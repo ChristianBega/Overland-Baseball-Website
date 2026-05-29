@@ -35,7 +35,7 @@ const PlayerCard = ({ player, ...rest }) => {
     <StyledPlayerCard isTablet={isTablet} {...rest}>
       <StyledCardContent>
         <StyledImageContainer>
-          {playerImage ? (
+          {playerImage?.[0]?.url ? (
             <StyledPlayerImage component="img" src={playerImage[0].url} alt={`${fullName}`} />
           ) : (
             <StyledPlaceholderImage component="img" src={PlaceHolderImage} alt={`${fullName}`} />
