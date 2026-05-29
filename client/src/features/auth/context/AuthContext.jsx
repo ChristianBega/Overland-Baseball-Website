@@ -1,4 +1,3 @@
-// ! FIREBASE is deprecating.... will update soon....
 import { createContext, useState, useEffect } from "react";
 import { auth } from "../../../utils/firebase/index.firebase";
 

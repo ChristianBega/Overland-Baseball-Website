@@ -40,7 +40,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
   // Use form submission hook with all features
   const { handleSubmit, canSubmitForm, isLoading, error, response, showSuccessMessage, remainingAttempts, formattedTimeUntilReset, clearAllStatus } =
     useFormSubmission({
-      apiBaseUrl: process.env.REACT_APP_AWS_API_BASE_URL_DEV,
+      apiBaseUrl: import.meta.env.REACT_APP_AWS_API_BASE_URL,
       requireAuth: true, // Event signups require authentication
       rateLimitIdentifier: emailValue, // Track by email
       maxAttempts: 3,
@@ -213,7 +213,7 @@ const EventSignUpForm = ({ data, currentSeason, closeModal }) => {
             value={
               <TextTruncate
                 text={`${convertTo12HourFormat(currentSeasonData.startDateTime?.split("T")[1])} - ${convertTo12HourFormat(
-                  currentSeasonData.endDateTime?.split("T")[1]
+                  currentSeasonData.endDateTime?.split("T")[1],
                 )}`}
                 variant="body2"
                 component="p"

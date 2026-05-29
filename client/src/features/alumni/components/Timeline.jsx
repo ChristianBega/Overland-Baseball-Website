@@ -3,7 +3,7 @@ import { SectionLayout, SectionHeader } from "../../ui";
 import CustomTimeline from "./CustomTimeline";
 import { useTheme } from "@emotion/react";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
-import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { DataStateDisplay } from "../../ui";
 
 // Helper function to parse and sort birth dates
 const parseBirthDate = (birthDate) => {

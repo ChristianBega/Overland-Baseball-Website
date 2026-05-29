@@ -11,6 +11,9 @@ import styled from "@emotion/styled";
 // Images
 import OverlandLogo from "../../../assets/overlandLogo_3.webp";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+// TODO [OV-37]: Social media URLs need to be verified/updated by the client.
+// Current URLs may be outdated. Waiting on client to confirm correct links.
+// Once confirmed, update linkUrl values below and uncomment YouTube if needed.
 const socialData = [
   {
     linkName: "twitter",

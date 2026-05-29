@@ -4,7 +4,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // Components
-import { useModal } from "../../../features/ui";
+import { useModal } from "../../../features/ui/context/modal.context";
 // Utils
 import { useCheckAuthorization } from "../../../utils/helpers/checkAuthorization";
 import { UserContext } from "../../../features/auth/context/UserContext";
@@ -16,7 +16,7 @@ const quickTaskConfig = [
     component: "<ManagePages />",
     description: "View all pages on the website, edit them, add new pages, delete pages, etc...",
     action: (openLink, link) => openLink(link, "_blank"),
-    link: process.env.NODE_ENV === "production" ? process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL : process.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL_DEV,
+    link: import.meta.env.MODE === "production" ? import.meta.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL : import.meta.env.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL_DEV,
     type: "link",
   },
   {
@@ -26,9 +26,9 @@ const quickTaskConfig = [
     action: async () => {
       try {
         const voiceCmsUrl =
-          process.env.NODE_ENV === "production"
-            ? process.env.REACT_APP_VOICE_CMS_URL
-            : process.env.REACT_APP_VOICE_CMS_URL_DEV;
+          import.meta.env.MODE === "production"
+            ? import.meta.env.REACT_APP_VOICE_CMS_URL
+            : import.meta.env.REACT_APP_VOICE_CMS_URL_DEV;
 
         // Open window IMMEDIATELY (synchronous) to satisfy mobile popup blockers
         // Mobile browsers block window.open if called after an await
@@ -73,20 +73,6 @@ const quickTaskConfig = [
   //   },
   //   type: "custom",
   // },
-  {
-    task: "Events Sign Ups",
-    component: "<Events />",
-    description: "View all events sign ups, filter by event, user, date, etc...",
-    action: (navigate) => navigate("/events"),
-    type: "navigate",
-  },
-  {
-    task: "User Management",
-    component: "<CmsUserManagement />",
-    description: "Manage all users on the website - update, delete, add new users, manage roles, etc...",
-    action: (navigate) => navigate("/user-management"),
-    type: "navigate",
-  },
 ];
 
 const AdminQuickTasksView = () => {

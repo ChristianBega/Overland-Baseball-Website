@@ -1,4 +1,3 @@
-// ! FIREBASE is deprecating.... will update soon....
 import { createContext, useState, useEffect, useContext } from "react";
 import { createUserDocumentFromAuth, onAuthStateChangedListener } from "../utils/authUtils";
 // import { auth } from "../utils/firebase/index.firebase";

@@ -8,7 +8,7 @@ import ScheduleSlider from "./ScheduleSlider";
 import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.styles";
 // Hooks
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
-import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { DataStateDisplay } from "../../ui";
 
 export default function Schedule() {
   const theme = useTheme();
@@ -22,7 +22,11 @@ export default function Schedule() {
       ...item,
       isPast: isPastEvent(item.endDateTime),
     }));
-    return dataWithPastFlag;
+    const upcoming = dataWithPastFlag.filter((item) => !item.isPast).sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+
+    const past = dataWithPastFlag.filter((item) => item.isPast).sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+
+    return [...upcoming, ...past];
   }, [data]);
 
   return (

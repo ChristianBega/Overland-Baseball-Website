@@ -10,7 +10,7 @@ import { Facebook, Instagram } from "@mui/icons-material";
 import { useTheme } from "@emotion/react";
 import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.styles";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
-import DataStateDisplay from "../../ui/components/DataStateDisplay";
+import { DataStateDisplay } from "../../ui";
 
 // Mock social data for staff members
 const mockStaffData = [
@@ -84,7 +84,7 @@ const Staff = ({ currentTeam = "varsity" }) => {
             isLoading={isLoading}
             isError={!!error}
             error={error}
-            isEmpty={!filteredStaff || filteredStaff.length === 0}
+            isEmpty={!staff || staff.length === 0}
             onRetry={refetch}
             loadingMessage="Loading staff..."
             errorTitle={"Unable to Load Staff"}
@@ -100,7 +100,6 @@ const Staff = ({ currentTeam = "varsity" }) => {
                   title={staff.title}
                   name={staff.fullName}
                   coachEmail={staff.coachEmail}
-                  socialIcons={staff.coachEmail.length > 0 ? staff.email : undefined}
                 />
               </Grid>
             ))}

@@ -14,6 +14,7 @@ import {
   StyledOpponentName,
   StyledHiddenText,
   StatusChip,
+  PastStatusChip,
   TeamLogoAvatar,
 } from "./GameCard.styles";
 import { formatDateTimeForCalendar } from "../../../utils/helpers/formatDate";
@@ -27,7 +28,7 @@ const GameCard = ({ data }) => {
     hour12: true,
   });
   const displayDate = formatDateTimeForCalendar(startDateTime);
-  const descriptionAndAriaLabel = `Overland vs ${opponent} on ${displayDate} at ${formattedTime} at ${location}. ${away ? "Away" : "Home"} game.`;
+  const descriptionAndAriaLabel = `Overland vs ${opponent} on ${displayDate} at ${formattedTime} at ${location}. ${away ? "Away" : "Home"} game.${isPast ? " Past game." : ""}`;
 
   return (
     <StyledGameCard
@@ -71,7 +72,11 @@ const GameCard = ({ data }) => {
           {/* Hidden "vs" for screen readers */}
           <StyledHiddenText>versus</StyledHiddenText>
 
-          <StatusChip label={away ? "Away" : "Home"} color="success" isHome={away} size="small" />
+          {isPast ? (
+            <PastStatusChip label="Past" size="small" />
+          ) : (
+            <StatusChip label={away ? "Away" : "Home"} color="success" isHome={away} size="small" />
+          )}
         </StyledTimeStatusStack>
 
         {/* Opponent Team */}

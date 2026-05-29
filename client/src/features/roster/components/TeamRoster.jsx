@@ -14,8 +14,7 @@ import TeamRosterTableView from "./TeamRosterTableView.jsx";
 // Context
 import { ViewToggleProvider, useViewToggle } from "../../../utils/contexts/ViewToggleContext";
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection.jsx";
-import NoDataDisplay from "../../ui/components/NoDataDisplay.jsx";
-import DataStateDisplay from "../../ui/components/DataStateDisplay.jsx";
+import { NoDataDisplay, DataStateDisplay } from "../../ui";
 
 // Inner component that uses the context
 const TeamRosterContent = () => {
