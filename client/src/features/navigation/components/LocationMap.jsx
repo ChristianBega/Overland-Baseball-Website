@@ -1,0 +1,22 @@
+import React from "react";
+// MUI components
+import { Box } from "@mui/material";
+
+export default function LocationMap() {
+  return (
+    <Box sx={{ width: "100%", display: "flex" }}>
+      <Box
+        component="iframe"
+        src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d806.0333543526149!2d-104.84414943550574!3d39.682822188705124!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1679347895928!5m2!1sen!2sus"
+        title="map"
+        loading="lazy"
+        sx={{
+          border: "0 !important",
+          position: "relative",
+          width: "100%",
+          height: { xs: "275px", sm: "350px", md: "200px" },
+        }}
+      ></Box>
+    </Box>
+  );
+}

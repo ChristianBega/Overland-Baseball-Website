@@ -23,5 +23,6 @@
   "homepage": "https://github.com/ChristianBega/Overland-Baseball-Website#readme",
   "devDependencies": {
     "concurrently": "^7.6.0"
-  }
+  },
+  "dependencies": {}
 }

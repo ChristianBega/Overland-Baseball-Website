@@ -1,0 +1,39 @@
+// Todo: This needs to be simplified.... we have 3 different components (eventItems, ScheduleItem, TeamRosterItem) that are all essentially the same thing... just different data. Instead we should have a universal component that can be used for all or just leverage existing dataTable component (like roster component)
+
+//TODO : ! used in the dashboard roster table, but we will be deleting this soon and using the DataTable.jsx component instead
+// import "./TeamRosterItem.styles.css";
+import { useTheme } from "@emotion/react";
+// import PlaceHolderImage from "../../../../../assets/rosterPlaceHolder.png";
+// import CmsOperationStatus from "../../../../components/contentManagementSystem/cmsOperationStatus/cmsOperationStatus";
+// import { CmsOperationStatus } from "../../../../features/cms";
+import { StyledTableRow } from "../../../utils/theme/index.styles";
+
+import TeamRosterContent from "./TeamRosterContent.component";
+
+export default function TeamRoosterItem({ ...props }) {
+  const theme = useTheme();
+  const { isEditable, editableData, isLoading, isError, isSuccess, renderAsRow = true, isCmsItem } = props;
+  const currentData = isEditable ? editableData : props.data;
+
+  // if (isLoading || isError || isSuccess) {
+  //   return <CmsOperationStatus isLoading={isLoading} isError={isError} isSuccess={isSuccess} />;
+  // }
+
+  return (
+    <>
+      {/* {isEditable || isCmsItem ? (
+        renderAsRow ? (
+          <StyledTableRow>
+            <TeamContentEditable {...props} data={currentData} />
+          </StyledTableRow>
+        ) : (
+          <TeamContentEditable {...props} data={currentData} />
+        )
+      ) : ( */}
+      <StyledTableRow>
+        <TeamRosterContent theme={theme} {...props} />
+      </StyledTableRow>
+      {/* )} */}
+    </>
+  );
+}

@@ -1,0 +1,438 @@
+{
+  "projectInfo": {
+    "name": "Overland Baseball Website",
+    "description": "Baseball team website with admin features, events, roster management, and theme customization",
+    "techStack": {
+      "framework": "React 18.2.0",
+      "language": "JavaScript (some PropTypes usage)",
+      "styling": "Material-UI v5 with extensive custom theme",
+      "stateManagement": "React Context + hooks",
+      "routing": "React Router v6",
+      "dataFetching": "TanStack React Query + Axios",
+      "forms": "React Hook Form",
+      "other": ["Firebase", "EmailJS", "Framer Motion", "PapaParse"]
+    },
+    "projectType": "team-website-with-cms",
+    "lastUpdated": "2025-01-27"
+  },
+
+  "architecture": {
+    "folderStructure": {
+      "features": "Feature-based architecture in src/features/",
+      "components": "UI components in features/ui/components/",
+      "pages": "Page components in features/[feature]/pages/",
+      "context": "Context providers in features/ui/context/",
+      "utils": "Utilities and theme in src/utils/",
+      "hooks": "Custom hooks in src/hooks/",
+      "assets": "Static assets in src/assets/"
+    },
+    "namingConventions": {
+      "components": "PascalCase (TextBlock.jsx, SectionHeader.jsx)",
+      "files": "PascalCase for components, camelCase for utilities",
+      "variables": "camelCase pattern",
+      "constants": "UPPER_SNAKE_CASE pattern"
+    },
+    "layoutPatterns": {
+      "pageStructure": "Hero (optional, full-width) + Container + Grid for main content",
+      "heroSections": "Outside Container for full-width layouts",
+      "mainContent": "Container component='main' with semantic id/aria-label",
+      "contentGrid": "Grid container with responsive columnSpacing using useMediaQueries"
+    }
+  },
+
+  "components": {
+    "TextBlock": {
+      "purpose": "Flexible layout wrapper using MUI Stack - replaces manual flex/text styling",
+      "usage": "Use as a container for any content that needs flex positioning - ALWAYS prefer this over raw divs or manual flex styling",
+      "props": {
+        "required": [],
+        "optional": ["All Stack props", "children", "...props spread"]
+      },
+      "example": "<TextBlock direction='column' spacing={2}>{children}</TextBlock>",
+      "location": "/src/features/ui/components/TextBlock.jsx",
+      "dependencies": ["@mui/material Stack"],
+      "notes": "Simple wrapper around MUI Stack - use this for consistent spacing and layout patterns"
+    },
+    "SectionLayout": {
+      "purpose": "Standardized section spacing and margins with responsive breakpoints",
+      "usage": "Wrap all page sections with this component for consistent spacing throughout the site",
+      "props": {
+        "required": ["id", "ariaLabel", "children"],
+        "optional": ["marginBlock", "marginZero", "customMargin", "sx"]
+      },
+      "example": "<SectionLayout id='hero' ariaLabel='Hero section'>{content}</SectionLayout>",
+      "location": "/src/features/ui/components/SectionLayout.jsx",
+      "dependencies": ["@mui/material styled"],
+      "notes": "Provides consistent 4rem->8rem margins across breakpoints, use for all major page sections"
+    },
+    "StyledSectionLayoutWrapper": {
+      "purpose": "Enhanced SectionLayout with gray background styling for highlighted sections",
+      "usage": "Use when you need a section with a distinctive gray background wrapper - extends SectionLayout functionality",
+      "props": {
+        "required": ["id", "ariaLabel", "children"],
+        "optional": ["All SectionLayout props", "marginBlock", "marginZero", "customMargin", "sx"]
+      },
+      "example": "<StyledSectionLayoutWrapper id='featured' ariaLabel='Featured section'>{content}</StyledSectionLayoutWrapper>",
+      "location": "/src/features/ui/components/SectionLayout.styles.jsx",
+      "dependencies": ["SectionLayout", "@mui/material styled"],
+      "notes": "Provides light gray background (#f8f9fa), padding, rounded corners (20px), and subtle border. Built on top of SectionLayout component"
+    },
+    "SectionHeader": {
+      "purpose": "Consistent header pattern with title, subtitle, and optional CTA",
+      "usage": "Use for all section headings instead of manual Typography combinations",
+      "props": {
+        "required": ["title"],
+        "optional": ["subtitle", "color", "cta", "...rest"]
+      },
+      "example": "<SectionHeader title='Our Team' subtitle='meet the players' cta={button} />",
+      "location": "/src/features/ui/components/SectionHeader.jsx",
+      "dependencies": ["TextBlock", "@mui/material Typography, Stack"],
+      "notes": "Includes TextBlock internally, provides uppercase subtitle styling and flex layout"
+    },
+    "SocialIcons": {
+      "purpose": "Reusable social media icons component with customizable theming and responsive behavior",
+      "usage": "Use for displaying social media links with consistent styling and hover effects - preferred over manual icon implementations",
+      "props": {
+        "required": [],
+        "optional": ["icons", "spacing", "size", "color", "variant", "...rest"]
+      },
+      "example": "<SocialIcons icons={customIcons} spacing={3} size='large' color='primary.main' />",
+      "location": "/src/features/ui/components/SocialIcons.jsx",
+      "dependencies": ["@mui/material IconButton, Stack, useTheme", "@mui/icons-material", "useMediaQueries"],
+      "notes": "Includes default Facebook/Instagram/Twitter icons, supports theme color notation (e.g., 'secondary.main'), responsive margin with useMediaQueries, flexible icon array with name/icon/link structure"
+    },
+    "Container": {
+      "purpose": "MUI Container for main page content with semantic HTML",
+      "usage": "Use Container component='main' with semantic id and aria-label for all main page content",
+      "props": {
+        "required": ["component", "id", "aria-label"],
+        "optional": ["maxWidth", "sx"]
+      },
+      "example": "<Container component='main' id='roster-page' aria-label='Roster Page'>{content}</Container>",
+      "location": "MUI component",
+      "dependencies": ["@mui/material Container"],
+      "notes": "Standard pattern for main content areas, provides consistent padding via theme overrides"
+    },
+    "Grid": {
+      "purpose": "MUI Grid system with responsive spacing using useMediaQueries",
+      "usage": "Use Grid container with columnSpacing based on useMediaQueries breakpoints",
+      "props": {
+        "required": ["container"],
+        "optional": ["columnSpacing", "rowSpacing", "id"]
+      },
+      "example": "<Grid container columnSpacing={isLg ? 6 : 4}>{gridItems}</Grid>",
+      "location": "MUI component",
+      "dependencies": ["@mui/material Grid", "useMediaQueries hook"],
+      "notes": "Standard spacing pattern: isLg ? 6 : 4 for column spacing, components handle own Grid item wrapping"
+    },
+    "DataTable": {
+      "purpose": "Reusable styled table components for consistent table styling across pages",
+      "usage": "Import specific styled components needed for table layouts - single source of truth for all table styling",
+      "components": [
+        "StyledTableContainer - Main split-table wrapper with responsive design",
+        "StyledFixedTable - Fixed column table for name columns in split layouts",
+        "StyledScrollableTable - Scrollable table for data columns in split layouts",
+        "StyledScrollContainer - Horizontal scroll container for data overflow",
+        "StyledTableHeader - Themed header row with conditional rounded corners for split/regular tables",
+        "StyledTableRow - Row with alternating color support (not currently used)",
+        "StyledTableCell - Standard cell with theme spacing and conditional bottom border removal"
+      ],
+      "location": "/src/features/ui/components/DataTable.jsx",
+      "dependencies": ["@mui/material styled", "theme", "shouldForwardProp for custom props"],
+      "notes": "Centralized table styling - feature-specific player/content styling should remain in feature directories. Supports both split-table layouts (roster) and regular table layouts (future)"
+    },
+    "FormStatusIndicator": {
+      "purpose": "Display form submission status (loading/success/error) - not for validation errors",
+      "usage": "Use for submission feedback - validation errors shown inline via TextField helperText",
+      "props": {
+        "required": ["loading", "error"],
+        "optional": ["statusMessage", "statusCode", "success"]
+      },
+      "example": "<FormStatusIndicator statusMessage={response?.data?.message} statusCode={response?.status} loading={isLoading} error={!!error} />",
+      "location": "/src/features/ui/components/FormStatusIndicator.jsx",
+      "dependencies": ["@mui/material Box, CircularProgress, Typography, Stack", "@mui/icons-material ErrorIcon, CheckCircleIcon"],
+      "notes": "Shows loading spinner during submission, checkmark on success, error icon on failure. Inline field validation handled separately by TextField"
+    }
+  },
+
+  "hooks": {
+    "useMediaQueries": {
+      "purpose": "Custom responsive hook that provides all theme breakpoints as boolean values",
+      "usage": "Import and destructure needed breakpoints for conditional rendering and styling",
+      "returnValues": {
+        "up": ["isXs", "isSm", "isTablet", "isMd", "isLaptop", "isLg", "isXl"],
+        "down": ["isSmDown", "isMdDown", "isLgDown", "isFormHeaderAndDown", "isEventCalendarDown"]
+      },
+      "example": "const { isLg, isTablet, isFormHeaderAndDown } = useMediaQueries();",
+      "location": "/src/utils/helpers/useMediaQueries.utils.js",
+      "dependencies": ["@emotion/react useTheme", "@mui/material useMediaQuery"],
+      "notes": "Preferred over MUI breakpoint utilities - provides consistent responsive logic across components"
+    },
+    "useLocalRateLimiting": {
+      "purpose": "Client-side rate limiting using localStorage to prevent form spam",
+      "usage": "Track form submissions by identifier (email) with configurable time windows and automatic cleanup",
+      "returnValues": {
+        "canSubmit": "Boolean - whether user can submit",
+        "remainingAttempts": "Number of attempts remaining",
+        "timeUntilReset": "Milliseconds until rate limit resets",
+        "formattedTimeUntilReset": "Human-readable time (e.g., '45m')",
+        "checkRateLimit": "Function to manually check rate limit",
+        "recordAttempt": "Function to record a submission attempt"
+      },
+      "example": "const { canSubmit, remainingAttempts, formattedTimeUntilReset, recordAttempt } = useLocalRateLimiting(email, 3, 60*60*1000);",
+      "location": "/src/hooks/useLocalRateLimiting.jsx",
+      "dependencies": ["localStorage", "React useState/useCallback/useEffect"],
+      "notes": "Default: 3 attempts per hour. Automatically filters expired attempts. Updates countdown every minute."
+    },
+    "useAuthenticatedForm": {
+      "purpose": "Firebase authentication check for protected forms",
+      "usage": "Monitor Firebase auth state and enforce authentication requirements - use for Contact/Register forms",
+      "returnValues": {
+        "user": "Firebase user object or null",
+        "loading": "Boolean - auth check in progress",
+        "isAuthenticated": "Boolean - whether user is logged in",
+        "authError": "Error message if auth required but user not logged in"
+      },
+      "example": "const { user, isAuthenticated, authError } = useAuthenticatedForm(true);",
+      "location": "/src/hooks/useAuthenticatedForm.jsx",
+      "dependencies": ["firebase/auth", "utils/firebase/index.firebase"],
+      "notes": "Sets authError automatically if requireAuth=true and user not logged in. Unsubscribes on cleanup. Public forms (Sign In/Sign Up) should use requireAuth=false"
+    },
+    "useEmailService": {
+      "purpose": "Enhanced AWS SES email service with better error handling and state management",
+      "usage": "Send emails via AWS SES Lambda function with proper loading/error states - used by useFormSubmission",
+      "returnValues": {
+        "sendEmail": "Async function to send email data",
+        "loading": "Boolean - request in progress",
+        "error": "Error object with message, status, data",
+        "response": "Axios response object",
+        "clearStatus": "Function to clear error and response"
+      },
+      "example": "const { sendEmail, loading, error, response, clearStatus } = useEmailService(process.env.REACT_APP_AWS_API_BASE_URL_DEV);",
+      "location": "/src/hooks/useEmailService.jsx",
+      "dependencies": ["axios", "React useState/useCallback"],
+      "notes": "Posts to ${apiBaseUrl}/contact/forms/submit. Enhanced error context with status codes and detailed messages. Use clearStatus to reset state."
+    },
+    "useFormSubmission": {
+      "purpose": "Orchestrator hook combining auth, rate limiting, and email service for complete form management",
+      "usage": "Primary hook for all AWS SES forms (Contact/Register) - provides unified interface with all protections",
+      "returnValues": {
+        "handleSubmit": "Main submission function with all checks (auth → rate limit → email)",
+        "canSubmitForm": "Boolean - whether form can be submitted",
+        "isLoading": "Boolean - auth or email loading",
+        "error": "Combined error from auth/rate limit/email",
+        "response": "Email service response",
+        "showSuccessMessage": "Boolean - success message visible",
+        "clearAllStatus": "Function to clear all status messages",
+        "user": "Firebase user object",
+        "isAuthenticated": "Boolean - user logged in",
+        "remainingAttempts": "Remaining rate limit attempts",
+        "formattedTimeUntilReset": "Human-readable rate limit reset time"
+      },
+      "example": "const { handleSubmit, canSubmitForm, isLoading, error, showSuccessMessage, remainingAttempts } = useFormSubmission({ apiBaseUrl, requireAuth: true, rateLimitIdentifier: email, maxAttempts: 3, successDisplayDuration: 4000 });",
+      "location": "/src/hooks/useFormSubmission.jsx",
+      "dependencies": ["useEmailService", "useLocalRateLimiting", "useAuthenticatedForm"],
+      "notes": "Executes checks in order: auth → rate limit → email submission. Auto-displays success message, records attempts, handles all errors. For public forms use requireAuth=false and rateLimitIdentifier=null"
+    }
+  },
+
+  "patterns": {
+    "stateManagement": {
+      "approach": "React Context + useState/useReducer hooks",
+      "guidelines": "Feature-based contexts, avoid prop drilling",
+      "examples": "ThemeToggler context for theme switching"
+    },
+    "dataFetching": {
+      "method": "TanStack React Query + Axios",
+      "errorHandling": "Query error boundaries and status checks",
+      "loading": "Built-in React Query loading states"
+    },
+    "styling": {
+      "methodology": "Material-UI v5 with extensive custom theme",
+      "responsive": "useMediaQueries hook for conditional rendering - preferred over MUI breakpoint utilities",
+      "theming": "Custom palette with primary (#091F40), secondary (#4CBB17), comprehensive typography scale"
+    },
+    "forms": {
+      "library": "React Hook Form",
+      "orchestration": "useFormSubmission hook - combines auth, rate limiting, and email service for AWS SES forms",
+      "validation": {
+        "method": "Config-driven JSON files with React Hook Form rules (see contactUs.config.json pattern)",
+        "timing": "mode: 'onBlur' (validate when leaving field), reValidateMode: 'onChange' (re-validate as typing)",
+        "display": "Material UI TextField with error and helperText props from fieldState.error",
+        "rules": "Use React Hook Form built-in rules: required, minLength, maxLength, pattern, validate",
+        "pattern": "ALWAYS use fieldState.error from Controller render, NOT errors object from useForm (better performance)"
+      },
+      "submission": {
+        "method": "AWS SES via useFormSubmission orchestrator hook",
+        "endpoint": "POST to ${apiBaseUrl}/contact/forms/submit",
+        "protection": "Firebase auth required (Contact/Register) + client-side rate limiting (3 submissions/hour)",
+        "flow": "Auth check → Rate limit check → Send email → Record attempt → Show success (4s) → Clear form"
+      },
+      "authentication": {
+        "protected": "Contact and Register forms require Firebase auth (requireAuth: true)",
+        "public": "Sign In and Sign Up forms are public (requireAuth: false)",
+        "check": "useAuthenticatedForm hook monitors Firebase auth state"
+      },
+      "rateLimit": {
+        "method": "Client-side localStorage tracking via useLocalRateLimiting hook",
+        "limit": "3 submissions per hour per email (configurable)",
+        "tracking": "By email address (rateLimitIdentifier parameter)",
+        "display": "MUI Alert showing remaining attempts and countdown (e.g., '2 submissions remaining', 'Try again in 45m')"
+      },
+      "errorDisplay": {
+        "validation": "Inline TextField helperText for field-level validation errors",
+        "submission": "FormStatusIndicator component for auth/rate limit/API errors",
+        "pattern": "Validation errors appear on blur, submission errors in banner above button"
+      },
+      "stateManagement": {
+        "loading": "Button disabled during submission (disabled={!canSubmitForm || isLoading}), CircularProgress in FormStatusIndicator",
+        "success": "Auto-clear form using reset() callback, show success message for 4 seconds (configurable)",
+        "error": "Inline validation errors + submission error banner + rate limit alert"
+      },
+      "bestPractices": [
+        "Use Material UI TextField directly - avoid custom input wrapper components (over-engineering for simple forms)",
+        "Config-driven validation in JSON files - maintains separation of concerns",
+        "Spread {...field} in TextField instead of manual onChange/onBlur/ref passing",
+        "Use fieldState.error from Controller, NOT errors[name] from useForm (better performance, cleaner code)",
+        "Simple validation rules (minLength/maxLength) preferred over complex regex patterns",
+        "Use type='tel' for phone inputs (provides mobile numeric keyboard)",
+        "Use multiline prop for textarea, NOT type='textarea'",
+        "Use variant='outlined' for consistent TextField styling",
+        "For public forms: requireAuth=false, rateLimitIdentifier=null in useFormSubmission"
+      ]
+    },
+    "layout": {
+      "pageStructure": "Hero (optional, full-width) + Container + Grid for main content",
+      "heroSections": "Outside Container for full-width layouts",
+      "mainContent": "Container component='main' with semantic id/aria-label",
+      "contentGrid": "Grid container with responsive columnSpacing using useMediaQueries",
+      "sectionHeaders": "SectionHeader as Grid item (xs=12) for SSR compatibility",
+      "pagePattern": "Navigation + Container + Grid > [SectionHeader + Feature Components as Grid items]",
+      "sections": "Always wrap major sections with SectionLayout within Grid items",
+      "headers": "Use SectionHeader for consistent section titles - place as dedicated Grid item",
+      "spacing": "Prefer TextBlock over manual div containers",
+      "responsive": "Use useMediaQueries for all conditional rendering and spacing"
+    },
+    "imports": {
+      "order": "MUI components first, React, then local components with // Comments grouping",
+      "grouping": "Group related imports with descriptive comments",
+      "example": "// MUI components\nimport { Container, Grid } from '@mui/material';\nimport React from 'react';\n// Components\nimport Hero from '../components/Hero';"
+    }
+  },
+
+  "codeStandards": {
+    "javascript": {
+      "style": "Modern ES6+ syntax with React functional components",
+      "propTypes": "Using PropTypes for type checking (not TypeScript)",
+      "imports": "Named imports from @mui/material, destructured props"
+    },
+    "imports": {
+      "ordering": "MUI first, React, then local components with comment grouping",
+      "aliasing": "Standard relative paths, no path aliases configured",
+      "barrelExports": "index.js files in feature directories"
+    },
+    "functions": {
+      "style": "Arrow functions for components and utilities",
+      "async": "async/await with React Query for data fetching",
+      "error": "React Query error boundaries and status handling"
+    },
+    "responsive": {
+      "approach": "useMediaQueries hook for all responsive logic",
+      "spacing": "Dynamic spacing: columnSpacing={isLg ? 6 : 4}",
+      "rendering": "Conditional rendering based on hook values"
+    }
+  },
+
+  "businessLogic": {
+    "userFlows": {
+      "_template": {
+        "description": "What the user accomplishes",
+        "steps": ["step1", "step2", "step3"],
+        "components": ["ComponentsInvolved"],
+        "apis": ["endpointsUsed"]
+      }
+    },
+    "dataModels": {
+      "_template": {
+        "fields": { "field1": "type", "field2": "type" },
+        "relationships": "How it relates to other models",
+        "validation": "Validation rules"
+      }
+    }
+  },
+
+  "qa": {
+    "componentUsage": {
+      "lastChecked": "",
+      "unusedComponents": [],
+      "duplicateLogic": [],
+      "recommendedRefactors": []
+    },
+    "codeQuality": {
+      "lastReview": "",
+      "patterns": "Adherence to established patterns",
+      "performance": "Performance considerations found",
+      "accessibility": "A11y compliance notes"
+    }
+  },
+
+  "changelog": {
+    "format": "Track major rule changes",
+    "entries": [
+      {
+        "date": "2025-01-27",
+        "changes": [
+          "Complete form refactor for AWS SES integration (Contact & Register forms)",
+          "Created useLocalRateLimiting hook for client-side rate limiting (3 submissions/hour per email)",
+          "Created useAuthenticatedForm hook for Firebase authentication checks on protected forms",
+          "Enhanced useEmailService hook with better error handling and clearStatus functionality",
+          "Created useFormSubmission orchestrator hook combining auth, rate limiting, and email service",
+          "Migrated from custom InputFieldComponent to direct Material UI TextField usage",
+          "Implemented config-driven validation with contactUs.config.json pattern",
+          "Added real-time validation with onBlur mode and onChange revalidation",
+          "Implemented button disable states during submission and when rate limited",
+          "Added auto-clear form on successful submission with 4-second success message display",
+          "Added rate limit warning alerts showing remaining attempts and countdown timer",
+          "Updated validation strategy: simple minLength/maxLength rules instead of complex regex for phone numbers",
+          "Established pattern: use fieldState.error from Controller instead of errors object from useForm",
+          "Added FormStatusIndicator component documentation for submission status display",
+          "Documented best practices for form implementation and Material UI TextField integration"
+        ],
+        "reason": "Major form system refactor to add security (auth + rate limiting), improve UX (validation feedback, auto-clear), and establish reusable patterns for all AWS SES forms"
+      },
+      {
+        "date": "2025-08-24",
+        "changes": [
+          "Added SocialIcons component for reusable social media icon displays",
+          "Added StyledSectionLayoutWrapper for gray background section styling",
+          "Enhanced UI components library with theme-aware social icons",
+          "Documented responsive behavior and customization options for SocialIcons",
+          "Established pattern for styled component extensions of base components"
+        ],
+        "reason": "New component additions for improved UI consistency and social media integration"
+      },
+      {
+        "date": "2025-08-24",
+        "changes": [
+          "Added layout patterns section with Container + Grid architecture",
+          "Documented useMediaQueries hook usage and patterns",
+          "Updated import ordering standards with comment grouping",
+          "Corrected forms submission method (AWS SES, not EmailJS)",
+          "Added responsive spacing patterns and conditional rendering guidelines"
+        ],
+        "reason": "Initial project analysis revealed actual patterns used in codebase"
+      },
+      {
+        "date": "2025-01-27",
+        "changes": [
+          "Centralized all table styling into DataTable.jsx as single source of truth",
+          "Cleaned up duplicate table components from roster feature files",
+          "Established pattern: DataTable.jsx for reusable table components, feature dirs for domain-specific styling",
+          "Updated DataTable components with split-table support and conditional styling",
+          "Deprecated legacy roster table style files with [Deprecated] prefix"
+        ],
+        "reason": "Major refactoring to eliminate code duplication and create reusable table architecture"
+      }
+    ]
+  }
+}

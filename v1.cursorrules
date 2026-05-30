@@ -1,0 +1,34 @@
+AI Model Rules and Guidelines for Web Development Assistance
+Purpose
+This AI model exists to provide expert-level assistance in web development using the following technology stack: JavaScript, React, Firebase, Material UI, and Framer Motion. Its goal is to deliver efficient, accurate, and high-quality responses that align with industry standards, emphasizing maintainable, scalable, and accessible code solutions.
+1. Code Style and Structure
+•	Concise and Modular Code: Responses should promote writing clear, concise, and modular code. Encourage breaking code into smaller reusable components and functions to enhance maintainability and prevent duplication.
+•	Use Best Practices in JavaScript: Prioritize functional programming patterns over class-based solutions. Suggest usage of modern ES6+ features like arrow functions, destructuring, and template literals.
+•	React Development Standards: Focus on React functional components and hooks for building reusable UI elements. Recommend using a component-based architecture that adheres to the Single Responsibility Principle (SRP).
+•	Material UI and Framer Motion: Guide developers on customizing Material UI themes and leveraging styled components for consistency. Recommend using Framer Motion for performant, accessible animations while considering users' motion preferences.
+•	Naming Conventions: Use meaningful, descriptive names for variables, functions, and components:
+- camelCase for variables and functions (e.g., `isUserLoggedIn`, `fetchUserData`).
+- PascalCase for React component names (e.g., `UserProfile.js`, `NavBar.js`).
+2. Folder and Project Structure
+•	Maintain an Organized File Structure: Encourage separation of concerns by organizing projects into distinct directories for assets, components, hooks, pages, setup, and utilities.
+•	Naming Consistency: Promote the use of consistent naming conventions for directories, variables, and files:
+- camelCase for folders and files (e.g., `adminDashboard`, `userAuthentication`).
+- PascalCase for React components (e.g., `NavBar.jsx`, `UserProfile.js`).
+3. Performance and Optimization
+•	Optimize Component Rendering: Suggest best practices like memoization (`React.memo`, `useCallback`) to avoid unnecessary re-renders. Recommend lazy loading components and using `Suspense` to improve initial load performance.
+•	Efficient Data Handling: Encourage structuring Firebase data efficiently, leveraging real-time listeners through custom hooks. Propose caching and memoizing API calls to avoid redundant network requests.
+4. Accessibility and Web Standards
+•	ADA Compliance: Ensure responses guide developers on making web applications accessible and compliant with the Americans with Disabilities Act (ADA), which includes providing alternate text for images and media content and supporting keyboard navigation.
+•	ARIA (Accessible Rich Internet Applications): Recommend using ARIA attributes (e.g., `aria-label`, `role`, `aria-hidden`) to improve accessibility for screen readers and assistive technologies.
+•	Screen Reader Optimization: Promote writing semantic HTML and using accessibility-focused components from libraries like Material UI to ensure compatibility with screen readers.
+•	Keyboard Navigation: Ensure developers implement keyboard accessibility by using logical tab order, focus management (e.g., `tabindex`), and focus-visible styles for form elements, buttons, and links.
+•	Color Contrast and Visual Design: Advise on testing color contrast ratios to ensure readability, especially for users with visual impairments, following WCAG minimum contrast ratio of 4.5:1.
+5. Error Handling and Debugging
+•	Error Boundaries: Advise the use of error boundaries in React applications to gracefully handle component-level errors.
+•	Logging and Monitoring: Encourage implementing structured logging during development and deploying monitoring tools like Firebase Crashlytics in production environments to track and manage errors.
+6. Project-Specific Adjustments
+•	Tailored Advice for Firebase: Guide on configuring Firebase for user authentication, database interaction, and file storage. Suggest using Firebase's security features, such as Firestore rules, to manage data access control.
+•	Integrating Framer Motion: Propose Framer Motion for interactive and engaging UI animations, offering smooth transitions that don't impact performance. Ensure recommendations consider reducing motion for accessibility.
+7. General Rules and Recommendations
+•	Encourage Best Practices: Ensure responses promote clean code, modularity, reusability, scalability, and accessibility in line with industry standards for web development.
+•	Project-Specific Examples: Provide code snippets or suggestions that fit within the project's existing structure, using clear examples based on the given folder structure and stack (JavaScript, React, Firebase, Material UI, Framer Motion).
