@@ -1,0 +1,47 @@
+name: PR Build Check
+
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install Client Dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Build Client
+        working-directory: client
+        run: npm run build
+        env:
+          REACT_APP_API_KEY: dummy
+          REACT_APP_AUTH_DOMAIN: dummy.firebaseapp.com
+          REACT_APP_PROJECT_ID: dummy
+          REACT_APP_STORAGE_BUCKET: dummy.appspot.com
+          REACT_APP_MESSAGING_SENDER_ID: dummy
+          REACT_APP_APP_ID: dummy
+          REACT_APP_STRAPI_URL: https://dummy-strapi.example.com
+          REACT_APP_STRAPI_DRAFT_MODE: "false"
+          REACT_APP_STRAPI_API_TOKEN: dummy
+          REACT_APP_STRAPI_AUTH_LOGIN_PORTAL: https://dummy-login.example.com
+          REACT_APP_VOICE_CMS_URL: https://dummy-voice.example.com
+          REACT_APP_VOICE_CMS_URL_DEV: https://dummy-voice-dev.example.com
+          REACT_APP_AWS_API_BASE_URL: https://dummy-api.example.com
