@@ -166,6 +166,10 @@ Firebase Auth handles authentication. Roles are stored in Firestore user profile
 - `client/src/features/guards/components/roleGuard.jsx` — Route protection
 - `client/src/hooks/useRoleCheck.jsx` — Permission checks
 
+## Bot workflow
+
+Bots open pull requests against `development`. They never push to or merge into `development` or `main`. The owner merges.
+
 ## Known Gotchas
 
 - **Env var prefix:** All client env vars MUST start with `REACT_APP_`. Vite only exposes vars with this prefix (configured in `vite.config.js` via `envPrefix`).
