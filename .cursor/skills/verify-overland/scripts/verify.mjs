@@ -10,6 +10,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync, readdirSync
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import http from "node:http";
+import net from "node:net";
 import os from "node:os";
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
@@ -18,8 +19,9 @@ const HOME = join(process.env.TMPDIR || "/tmp", "overland-verify");
 const PID_FILE = join(HOME, "vite.pid");
 const LOG_FILE = join(HOME, "vite.log");
 const EVIDENCE = join(HOME, "evidence");
-const PORT = 3000;
+const PORT = Number(process.env.VERIFY_PORT) || 3100;
 const ORIGIN = `http://127.0.0.1:${PORT}`;
+const BIND_HOSTS = ["127.0.0.1", "::1"];
 
 const PROTECTED = new Set(["/dashboard", "/documents", "/theme-showcase"]);
 
@@ -155,29 +157,88 @@ function lsofAvailable() {
   return result.error?.code !== "ENOENT";
 }
 
-function portOwner() {
+function addressMatches(name, host) {
+  if (!name) return false;
+  if (host === "127.0.0.1") return name.startsWith(`127.0.0.1:${PORT}`);
+  return name.startsWith(`[::1]:${PORT}`) || name.startsWith(`::1:${PORT}`);
+}
+
+/** All TCP listeners on PORT. null when lsof cannot be run. */
+function listListeners() {
   return new Promise((resolve) => {
-    const lsof = spawn("lsof", ["-nP", `-iTCP:${PORT}`, "-sTCP:LISTEN", "-t"]);
+    if (!lsofAvailable()) {
+      resolve(null);
+      return;
+    }
+    const lsof = spawn("lsof", ["-nP", `-iTCP:${PORT}`, "-sTCP:LISTEN", "-Fpcn"]);
     let out = "";
     lsof.stdout.on("data", (d) => {
       out += d;
     });
-    lsof.on("close", () => {
-      const pid = out.trim().split("\n").filter(Boolean)[0];
-      resolve(pid ? Number(pid) : null);
-    });
+    const finish = () => {
+      const records = [];
+      let cur = {};
+      for (const line of out.split("\n")) {
+        if (!line) continue;
+        const tag = line[0];
+        const val = line.slice(1);
+        if (tag === "p") {
+          if (cur.pid) records.push(cur);
+          cur = { pid: Number(val) };
+        } else if (tag === "c") cur.command = val;
+        else if (tag === "n") cur.name = val;
+      }
+      if (cur.pid) records.push(cur);
+      resolve(records.filter((row) => Number.isFinite(row.pid)));
+    };
+    lsof.on("close", finish);
     lsof.on("error", () => resolve(null));
   });
 }
 
-async function portIsOpen() {
-  if (lsofAvailable()) return (await portOwner()) != null;
-  try {
-    const status = await httpGet(ORIGIN);
-    return Boolean(status && status < 500);
-  } catch {
-    return false;
+function portInUse(host) {
+  return new Promise((resolve) => {
+    const socket = net.connect({ port: PORT, host, family: host === "::1" ? 6 : 4 });
+    let settled = false;
+    const done = (inUse) => {
+      if (settled) return;
+      settled = true;
+      socket.destroy();
+      resolve(inUse);
+    };
+    socket.once("connect", () => done(true));
+    socket.once("error", () => done(false));
+    socket.setTimeout(1500, () => done(false));
+  });
+}
+
+function logTail(lines = 40) {
+  if (!existsSync(LOG_FILE)) return `(no log at ${LOG_FILE})`;
+  const text = readFileSync(LOG_FILE, "utf8").trim().split("\n");
+  return text.slice(-lines).join("\n");
+}
+
+function treePids(root) {
+  if (!root) return [];
+  const r = spawnSync("ps", ["-axo", "pid=,ppid="], { encoding: "utf8" });
+  const children = new Map();
+  for (const line of String(r.stdout || "").split("\n")) {
+    const [pid, ppid] = line.trim().split(/\s+/).map(Number);
+    if (!pid || !ppid) continue;
+    if (!children.has(ppid)) children.set(ppid, []);
+    children.get(ppid).push(pid);
   }
+  const live = [];
+  const stack = [root];
+  const seen = new Set();
+  while (stack.length) {
+    const cur = stack.pop();
+    if (!cur || seen.has(cur)) continue;
+    seen.add(cur);
+    if (alive(cur)) live.push(cur);
+    for (const child of children.get(cur) || []) stack.push(child);
+  }
+  return live;
 }
 
 function readPid() {
@@ -194,6 +255,22 @@ function alive(pid) {
   } catch {
     return false;
   }
+}
+
+function processArgs(pid) {
+  const result = spawnSync("ps", ["-o", "args=", "-p", String(pid)], { encoding: "utf8" });
+  return String(result.stdout || "");
+}
+
+function isOurServer(pid) {
+  const args = processArgs(pid);
+  const named = args.includes("vite") || args.includes("npm start");
+  return named && args.includes(`--port ${PORT}`);
+}
+
+function discardStalePid(pid) {
+  if (existsSync(PID_FILE)) rmSync(PID_FILE);
+  console.log(`stale pid file, not signalling pid ${pid}`);
 }
 
 async function bootstrap() {
@@ -218,13 +295,78 @@ function loadPuppeteer() {
   return require("puppeteer-core");
 }
 
+async function describeBusy(host) {
+  const listeners = await listListeners();
+  const owners = (listeners || []).filter((row) => addressMatches(row.name, host));
+  if (!owners.length) return `port ${PORT} is in use on ${host}`;
+  return owners
+    .map((row) => `port ${PORT} is in use on ${host} (pid ${row.pid}${row.command ? ` ${row.command}` : ""})`)
+    .join("\n");
+}
+
+async function assertPortFree() {
+  const busy = [];
+  for (const host of BIND_HOSTS) {
+    if (await portInUse(host)) busy.push(host);
+  }
+  if (!busy.length) return;
+  const lines = [];
+  for (const host of busy) lines.push(await describeBusy(host));
+  throw new Error(`${lines.join("\n")}\nrefusing to start; leaving the listener running`);
+}
+
+async function waitUntilOurs(trackedPid, earlyExit) {
+  const deadline = Date.now() + 60000;
+  while (Date.now() < deadline) {
+    if (earlyExit.code != null || earlyExit.signal != null) {
+      throw new Error(
+        `vite exited early code=${earlyExit.code} signal=${earlyExit.signal ?? "none"}\n${logTail()}`
+      );
+    }
+    if (!alive(trackedPid)) {
+      throw new Error(`tracked vite pid ${trackedPid} is not alive\n${logTail()}`);
+    }
+    let status = null;
+    try {
+      status = await httpGet(ORIGIN);
+    } catch {
+      status = null;
+    }
+    if (status && status < 500) {
+      const listeners = await listListeners();
+      if (!listeners) {
+        throw new Error(`lsof missing; cannot confirm ${ORIGIN} is served by pid ${trackedPid}`);
+      }
+      const v4 = listeners.filter((row) => addressMatches(row.name, "127.0.0.1"));
+      const ours = v4.filter((row) => row.pid === trackedPid || isDescendant(row.pid, trackedPid));
+      if (v4.length && !ours.length) {
+        throw new Error(
+          `${ORIGIN} status=${status} is served by pid ${v4.map((row) => row.pid).join(",")}, not a descendant of ${trackedPid}\n${logTail()}`
+        );
+      }
+      if (ours.length) {
+        console.log(`ready ${ORIGIN} status=${status} listener=${ours.map((row) => row.pid).join(",")}`);
+        return;
+      }
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  throw new Error(`vite did not become ready on ${ORIGIN} within 60s\n${logTail()}`);
+}
+
 async function launch() {
   mkdirSync(HOME, { recursive: true });
   const existing = readPid();
   if (alive(existing)) {
-    console.log(`dev server already running pid=${existing}`);
-    return;
+    if (!isOurServer(existing)) {
+      discardStalePid(existing);
+    } else {
+      console.log(`dev server already running pid=${existing}`);
+      await waitUntilOurs(existing, {});
+      return;
+    }
   }
+  await assertPortFree();
   if (!existsSync(join(CLIENT, "node_modules"))) {
     console.log("client/node_modules missing; running npm ci in client/");
     await new Promise((resolve, reject) => {
@@ -233,6 +375,7 @@ async function launch() {
     });
   }
   const logFd = await import("node:fs").then((fs) => fs.openSync(LOG_FILE, "a"));
+  const earlyExit = { code: null, signal: null };
   const child = spawn(
     "npm",
     ["start", "--", "--host", "127.0.0.1", "--port", String(PORT), "--strictPort", "--open", "false"],
@@ -243,23 +386,14 @@ async function launch() {
       env: { ...process.env, ...DUMMY_ENV, BROWSER: "none" },
     }
   );
+  child.on("exit", (code, signal) => {
+    earlyExit.code = code;
+    earlyExit.signal = signal;
+  });
   child.unref();
   writeFileSync(PID_FILE, String(child.pid));
   console.log(`started vite pid=${child.pid} log=${LOG_FILE}`);
-  const deadline = Date.now() + 60000;
-  while (Date.now() < deadline) {
-    try {
-      const status = await httpGet(ORIGIN);
-      if (status && status < 500) {
-        console.log(`ready ${ORIGIN} status=${status}`);
-        return;
-      }
-    } catch {
-      /* retry */
-    }
-    await new Promise((r) => setTimeout(r, 500));
-  }
-  throw new Error(`vite did not become ready on ${ORIGIN} within 60s; see ${LOG_FILE}`);
+  await waitUntilOurs(child.pid, earlyExit);
 }
 
 async function doctor() {
@@ -272,16 +406,24 @@ async function doctor() {
     problems.push(`puppeteer-core missing in ${HOME}; run bootstrap`);
   } else console.log(`puppeteer-core=${HOME}`);
   const pid = readPid();
-  if (lsofAvailable()) {
-    const owner = await portOwner();
-    if (!owner) problems.push(`nothing listening on ${PORT}`);
-    else if (pid && owner !== pid && !isDescendant(owner, pid)) {
-      problems.push(`port ${PORT} owned by pid ${owner}, not our vite pid ${pid}`);
-    } else console.log(`port ${PORT} listener=${owner} tracked=${pid ?? "none"}`);
+  const listeners = await listListeners();
+  if (!listeners) {
+    problems.push(`lsof missing; cannot confirm the listener on 127.0.0.1:${PORT} belongs to the tracked pid`);
   } else {
-    const open = await portIsOpen();
-    console.log(`lsof missing; HTTP readiness on ${ORIGIN}: ${open ? "up" : "down"}`);
-    if (!open) problems.push(`nothing answering on ${ORIGIN}`);
+    const summary = listeners.map((row) => `${row.pid}@${row.name}`).join(", ") || "none";
+    console.log(`listeners on ${PORT}: ${summary}`);
+    const v4 = listeners.filter((row) => addressMatches(row.name, "127.0.0.1"));
+    if (!v4.length) problems.push(`nothing listening on 127.0.0.1:${PORT}`);
+    else {
+      const foreign = v4.filter((row) => !pid || (row.pid !== pid && !isDescendant(row.pid, pid)));
+      if (foreign.length) {
+        problems.push(
+          `127.0.0.1:${PORT} listener pid ${foreign.map((row) => row.pid).join(",")} is not tracked pid ${pid ?? "none"} or a descendant`
+        );
+      } else {
+        console.log(`127.0.0.1:${PORT} listener=${v4.map((row) => row.pid).join(",")} tracked=${pid}`);
+      }
+    }
   }
   if (!alive(pid)) problems.push(`tracked vite pid ${pid ?? "none"} is not alive`);
   if (problems.length) {
@@ -370,14 +512,17 @@ async function drive(routes) {
       page.on("pageerror", (err) => {
         messages.push({ type: "pageerror", text: String(err) });
       });
-      const response = await page.goto(`${ORIGIN}${route}`, {
-        waitUntil: "domcontentloaded",
-        timeout: 30000,
-      });
       const selector = READY_SELECTORS[route] || "body";
       let loaded = false;
       let readinessNote;
+      let response = null;
+      let routeError;
+      const shot = join(dir, `${route.replace(/\//g, "_") || "_root"}.png`);
       try {
+        response = await page.goto(`${ORIGIN}${route}`, {
+          waitUntil: "domcontentloaded",
+          timeout: 30000,
+        });
         if (route === "/sponsors") {
           await page.waitForSelector("body", { timeout: 15000 });
           const check = await page.evaluate(() => {
@@ -394,13 +539,13 @@ async function drive(routes) {
           await page.waitForSelector(selector, { timeout: 15000 });
           loaded = true;
         }
-      } catch {
+        await new Promise((r) => setTimeout(r, 1000));
+        await Promise.all(pending);
+        await page.screenshot({ path: shot, fullPage: true });
+      } catch (err) {
         loaded = false;
+        routeError = err && err.message ? err.message : String(err);
       }
-      await new Promise((r) => setTimeout(r, 1000));
-      await Promise.all(pending);
-      const shot = join(dir, `${route.replace(/\//g, "_") || "_root"}.png`);
-      await page.screenshot({ path: shot, fullPage: true });
       const buckets = { expected: 0, known: 0, new: 0 };
       const fresh = [];
       for (const message of messages) {
@@ -422,6 +567,7 @@ async function drive(routes) {
         loaded,
         counts: buckets,
         readinessNote,
+        error: routeError,
         blockedExpected,
         blocked: blockedUrls,
         newMessages: fresh,
@@ -429,7 +575,7 @@ async function drive(routes) {
       };
       report.push(row);
       console.log(JSON.stringify(row, null, 2));
-      await page.close();
+      await page.close().catch(() => {});
     }
   } finally {
     await browser.close();
@@ -454,7 +600,10 @@ async function drive(routes) {
 
 async function cleanup(removeEvidence) {
   const pid = readPid();
-  if (alive(pid)) {
+  let signalled = false;
+  if (alive(pid) && !isOurServer(pid)) {
+    discardStalePid(pid);
+  } else if (alive(pid)) {
     try {
       process.kill(-pid, "SIGTERM");
     } catch {
@@ -464,19 +613,36 @@ async function cleanup(removeEvidence) {
         /* already gone */
       }
     }
+    signalled = true;
     console.log(`sent SIGTERM to process group ${pid}`);
   } else {
     console.log(`no live tracked pid (${pid ?? "none"})`);
   }
   if (existsSync(PID_FILE)) rmSync(PID_FILE);
   const deadline = Date.now() + 5000;
-  let open = await portIsOpen();
-  while (open && Date.now() < deadline) {
+  let busyHosts = [];
+  let remaining = signalled ? treePids(pid) : [];
+  while (Date.now() < deadline) {
+    busyHosts = [];
+    for (const host of BIND_HOSTS) {
+      if (await portInUse(host)) busyHosts.push(host);
+    }
+    remaining = signalled ? treePids(pid) : [];
+    if (!busyHosts.length && !remaining.length) break;
     await new Promise((r) => setTimeout(r, 200));
-    open = await portIsOpen();
   }
-  console.log(open ? `port ${PORT} still in use` : `port ${PORT} free`);
-  if (open) process.exitCode = 1;
+  if (busyHosts.length) {
+    console.log(`port ${PORT} still in use on ${busyHosts.join(", ")}`);
+    process.exitCode = 1;
+  } else {
+    console.log(`port ${PORT} free on 127.0.0.1 and ::1`);
+  }
+  if (remaining.length) {
+    console.log(`process tree still running: ${remaining.join(", ")}`);
+    process.exitCode = 1;
+  } else {
+    console.log("process tree clear");
+  }
   if (removeEvidence && existsSync(EVIDENCE)) {
     rmSync(EVIDENCE, { recursive: true, force: true });
     console.log(`removed evidence ${EVIDENCE}`);
