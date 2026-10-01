@@ -10,6 +10,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: aws-deploy
 
     steps:
       - name: Checkout Repository
