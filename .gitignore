@@ -1,8 +1,9 @@
 # dependencies
 node_modules/
 
-# Claude Code
-.claude/
+# Claude Code — track skills, ignore local state
+.claude/*
+!.claude/skills/
 
 # misc
 .DS_Store
@@ -19,3 +20,6 @@ worktrees/
 .claude/parsed/
 PROMPT.md
 .dev-orc-prompt.txt
+
+# planner drafts (never commit)
+planner-drafts/
