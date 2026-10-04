@@ -35,7 +35,9 @@ const DocumentsPage = lazy(() => import("./features/documents/pages/DocumentsPag
 // const AdminDashboardPage = lazy(() => import("../../pages/adminDashboard"));
 const AdminDashboardPage = lazy(() => import("./features/admin/pages/AdminDashboard"));
 // const ThemeShowcase = lazy(() => import("./pages/themeShowcase/themeShowcase"));
-const { ThemeShowcase } = lazy(() => import("./features/themeShowcase"));
+const ThemeShowcase = lazy(() =>
+  import("./features/themeShowcase").then((module) => ({ default: module.ThemeShowcase }))
+);
 
 //TODO : Loading component for suspended content, build custom overland loading screen component later
 

@@ -88,7 +88,6 @@ const EXTERNAL_OK = [
 ];
 
 const KNOWN_OV61 = [
-  /routes\.jsx:96/,
   /same key, ``/,
   /logo192\.png/,
   /Invalid prop [`']error[`'] of type [`'][^`'"]+[`'] supplied to [`'][^`'"]*DataStateDisplay/,
