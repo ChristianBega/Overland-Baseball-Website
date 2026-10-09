@@ -80,7 +80,7 @@ The spec is wrong if it cannot be executed under these rules.
 - One ticket per Builder run.
 - Branch off `development`. Open the PR into `development` only. Never push to or merge
   `development` or `main` (`README.md:169-171`).
-- Run the verify skill: `node .cursor/skills/verify-overland/scripts/verify.mjs`.
+- Run the verify skill: `node .claude/skills/verify-overland/scripts/verify.mjs`.
 - Put the evidence in the PR body.
 - Update the matching skill or docs in the same PR.
 - Never touch the protected paths in Do-not-touch.
@@ -92,7 +92,7 @@ If the ticket changes behavior that the verify baseline currently treats as a kn
 MUST include updating the baseline in the same PR.
 
 The baseline is the `KNOWN_OV61` regex array at
-`.cursor/skills/verify-overland/scripts/verify.mjs:90-102`. There is no JSON baseline file and no
+`.claude/skills/verify-overland/scripts/verify.mjs:90-105`. There is no JSON baseline file and no
 update command — the regexes are edited by hand. Removing a regex makes that console item count as
 NEW again, which is the point.
 

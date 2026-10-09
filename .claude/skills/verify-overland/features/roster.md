@@ -12,7 +12,7 @@ Open `/roster`.
 
 ## Driving it with puppeteer-core
 
-`node .cursor/skills/verify-overland/scripts/verify.mjs drive /roster`
+`node .claude/skills/verify-overland/scripts/verify.mjs drive /roster`
 
 Wait for `#roster-page` (`aria-label="Roster Page"`). Proof: HTTP status, selector present, screenshot, console buckets.
 

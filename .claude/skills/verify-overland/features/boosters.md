@@ -12,7 +12,7 @@ Open `/boosters`.
 
 ## Driving it with puppeteer-core
 
-`node .cursor/skills/verify-overland/scripts/verify.mjs drive /boosters`
+`node .claude/skills/verify-overland/scripts/verify.mjs drive /boosters`
 
 Wait for `#boosters-section`. Proof: HTTP status, selector present, screenshot, console buckets.
 

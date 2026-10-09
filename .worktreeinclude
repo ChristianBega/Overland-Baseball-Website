@@ -1,0 +1,4 @@
+# Gitignored files Claude Code copies into each new worktree (gitignore syntax).
+# Worktrees are local-only — never pushed, never synced to CI or a cloud session.
+# Keep this tiny. Never list a path you would not hand an agent.
+client/.env

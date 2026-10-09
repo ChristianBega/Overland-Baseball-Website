@@ -12,7 +12,7 @@ Open one of the three paths. Signed-in users would be redirected away from sign-
 
 ## Driving it with puppeteer-core
 
-`node .cursor/skills/verify-overland/scripts/verify.mjs drive /authentication/sign-in`
+`node .claude/skills/verify-overland/scripts/verify.mjs drive /authentication/sign-in`
 
 Also pass `/authentication/sign-up` or `/authentication/password-reset`. Wait for `#authentication-page`. Proof: HTTP status, selector present, screenshot, console buckets. The harness must not call `page.type` or `page.click`.
 
