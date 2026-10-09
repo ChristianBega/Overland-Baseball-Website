@@ -12,7 +12,7 @@ Open `/sponsors`.
 
 ## Driving it with puppeteer-core
 
-`node .cursor/skills/verify-overland/scripts/verify.mjs drive /sponsors`
+`node .claude/skills/verify-overland/scripts/verify.mjs drive /sponsors`
 
 Loaded when `document.body` text includes `sponsors.page`. Proof: HTTP status, that text, screenshot, console buckets.
 

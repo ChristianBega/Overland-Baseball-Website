@@ -12,7 +12,7 @@ Open `/`.
 
 ## Driving it with puppeteer-core
 
-`node .cursor/skills/verify-overland/scripts/verify.mjs drive /`
+`node .claude/skills/verify-overland/scripts/verify.mjs drive /`
 
 Wait for `#home-page` (`aria-label="Home Page"`). Proof: HTTP status from `goto`, selector present, screenshot, console buckets.
 

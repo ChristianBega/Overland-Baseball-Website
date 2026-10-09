@@ -12,7 +12,7 @@ Open `/events`.
 
 ## Driving it with puppeteer-core
 
-`node .cursor/skills/verify-overland/scripts/verify.mjs drive /events`
+`node .claude/skills/verify-overland/scripts/verify.mjs drive /events`
 
 Wait for `#events-page` (`aria-label="Events Page"`). Proof: HTTP status, selector present, screenshot, console buckets.
 

@@ -12,7 +12,7 @@ Open `/alumni`.
 
 ## Driving it with puppeteer-core
 
-`node .cursor/skills/verify-overland/scripts/verify.mjs drive /alumni`
+`node .claude/skills/verify-overland/scripts/verify.mjs drive /alumni`
 
 Wait for `#alumni-page`. Proof: HTTP status, selector present, screenshot, console buckets.
 
