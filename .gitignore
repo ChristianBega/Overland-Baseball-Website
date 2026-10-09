@@ -1,9 +1,14 @@
 # dependencies
 node_modules/
 
-# Claude Code — track skills, ignore local state
+# Claude Code — track shared config, ignore local state
 .claude/*
 !.claude/skills/
+!.claude/agents/
+!.claude/hooks/
+!.claude/settings.json
+.claude/settings.local.json
+.claude/worktrees/
 
 # misc
 .DS_Store
