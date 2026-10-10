@@ -126,6 +126,14 @@ check it. Label every criterion `[verify-overland]` or `[manual]`.
 - Any form submit, sign-in, or typed credential. The verify skill forbids it.
 - Visual, layout, copy or accessibility judgement.
 
+**Do-not-touch and shifting warnings.** Full rules and a worked example are in
+`references/spec-template.md`.
+
+- The standard protected paths always stay in Do-not-touch. Ticket-specific additions list only
+  things unsafe to change, never things that are merely clean in today's baseline.
+- When an AC says "0 NEW" after a fix, note that same-family warnings may shift to neighboring
+  elements, and name the likely ones.
+
 ### 5. Review
 
 Write the draft to `planner-drafts/<slug>.md` and tell the owner the path. Keep the chat open.

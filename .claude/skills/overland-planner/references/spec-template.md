@@ -27,7 +27,7 @@ Mark anything you could not confirm as `unverified`.
 - `package.json` and `package-lock.json`, root and `client/`
 - `.env` and any `.env.*`
 - `.claude/skills/overland-planner/`
-- (add any path specific to this ticket)
+- (add any path specific to this ticket; see "Do-not-touch and shifting warnings" below)
 
 ## Acceptance criteria
 
@@ -97,6 +97,30 @@ update command — the regexes are edited by hand. Removing a regex makes that c
 NEW again, which is the point.
 
 Write this as its own acceptance criterion, not as a note.
+
+### Do-not-touch and shifting warnings
+
+**Rule 1: Do-not-touch lists things unsafe to change.**
+
+- The standard protected paths (`.github/workflows/`, both `package.json` / `package-lock.json`,
+  `.env*`, `.claude/skills/overland-planner/`) always stay in Do-not-touch.
+- Rule 1 applies only to ticket-specific additions. List validation, submit logic, JSON configs,
+  workflows and protected paths. Do not list a field or file because it is warning-free in today's
+  baseline. A clean baseline is a snapshot, not a constraint.
+
+**Rule 2: "0 NEW" criteria name the warnings likely to shift.** When an AC says "0 NEW" after a fix,
+same-family warnings may move to neighboring elements. Name the likely elements in the AC or in
+Open questions.
+
+**Worked example (OV-75).** The ticket added `autocomplete` to the password fields. Chrome then
+flagged the remaining unlabelled inputs (`suggested: "username"`), and on sign-up that included
+`userName`, not only the field before the password. The planner had put the email and username
+fields in Do-not-touch because their autocomplete "is not flagged today", so "0 NEW" was
+unreachable without an owner exception. The final tokens were email → `username` on both forms
+(email is the Firebase login), sign-up `userName` → `nickname`, and passwords →
+`current-password` / `new-password`; the full table is in PR #112.
+
+`autocomplete="username"` means "the login identifier", not "a field called username".
 
 ---
 
