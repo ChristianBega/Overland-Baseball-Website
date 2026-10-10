@@ -37,6 +37,8 @@ is the `verify-overland` skill (`node .claude/skills/verify-overland/scripts/ver
   `fix(routes): resolve ThemeShowcase named export inside lazy loader (OV-74)`.
 - **Never push to or merge `development` or `main`.** Bots open PRs; the owner merges
   (README "Bot workflow").
+- **No attribution.** Commits carry no `Co-Authored-By` trailer and PRs no 🤖 footer; set via
+  `attribution` in `.claude/settings.json`.
 
 ## Worktrees
 
