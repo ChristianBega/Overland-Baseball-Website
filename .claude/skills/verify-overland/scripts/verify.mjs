@@ -100,8 +100,6 @@ const KNOWN_OV61 = [
   /The prop `ariaLabel` is marked as required in `SectionLayout`/,
   // OV-76: /boosters media queries written as minWidth instead of min-width. Remove when fixed.
   /Using kebab-case for css properties in objects is not supported\. Did you mean @media \(minWidth:/,
-  // OV-75: password inputs on sign-in / sign-up lack autoComplete. Remove when fixed.
-  /Input elements should have autocomplete attributes \(suggested: "(current|new)-password"\)/,
 ];
 
 function chromePath() {

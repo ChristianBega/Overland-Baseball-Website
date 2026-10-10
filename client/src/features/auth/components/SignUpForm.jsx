@@ -150,6 +150,15 @@ const SignUpForm = () => {
                         : "password"
                       : type
                   }
+                  autoComplete={
+                    name === "password" || name === "confirmPassword"
+                      ? "new-password"
+                      : name === "email"
+                      ? "username"
+                      : name === "userName"
+                      ? "nickname"
+                      : undefined
+                  }
                   label={label}
                   placeholder={placeholder}
                   variant="outlined"
