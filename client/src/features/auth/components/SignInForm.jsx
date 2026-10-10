@@ -131,6 +131,7 @@ const SignInForm = () => {
                 <TextField
                   {...field}
                   type={name === "password" ? (showPassword ? "text" : "password") : type}
+                  autoComplete={name === "password" ? "current-password" : undefined}
                   label={label}
                   placeholder={placeholder}
                   variant="outlined"
