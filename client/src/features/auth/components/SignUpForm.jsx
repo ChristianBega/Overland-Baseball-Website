@@ -154,9 +154,9 @@ const SignUpForm = () => {
                     name === "password" || name === "confirmPassword"
                       ? "new-password"
                       : name === "email"
-                      ? "email"
-                      : name === "userName"
                       ? "username"
+                      : name === "userName"
+                      ? "nickname"
                       : undefined
                   }
                   label={label}
