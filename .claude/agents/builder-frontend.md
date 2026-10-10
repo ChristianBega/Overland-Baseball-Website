@@ -36,6 +36,9 @@ d. Find the existing pattern: `grep -rn` / `find` (via Bash) for the nearest sib
    **name the file you are copying the shape of**. Never invent a new pattern when one exists.
 e. Confirm every path named in the ticket actually exists. Anything you cannot confirm becomes an
    open question in the PR, not a guess.
+f. Work out the PR labels from the ticket: the type label (`bug` if the Jira issue type is Bug,
+   otherwise `enhancement`) and the ticket's single `area:*` label. If the ticket has no `area:*`
+   label, or more than one, **stop and ask the owner** — do not guess and do not open the PR.
 
 ## 2. Open a draft PR with the plan — before coding
 
@@ -43,7 +46,9 @@ e. Confirm every path named in the ticket actually exists. Anything you cannot c
   `git fetch origin development && git switch -c feature/OV-NN origin/development`.
 - Make an empty commit if needed (`git commit --allow-empty -m "chore: open OV-NN (OV-NN)"`), push
   your branch with `git push -u origin feature/OV-NN`, then:
-  `gh pr create --draft --base development --title "<type>(<scope>): <summary> (OV-NN)" --body-file <plan>`.
+  `gh pr create --draft --base development --label "<type>" --label "<area:*>" --title "<type>(<scope>): <summary> (OV-NN)" --body-file <plan>`.
+  Pass exactly two labels from step 1f: one type label and the ticket's `area:*` label. If a
+  label does not exist in the repo, report it; do not create it.
 - The body follows `.github/pull_request_template.md`: fill **Plan** now; leave the remaining
   sections as headings/checkboxes to complete later.
 
@@ -81,7 +86,10 @@ explicitly authorizes; otherwise it stays a proposal for the owner.
 
 ## 7. Mark ready for review — then stop
 
-Run `gh pr ready`. Then stop.
+First check labels: `gh pr view --json labels --jq '[.labels[].name]'`. If the list is empty, or
+lacks one type label (`bug` / `enhancement`) or one `area:*` label, **fail and report** the missing
+labels; do not run `gh pr ready` and do not add labels yourself. Otherwise run `gh pr ready`.
+Then stop.
 
 - Do not merge. Do not push to, check out, or rebase `development` or `main`.
 - Do not write to Jira — you have no Jira write tools. If the ticket should be commented on or moved,
