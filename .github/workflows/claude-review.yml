@@ -1,0 +1,46 @@
+name: Claude Review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review, synchronize, reopened]
+    branches: [development]
+
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read          # comment-only: no push
+  pull-requests: write    # needed to post the review comment
+  issues: read
+  actions: read           # lets Claude read CI results
+
+jobs:
+  review:
+    # public repo: fork PRs get no secrets, so skip them
+    if: github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.pull_request.draft == false &&
+        !contains(github.event.pull_request.labels.*.name, 'needs-human')
+    # pinned: ubuntu-latest moves to Ubuntu 26 on 2026-10-19 (OV-68)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # job token instead of the Claude GitHub App: no OIDC exchange, so no
+          # "workflow must match the default branch" check, and it expires with the job
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+            BASE: origin/${{ github.event.pull_request.base.ref }}
+
+            Review this pull request. Read .claude/skills/review-pr/SKILL.md first and follow it exactly.
+          claude_args: |
+            --allowedTools "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
+            --model opus
+          track_progress: true
+          use_sticky_comment: true
