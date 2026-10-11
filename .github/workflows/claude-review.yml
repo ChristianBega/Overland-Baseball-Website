@@ -43,4 +43,5 @@ jobs:
             --allowedTools "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
             --model opus
           track_progress: true
+          # one comment per PR, edited on each push (checked on #116 with the job token)
           use_sticky_comment: true
