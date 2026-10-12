@@ -14,6 +14,7 @@ permissions:
   pull-requests: write    # needed to post the review comment
   issues: read
   actions: read           # lets Claude read CI results
+  id-token: write         # Claude GitHub App auth; the workflow must match the default branch (development)
 
 jobs:
   review:
@@ -30,9 +31,6 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          # job token instead of the Claude GitHub App: no OIDC exchange, so no
-          # "workflow must match the default branch" check, and it expires with the job
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
@@ -43,4 +41,5 @@ jobs:
             --allowedTools "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
             --model opus
           track_progress: true
+          # one comment per PR, edited on each push (matched by the claude[bot] identity)
           use_sticky_comment: true
