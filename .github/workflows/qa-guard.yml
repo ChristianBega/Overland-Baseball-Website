@@ -18,8 +18,8 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: read
-  issues: write           # read label events; remove a stale `baseline-change`
+  pull-requests: write    # remove a stale `baseline-change` (PR labels need this, not issues: write)
+  issues: read            # label events
 
 jobs:
   qa-guard:
@@ -50,7 +50,10 @@ jobs:
           if [ "$ACTION" = "synchronize" ] && [ "$has_label" = "true" ]; then
             pushed=$(gh api "repos/$REPO/compare/$BEFORE...$AFTER" --jq '.files[].filename' 2>/dev/null) || pushed="unknown (force push)"
             if printf '%s\n' "$pushed" | grep -qE "$GUARDED_RE|^unknown"; then
-              gh api -X DELETE "repos/$REPO/issues/$PR/labels/$LABEL" >/dev/null
+              if ! gh api -X DELETE "repos/$REPO/issues/$PR/labels/$LABEL" >/dev/null; then
+                echo "::error::A new push changed guarded files and '$LABEL' could not be removed. Remove and re-apply it after reviewing the push."
+                exit 1
+              fi
               echo "::error::A new push changed guarded files, so '$LABEL' was removed. The owner re-applies it after reviewing the push."
               exit 1
             fi

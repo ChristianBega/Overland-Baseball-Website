@@ -82,6 +82,7 @@ jobs:
 
       - name: Sticky comment
         if: always() && github.event.pull_request.head.repo.full_name == github.repository
+        continue-on-error: true   # a comment API failure must not turn `qa` red
         uses: actions/github-script@v7
         env:
           EVIDENCE_DIR: ${{ steps.evidence.outputs.dir }}
