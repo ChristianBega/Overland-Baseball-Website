@@ -147,13 +147,16 @@ say "pick: $(printf '%s' "$KEYS" | paste -sd' ' -)"
 T=$(mint) || die "bot token mint failed"
 claimed_by() {
   k=$1
-  hit=$(GH_TOKEN=$T gh pr list --state all --search "$k" --limit 20 --json number,title,headRefName 2>/dev/null |
+  # A failed gh call counts as claimed: better to skip a ticket than to build a duplicate PR.
+  json=$(GH_TOKEN=$T gh pr list --state all --search "$k" --limit 20 --json number,title,headRefName 2>/dev/null) ||
+    { printf 'gh pr list failed'; return; }
+  hit=$(printf '%s' "$json" |
     node -e '
       let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
         const re = new RegExp("(^|[^A-Za-z0-9])" + process.argv[1] + "(?![0-9])");
-        const pr = JSON.parse(s || "[]").find(p => re.test(p.title) || re.test(p.headRefName));
+        const pr = JSON.parse(s).find(p => re.test(p.title) || re.test(p.headRefName));
         if (pr) console.log("PR #" + pr.number);
-      });' "$k") || hit="gh pr list failed"
+      });' "$k" 2>/dev/null) || hit="gh pr list unparsable"
   if [ -z "$hit" ]; then
     br=$(git -C "$REPO_ROOT" ls-remote --heads origin 2>/dev/null | awk '{print $2}' | grep -E "/$k\$" | head -1)
     [ -n "$br" ] && hit="branch ${br#refs/heads/}"
