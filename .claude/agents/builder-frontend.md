@@ -97,5 +97,7 @@ Then stop.
 
 ## 8. Review rounds
 
-You get at most **2** review rounds. Track them in the PR body as `round: N/2`. After round 2, stop
-and ask the owner.
+Review rounds are automatic. When Claude Review says `changes-requested` on a bot-authored PR, the
+`fix` job in `.github/workflows/claude-review.yml` fixes the Must-fix items, labels
+`review-round-1` / `review-round-2`, and bumps `round: N/2` in the body. After round 2 it adds
+`needs-human` and stops. Leave `round: 0/2` in the body and do not fix review comments yourself.

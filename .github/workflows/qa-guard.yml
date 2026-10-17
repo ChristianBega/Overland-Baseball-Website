@@ -1,7 +1,8 @@
 name: QA Guard
 
-# The verify harness (incl. the KNOWN_OV61 known-bug baseline) and the workflows define what `qa`
-# checks (a new workflow could report a fake `qa`). Changing them needs the `baseline-change`
+# The verify harness (incl. the KNOWN_OV61 known-bug baseline), the workflows and the agent config
+# under .claude/ define what `qa`, the reviewer and the fixer do (a new workflow could report a fake
+# `qa`; a PR's .claude/ steers the agents that run on it). Changing them needs the `baseline-change`
 # label, applied by a human.
 #
 # pull_request_target runs this file from the base branch, so a PR cannot edit the guard that
@@ -33,11 +34,11 @@ jobs:
       BEFORE: ${{ github.event.before }}
       AFTER: ${{ github.event.after }}
       LABEL: baseline-change
-      GUARDED_RE: '^(\.claude/skills/verify-overland/|\.github/workflows/)'
+      GUARDED_RE: '^(\.claude/|\.github/workflows/)'
     steps:
       - name: Guard harness and baseline
         run: |
-          changed=$(gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[].filename' | grep -E "$GUARDED_RE" || true)
+          changed=$(gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[] | .filename, (.previous_filename // empty)' | grep -E "$GUARDED_RE" || true)
           if [ -z "$changed" ]; then
             echo "Harness and baseline unchanged."
             exit 0
@@ -48,7 +49,7 @@ jobs:
 
           # A new push that touches guarded files invalidates an earlier approval.
           if [ "$ACTION" = "synchronize" ] && [ "$has_label" = "true" ]; then
-            pushed=$(gh api "repos/$REPO/compare/$BEFORE...$AFTER" --jq '.files[].filename' 2>/dev/null) || pushed="unknown (force push)"
+            pushed=$(gh api "repos/$REPO/compare/$BEFORE...$AFTER" --jq '.files[] | .filename, (.previous_filename // empty)' 2>/dev/null) || pushed="unknown (force push)"
             if printf '%s\n' "$pushed" | grep -qE "$GUARDED_RE|^unknown"; then
               if ! gh api -X DELETE "repos/$REPO/issues/$PR/labels/$LABEL" >/dev/null; then
                 echo "::error::A new push changed guarded files and '$LABEL' could not be removed. Remove and re-apply it after reviewing the push."
