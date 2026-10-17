@@ -182,8 +182,8 @@ Before executing anything in Jira, print the exact actions and wait for approval
 
     comment on OV-63, link OV-61 to OV-62, create 1 ticket, add labels area:frontend, size-s, ready-for-build
 
-Every ticket you create or rewrite lists its `area:` and `size-*` labels here. List `ready-for-build` only when the
-spec is final; it tells the Builder to start.
+Every ticket you create or rewrite lists its `area:` and `size-*` labels here. List
+`ready-for-build` only when the spec is final; it tells the Builder to start.
 
 Execute only what is on the list. One ticket per approval. Show before/after text for each edit.
 
@@ -209,8 +209,9 @@ If in flight, alert the owner and offer:
 ## Allowed Jira actions
 
 Create a ticket. Edit description text. Add a comment. Add a link. Add the label `planner-review`.
-Add exactly one component label (below). Add exactly one `size-*` label (below). Add the label
-`ready-for-build` on the owner's approval in the touch list. Add `blocked` only when the owner asks. Never change status, priority, assignee, or sprint.
+Add or replace exactly one component label (below). Add or replace exactly one `size-*` label
+(below). Add the label `ready-for-build` on the owner's approval in the touch list. Add `blocked`
+only when the owner asks. Never change status, priority, assignee, or sprint.
 
 `ready-for-build` is a label, not a status. The OV board has only `To Do` / `In Progress` / `Done`.
 Never transition a ticket.
@@ -232,8 +233,8 @@ If a ticket already has an `area:` label, replace it only on the owner's approva
 
 ## Size labels
 
-Every ticket you post gets exactly one size label. The overnight runner reads it to decide what to
-pick up. Decide it from grounding, not by asking.
+Every ticket you post gets exactly one size label, except a sliced parent (below). The overnight
+runner reads it to decide what to pick up. Decide it from grounding, not by asking.
 
 | Label | Means |
 |---|---|
@@ -241,8 +242,16 @@ pick up. Decide it from grounding, not by asking.
 | `size-m` | A few files in one feature. May add one component or hook. |
 | `size-l` | Crosses features, adds a route, or touches shared UI, theme, or `routes.jsx`. |
 
+No client code (tooling, CI, docs, skills): size by file count — 1-2 files `size-s`, 3-5 `size-m`,
+more `size-l`.
+
 When unsure, pick the larger size. If a ticket already has a `size-*` label, replace it only on the
 owner's approval. Never leave two. A ticket too big for `size-l` needs slices (step 4).
+
+Sliced work: each Subtask gets its own `size-*` label. The parent gets none, so the runner never
+picks up the parent and its Subtasks together.
+
+`blocked` means the runner skips the ticket. Add it only when the owner asks.
 
 ## Noticed, not touched
 
