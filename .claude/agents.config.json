@@ -44,6 +44,38 @@
     "builderAgent": "builder-frontend",
     "maxTicketsPerNight": 3,
     "allowedSizes": ["size-s", "size-m"],
-    "$comment": "After 2-3 clean nights: maxTicketsPerNight 5, allowedSizes add size-l."
+    "$comment": "After 2-3 clean nights: maxTicketsPerNight 5, allowedSizes add size-l.",
+    "maxTurns": 150,
+    "wallClockMinutes": 50,
+    "maxBudgetUsd": 15,
+    "pickModel": "sonnet",
+    "envFiles": ["client/.env"],
+    "$disallowedToolsComment": "Denied for the headless builder; deny beats allow. Never end a rule in \":*\" (legacy prefix syntax: Bash(git push *:*) silently matches nothing useful); use \":**\". The runner also denies Bash(git push * <branch>*) for each repo.protectedBranches.",
+    "disallowedTools": [
+      "Bash(git push *:**)", "Bash(git push *+*)", "Bash(git push *--force*)", "Bash(git push * -f*)",
+      "Bash(git push *--delete*)", "Bash(git push * -d*)", "Bash(git push *--prune*)",
+      "Bash(git push *--all*)", "Bash(git push *--mirror*)",
+      "Bash(gh pr ready *--undo*)", "Bash(gh pr merge*)", "Bash(gh pr review*)", "Bash(gh pr close*)", "Bash(gh api*)",
+      "Bash(find *-exec*)", "Bash(find *-ok*)", "Bash(find *-delete*)"
+    ],
+    "$allowedToolsComment": "Headless builder allowlist (OV-82). Passed on the command line with --permission-prompts none: anything else is denied at once and logged, never prompted.",
+    "allowedTools": [
+      "Read", "Write", "Edit", "Glob", "Grep",
+      "mcp__atlassian__getJiraIssue",
+      "mcp__atlassian__searchJiraIssuesUsingJql",
+      "mcp__atlassian__atlassianUserInfo",
+      "mcp__atlassian__getAccessibleAtlassianResources",
+      "Bash(git status*)", "Bash(git diff*)", "Bash(git log*)", "Bash(git branch*)",
+      "Bash(git show*)", "Bash(git rev-parse*)", "Bash(git ls-remote*)",
+      "Bash(git fetch*)", "Bash(git switch -c *)", "Bash(git checkout -b *)",
+      "Bash(git add *)", "Bash(git commit *)",
+      "Bash(git push -u origin feature/*)", "Bash(git push -u origin fix/*)",
+      "Bash(git push origin feature/*)", "Bash(git push origin fix/*)",
+      "Bash(gh pr create *)", "Bash(gh pr edit *)", "Bash(gh pr ready*)",
+      "Bash(gh pr view*)", "Bash(gh pr list*)", "Bash(gh pr checks*)", "Bash(gh label list*)",
+      "Bash(npm ci)", "Bash(npm run build)", "Bash(cd client && npm ci)", "Bash(cd client && npm run build)",
+      "Bash(node .claude/skills/verify-overland/scripts/verify.mjs*)",
+      "Bash(grep *)", "Bash(find *)", "Bash(ls*)", "Bash(pwd)"
+    ]
   }
 }
