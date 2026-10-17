@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Rendered by scripts/agents/launchd/install.sh. Placeholders: __LABEL__ __REPO_ROOT__ __PATH__
+     __AGENTS_HOME__ __AGENTS_LOG_DIR__ __HOUR__ __MINUTE__. caffeinate keeps the Mac awake for the
+     whole run after the pmset wake (otherwise it drops back to sleep within minutes). -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>__LABEL__</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/caffeinate</string>
+    <string>-is</string>
+    <string>/bin/sh</string>
+    <string>__REPO_ROOT__/scripts/agents/overnight.sh</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__REPO_ROOT__</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>__PATH__</string>
+    <key>AGENTS_HOME</key>
+    <string>__AGENTS_HOME__</string>
+    <key>AGENTS_LOG_DIR</key>
+    <string>__AGENTS_LOG_DIR__</string>
+  </dict>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>__HOUR__</integer>
+    <key>Minute</key>
+    <integer>__MINUTE__</integer>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>__AGENTS_LOG_DIR__/launchd.log</string>
+  <key>StandardErrorPath</key>
+  <string>__AGENTS_LOG_DIR__/launchd.log</string>
+</dict>
+</plist>

@@ -27,6 +27,31 @@ only the procedure.
 
 Follow these steps in order. Do not skip ahead.
 
+## Unattended mode
+
+Applies when the prompt contains `(unattended)`. That is the overnight runner
+(`scripts/agents/overnight.sh`), and nobody is watching. The steps below still apply, with these
+overrides:
+
+- **Never ask and never wait.** Wherever a step says "stop and ask" or "stop and report", write the
+  question under `## Open questions` in the PR body, add the `needs-human` label
+  (`gh pr edit --add-label needs-human`), and go straight to step 7. Do not guess past a spec
+  conflict: a missing path, criteria that contradict the code, or a change that needs a
+  Do-not-touch path.
+- **Labels (1f / 7):** if the ticket lacks exactly one `area:*` label, open the PR with the type
+  label and `needs-human`, and say why under Open questions. `needs-human` is the only label you
+  may add yourself.
+- **Always end ready, not draft.** Step 7 runs `gh pr ready` even when `needs-human` is set, so QA
+  and the preview run overnight. Review skips `needs-human` PRs.
+- **Scratch files** (PR body, notes) go only in the scratch directory named in the prompt, never in
+  the worktree. Commit with plain `git commit -m "<message>"` or `-F <file in scratch dir>`: no
+  heredocs, no `$(...)`.
+- **A denied tool call is final.** Permissions are a fixed allowlist and anything else is refused.
+  Do not work around a denial; note it under Open questions.
+- You start in a detached worktree at `origin/development`; step 2's `git switch -c` applies as
+  written. Pushes and `gh` already run as the bot.
+- **Final message:** PR URL, labels, and any open questions. The runner logs it.
+
 ## 1. Gather info first — hard requirement, before any edit
 
 a. `getJiraIssue` the key. Read the description **and every comment**.
