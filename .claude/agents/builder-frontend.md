@@ -34,8 +34,9 @@ Applies when the prompt contains `(unattended)`. That is the overnight runner
 overrides:
 
 - **Never ask and never wait.** Wherever a step says "stop and ask" or "stop and report", write the
-  question under `## Open questions` in the PR body, add the `needs-human` label
-  (`gh pr edit --add-label needs-human`), and go straight to step 7. Do not guess past a spec
+  question under `## Open questions` in the PR body, add the `needs-human` label, and go straight to
+  step 7. If the PR does not exist yet (step 1), do step 2 with `--label needs-human` added to
+  `gh pr create`. After that, use `gh pr edit --add-label needs-human`. Do not guess past a spec
   conflict: a missing path, criteria that contradict the code, or a change that needs a
   Do-not-touch path.
 - **Labels (1f / 7):** if the ticket lacks exactly one `area:*` label, open the PR with the type

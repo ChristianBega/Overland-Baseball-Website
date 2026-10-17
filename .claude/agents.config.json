@@ -50,6 +50,14 @@
     "maxBudgetUsd": 15,
     "pickModel": "sonnet",
     "envFiles": ["client/.env"],
+    "$disallowedToolsComment": "Denied for the headless builder; deny beats allow. The runner also denies Bash(git push * <branch>*) for each repo.protectedBranches.",
+    "disallowedTools": [
+      "Bash(git push *:*)", "Bash(git push *+*)", "Bash(git push *--force*)", "Bash(git push * -f*)",
+      "Bash(git push *--delete*)", "Bash(git push * -d*)", "Bash(git push *--prune*)",
+      "Bash(git push *--all*)", "Bash(git push *--mirror*)",
+      "Bash(gh pr ready *--undo*)", "Bash(gh pr merge*)", "Bash(gh pr review*)", "Bash(gh pr close*)", "Bash(gh api*)",
+      "Bash(find *-exec*)", "Bash(find *-ok*)", "Bash(find *-delete*)"
+    ],
     "$allowedToolsComment": "Headless builder allowlist (OV-82). Passed on the command line with --permission-prompts none: anything else is denied at once and logged, never prompted.",
     "allowedTools": [
       "Read", "Write", "Edit", "Glob", "Grep",

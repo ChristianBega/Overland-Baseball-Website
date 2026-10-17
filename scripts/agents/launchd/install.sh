@@ -28,7 +28,8 @@ MINUTE=$(printf '%s' "${AT##*:}" | sed 's/^0\(.\)/\1/')
 # launchd starts with a bare PATH: pin the directories that hold the tools the runner needs.
 P=""
 for bin in node git gh claude; do
-  d=$(dirname "$(command -v "$bin")") || { echo "install: $bin not on PATH" >&2; exit 1; }
+  p=$(command -v "$bin") || { echo "install: $bin not on PATH" >&2; exit 1; }
+  d=$(dirname "$p")
   case ":$P:" in *":$d:"*) ;; *) P="$P${P:+:}$d" ;; esac
 done
 P="$P:/usr/bin:/bin:/usr/sbin:/sbin"

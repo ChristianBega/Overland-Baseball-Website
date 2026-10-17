@@ -90,6 +90,7 @@ CLOUD_ID=$(cfg jira.cloudId) || die "jira.cloudId missing"
 READY=$(cfg labels.jira.readyForBuild) || die "labels.jira.readyForBuild missing"
 BLOCKED=$(cfg labels.jira.blocked) || die "labels.jira.blocked missing"
 SIZES=$(cfg runner.allowedSizes | sed 's/.*/"&"/' | paste -sd, -)
+[ -n "$SIZES" ] || die "runner.allowedSizes missing or empty"
 AGENT=$(cfg runner.builderAgent) || die "runner.builderAgent missing"
 MAX_TICKETS=$(cfg runner.maxTicketsPerNight) || die "runner.maxTicketsPerNight missing"
 MAX_TURNS=$(cfg runner.maxTurns || echo 150)
@@ -102,6 +103,13 @@ COMMIT_EMAIL=$(cfg bot.commitEmail) || die "bot.commitEmail missing"
 VERIFY_CMD=$(cfg commands.verify || true)
 
 git -C "$REPO_ROOT" fetch -q origin "$BASE" || die "git fetch origin $BASE failed"
+# The bot identity rides on an HTTPS credential helper. Over SSH (or an insteadOf rewrite to SSH)
+# git would push with the owner's key, as the owner.
+PUSH_URL=$(git -C "$REPO_ROOT" remote get-url --push origin) || die "no origin remote"
+case $PUSH_URL in
+  https://*) ;;
+  *) die "origin push URL is not HTTPS ($PUSH_URL): pushes would not run as the bot" ;;
+esac
 node "$REPO_ROOT/scripts/agents/bot-token.mjs" >/dev/null || die "bot token mint failed (see bot-token message above)"
 
 mint() {
@@ -158,7 +166,8 @@ claimed_by() {
         if (pr) console.log("PR #" + pr.number);
       });' "$k" 2>/dev/null) || hit="gh pr list unparsable"
   if [ -z "$hit" ]; then
-    br=$(git -C "$REPO_ROOT" ls-remote --heads origin 2>/dev/null | awk '{print $2}' | grep -E "/$k\$" | head -1)
+    heads=$(git -C "$REPO_ROOT" ls-remote --heads origin 2>/dev/null) || { printf 'git ls-remote failed'; return; }
+    br=$(printf '%s\n' "$heads" | awk '{print $2}' | grep -E "/$k\$" | head -1)
     [ -n "$br" ] && hit="branch ${br#refs/heads/}"
   fi
   printf '%s' "$hit"
@@ -202,14 +211,25 @@ reap_worktree() {
 }
 
 # ---- 6. build, one ticket at a time -----------------------------------------------------------
-# Headless allowlist from the config, as positional args for --allowedTools.
-set --
+# Headless permissions from the config, as positional args:
+#   --disallowedTools <deny...> --allowedTools <allow...>
+# Deny beats allow, so the feature/* and fix/* push rules can never reach a protected branch, a
+# refspec, a deletion or a force push.
+set -- --disallowedTools
+while IFS= read -r tool; do
+  [ -n "$tool" ] && set -- "$@" "$tool"
+done <<EOF
+$(cfg runner.disallowedTools || true)
+$(cfg repo.protectedBranches | sed 's/.*/Bash(git push * &*)/')
+EOF
+set -- "$@" --allowedTools
+n_deny=$#
 while IFS= read -r tool; do
   [ -n "$tool" ] && set -- "$@" "$tool"
 done <<EOF
 $(cfg runner.allowedTools)
 EOF
-[ $# -gt 0 ] || die "runner.allowedTools is empty"
+[ $# -gt "$n_deny" ] || die "runner.allowedTools is empty"
 
 export TMPDIR="$AGENTS_HOME/tmp"
 mkdir -p "$TMPDIR" "$AGENTS_HOME/worktrees"
@@ -253,21 +273,16 @@ EOF
   (
     cd "$WT" || exit 1
     export GH_TOKEN="$T"
-    export GIT_CONFIG_COUNT=2
+    export GIT_CONFIG_COUNT=3
     export GIT_CONFIG_KEY_0=credential.helper GIT_CONFIG_VALUE_0=
     export GIT_CONFIG_KEY_1=credential.helper
     export GIT_CONFIG_VALUE_1='!f() { echo username=x-access-token; echo "password=$GH_TOKEN"; }; f'
+    export GIT_CONFIG_KEY_2=commit.gpgsign GIT_CONFIG_VALUE_2=false
     export GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL"
     export GIT_COMMITTER_NAME="$COMMIT_NAME" GIT_COMMITTER_EMAIL="$COMMIT_EMAIL"
-    # Deny beats allow: the feature/* and fix/* push rules must never reach a protected branch, a
-    # refspec, a deletion or a force push. The find rule must never run or delete anything.
     exec claude -p --agent "$AGENT" --max-turns "$MAX_TURNS" --max-budget-usd "$MAX_USD" \
       --permission-prompts none --output-format stream-json --verbose \
-      --add-dir "$SCRATCH" \
-      --disallowedTools 'Bash(git push *:*)' 'Bash(git push * development*)' 'Bash(git push * main*)' \
-        'Bash(git push *--force*)' 'Bash(git push * -f*)' 'Bash(git push *+*)' 'Bash(git push *--delete*)' \
-        'Bash(find *-exec*)' 'Bash(find *-ok*)' 'Bash(find *-delete*)' \
-      --allowedTools "$@" -- "$PROMPT"
+      --add-dir "$SCRATCH" "$@" -- "$PROMPT"
   ) < /dev/null > "$TLOG" 2>&1 &
   cpid=$!
   set +m
@@ -286,6 +301,9 @@ EOF
 
   wait "$cpid"
   rc=$?
+  # claude usually exits on TERM before the watchdog's KILL: finish off anything left in its group
+  # that ignored TERM (browser, vite under npm).
+  [ -e "$TIMED_OUT" ] && kill -KILL -"$cpid" 2>/dev/null
   cpid=""
   pkill -P "$wpid" 2>/dev/null
   kill "$wpid" 2>/dev/null
