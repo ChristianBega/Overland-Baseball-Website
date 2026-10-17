@@ -260,12 +260,13 @@ EOF
     export GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL"
     export GIT_COMMITTER_NAME="$COMMIT_NAME" GIT_COMMITTER_EMAIL="$COMMIT_EMAIL"
     # Deny beats allow: the feature/* and fix/* push rules must never reach a protected branch, a
-    # refspec, a deletion or a force push.
+    # refspec, a deletion or a force push. The find rule must never run or delete anything.
     exec claude -p --agent "$AGENT" --max-turns "$MAX_TURNS" --max-budget-usd "$MAX_USD" \
       --permission-prompts none --output-format stream-json --verbose \
       --add-dir "$SCRATCH" \
       --disallowedTools 'Bash(git push *:*)' 'Bash(git push * development*)' 'Bash(git push * main*)' \
         'Bash(git push *--force*)' 'Bash(git push * -f*)' 'Bash(git push *+*)' 'Bash(git push *--delete*)' \
+        'Bash(find *-exec*)' 'Bash(find *-ok*)' 'Bash(find *-delete*)' \
       --allowedTools "$@" -- "$PROMPT"
   ) < /dev/null > "$TLOG" 2>&1 &
   cpid=$!
