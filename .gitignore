@@ -7,6 +7,7 @@ node_modules/
 !.claude/agents/
 !.claude/hooks/
 !.claude/settings.json
+!.claude/agents.config.json
 .claude/settings.local.json
 .claude/worktrees/
 
