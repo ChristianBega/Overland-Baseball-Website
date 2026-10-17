@@ -117,7 +117,13 @@ async function main() {
   if (!existsSync(kp)) fail(`private key not found at ${kp} (set BOT_KEY_PATH)`);
   const id = appId(kp);
   const repo = repoSlug();
-  const jwt = appJwt(id, readFileSync(kp, "utf8"));
+  let pem;
+  try {
+    pem = readFileSync(kp, "utf8");
+  } catch (e) {
+    fail(`cannot read private key at ${kp} (${e.code})`);
+  }
+  const jwt = appJwt(id, pem);
 
   const inst = await gh("GET", `/repos/${repo}/installation`, jwt);
   if (inst.status === 401) fail(`GitHub rejected the App JWT (401): check that App ID ${id} matches the key`);

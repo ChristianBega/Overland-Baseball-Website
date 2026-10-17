@@ -16,7 +16,7 @@ There is no Jira access here: the PR body **is** the spec. The sections come fro
 
 - `## Acceptance criteria` — what the diff must do.
 - `## Do-not-touch / Out of scope` — what the diff must not change.
-- `## Verify report` — the `verify-overland` table and `NEW total`.
+- `## Verify report` — the builder's local `verify-overland` run (self-reported; check 7 uses CI).
 - `## Proposed context changes` — proposals only.
 
 If `## Acceptance criteria` is missing, empty, or still the template placeholder, say so in the
@@ -42,8 +42,17 @@ Read/Grep when a hunk is not enough to judge. Skip generated and vendored files:
    Any `.env*` file in the diff is a Must fix.
 6. **Routes** — if `client/src/routes.jsx` changed, every page except `HomePage` is lazy-loaded,
    and a named export is mapped: `.then((m) => ({ default: m.Name }))`.
-7. **Verify report** — present, with `NEW total: 0`. Missing or non-zero is a Must fix unless the
-   PR touches no client code.
+7. **QA checks** — the CI results, not the PR body. Run
+   `gh pr view <PR> --json statusCheckRollup --jq '.statusCheckRollup[] | select(.name == "qa" or .name == "qa-guard") | [.name, .status, .conclusion] | @tsv'`.
+   - `COMPLETED SUCCESS` — fine.
+   - `qa` `COMPLETED FAILURE` — Must fix. Read the `<!-- qa-verify -->` comment (`gh pr view <PR> --comments`)
+     and cite each failing route and NEW message.
+   - `qa-guard` `COMPLETED FAILURE` — the harness, baseline or a workflow changed without a
+     human-applied `baseline-change`. Must fix unless the acceptance criteria authorize the change;
+     then say the owner must apply the label.
+   - Still running, or no row — not a Must fix; note it under *Consider* (merge is gated by the
+     required checks).
+   The PR body's *Verify report* is self-reported: never mark it `met` on its own.
 8. **Context changes** — edits to `CLAUDE.md`, `.claude/agents/`, or `.claude/skills/` must be
    authorized by the acceptance criteria; otherwise they belong under *Proposed context changes*
    as a proposal, not committed.
