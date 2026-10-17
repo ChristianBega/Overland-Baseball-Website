@@ -78,3 +78,5 @@ Before `SIGTERM`, `ps -o args= -p <pid>` must contain `vite` or `npm start` and 
 ## Helpers
 
 `scripts/verify.mjs` is the only helper. Commands: `bootstrap`, `launch`, `doctor`, `drive [routes...]`, `cleanup [--evidence]`.
+
+<!-- qa-guard test edit (throwaway) -->
