@@ -9,7 +9,7 @@ on:
       - client/public/sitemap.xml
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: aws-deploy
 
     steps:
