@@ -150,6 +150,7 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - if: steps.round.outputs.round != 'stop'
+        id: claude
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -173,11 +174,23 @@ jobs:
             5. Never edit the PR body, title, labels or acceptance criteria. Do not push; the workflow pushes.
             6. Follow CLAUDE.md (JavaScript + PropTypes, `import.meta.env.REACT_APP_*`, copy the nearest sibling).
             7. If an item cannot be fixed within these rules, skip it and say why in one line at the end.
+            8. Commit with exactly `git add <paths>` then `git commit -m "<one-line message>"` as separate
+               commands. No heredocs, no `$(...)`, no `&&` chains, no other git commands.
           claude_args: |
             --allowedTools "Read,Edit,Write,Grep,Glob,Bash(git add:*),Bash(git commit -m:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*)"
             --disallowedTools "Edit(.git/**),Write(.git/**),Edit(**/.git/**),Write(**/.git/**)"
             --model opus
             --max-turns 60
+            --add-dir ${{ runner.temp }}/fix
+
+      # Names and targets of denied tool calls only (no file contents), so a no-op run is diagnosable.
+      - if: always() && steps.claude.outputs.execution_file != ''
+        name: Permission denials
+        env:
+          EXEC: ${{ steps.claude.outputs.execution_file }}
+        run: |
+          jq -r '.[] | select(.type == "result") | .permission_denials[]?
+            | "\(.tool_name): \(.tool_input.command // .tool_input.file_path // .tool_input.path // "")"' "$EXEC" | cut -c1-200 || true
 
       - if: steps.round.outputs.round != 'stop'
         name: Check and push
