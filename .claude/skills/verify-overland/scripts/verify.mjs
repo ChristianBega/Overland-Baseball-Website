@@ -526,6 +526,13 @@ async function drive(routes) {
         });
         if (route === "/sponsors") {
           await page.waitForSelector("body", { timeout: 15000 });
+          // The page is lazy-loaded: wait for rendered text, not just the shell (slow CI runners).
+          await page
+            .waitForFunction(
+              () => ((document.querySelector("main") || document.body)?.innerText || "").trim().length > 0,
+              { timeout: 15000 }
+            )
+            .catch(() => {});
           const check = await page.evaluate(() => {
             const main = document.querySelector("main");
             if (main) return { via: "main", text: main.innerText.trim() };
