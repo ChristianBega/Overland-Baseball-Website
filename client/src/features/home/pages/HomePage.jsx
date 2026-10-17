@@ -10,6 +10,7 @@ import ContactUs from "../components/ContactUs";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 
 const HomePage = () => {
+  console.error("qa-gate test: planted regression");
   const { isLg } = useMediaQueries();
   return (
     <>
