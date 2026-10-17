@@ -1,0 +1,150 @@
+name: QA Verify
+
+# Runs the verify-overland harness on every PR into development and posts one sticky comment.
+# Job `qa` is a required check on the development ruleset.
+#
+# No fork guard on the job: a skipped required check counts as passing, so skipping forks would
+# let them merge untested. The job needs no secrets; only the comment step is same-repo only.
+
+on:
+  pull_request:
+    # labeled/unlabeled re-run the baseline guard when `baseline-change` is added or removed
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+    branches: [development]
+
+concurrency:
+  group: qa-verify-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write    # sticky comment
+  issues: read            # label events for the baseline guard
+
+jobs:
+  qa:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      VERIFY: node .claude/skills/verify-overland/scripts/verify.mjs
+      BASELINE_FILE: .claude/skills/verify-overland/scripts/verify.mjs
+      BASELINE_LABEL: baseline-change
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      # The known-bug baseline may only change when a human applied `baseline-change`.
+      - name: Baseline guard (KNOWN_OV61)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR: ${{ github.event.pull_request.number }}
+          HAS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'baseline-change') }}
+        run: |
+          block() { git show "$1:$BASELINE_FILE" 2>/dev/null | awk '/^const KNOWN_OV61 = \[/{f=1} f{print} f&&/^\];/{exit}'; }
+          mb=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+          if [ "$(block "$mb")" = "$(block "$HEAD_SHA")" ]; then
+            echo "KNOWN_OV61 unchanged."
+            exit 0
+          fi
+          echo "KNOWN_OV61 block changed in this PR."
+          if [ "$HAS_LABEL" != "true" ]; then
+            echo "::error::KNOWN_OV61 changed without the '$BASELINE_LABEL' label. Only the owner applies it."
+            exit 1
+          fi
+          by=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/events" --paginate \
+            --jq ".[] | select(.event == \"labeled\" and .label.name == \"$BASELINE_LABEL\") | .actor.type" | tail -n 1)
+          if [ "$by" != "User" ]; then
+            echo "::error::'$BASELINE_LABEL' was applied by a ${by:-unknown} account, not a human."
+            exit 1
+          fi
+          echo "'$BASELINE_LABEL' applied by a human; baseline change allowed."
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - id: chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Tools
+        run: |
+          echo "CHROME_PATH=${{ steps.chrome.outputs.chrome-path }}" >> "$GITHUB_ENV"
+          echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
+          command -v lsof >/dev/null || { sudo apt-get update -q && sudo apt-get install -y -q lsof; }
+
+      - name: Install client
+        working-directory: client
+        run: npm ci
+
+      - name: Verify (bootstrap, launch, doctor, drive)
+        id: verify
+        run: |
+          set -o pipefail
+          $VERIFY bootstrap
+          $VERIFY launch
+          $VERIFY doctor
+          $VERIFY drive | tee "$RUNNER_TEMP/drive.out"
+
+      - name: Cleanup
+        if: always()
+        run: $VERIFY cleanup || true
+
+      - name: Locate evidence
+        id: evidence
+        if: always()
+        run: |
+          dir=$(sed -n 's/^evidence=//p' "$RUNNER_TEMP/drive.out" 2>/dev/null | tail -n 1)
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+
+      - id: upload
+        if: always() && steps.evidence.outputs.dir != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-evidence-pr-${{ github.event.pull_request.number }}
+          path: ${{ steps.evidence.outputs.dir }}
+          retention-days: 14
+
+      - name: Sticky comment
+        if: always() && github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/github-script@v7
+        env:
+          EVIDENCE_DIR: ${{ steps.evidence.outputs.dir }}
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const fs = require("fs");
+            const marker = "<!-- qa-verify -->";
+            const { EVIDENCE_DIR, ARTIFACT_URL, VERIFY_OUTCOME, RUN_URL } = process.env;
+            let rows = [];
+            try { rows = JSON.parse(fs.readFileSync(`${EVIDENCE_DIR}/report.json`, "utf8")); } catch {}
+            const sha = context.payload.pull_request.head.sha.slice(0, 7);
+            const lines = [marker, `### QA verify — ${VERIFY_OUTCOME === "success" ? "pass" : "FAIL"} @ ${sha}`, ""];
+            if (rows.length) {
+              const newTotal = rows.reduce((n, r) => n + r.counts.new, 0);
+              lines.push("| Route | httpStatus | loaded | expected | known | NEW |", "|---|---|---|---|---|---|");
+              for (const r of rows) {
+                lines.push(`| \`${r.route}\` | ${r.httpStatus ?? "—"} | ${r.loaded} | ${r.counts.expected} | ${r.counts.known} | ${r.counts.new} |`);
+              }
+              lines.push("", `NEW total: ${newTotal}`);
+              const fresh = rows.flatMap((r) => [...r.newMessages, ...r.blocked].map((m) => `- \`${r.route}\`: ${m.slice(0, 300)}`));
+              if (fresh.length) lines.push("", "<details><summary>NEW messages</summary>", "", ...fresh.slice(0, 30), "", "</details>");
+            } else {
+              lines.push("No report: the run failed before `drive` finished (baseline guard, launch or doctor). See the run log.");
+            }
+            lines.push("", `Evidence: ${ARTIFACT_URL || "none"} · [run log](${RUN_URL})`);
+            const body = lines.join("\n");
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = comments.find((c) => c.body?.startsWith(marker));
+            if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });
