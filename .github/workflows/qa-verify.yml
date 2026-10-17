@@ -28,7 +28,8 @@ jobs:
     timeout-minutes: 20
     env:
       VERIFY: node .claude/skills/verify-overland/scripts/verify.mjs
-      BASELINE_FILE: .claude/skills/verify-overland/scripts/verify.mjs
+      # The harness (incl. the KNOWN_OV61 baseline) and this workflow define what `qa` checks.
+      GUARDED_PATHS: .claude/skills/verify-overland .github/workflows/qa-verify.yml
       BASELINE_LABEL: baseline-change
     steps:
       - uses: actions/checkout@v4
@@ -36,8 +37,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
-      # The known-bug baseline may only change when a human applied `baseline-change`.
-      - name: Baseline guard (KNOWN_OV61)
+      # The harness and its known-bug baseline may only change when a human applied `baseline-change`.
+      - name: Baseline guard (harness + KNOWN_OV61)
         env:
           GH_TOKEN: ${{ github.token }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -45,15 +46,16 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
           HAS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'baseline-change') }}
         run: |
-          block() { git show "$1:$BASELINE_FILE" 2>/dev/null | awk '/^const KNOWN_OV61 = \[/{f=1} f{print} f&&/^\];/{exit}'; }
           mb=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
-          if [ "$(block "$mb")" = "$(block "$HEAD_SHA")" ]; then
-            echo "KNOWN_OV61 unchanged."
+          # shellcheck disable=SC2086 # GUARDED_PATHS is a space-separated list
+          changed=$(git diff --name-only "$mb" "$HEAD_SHA" -- $GUARDED_PATHS)
+          if [ -z "$changed" ]; then
+            echo "Harness and baseline unchanged."
             exit 0
           fi
-          echo "KNOWN_OV61 block changed in this PR."
+          echo "Guarded files changed:"; echo "$changed"
           if [ "$HAS_LABEL" != "true" ]; then
-            echo "::error::KNOWN_OV61 changed without the '$BASELINE_LABEL' label. Only the owner applies it."
+            echo "::error::The QA harness or baseline changed without the '$BASELINE_LABEL' label. Only the owner applies it."
             exit 1
           fi
           by=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/events" --paginate \
@@ -62,7 +64,7 @@ jobs:
             echo "::error::'$BASELINE_LABEL' was applied by a ${by:-unknown} account, not a human."
             exit 1
           fi
-          echo "'$BASELINE_LABEL' applied by a human; baseline change allowed."
+          echo "'$BASELINE_LABEL' applied by a human; harness change allowed."
 
       - uses: actions/setup-node@v4
         with:
@@ -145,6 +147,6 @@ jobs:
             const { owner, repo } = context.repo;
             const issue_number = context.payload.pull_request.number;
             const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
-            const mine = comments.find((c) => c.body?.startsWith(marker));
+            const mine = comments.find((c) => c.user?.login === "github-actions[bot]" && c.body?.startsWith(marker));
             if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
             else await github.rest.issues.createComment({ owner, repo, issue_number, body });
