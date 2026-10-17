@@ -73,7 +73,9 @@ fi
 echo $$ > "$LOCK/pid"
 cpid="" wpid=""
 # On exit (or kill), stop any build and watchdog still running, then release the lock.
-trap '[ -n "$cpid" ] && kill -TERM -"$cpid" 2>/dev/null; [ -n "$wpid" ] && { pkill -P "$wpid"; kill "$wpid"; } 2>/dev/null; rm -rf "$LOCK"' EXIT
+# kill -<pgid> needs job control (set -m); where the shell ignores it (dash without a tty), fall
+# back to the pid.
+trap '[ -n "$cpid" ] && { kill -TERM -"$cpid" 2>/dev/null || kill -TERM "$cpid" 2>/dev/null; }; [ -n "$wpid" ] && { pkill -P "$wpid"; kill "$wpid"; } 2>/dev/null; rm -rf "$LOCK"' EXIT
 trap 'exit 130' INT TERM
 
 say "=== run start (repo $REPO_NAME, dry-run $DRY_RUN)"
@@ -104,11 +106,13 @@ VERIFY_CMD=$(cfg commands.verify || true)
 
 git -C "$REPO_ROOT" fetch -q origin "$BASE" || die "git fetch origin $BASE failed"
 # The bot identity rides on an HTTPS credential helper. Over SSH (or an insteadOf rewrite to SSH)
-# git would push with the owner's key, as the owner.
+# git would push with the owner's key, as the owner. A credential in the URL wins over the helper
+# too. The URL is never echoed (it may hold a credential).
 PUSH_URL=$(git -C "$REPO_ROOT" remote get-url --push origin) || die "no origin remote"
 case $PUSH_URL in
+  https://*@*) die "origin push URL embeds a credential: pushes would not run as the bot" ;;
   https://*) ;;
-  *) die "origin push URL is not HTTPS ($PUSH_URL): pushes would not run as the bot" ;;
+  *) die "origin push URL is not HTTPS: pushes would not run as the bot" ;;
 esac
 node "$REPO_ROOT/scripts/agents/bot-token.mjs" >/dev/null || die "bot token mint failed (see bot-token message above)"
 
@@ -167,7 +171,7 @@ claimed_by() {
       });' "$k" 2>/dev/null) || hit="gh pr list unparsable"
   if [ -z "$hit" ]; then
     heads=$(git -C "$REPO_ROOT" ls-remote --heads origin 2>/dev/null) || { printf 'git ls-remote failed'; return; }
-    br=$(printf '%s\n' "$heads" | awk '{print $2}' | grep -E "/$k\$" | head -1)
+    br=$(printf '%s\n' "$heads" | awk '{print $2}' | grep -E "/$k([^0-9]|\$)" | head -1)
     [ -n "$br" ] && hit="branch ${br#refs/heads/}"
   fi
   printf '%s' "$hit"
@@ -214,14 +218,17 @@ reap_worktree() {
 # Headless permissions from the config, as positional args:
 #   --disallowedTools <deny...> --allowedTools <allow...>
 # Deny beats allow, so the feature/* and fix/* push rules can never reach a protected branch, a
-# refspec, a deletion or a force push.
+# refspec, a deletion or a force push. Fail closed: no deny list, no build.
+DENY=$(cfg runner.disallowedTools) || die "runner.disallowedTools missing"
+PROTECTED=$(cfg repo.protectedBranches) || die "repo.protectedBranches missing"
 set -- --disallowedTools
 while IFS= read -r tool; do
   [ -n "$tool" ] && set -- "$@" "$tool"
 done <<EOF
-$(cfg runner.disallowedTools || true)
-$(cfg repo.protectedBranches | sed 's/.*/Bash(git push * &*)/')
+$DENY
+$(printf '%s\n' "$PROTECTED" | sed '/./s/.*/Bash(git push * &*)/')
 EOF
+[ $# -gt 1 ] || die "deny list is empty"
 set -- "$@" --allowedTools
 n_deny=$#
 while IFS= read -r tool; do
@@ -278,6 +285,7 @@ EOF
     export GIT_CONFIG_KEY_1=credential.helper
     export GIT_CONFIG_VALUE_1='!f() { echo username=x-access-token; echo "password=$GH_TOKEN"; }; f'
     export GIT_CONFIG_KEY_2=commit.gpgsign GIT_CONFIG_VALUE_2=false
+    export GIT_TERMINAL_PROMPT=0
     export GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL"
     export GIT_COMMITTER_NAME="$COMMIT_NAME" GIT_COMMITTER_EMAIL="$COMMIT_EMAIL"
     exec claude -p --agent "$AGENT" --max-turns "$MAX_TURNS" --max-budget-usd "$MAX_USD" \
@@ -294,7 +302,7 @@ EOF
       : > "$TIMED_OUT"
       kill -TERM -"$cpid" 2>/dev/null || kill -TERM "$cpid" 2>/dev/null
       sleep 30
-      kill -KILL -"$cpid" 2>/dev/null
+      kill -KILL -"$cpid" 2>/dev/null || kill -KILL "$cpid" 2>/dev/null
     fi
   ) 2>/dev/null &
   wpid=$!
@@ -303,7 +311,7 @@ EOF
   rc=$?
   # claude usually exits on TERM before the watchdog's KILL: finish off anything left in its group
   # that ignored TERM (browser, vite under npm).
-  [ -e "$TIMED_OUT" ] && kill -KILL -"$cpid" 2>/dev/null
+  [ -e "$TIMED_OUT" ] && { kill -KILL -"$cpid" 2>/dev/null || kill -KILL "$cpid" 2>/dev/null; }
   cpid=""
   pkill -P "$wpid" 2>/dev/null
   kill "$wpid" 2>/dev/null
@@ -330,7 +338,7 @@ EOF
     outcome="done"
   fi
   say "$k: $outcome; $stats; ${pr:-no PR found}; log $TLOG"
-  [ -n "$pr" ] && built=$((built + 1))
+  case $pr in "PR #"*|"branch "*) built=$((built + 1)) ;; esac
 
   reap_worktree "$WT" || say "$k: kept worktree $WT (unpushed work)"
 done
