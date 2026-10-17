@@ -1,0 +1,49 @@
+{
+  "$comment": "Repo facts for the generic agent scripts in scripts/agents/ and the always-on workflows. Machine-specific values (key paths, log dir, schedule) come from env vars, never from this file.",
+  "repo": {
+    "baseBranch": "development",
+    "protectedBranches": ["development", "main"],
+    "branchPrefixes": ["feature/", "fix/", "chore/", "ci/"]
+  },
+  "jira": {
+    "projectKey": "OV",
+    "cloudId": "a98977c6-123f-4e4d-90f4-3f2b1084c402"
+  },
+  "bot": {
+    "login": "overland-bot[bot]",
+    "commitName": "overland-bot[bot]",
+    "commitEmail": "343806393+overland-bot[bot]@users.noreply.github.com",
+    "keyDir": "~/.config/overland-bot"
+  },
+  "labels": {
+    "github": {
+      "reviewRounds": ["review-round-1", "review-round-2"],
+      "needsHuman": "needs-human",
+      "baselineChange": "baseline-change",
+      "preview": "preview",
+      "prType": ["bug", "enhancement"],
+      "area": ["area:frontend", "area:tooling"]
+    },
+    "jira": {
+      "readyForBuild": "ready-for-build",
+      "blocked": "blocked",
+      "sizes": ["size-s", "size-m", "size-l"]
+    }
+  },
+  "commands": {
+    "install": "cd client && npm ci",
+    "build": "cd client && npm run build",
+    "buildOutputDir": "client/build",
+    "verify": "node .claude/skills/verify-overland/scripts/verify.mjs",
+    "verifySteps": ["bootstrap", "launch", "doctor", "drive", "cleanup"]
+  },
+  "review": {
+    "maxRounds": 2
+  },
+  "runner": {
+    "builderAgent": "builder-frontend",
+    "maxTicketsPerNight": 3,
+    "allowedSizes": ["size-s", "size-m"],
+    "$comment": "After 2-3 clean nights: maxTicketsPerNight 5, allowedSizes add size-l."
+  }
+}
