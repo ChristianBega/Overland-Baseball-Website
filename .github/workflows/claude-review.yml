@@ -5,9 +5,11 @@ on:
     types: [opened, ready_for_review, synchronize, reopened]
     branches: [development]
 
+# Queue, don't cancel: the fix job pushes to the PR while this run is still going, and that push
+# must not cancel the run that made it. The next review starts when this one finishes.
 concurrency:
   group: claude-review-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read          # comment-only: no push
@@ -24,10 +26,14 @@ jobs:
         !contains(github.event.pull_request.labels.*.name, 'needs-human')
     # pinned: ubuntu-latest moves to Ubuntu 26 on 2026-10-19 (OV-68)
     runs-on: ubuntu-24.04
+    outputs:
+      verdict: ${{ steps.verdict.outputs.verdict }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - id: start
+        run: echo "at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -45,3 +51,135 @@ jobs:
           track_progress: true
           # one comment per PR, edited on each push (matched by the claude[bot] identity)
           use_sticky_comment: true
+      # Read the verdict from the sticky comment, only if this run updated it.
+      - id: verdict
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          SINCE: ${{ steps.start.outputs.at }}
+        run: |
+          c=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate \
+            --jq '.[] | select(.user.login == "claude[bot]") | {updated_at, body}' | jq -s 'last')
+          if [ "$(jq -r '.updated_at // ""' <<<"$c")" \< "$SINCE" ]; then
+            echo "No review comment from this run; no verdict."
+            exit 0
+          fi
+          v=$(jq -r '.body' <<<"$c" | grep -oE '^Verdict: (ready|changes-requested|needs-human)' | head -n 1 | cut -d' ' -f2)
+          echo "verdict=$v" | tee -a "$GITHUB_OUTPUT"
+
+  # Auto-fix: up to 2 rounds on bot-authored PRs, then `needs-human`.
+  fix:
+    needs: review
+    if: needs.review.outputs.verdict == 'changes-requested' &&
+        github.event.pull_request.user.login == 'overland-bot[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    concurrency:
+      group: claude-fix-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
+    permissions:
+      contents: read      # all writes use the bot App token, so its push re-triggers build, qa and review
+    env:
+      GH_REPO: ${{ github.repository }}   # gh runs before checkout in the round step
+      PR: ${{ github.event.pull_request.number }}
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      # Paths the fixer may never change (the PR body's Do-not-touch list is enforced by the prompt).
+      FORBIDDEN_RE: '(^\.github/|^\.claude/|(^|/)\.env|(^|/)package(-lock)?\.json$)'
+    steps:
+      - id: app
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
+      # Round state machine (labels): none → round-1, fix. round-1 → round-2, fix. round-2 → needs-human, stop.
+      - id: round
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          labels=$(gh pr view "$PR" --json labels --jq '[.labels[].name] | join(",")')
+          case ",$labels," in
+            *,needs-human,*)
+              echo "needs-human already set; stopping."; echo "round=stop" >> "$GITHUB_OUTPUT" ;;
+            *,review-round-2,*)
+              gh pr edit "$PR" --add-label needs-human >/dev/null
+              gh pr comment "$PR" --body "Auto-fix stopped after 2 rounds. The latest review still has **Must fix** items (see the Claude review comment above). Labelled \`needs-human\`."
+              echo "round=stop" >> "$GITHUB_OUTPUT" ;;
+            *,review-round-1,*)
+              gh pr edit "$PR" --add-label review-round-2 >/dev/null; echo "round=2" >> "$GITHUB_OUTPUT" ;;
+            *)
+              gh pr edit "$PR" --add-label review-round-1 >/dev/null; echo "round=1" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - if: steps.round.outputs.round != 'stop'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ steps.app.outputs.token }}
+          fetch-depth: 0
+
+      - if: steps.round.outputs.round != 'stop'
+        name: Commit identity (the bot)
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          SLUG: ${{ steps.app.outputs.app-slug }}
+        run: |
+          # The branch must still be at the reviewed commit, or the review is stale.
+          [ "$(git rev-parse HEAD)" = "$HEAD_SHA" ] || { echo "::error::branch moved since the review"; exit 1; }
+          id=$(gh api "users/${SLUG}%5Bbot%5D" --jq .id)
+          # env beats git config, so the action cannot swap the author
+          {
+            echo "GIT_AUTHOR_NAME=${SLUG}[bot]"
+            echo "GIT_AUTHOR_EMAIL=${id}+${SLUG}[bot]@users.noreply.github.com"
+            echo "GIT_COMMITTER_NAME=${SLUG}[bot]"
+            echo "GIT_COMMITTER_EMAIL=${id}+${SLUG}[bot]@users.noreply.github.com"
+          } >> "$GITHUB_ENV"
+
+      - if: steps.round.outputs.round != 'stop'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ steps.app.outputs.token }}
+          allowed_bots: overland-bot
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+            ROUND: ${{ steps.round.outputs.round }}/2
+
+            You are the auto-fixer for this pull request. Rules, all mandatory:
+            1. Read the PR body (`gh pr view <PR> --json title,body`) and the latest Claude review comment
+               (`gh pr view <PR> --comments`; the one that starts with "Verdict:").
+            2. Fix ONLY the numbered items under "## Must fix". Ignore "## Consider".
+            3. One commit per Must-fix item, Conventional Commits, ending with the ticket key from the PR
+               title in parentheses, e.g. `fix(events): read env via import.meta.env (OV-12)`.
+            4. Never change: anything under `.github/` or `.claude/`, any `.env*` file, any `package.json`
+               or `package-lock.json`, or any path listed under the PR body's Do-not-touch / Out of scope.
+            5. Never edit the PR body, title, labels or acceptance criteria. Do not push; the workflow pushes.
+            6. Follow CLAUDE.md (JavaScript + PropTypes, `import.meta.env.REACT_APP_*`, copy the nearest sibling).
+            7. If an item cannot be fixed within these rules, skip it and say why in one line at the end.
+          claude_args: |
+            --allowedTools "Read,Edit,Write,Grep,Glob,Bash(git add:*),Bash(git commit:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
+            --model opus
+            --max-turns 60
+
+      - if: steps.round.outputs.round != 'stop'
+        name: Check and push
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          ROUND: ${{ steps.round.outputs.round }}
+        run: |
+          if [ "$(git rev-list --count "$HEAD_SHA"..HEAD)" = "0" ]; then
+            gh pr edit "$PR" --add-label needs-human >/dev/null
+            gh pr comment "$PR" --body "Auto-fix round $ROUND/2 made no commits (the Must fix items could not be fixed within the fixer's rules). Labelled \`needs-human\`."
+            exit 0
+          fi
+          bad=$(git diff --name-only "$HEAD_SHA" HEAD | grep -E "$FORBIDDEN_RE" || true)
+          if [ -n "$bad" ]; then
+            gh pr edit "$PR" --add-label needs-human >/dev/null
+            gh pr comment "$PR" --body "Auto-fix round $ROUND/2 touched forbidden paths and was **not pushed**: $(echo $bad). Labelled \`needs-human\`."
+            echo "::error::forbidden paths: $bad"; exit 1
+          fi
+          git push origin "HEAD:refs/heads/$HEAD_REF"
+          gh pr view "$PR" --json body --jq .body | sed -E "s#^round: [0-9]+/2#round: $ROUND/2#" > "$RUNNER_TEMP/body.md"
+          gh pr edit "$PR" --body-file "$RUNNER_TEMP/body.md" >/dev/null
