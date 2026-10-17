@@ -1,15 +1,15 @@
 name: QA Verify
 
 # Runs the verify-overland harness on every PR into development and posts one sticky comment.
-# Job `qa` is a required check on the development ruleset.
+# Job `qa` is a required check on the development ruleset. The harness/baseline guard lives in
+# qa-guard.yml (pull_request_target), because this file runs from the PR head and a PR could edit it.
 #
 # No fork guard on the job: a skipped required check counts as passing, so skipping forks would
 # let them merge untested. The job needs no secrets; only the comment step is same-repo only.
 
 on:
   pull_request:
-    # labeled/unlabeled re-run the baseline guard when `baseline-change` is added or removed
-    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [development]
 
 concurrency:
@@ -19,7 +19,6 @@ concurrency:
 permissions:
   contents: read
   pull-requests: write    # sticky comment
-  issues: read            # label events for the baseline guard
 
 jobs:
   qa:
@@ -28,43 +27,11 @@ jobs:
     timeout-minutes: 20
     env:
       VERIFY: node .claude/skills/verify-overland/scripts/verify.mjs
-      # The harness (incl. the KNOWN_OV61 baseline) and this workflow define what `qa` checks.
-      GUARDED_PATHS: .claude/skills/verify-overland .github/workflows/qa-verify.yml
-      BASELINE_LABEL: baseline-change
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-
-      # The harness and its known-bug baseline may only change when a human applied `baseline-change`.
-      - name: Baseline guard (harness + KNOWN_OV61)
-        env:
-          GH_TOKEN: ${{ github.token }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          PR: ${{ github.event.pull_request.number }}
-          HAS_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'baseline-change') }}
-        run: |
-          mb=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
-          # shellcheck disable=SC2086 # GUARDED_PATHS is a space-separated list
-          changed=$(git diff --name-only "$mb" "$HEAD_SHA" -- $GUARDED_PATHS)
-          if [ -z "$changed" ]; then
-            echo "Harness and baseline unchanged."
-            exit 0
-          fi
-          echo "Guarded files changed:"; echo "$changed"
-          if [ "$HAS_LABEL" != "true" ]; then
-            echo "::error::The QA harness or baseline changed without the '$BASELINE_LABEL' label. Only the owner applies it."
-            exit 1
-          fi
-          by=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/events" --paginate \
-            --jq ".[] | select(.event == \"labeled\" and .label.name == \"$BASELINE_LABEL\") | .actor.type" | tail -n 1)
-          if [ "$by" != "User" ]; then
-            echo "::error::'$BASELINE_LABEL' was applied by a ${by:-unknown} account, not a human."
-            exit 1
-          fi
-          echo "'$BASELINE_LABEL' applied by a human; harness change allowed."
+          persist-credentials: false   # PR code runs below (npm ci, verify.mjs)
 
       - uses: actions/setup-node@v4
         with:
@@ -140,7 +107,7 @@ jobs:
               const fresh = rows.flatMap((r) => [...r.newMessages, ...r.blocked].map((m) => `- \`${r.route}\`: ${m.slice(0, 300)}`));
               if (fresh.length) lines.push("", "<details><summary>NEW messages</summary>", "", ...fresh.slice(0, 30), "", "</details>");
             } else {
-              lines.push("No report: the run failed before `drive` finished (baseline guard, launch or doctor). See the run log.");
+              lines.push("No report: the run failed before `drive` finished (launch or doctor). See the run log.");
             }
             lines.push("", `Evidence: ${ARTIFACT_URL || "none"} · [run log](${RUN_URL})`);
             const body = lines.join("\n");

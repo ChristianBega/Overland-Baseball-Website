@@ -1,0 +1,68 @@
+name: QA Guard
+
+# The verify harness (incl. the KNOWN_OV61 known-bug baseline) and the QA workflows define what
+# `qa` checks. Changing them needs the `baseline-change` label, applied by a human.
+#
+# pull_request_target runs this file from the base branch, so a PR cannot edit the guard that
+# checks it. It never checks out or runs PR code. Job `qa-guard` is a required check.
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+    branches: [development]
+
+concurrency:
+  group: qa-guard-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write           # read label events; remove a stale `baseline-change`
+
+jobs:
+  qa-guard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+      ACTION: ${{ github.event.action }}
+      BEFORE: ${{ github.event.before }}
+      AFTER: ${{ github.event.after }}
+      LABEL: baseline-change
+      GUARDED_RE: '^(\.claude/skills/verify-overland/|\.github/workflows/qa-(verify|guard)\.yml$)'
+    steps:
+      - name: Guard harness and baseline
+        run: |
+          changed=$(gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[].filename' | grep -E "$GUARDED_RE" || true)
+          if [ -z "$changed" ]; then
+            echo "Harness and baseline unchanged."
+            exit 0
+          fi
+          echo "Guarded files changed:"; echo "$changed"
+
+          has_label=$(gh api "repos/$REPO/issues/$PR/labels" --jq "any(.[]; .name == \"$LABEL\")")
+
+          # A new push that touches guarded files invalidates an earlier approval.
+          if [ "$ACTION" = "synchronize" ] && [ "$has_label" = "true" ]; then
+            pushed=$(gh api "repos/$REPO/compare/$BEFORE...$AFTER" --jq '.files[].filename' 2>/dev/null) || pushed="unknown (force push)"
+            if printf '%s\n' "$pushed" | grep -qE "$GUARDED_RE|^unknown"; then
+              gh api -X DELETE "repos/$REPO/issues/$PR/labels/$LABEL" >/dev/null
+              echo "::error::A new push changed guarded files, so '$LABEL' was removed. The owner re-applies it after reviewing the push."
+              exit 1
+            fi
+          fi
+
+          if [ "$has_label" != "true" ]; then
+            echo "::error::The QA harness or baseline changed without the '$LABEL' label. Only the owner applies it."
+            exit 1
+          fi
+          by=$(gh api "repos/$REPO/issues/$PR/events" --paginate \
+            --jq ".[] | select(.event == \"labeled\" and .label.name == \"$LABEL\") | .actor.type" | tail -n 1)
+          if [ "$by" != "User" ]; then
+            echo "::error::'$LABEL' was applied by a ${by:-unknown} account, not a human."
+            exit 1
+          fi
+          echo "'$LABEL' applied by a human; harness change allowed."
