@@ -102,6 +102,8 @@ Decide: one Builder run, or slices.
 If it needs slices, propose the slice plan first — for each slice, what it touches and its own
 done-when. Get approval. Only then draft each slice as its own spec.
 
+Pick the `size-*` label here (see Size labels). Size each slice on its own.
+
 Acceptance criteria: one per line. Use Given/When/Then only where `verify-overland` can actually
 check it. Label every criterion `[verify-overland]` or `[manual]`.
 
@@ -178,9 +180,9 @@ Never edit B.
 
 Before executing anything in Jira, print the exact actions and wait for approval. For example:
 
-    comment on OV-63, link OV-61 to OV-62, create 1 ticket, add labels area:frontend, ready-for-build
+    comment on OV-63, link OV-61 to OV-62, create 1 ticket, add labels area:frontend, size-s, ready-for-build
 
-Every ticket you create or rewrite lists its `area:` label here. List `ready-for-build` only when the
+Every ticket you create or rewrite lists its `area:` and `size-*` labels here. List `ready-for-build` only when the
 spec is final; it tells the Builder to start.
 
 Execute only what is on the list. One ticket per approval. Show before/after text for each edit.
@@ -207,8 +209,8 @@ If in flight, alert the owner and offer:
 ## Allowed Jira actions
 
 Create a ticket. Edit description text. Add a comment. Add a link. Add the label `planner-review`.
-Add exactly one component label (below). Add the label `ready-for-build` on the owner's approval in
-the touch list. Never change status, priority, assignee, or sprint.
+Add exactly one component label (below). Add exactly one `size-*` label (below). Add the label
+`ready-for-build` on the owner's approval in the touch list. Add `blocked` only when the owner asks. Never change status, priority, assignee, or sprint.
 
 `ready-for-build` is a label, not a status. The OV board has only `To Do` / `In Progress` / `Done`.
 Never transition a ticket.
@@ -227,6 +229,20 @@ Pick it from the surfaces the ticket touches. Default to `area:frontend` when no
 
 Agents marked *(Phase 8)* do not exist yet. Their tickets wait for the owner.
 If a ticket already has an `area:` label, replace it only on the owner's approval. Never leave two.
+
+## Size labels
+
+Every ticket you post gets exactly one size label. The overnight runner reads it to decide what to
+pick up. Decide it from grounding, not by asking.
+
+| Label | Means |
+|---|---|
+| `size-s` | One or two files in one feature. No new component, hook, or route. |
+| `size-m` | A few files in one feature. May add one component or hook. |
+| `size-l` | Crosses features, adds a route, or touches shared UI, theme, or `routes.jsx`. |
+
+When unsure, pick the larger size. If a ticket already has a `size-*` label, replace it only on the
+owner's approval. Never leave two. A ticket too big for `size-l` needs slices (step 4).
 
 ## Noticed, not touched
 
