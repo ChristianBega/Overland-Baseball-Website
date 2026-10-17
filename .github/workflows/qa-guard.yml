@@ -1,7 +1,8 @@
 name: QA Guard
 
-# The verify harness (incl. the KNOWN_OV61 known-bug baseline) and the QA workflows define what
-# `qa` checks. Changing them needs the `baseline-change` label, applied by a human.
+# The verify harness (incl. the KNOWN_OV61 known-bug baseline) and the workflows define what `qa`
+# checks (a new workflow could report a fake `qa`). Changing them needs the `baseline-change`
+# label, applied by a human.
 #
 # pull_request_target runs this file from the base branch, so a PR cannot edit the guard that
 # checks it. It never checks out or runs PR code. Job `qa-guard` is a required check.
@@ -32,7 +33,7 @@ jobs:
       BEFORE: ${{ github.event.before }}
       AFTER: ${{ github.event.after }}
       LABEL: baseline-change
-      GUARDED_RE: '^(\.claude/skills/verify-overland/|\.github/workflows/qa-(verify|guard)\.yml$)'
+      GUARDED_RE: '^(\.claude/skills/verify-overland/|\.github/workflows/)'
     steps:
       - name: Guard harness and baseline
         run: |
