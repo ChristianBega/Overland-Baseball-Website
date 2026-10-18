@@ -59,7 +59,7 @@ else
     *) fail "'$service $op' is not a read operation (list-*, describe-*, get-* only)" ;;
   esac
   case $op in
-    get-secret-value | get-parameter | get-parameters | get-parameters-by-path | get-object* | \
+    get-secret-value | get-parameter* | get-object* | \
       *token* | *password* | *credential* | get-access-key-* | get-key-pair* | *-key-material*)
       fail "'$service $op' can return secrets or object data" ;;
   esac
