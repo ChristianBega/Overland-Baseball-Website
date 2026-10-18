@@ -34,6 +34,9 @@ command -v aws >/dev/null 2>&1 || fail "aws CLI not on PATH"
 [ $# -ge 2 ] || fail "usage: aws-ro.sh <service> <operation> [args...]"
 service=$1
 op=$2
+# Global options before the service would shift the real service and operation past the read check.
+case $service in -*) fail "global options must come after <service> <operation>" ;; esac
+case $op in -*) fail "global options must come after <service> <operation>" ;; esac
 
 # Only the named profile's own credentials, whatever the caller's environment holds.
 unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_SECURITY_TOKEN \
