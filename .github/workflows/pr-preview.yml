@@ -90,12 +90,13 @@ jobs:
       - name: Upload to s3://<bucket>/pr-<N>/
         run: |
           test -n "$BUCKET" || { echo "::error::vars.PREVIEW_BUCKET is not set on environment aws-preview"; exit 1; }
-          aws s3 sync client/build/ "s3://$BUCKET/pr-$PR_NUMBER/" --delete --no-progress --cache-control no-cache
+          aws s3 sync client/build/ "s3://$BUCKET/pr-$PR_NUMBER/" --delete --only-show-errors --cache-control no-cache
 
-      - name: Smoke check (root + SPA deep link)
+      - name: Smoke check (root, SPA deep link, one built asset)
         run: |
           base="https://pr-$PR_NUMBER.$PREVIEW_DOMAIN"
-          for path in / /roster; do
+          asset=$(cd client/build && ls assets/*.js | head -n 1)
+          for path in / /roster "/$asset"; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-all-errors "$base$path")
             echo "$path -> $code"
             [ "$code" = 200 ] || { echo "::error::$base$path returned $code"; exit 1; }
