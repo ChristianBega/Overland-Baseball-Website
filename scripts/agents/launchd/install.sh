@@ -1,6 +1,12 @@
 #!/bin/sh
-# Render the overnight runner's launchd plist into ~/Library/LaunchAgents and print the commands
-# that load it and schedule the wake. It loads nothing and runs no sudo: the owner runs those.
+# Set up the overnight runner's own clean checkout and render its launchd plist into
+# ~/Library/LaunchAgents, then print the commands that load it and schedule the wake. It loads
+# nothing and runs no sudo: the owner runs those.
+#
+# The nightly job never runs code from this checkout. It runs from a dedicated worktree
+# ($AGENTS_HOME/runner) that it moves to the latest origin/<base> before each run, so merged runner
+# changes apply the next night and work in progress here never does. The gitignored files listed in
+# runner.envFiles are copied from this checkout each night (copied, never read).
 #
 #   sh scripts/agents/launchd/install.sh
 #
@@ -9,6 +15,7 @@
 #   AGENTS_HOME     runner state dir     [~/.agents/<repo dir name>]
 #   AGENTS_LOG_DIR  runner log dir       [~/Library/Logs/<repo dir name>-agents]
 #   AGENTS_AT       run time, HH:MM      [01:00]  (the wake is scheduled 5 minutes earlier)
+# Re-run it after changing any of these, or after switching Node versions (the PATH is pinned).
 
 set -eu
 
@@ -41,9 +48,33 @@ WAKE=$(printf '%02d:%02d:00' $((WAKE_TOTAL / 60)) $((WAKE_TOTAL % 60)))
 DEST="$HOME/Library/LaunchAgents/$LABEL.plist"
 mkdir -p "$HOME/Library/LaunchAgents" "$AGENTS_HOME" "$AGENTS_LOG_DIR"
 
+# The runner's own checkout: a detached worktree of this repo at origin/<base>.
+CONFIG="$REPO_ROOT/.claude/agents.config.json"
+BASE=$(node -p 'require(process.argv[1]).repo.baseBranch' "$CONFIG")
+RUNNER="$AGENTS_HOME/runner"
+git -C "$REPO_ROOT" fetch -q origin "$BASE"
+git -C "$REPO_ROOT" worktree prune # forget a runner dir that was deleted by hand
+if [ ! -e "$RUNNER/.git" ]; then
+  git -C "$REPO_ROOT" worktree add -q --detach "$RUNNER" "origin/$BASE"
+fi
+
+# The nightly command, run by /bin/sh -c. Move the runner checkout to the latest origin/<base>
+# (skipped only while a live run holds the lock; a crashed run's stale lock does not block it),
+# refresh the env files, then start overnight.sh. The update
+# finishes before overnight.sh is read, so a script is never rewritten while it runs. A failed
+# checkout (local edits in the runner dir) stops the night rather than running stale code.
+q() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }
+NIGHTLY="cd $(q "$RUNNER") || exit 1; if ! kill -0 \"\$(cat $(q "$AGENTS_HOME/lock/pid") 2>/dev/null)\" 2>/dev/null; then git fetch -q origin $(q "$BASE"); git checkout -q --detach $(q "origin/$BASE") || exit 1; fi;"
+for f in $(node -p '(require(process.argv[1]).runner.envFiles || []).join(" ")' "$CONFIG"); do
+  NIGHTLY="$NIGHTLY cp $(q "$REPO_ROOT/$f") $(q "$RUNNER/$f") 2>/dev/null;"
+done
+NIGHTLY="$NIGHTLY exec /bin/sh scripts/agents/overnight.sh"
+NIGHTLY=$(printf '%s' "$NIGHTLY" | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g')
+
 esc() { printf '%s' "$1" | sed -e 's/[&|\\]/\\&/g'; }
 sed -e "s|__LABEL__|$(esc "$LABEL")|g" \
-    -e "s|__REPO_ROOT__|$(esc "$REPO_ROOT")|g" \
+    -e "s|__RUNNER__|$(esc "$RUNNER")|g" \
+    -e "s|__NIGHTLY__|$(esc "$NIGHTLY")|g" \
     -e "s|__PATH__|$(esc "$P")|g" \
     -e "s|__AGENTS_HOME__|$(esc "$AGENTS_HOME")|g" \
     -e "s|__AGENTS_LOG_DIR__|$(esc "$AGENTS_LOG_DIR")|g" \
@@ -53,6 +84,7 @@ plutil -lint "$DEST" >/dev/null
 
 cat <<EOF
 Wrote $DEST (runs $(printf '%02d:%02d' "$HOUR" "$MINUTE") nightly).
+Runner checkout: $RUNNER (moves to origin/$BASE before each run; do not edit files there).
 
 Next, run these yourself:
   launchctl bootstrap gui/\$(id -u) "$DEST"
