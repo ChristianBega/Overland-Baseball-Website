@@ -53,16 +53,18 @@ CONFIG="$REPO_ROOT/.claude/agents.config.json"
 BASE=$(node -p 'require(process.argv[1]).repo.baseBranch' "$CONFIG")
 RUNNER="$AGENTS_HOME/runner"
 git -C "$REPO_ROOT" fetch -q origin "$BASE"
+git -C "$REPO_ROOT" worktree prune # forget a runner dir that was deleted by hand
 if [ ! -e "$RUNNER/.git" ]; then
   git -C "$REPO_ROOT" worktree add -q --detach "$RUNNER" "origin/$BASE"
 fi
 
 # The nightly command, run by /bin/sh -c. Move the runner checkout to the latest origin/<base>
-# (skipped while a run holds the lock), refresh the env files, then start overnight.sh. The update
+# (skipped only while a live run holds the lock; a crashed run's stale lock does not block it),
+# refresh the env files, then start overnight.sh. The update
 # finishes before overnight.sh is read, so a script is never rewritten while it runs. A failed
 # checkout (local edits in the runner dir) stops the night rather than running stale code.
 q() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }
-NIGHTLY="cd $(q "$RUNNER") || exit 1; if [ ! -d $(q "$AGENTS_HOME/lock") ]; then git fetch -q origin $BASE; git checkout -q --detach origin/$BASE || exit 1; fi;"
+NIGHTLY="cd $(q "$RUNNER") || exit 1; if ! kill -0 \"\$(cat $(q "$AGENTS_HOME/lock/pid") 2>/dev/null)\" 2>/dev/null; then git fetch -q origin $(q "$BASE"); git checkout -q --detach $(q "origin/$BASE") || exit 1; fi;"
 for f in $(node -p '(require(process.argv[1]).runner.envFiles || []).join(" ")' "$CONFIG"); do
   NIGHTLY="$NIGHTLY cp $(q "$REPO_ROOT/$f") $(q "$RUNNER/$f") 2>/dev/null;"
 done
