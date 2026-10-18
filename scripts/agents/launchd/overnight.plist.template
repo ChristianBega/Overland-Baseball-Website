@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!-- Rendered by scripts/agents/launchd/install.sh. Placeholders: __LABEL__ __REPO_ROOT__ __PATH__
-     __AGENTS_HOME__ __AGENTS_LOG_DIR__ __HOUR__ __MINUTE__. caffeinate keeps the Mac awake for the
+<!-- Rendered by scripts/agents/launchd/install.sh. Placeholders: __LABEL__ __RUNNER__ __NIGHTLY__
+     __PATH__ __AGENTS_HOME__ __AGENTS_LOG_DIR__ __HOUR__ __MINUTE__. __NIGHTLY__ updates the runner
+     checkout and then starts overnight.sh (see install.sh). caffeinate keeps the Mac awake for the
      whole run after the pmset wake (otherwise it drops back to sleep within minutes). -->
 <plist version="1.0">
 <dict>
@@ -12,10 +13,11 @@
     <string>/usr/bin/caffeinate</string>
     <string>-is</string>
     <string>/bin/sh</string>
-    <string>__REPO_ROOT__/scripts/agents/overnight.sh</string>
+    <string>-c</string>
+    <string>__NIGHTLY__</string>
   </array>
   <key>WorkingDirectory</key>
-  <string>__REPO_ROOT__</string>
+  <string>__RUNNER__</string>
   <key>EnvironmentVariables</key>
   <dict>
     <key>PATH</key>
