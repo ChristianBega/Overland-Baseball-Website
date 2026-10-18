@@ -40,7 +40,7 @@ const CalendarSignUpMobile = ({ events, closeModal }) => {
       {mobileCurrentSignUpStatus === "selectEvent" && <EventList events={events} handleSelectMobileEvent={handleSelectMobileEvent} />}
       {mobileCurrentSignUpStatus === "signUp" && (
         <>
-          <IconButton onClick={handleMobileSignUpGoBack}>
+          <IconButton aria-label="Go back to event list" onClick={handleMobileSignUpGoBack}>
             <ArrowBackIcon />
           </IconButton>
           <EventSignUpForm data={selectedItem} closeModal={closeModal} />
