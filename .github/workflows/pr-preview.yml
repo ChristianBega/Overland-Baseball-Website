@@ -1,0 +1,158 @@
+name: PR Preview
+
+# Deploys every same-repo PR into development to https://pr-<N>.<PREVIEW_DOMAIN> and deletes it when the
+# PR closes. One sticky comment carries the link.
+#
+# The AWS side lives in the owner's account, outside this repo: a private bucket (vars.PREVIEW_BUCKET),
+# one CloudFront distribution with a viewer-request function that maps the host pr-<N>.… to the prefix
+# /pr-<N> and serves index.html for extensionless paths (SPA fallback), a wildcard cert and DNS record.
+# Keys come from the environment `aws-preview`: an IAM user that can only list the bucket and write or
+# delete under pr-*.
+#
+# Not a required check. Forks are skipped (no secrets). The deploy job builds PR code, so it names only the
+# dev build config (already public in the dev bundle). The AWS key is configured after the build, and the
+# teardown job never checks out PR code.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [development]
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  # A newer push replaces a running deploy; a close waits for it, then tears down.
+  cancel-in-progress: ${{ github.event.action != 'closed' }}
+
+permissions:
+  contents: read
+  pull-requests: write    # sticky comment
+
+env:
+  PREVIEW_DOMAIN: preview.overlandbaseball.com
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  BUCKET: ${{ vars.PREVIEW_BUCKET }}
+  AWS_REGION: us-east-2
+
+jobs:
+  deploy:
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: aws-preview
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false   # PR code runs below (npm ci, build)
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install client
+        working-directory: client
+        run: npm ci
+
+      # Same config as the development deploy in workflow.yml (build:dev).
+      - name: Build (dev config)
+        working-directory: client
+        run: npm run build
+        env:
+          CI: false
+          REACT_APP_CUSTOM_ENV: development
+          REACT_APP_SERVICE_ID: ${{ secrets.REACT_APP_SERVICE_ID }}
+          REACT_APP_TEMPLATE_ID_REGISTER: ${{ secrets.REACT_APP_TEMPLATE_ID_REGISTER }}
+          REACT_APP_TEMPLATE_ID_VOLUNTEER: ${{ secrets.REACT_APP_TEMPLATE_ID_VOLUNTEER }}
+          REACT_APP_TEMPLATE_PARAMS: ${{ secrets.REACT_APP_TEMPLATE_PARAMS }}
+          REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+          REACT_APP_AUTH_DOMAIN: ${{ secrets.REACT_APP_AUTH_DOMAIN }}
+          REACT_APP_PROJECT_ID: ${{ secrets.REACT_APP_PROJECT_ID }}
+          REACT_APP_STORAGE_BUCKET: ${{ secrets.REACT_APP_STORAGE_BUCKET }}
+          REACT_APP_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
+          REACT_APP_APP_ID: ${{ secrets.REACT_APP_APP_ID }}
+          REACT_APP_STRAPI_URL: ${{ secrets.REACT_APP_STRAPI_URL }}
+          REACT_APP_STRAPI_AUTH_LOGIN_PORTAL: ${{ secrets.REACT_APP_STRAPI_AUTH_LOGIN_PORTAL }}
+          REACT_APP_AWS_API_BASE_URL: ${{ secrets.REACT_APP_AWS_API_BASE_URL_DEV }}
+          REACT_APP_STRAPI_DRAFT_MODE: "true"
+          REACT_APP_STRAPI_API_TOKEN: ${{ secrets.REACT_APP_STRAPI_API_TOKEN_DEV }}
+          REACT_APP_VOICE_CMS_URL: ${{ secrets.REACT_APP_VOICE_CMS_URL }}
+          REACT_APP_VOICE_CMS_URL_DEV: ${{ secrets.REACT_APP_VOICE_CMS_URL_DEV }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_PREVIEW_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_PREVIEW_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # CloudFront doesn't cache (CachingDisabled); no-cache stops browsers holding an old index.html.
+      - name: Upload to s3://<bucket>/pr-<N>/
+        run: |
+          test -n "$BUCKET" || { echo "::error::vars.PREVIEW_BUCKET is not set on environment aws-preview"; exit 1; }
+          aws s3 sync client/build/ "s3://$BUCKET/pr-$PR_NUMBER/" --delete --no-progress --cache-control no-cache
+
+      - name: Smoke check (root + SPA deep link)
+        run: |
+          base="https://pr-$PR_NUMBER.$PREVIEW_DOMAIN"
+          for path in / /roster; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-all-errors "$base$path")
+            echo "$path -> $code"
+            [ "$code" = 200 ] || { echo "::error::$base$path returned $code"; exit 1; }
+          done
+
+      - name: Sticky comment
+        continue-on-error: true   # a comment API failure must not fail the deploy
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = "<!-- pr-preview -->";
+            const { PREVIEW_DOMAIN, PR_NUMBER } = process.env;
+            const url = `https://pr-${PR_NUMBER}.${PREVIEW_DOMAIN}`;
+            const sha = context.payload.pull_request.head.sha.slice(0, 7);
+            const body = [
+              marker,
+              `### Preview @ ${sha}`,
+              "",
+              `${url} · [/roster](${url}/roster)`,
+              "",
+              "Built with the development config (dev Strapi + Firebase). Removed when the PR closes.",
+            ].join("\n");
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = comments.find((c) => c.user?.login === "github-actions[bot]" && c.body?.startsWith(marker));
+            if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });
+
+  teardown:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: aws-preview
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_PREVIEW_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_PREVIEW_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Delete s3://<bucket>/pr-<N>/
+        run: |
+          test -n "$BUCKET" || { echo "::error::vars.PREVIEW_BUCKET is not set on environment aws-preview"; exit 1; }
+          aws s3 rm "s3://$BUCKET/pr-$PR_NUMBER/" --recursive --only-show-errors
+
+      - name: Sticky comment
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = "<!-- pr-preview -->";
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = comments.find((c) => c.user?.login === "github-actions[bot]" && c.body?.startsWith(marker));
+            if (mine) {
+              const body = [marker, "### Preview removed", "", "The PR closed, so its preview files were deleted."].join("\n");
+              await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            }
