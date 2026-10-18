@@ -52,7 +52,11 @@
       "Read(./**/*.pem)",
       "Read(./**/*.key)",
       "mcp__atlassian__updateConfluenceContent",
-      "mcp__atlassian__createConfluenceContent"
+      "mcp__atlassian__createConfluenceContent",
+      "Bash(aws)",
+      "Bash(aws *)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/overland-bot/**)"
     ]
   },
   "hooks": {
