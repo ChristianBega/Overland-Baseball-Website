@@ -89,7 +89,6 @@ const EXTERNAL_OK = [
 
 const KNOWN_OV61 = [
   /same key, ``/,
-  /logo192\.png/,
   /Invalid prop [`']error[`'] of type [`'][^`'"]+[`'] supplied to [`'][^`'"]*DataStateDisplay/,
   /prop [`']error[`'] is marked as required in [`'][^`'"]*DataStateDisplay/,
   new RegExp(`React does not recognize the \`(${OV61_PROPS})\` prop`),
