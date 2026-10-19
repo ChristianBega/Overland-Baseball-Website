@@ -175,7 +175,7 @@ DataStateDisplay.propTypes = {
   // State flags
   isLoading: PropTypes.bool,
   isError: PropTypes.bool,
-  error: PropTypes.object,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   isEmpty: PropTypes.bool,
 
   // Actions
