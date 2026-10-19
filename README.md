@@ -170,6 +170,14 @@ Firebase Auth handles authentication. Roles are stored in Firestore user profile
 
 Bots open pull requests against `development`. They never push to or merge into `development` or `main`. The owner merges.
 
+## Skills
+
+Agent skills live in `.claude/skills/`. Each folder has a `SKILL.md` that defines what the skill does.
+
+- **`.claude/skills/overland-planner/`** — Turns the owner's idea into a Jira ticket the Builder can run. The owner starts it with `/overland-planner`.
+- **`.claude/skills/verify-overland/`** — Drives the site in headless Chrome and reports screenshots plus classified console output. The Builder and the `qa` check run it.
+- **`.claude/skills/review-pr/`** — Reviews a PR against its ticket's acceptance criteria and posts one comment with a verdict. Claude Review runs it.
+
 ## Known Gotchas
 
 - **Env var prefix:** All client env vars MUST start with `REACT_APP_`. Vite only exposes vars with this prefix (configured in `vite.config.js` via `envPrefix`).
