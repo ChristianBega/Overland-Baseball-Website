@@ -98,8 +98,6 @@ const KNOWN_OV61 = [
   /The prop `(title|body)` is marked as required in `TextBlock`/,
   // To be added to OV-61: SectionLayout is rendered without required ariaLabel.
   /The prop `ariaLabel` is marked as required in `SectionLayout`/,
-  // OV-76: /boosters media queries written as minWidth instead of min-width. Remove when fixed.
-  /Using kebab-case for css properties in objects is not supported\. Did you mean @media \(minWidth:/,
 ];
 
 function chromePath() {

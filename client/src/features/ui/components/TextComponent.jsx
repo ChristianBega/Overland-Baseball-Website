@@ -8,7 +8,7 @@ export default function TextComponent({ boosterData, isMobile, sectionType }) {
     <>
       <Grid item xs={12} md={8} sx={{ padding: { xs: 0, md: 8 }, minHeight: { xs: "300px", lg: "500px" } }}>
         {!isMobile && <Typography typography="h2">{boosterData.title}</Typography>}
-        <Typography sx={{ minHeight: "200px" }} typography={{ xs: "smallBodyText", md: "largeBodyText" }}>
+        <Typography sx={{ minHeight: "200px" }}>
           {boosterData.content}
         </Typography>
         {/* {sectionType === "volunteer" && (
