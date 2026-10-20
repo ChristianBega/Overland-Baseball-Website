@@ -26,8 +26,10 @@ const StyledSectionLayout = styled("div")(({ theme, ...rest }) => ({
 }));
 
 const SectionLayout = ({ id, ariaLabel, children, ...rest }) => {
+  // Callers pass `aria-label` (in `rest`); Staff passes `ariaLabel` via StyledSectionLayoutWrapper.
+  const label = rest["aria-label"] ?? ariaLabel;
   return (
-    <StyledSectionLayout {...rest} component="section" id={id} aria-label={ariaLabel}>
+    <StyledSectionLayout {...rest} component="section" id={id} aria-label={label}>
       {children}
     </StyledSectionLayout>
   );
@@ -35,7 +37,9 @@ const SectionLayout = ({ id, ariaLabel, children, ...rest }) => {
 
 SectionLayout.propTypes = {
   id: PropTypes.string.isRequired,
-  ariaLabel: PropTypes.string.isRequired,
+  // One of `aria-label` (preferred) or legacy `ariaLabel` should be passed.
+  "aria-label": PropTypes.string,
+  ariaLabel: PropTypes.string,
   children: PropTypes.node.isRequired,
 };
 

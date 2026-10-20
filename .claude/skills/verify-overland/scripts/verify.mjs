@@ -91,10 +91,6 @@ const KNOWN_OV61 = [
   /same key, ``/,
   new RegExp(`React does not recognize the \`(${OV61_PROPS})\` prop`),
   new RegExp(`non-boolean attribute \`(${OV61_PROPS})\``),
-  // OV-61: FooterNavigation renders TextBlock without required title/body.
-  /The prop `(title|body)` is marked as required in `TextBlock`/,
-  // To be added to OV-61: SectionLayout is rendered without required ariaLabel.
-  /The prop `ariaLabel` is marked as required in `SectionLayout`/,
 ];
 
 function chromePath() {
