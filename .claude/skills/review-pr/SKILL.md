@@ -45,8 +45,10 @@ Read/Grep when a hunk is not enough to judge. Skip generated and vendored files:
 7. **QA checks** — the CI results, not the PR body. Run
    `gh pr view <PR> --json statusCheckRollup --jq '.statusCheckRollup[] | select(.name == "qa" or .name == "qa-guard") | [.name, .status, .conclusion] | @tsv'`.
    - `COMPLETED SUCCESS` — fine.
-   - `qa` `COMPLETED FAILURE` — Must fix. Read the `<!-- qa-verify -->` comment (`gh pr view <PR> --comments`)
-     and cite each failing route and NEW message.
+   - `qa` `COMPLETED FAILURE` — Must fix. Read the **QA verify** sticky comment (`gh pr view <PR> --comments`;
+     it carries a hidden HTML marker, `qa-verify`, only to help you locate it) and cite each failing
+     route and NEW message. In the review, always call it "the QA verify sticky comment". Never quote
+     HTML comment markers, because they render as nothing on GitHub.
    - `qa-guard` `COMPLETED FAILURE` — the harness, baseline or a workflow changed without a
      human-applied `baseline-change`. Must fix unless the acceptance criteria authorize the change;
      then say the owner must apply the label.
