@@ -9,10 +9,5 @@ const TextBlock = ({ children, ...props }) => {
 export default TextBlock;
 
 TextBlock.propTypes = {
-  title: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
-  cta: PropTypes.shape({
-    primary: PropTypes.string.isRequired,
-    secondary: PropTypes.string.isRequired,
-  }),
+  children: PropTypes.node,
 };
