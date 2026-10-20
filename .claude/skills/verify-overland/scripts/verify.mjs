@@ -78,8 +78,6 @@ const EXPECTED = [
   /v7_relativeSplatPath/,
 ];
 
-const OV61_PROPS = "marginZero|backgroundImage|currentTheme|isTransparent|navListType|currentUrl|url|showLabel|stackProps";
-
 // Fonts and the Maps embed are assets the public pages request on purpose. Still abort them; do not treat them as regressions.
 const EXTERNAL_OK = [
   { host: "fonts.googleapis.com" },
@@ -87,10 +85,24 @@ const EXTERNAL_OK = [
   { host: "www.google.com", pathPrefix: "/maps" },
 ];
 
+// Known-bug baseline (Jira OV-61). One entry per cause, each under its own comment and separated by a
+// blank line, so slices that delete different entries merge without conflicts. Delete an entry in the
+// PR that fixes its cause; OV-97 retires the list once it is empty.
 const KNOWN_OV61 = [
+  // OV-98: AnimatePresence children without keys (routes.jsx).
   /same key, ``/,
-  new RegExp(`React does not recognize the \`(${OV61_PROPS})\` prop`),
-  new RegExp(`non-boolean attribute \`(${OV61_PROPS})\``),
+
+  // OV-104: NavigationListItems styled components leak style props to the DOM.
+  /React does not recognize the `(navListType|currentUrl|url)` prop/,
+  /non-boolean attribute `(navListType|currentUrl|url)`/,
+
+  // OV-105: footer BottomNavigation, app bar and Pagination leak style props to the DOM.
+  /React does not recognize the `(showLabel|currentTheme|isTransparent)` prop/,
+  /non-boolean attribute `(showLabel|currentTheme|isTransparent)`/,
+
+  // OV-106: SectionLayout, Hero and SectionHeader leak style props to the DOM.
+  /React does not recognize the `(marginZero|backgroundImage|stackProps)` prop/,
+  /non-boolean attribute `(marginZero|backgroundImage|stackProps)`/,
 ];
 
 function chromePath() {
