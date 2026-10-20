@@ -51,6 +51,9 @@ overrides:
   Do not work around a denial; note it under Open questions.
 - You start in a detached worktree at `origin/development`; step 2's `git switch -c` applies as
   written. Pushes and `gh` already run as the bot.
+- **Model.** The frontmatter `model` is the default for hand runs. Overnight, the runner picks the
+  model per ticket (`runner.modelBySize` / a `model:*` Jira label in `.claude/agents.config.json`)
+  and names it in the prompt; that choice wins. Record the model you ran on in the PR body.
 - **Final message:** PR URL, labels, and any open questions. The runner logs it.
 
 ## 1. Gather info first — hard requirement, before any edit
@@ -65,6 +68,7 @@ e. Confirm every path named in the ticket actually exists. Anything you cannot c
 f. Work out the PR labels from the ticket: the type label (`bug` if the Jira issue type is Bug,
    otherwise `enhancement`) and the ticket's single `area:*` label. If the ticket has no `area:*`
    label, or more than one, **stop and ask the owner** — do not guess and do not open the PR.
+   Jira `model:*` and `size-*` labels are runner inputs: never pass them to GitHub.
 
 ## 2. Open a draft PR with the plan — before coding
 
@@ -75,7 +79,8 @@ f. Work out the PR labels from the ticket: the type label (`bug` if the Jira iss
   `gh pr create --draft --base development --label "<type>" --label "<area:*>" --title "<type>(<scope>): <summary> (OV-NN)" --body-file <plan>`.
   Pass exactly two labels from step 1f: one type label and the ticket's `area:*` label. If a
   label does not exist in the repo, report it; do not create it.
-- The body follows `.github/pull_request_template.md`: fill **Plan** now; leave the remaining
+- The body follows `.github/pull_request_template.md`: fill **Plan** now, starting with a
+  `Model: <model>` line (the one the prompt names, else the model you are running on); leave the remaining
   sections as headings/checkboxes to complete later.
 
 ## 3. Copy the acceptance criteria verbatim

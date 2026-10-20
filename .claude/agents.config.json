@@ -49,6 +49,12 @@
     "wallClockMinutes": 50,
     "maxBudgetUsd": 15,
     "pickModel": "sonnet",
+    "$modelComment": "Build model per ticket: a Jira label <modelLabelPrefix><model> wins (only models listed in modelBySize values or allowedModels), else modelBySize by the ticket size label, else the agent file default.",
+    "modelLabelPrefix": "model:",
+    "allowedModels": ["sonnet", "opus"],
+    "modelBySize": { "size-s": "sonnet", "size-m": "opus", "size-l": "opus" },
+    "$claudeAiConnectorsComment": "false = headless runs load only the MCP servers from the Claude Code config (ENABLE_CLAUDEAI_MCP_SERVERS=false), not the claude.ai account connectors (Gmail, Drive, ...).",
+    "claudeAiConnectors": false,
     "envFiles": ["client/.env"],
     "$disallowedToolsComment": "Denied for the headless builder; deny beats allow. Never end a rule in \":*\" (legacy prefix syntax: Bash(git push *:*) silently matches nothing useful); use \":**\". The runner also denies Bash(git push * <branch>*) for each repo.protectedBranches.",
     "disallowedTools": [

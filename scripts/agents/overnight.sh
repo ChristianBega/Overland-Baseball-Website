@@ -100,6 +100,9 @@ WALL_MIN=$(cfg runner.wallClockMinutes || echo 50)
 WALL_SEC=${AGENTS_WALL_CLOCK_SECONDS:-$((WALL_MIN * 60))}
 MAX_USD=$(cfg runner.maxBudgetUsd || echo 15)
 PICK_MODEL=$(cfg runner.pickModel || echo sonnet)
+MODEL_PREFIX=$(cfg runner.modelLabelPrefix || echo "model:")
+# Headless runs skip the claude.ai account connectors unless the config opts in.
+[ "$(cfg runner.claudeAiConnectors || echo false)" = true ] || export ENABLE_CLAUDEAI_MCP_SERVERS=false
 COMMIT_NAME=$(cfg bot.commitName) || die "bot.commitName missing"
 COMMIT_EMAIL=$(cfg bot.commitEmail) || die "bot.commitEmail missing"
 VERIFY_CMD=$(cfg commands.verify || true)
@@ -122,9 +125,9 @@ mint() {
 
 # ---- 4. pick (read-only Jira, via a short claude -p call) -------------------------------------
 JQL="project = $JIRA_KEY AND labels = \"$READY\" AND labels not in (\"$BLOCKED\") AND labels in ($SIZES) AND statusCategory != Done ORDER BY created DESC"
-PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults 10, fields [\"summary\"] and this JQL:
+PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults 10, fields [\"summary\", \"labels\"] and this JQL:
 $JQL
-Then reply with ONLY a JSON array of the issue keys in the order returned, e.g. [\"$JIRA_KEY-1\"], or [] if there are none. No prose. If the tool fails or needs authentication, reply with ONLY: ERROR: <one-line reason>"
+Then reply with ONLY a JSON array of objects with each issue's key and labels, in the order returned, e.g. [{\"key\": \"$JIRA_KEY-1\", \"labels\": [\"size-s\"]}], or [] if there are none. No prose. If the tool fails or needs authentication, reply with ONLY: ERROR: <one-line reason>"
 
 say "pick: $JQL"
 PICK_OUT=$(cd "$REPO_ROOT" && claude -p --model "$PICK_MODEL" --max-turns 4 --output-format json \
@@ -132,7 +135,8 @@ PICK_OUT=$(cd "$REPO_ROOT" && claude -p --model "$PICK_MODEL" --max-turns 4 --ou
   -- "$PICK_PROMPT" 2>>"$LOG_DIR/pick.err") || die "pick: claude -p failed (Claude login? see $LOG_DIR/pick.err)"
 printf '%s\n' "$PICK_OUT" > "$LOG_DIR/pick.json"
 
-KEYS=$(printf '%s' "$PICK_OUT" | node -e '
+# One line per ticket: "<KEY> <label,label,...>". A bare key (no labels) is accepted too.
+PICKED=$(printf '%s' "$PICK_OUT" | node -e '
   let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
     const key = process.argv[1];
     let r;
@@ -140,14 +144,32 @@ KEYS=$(printf '%s' "$PICK_OUT" | node -e '
     const text = String(r.result ?? "").trim();
     if (r.is_error || /^ERROR:/.test(text)) { console.error(text || r.subtype || "pick failed"); process.exit(1); }
     const m = text.match(/\[[\s\S]*\]/);
-    let keys;
-    try { keys = JSON.parse(m ? m[0] : text); } catch { console.error("no JSON array in: " + text.slice(0, 200)); process.exit(1); }
+    let items;
+    try { items = JSON.parse(m ? m[0] : text); } catch { console.error("no JSON array in: " + text.slice(0, 200)); process.exit(1); }
     const re = new RegExp("^" + key + "-\\d+$");
-    for (const k of keys) {
+    for (const it of items) {
+      const k = typeof it === "string" ? it : it?.key;
       if (!re.test(k)) { console.error("unexpected key: " + k); process.exit(1); }
-      console.log(k);
+      const labels = (Array.isArray(it?.labels) ? it.labels : []).filter(l => /^[A-Za-z0-9:._-]+$/.test(l));
+      console.log(k + " " + labels.join(","));
     }
   });' "$JIRA_KEY" 2>>"$SUMMARY") || die "pick: unusable result (raw in $LOG_DIR/pick.json)"
+KEYS=$(printf '%s\n' "$PICKED" | awk 'NF {print $1}')
+
+# model_for <key> — the build model: a <prefix><model> label (allowed models only) wins, else the
+# size map, else empty (the agent file default).
+model_for() {
+  printf '%s\n' "$PICKED" | awk -v k="$1" '$1 == k {print $2}' | node -e '
+    let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
+      const r = require(process.argv[1]).runner || {}, prefix = process.argv[2];
+      const bySize = r.modelBySize || {};
+      const allowed = new Set([...(r.allowedModels || []), ...Object.values(bySize)]);
+      const labels = s.trim().split(",").filter(Boolean);
+      const pinned = labels.filter(l => l.startsWith(prefix)).map(l => l.slice(prefix.length)).find(m => allowed.has(m));
+      const sized = labels.map(l => bySize[l]).find(Boolean);
+      console.log(pinned || sized || "");
+    });' "$CONFIG" "$MODEL_PREFIX"
+}
 
 if [ -z "$KEYS" ]; then
   say "pick: no ready tickets; done"
@@ -195,6 +217,7 @@ if [ -z "$TODO" ]; then
   exit 0
 fi
 say "to build:$TODO"
+for k in $TODO; do say "$k: model $(model_for "$k" | sed "s/^$/agent default/")"; done
 if [ "$DRY_RUN" = 1 ]; then
   say "dry run: stopping before build"
   exit 0
@@ -269,8 +292,9 @@ $(cfg runner.envFiles || true)
 EOF
 
   T=$(mint) || { say "$k: FAIL bot token mint"; break; }
-  PROMPT="do $k (unattended). Scratch directory for PR body and other temp files: $SCRATCH"
-  say "$k: build start (worktree $WT, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
+  MODEL=$(model_for "$k")
+  PROMPT="do $k (unattended). Build model: ${MODEL:-agent default}. Scratch directory for PR body and other temp files: $SCRATCH"
+  say "$k: build start (worktree $WT, model ${MODEL:-agent default}, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
 
   # Job control on, so the build gets its own process group and the watchdog can kill claude plus
   # anything it started (dev server, browser) in one go.
@@ -288,6 +312,7 @@ EOF
     export GIT_TERMINAL_PROMPT=0
     export GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL"
     export GIT_COMMITTER_NAME="$COMMIT_NAME" GIT_COMMITTER_EMAIL="$COMMIT_EMAIL"
+    [ -n "$MODEL" ] && set -- --model "$MODEL" "$@"
     exec claude -p --agent "$AGENT" --max-turns "$MAX_TURNS" --max-budget-usd "$MAX_USD" \
       --permission-prompts none --output-format stream-json --verbose \
       --add-dir "$SCRATCH" "$@" -- "$PROMPT"
@@ -318,14 +343,15 @@ EOF
   wpid=""
   T=$(mint) || T=""
 
-  # Result line from the stream: outcome, turns, cost, denied tools.
+  # Result line from the stream: model, MCP servers, outcome, turns, cost, denied tools.
   stats=$(node -e '
     const lines = require("fs").readFileSync(process.argv[1], "utf8").trim().split("\n");
-    let r = null;
-    for (const l of lines) { try { const j = JSON.parse(l); if (j.type === "result") r = j; } catch {} }
-    if (!r) { console.log("no-result"); process.exit(0); }
+    let r = null, init = null;
+    for (const l of lines) { try { const j = JSON.parse(l); if (j.type === "result") r = j; if (j.type === "system" && j.subtype === "init") init = j; } catch {} }
+    const head = init ? `model=${init.model} mcp=${(init.mcp_servers || []).map(m => m.name).join(",") || "none"} ` : "";
+    if (!r) { console.log(head + "no-result"); process.exit(0); }
     const d = (r.permission_denials || []).map(x => x.tool_name + (x.tool_input?.command ? "(" + String(x.tool_input.command).slice(0, 60) + ")" : ""));
-    console.log(`${r.subtype} turns=${r.num_turns} cost=$${(r.total_cost_usd || 0).toFixed(2)} denials=${d.length}` + (d.length ? " [" + d.join("; ") + "]" : ""));
+    console.log(head + `${r.subtype} turns=${r.num_turns} cost=$${(r.total_cost_usd || 0).toFixed(2)} denials=${d.length}` + (d.length ? " [" + d.join("; ") + "]" : ""));
   ' "$TLOG" 2>/dev/null || echo "unparsed")
 
   pr=$(claimed_by "$k")
