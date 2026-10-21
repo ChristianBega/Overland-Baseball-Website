@@ -45,7 +45,9 @@ Read/Grep when a hunk is not enough to judge. Skip generated and vendored files:
 7. **CI checks** — the CI results, not the PR body. The workflow waits for the required checks before
    you start and tells you their state in the prompt; confirm with
    `gh pr view <PR> --json statusCheckRollup --jq '.statusCheckRollup[] | select(.name == "build" or .name == "qa" or .name == "qa-guard") | [.name, .status, .conclusion] | @tsv'`.
-   - `COMPLETED SUCCESS` — fine.
+   - `COMPLETED SUCCESS` — fine. A successful `qa` lets you mark the `[verify-overland]` criteria for the
+     routes the harness drives `met` (read the NEW counts in the QA verify sticky comment); criteria about
+     routes or behaviour the harness does not cover stay `can't tell`.
    - `build` `COMPLETED FAILURE` — Must fix, whatever the diff looks like. Cite the failing step from
      the log (`gh run list --commit <head sha>`, then `gh run view <id> --log-failed`).
    - `qa` `COMPLETED FAILURE` — Must fix. Read the **QA verify** sticky comment (`gh pr view <PR> --comments`;
