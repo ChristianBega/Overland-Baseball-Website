@@ -82,6 +82,10 @@ sed -e "s|__LABEL__|$(esc "$LABEL")|g" \
     "$HERE/overnight.plist.template" > "$DEST"
 plutil -lint "$DEST" >/dev/null
 
+# Current AC idle-sleep setting, so the printed undo restores it (macOS default is 1 minute).
+AC_SLEEP=$(pmset -g custom 2>/dev/null | sed -n '/AC Power/,$p' | awk '$1 == "sleep" { print $2; exit }')
+AC_SLEEP=${AC_SLEEP:-1}
+
 cat <<EOF
 Wrote $DEST (runs $(printf '%02d:%02d' "$HOUR" "$MINUTE") nightly).
 Runner checkout: $RUNNER (moves to origin/$BASE before each run; do not edit files there).
@@ -89,6 +93,9 @@ Runner checkout: $RUNNER (moves to origin/$BASE before each run; do not edit fil
 Next, run these yourself:
   launchctl bootstrap gui/\$(id -u) "$DEST"
   sudo pmset repeat wakeorpoweron MTWRFSU $WAKE
+  sudo pmset -c sleep 0        # no idle sleep on AC: the Mac must stay awake from the $WAKE wake to the run
+                               # (currently $AC_SLEEP; undo with: sudo pmset -c sleep $AC_SLEEP)
+  pmset -g custom | sed -n '/AC Power/,\$p' | grep ' sleep '   # check: expect "sleep 0"
 
 Check / run now / remove:
   launchctl print gui/\$(id -u)/$LABEL | head -20
@@ -99,6 +106,8 @@ Check / run now / remove:
 Pause / resume:   touch "$AGENTS_HOME/PAUSE"   /   rm "$AGENTS_HOME/PAUSE"
 Logs:             $AGENTS_LOG_DIR/<date>/summary.log
 
-Keep the laptop on power. Lid open, or closed with an external display (clamshell). A closed
-lid with no display does not wake. If it slept through 01:00, launchd runs the job at the next wake.
+Keep the laptop on AC power: on battery the sleep setting above does not apply, so overnight.sh
+refuses to start and logs why (AGENTS_ALLOW_BATTERY=1 overrides). Lid open, or closed with an
+external display (clamshell). A closed lid with no display does not wake. If it slept through
+01:00, launchd runs the job at the next wake.
 EOF
