@@ -288,6 +288,15 @@ built=0
 for k in $TODO; do
   [ -e "$AGENTS_HOME/PAUSE" ] && { say "paused mid-run; stopping before $k"; break; }
 
+  # A kept worktree from an earlier failed build (night 3: OV-112) still owns the ticket's local
+  # branch, and the builder's `git switch -c <prefix>/<key>` would fail with no permitted recovery.
+  # Skip with a clear line instead of spending a build; the owner removes the worktree and branch.
+  stale=$(git -C "$REPO_ROOT" branch --list "*/$k" | sed 's/^[*+ ]*//' | head -n 1)
+  if [ -n "$stale" ]; then
+    say "$k: skip (local branch $stale already exists; remove the kept worktree and the branch, then re-run)"
+    continue
+  fi
+
   slug=$(printf '%s' "$k" | tr 'A-Z' 'a-z')
   stamp=$(date +%H%M%S)
   WT="$AGENTS_HOME/worktrees/$slug-$stamp"
