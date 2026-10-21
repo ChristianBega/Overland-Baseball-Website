@@ -5,6 +5,16 @@ import PropTypes from "prop-types";
 // Components
 import TextBlock from "./TextBlock";
 import NoDataDisplay from "./NoDataDisplay";
+import ErrorMessage from "./ErrorMessage";
+
+const DEFAULT_ERROR_MESSAGE = "Unable to load data. Please try again.";
+
+// A string error shows as-is; an Error/object shows its message; otherwise the fallback.
+const getErrorMessage = (error) => {
+  if (typeof error === "string" && error.trim()) return error;
+  if (error && typeof error.message === "string" && error.message.trim()) return error.message;
+  return DEFAULT_ERROR_MESSAGE;
+};
 
 /**
  * DataStateDisplay - Handles all data fetching states (loading, error, empty, success)
@@ -73,6 +83,7 @@ const DataStateDisplay = ({
 
   // Error State
   if (isError) {
+    const errorMessage = getErrorMessage(error);
     return (
       <Box
         sx={{
@@ -128,15 +139,7 @@ const DataStateDisplay = ({
           </Typography>
 
           {/* Error Message */}
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.secondary",
-              opacity: 0.8,
-            }}
-          >
-            {error?.message || "Unable to load data. Please try again."}
-          </Typography>
+          <ErrorMessage message={errorMessage} />
 
           {/* Retry Button */}
           {onRetry && (
