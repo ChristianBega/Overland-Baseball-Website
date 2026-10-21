@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { styled } from "@mui/material";
+import { styled, rootShouldForwardProp } from "@mui/material/styles";
 
 const STYLE_ONLY_PROPS = ["marginZero", "marginBlock", "customMargin"];
 
 const StyledSectionLayout = styled("div", {
-  shouldForwardProp: (prop) => !STYLE_ONLY_PROPS.includes(prop),
+  shouldForwardProp: (prop) => rootShouldForwardProp(prop) && !STYLE_ONLY_PROPS.includes(prop),
 })(({ theme, ...rest }) => ({
   ...rest.sx,
   ...(rest?.marginBlock && { marginBlock: "4rem !important" }),
