@@ -12,9 +12,13 @@
 #                                                            ${XDG_STATE_HOME:-~/.local/state}/<repo>-agents elsewhere]
 #   AGENTS_DRY_RUN  1 = stop after the claim step
 #   AGENTS_WALL_CLOCK_SECONDS  override runner.wallClockMinutes (testing the watchdog)
+#   AGENTS_ALLOW_BATTERY       1 = start even on battery power (macOS refuses by default: on battery
+#                              the Mac deep-sleeps mid-run and the network drops; night 2 and 3)
 #   BOT_KEY_PATH / BOT_APP_ID   passed through to bot-token.mjs
 #
-# Kill switch: `touch $AGENTS_HOME/PAUSE`. The bot token is never written to a log or a command line.
+# Kill switch: `touch $AGENTS_HOME/PAUSE`. The bot token is never written to a log, a file or a
+# command line: the build's git credential helper and its `gh` shim mint a fresh one on every call,
+# so a build that outlives the 1 h token lifetime (sleep, slow network) still pushes and opens its PR.
 
 set -u
 
@@ -84,7 +88,18 @@ say "=== run start (repo $REPO_NAME, dry-run $DRY_RUN)"
 for bin in node git gh claude; do
   command -v "$bin" >/dev/null 2>&1 || die "$bin not on PATH ($PATH)"
 done
+GH_BIN=$(command -v gh)
 [ -f "$CONFIG" ] || die "no config at $CONFIG"
+
+# On battery the `pmset -c` sleep settings do not apply: the Mac deep-sleeps minutes into the run,
+# the network is gone in DarkWake and the build stalls for hours (nights 2 and 3). Refuse to start
+# rather than stall; the summary line says why.
+if [ "$(uname)" = Darwin ] && [ "${AGENTS_ALLOW_BATTERY:-0}" != 1 ]; then
+  case $(pmset -g batt 2>/dev/null | head -n 1) in
+    *"AC Power"*) ;;
+    *) die "on battery power: the Mac would sleep mid-run; plug in and re-run (AGENTS_ALLOW_BATTERY=1 overrides)" ;;
+  esac
+fi
 
 BASE=$(cfg repo.baseBranch) || die "repo.baseBranch missing"
 JIRA_KEY=$(cfg jira.projectKey) || die "jira.projectKey missing"
@@ -291,23 +306,38 @@ for k in $TODO; do
 $(cfg runner.envFiles || true)
 EOF
 
-  T=$(mint) || { say "$k: FAIL bot token mint"; break; }
+  # Fail fast if the bot cannot mint at all (bad key, no network); the build mints its own later.
+  mint >/dev/null || { say "$k: FAIL bot token mint"; break; }
   MODEL=$(model_for "$k")
   PROMPT="do $k (unattended). Build model: ${MODEL:-agent default}. Scratch directory for PR body and other temp files: $SCRATCH"
   say "$k: build start (worktree $WT, model ${MODEL:-agent default}, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
 
+  # `gh` shim for the build: mints a token for each call, so no token sits in the environment and
+  # none can age out. Lives beside the scratch dir, outside it (the builder has --add-dir on scratch).
+  SHIM="$TMPDIR/$slug-$stamp-bin"
+  mkdir -p "$SHIM"
+  printf '%s\n' '#!/bin/sh' \
+    '# Written by overnight.sh: run gh as the bot with a token minted now (installation tokens last 1 h).' \
+    'GH_TOKEN=$(node "$AGENTS_BOT_TOKEN_SCRIPT") || exit 1' \
+    'export GH_TOKEN' \
+    'exec "$AGENTS_GH_BIN" "$@"' > "$SHIM/gh"
+  chmod 755 "$SHIM/gh"
+
   # Job control on, so the build gets its own process group and the watchdog can kill claude plus
   # anything it started (dev server, browser) in one go.
   set -m
-  # Bot identity through the environment only: gh reads GH_TOKEN; git gets a credential helper that
-  # reads $GH_TOKEN at push time (the owner's helpers are reset) and the bot's author/committer.
+  # Bot identity through the environment only, and only as a recipe: the git credential helper
+  # mints a token when git asks for one (the owner's helpers are reset), the gh shim does the same
+  # per call, and the commits carry the bot's author/committer. No token value is exported.
   (
     cd "$WT" || exit 1
-    export GH_TOKEN="$T"
+    export AGENTS_BOT_TOKEN_SCRIPT="$REPO_ROOT/scripts/agents/bot-token.mjs" AGENTS_GH_BIN="$GH_BIN"
+    export PATH="$SHIM:$PATH"
+    unset GH_TOKEN GITHUB_TOKEN
     export GIT_CONFIG_COUNT=3
     export GIT_CONFIG_KEY_0=credential.helper GIT_CONFIG_VALUE_0=
     export GIT_CONFIG_KEY_1=credential.helper
-    export GIT_CONFIG_VALUE_1='!f() { echo username=x-access-token; echo "password=$GH_TOKEN"; }; f'
+    export GIT_CONFIG_VALUE_1='!f() { echo username=x-access-token; echo "password=$(node "$AGENTS_BOT_TOKEN_SCRIPT")"; }; f'
     export GIT_CONFIG_KEY_2=commit.gpgsign GIT_CONFIG_VALUE_2=false
     export GIT_TERMINAL_PROMPT=0
     export GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL"
@@ -319,6 +349,7 @@ EOF
   ) < /dev/null > "$TLOG" 2>&1 &
   cpid=$!
   set +m
+  t0=$(date +%s)
 
   TIMED_OUT="$SCRATCH/.timed-out"
   (
@@ -341,6 +372,10 @@ EOF
   pkill -P "$wpid" 2>/dev/null
   kill "$wpid" 2>/dev/null
   wpid=""
+  # Real seconds, sleep included; the watchdog above counts awake time only, so a gap between the
+  # two means the Mac slept (night 3: 3 h 24 min for a 10-turn build).
+  elapsed=$(( $(date +%s) - t0 ))
+  rm -rf "$SHIM"
   T=$(mint) || T=""
 
   # Result line from the stream: model, MCP servers, outcome, turns, cost, denied tools.
@@ -363,7 +398,7 @@ EOF
   else
     outcome="done"
   fi
-  say "$k: $outcome; $stats; ${pr:-no PR found}; log $TLOG"
+  say "$k: $outcome; $stats elapsed=${elapsed}s; ${pr:-no PR found}; log $TLOG"
   case $pr in "PR #"*|"branch "*) built=$((built + 1)) ;; esac
 
   reap_worktree "$WT" || say "$k: kept worktree $WT (unpushed work)"
