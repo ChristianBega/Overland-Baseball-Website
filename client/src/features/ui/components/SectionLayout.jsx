@@ -2,7 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material";
 
-const StyledSectionLayout = styled("div")(({ theme, ...rest }) => ({
+const STYLE_ONLY_PROPS = ["marginZero", "marginBlock", "customMargin"];
+
+const StyledSectionLayout = styled("div", {
+  shouldForwardProp: (prop) => !STYLE_ONLY_PROPS.includes(prop),
+})(({ theme, ...rest }) => ({
   ...rest.sx,
   ...(rest?.marginBlock && { marginBlock: "4rem !important" }),
   ...(rest?.marginZero ? { marginTop: "0" } : { marginTop: "4rem !important" }),
@@ -29,7 +33,7 @@ const SectionLayout = ({ id, ariaLabel, children, ...rest }) => {
   // Callers pass `aria-label` (in `rest`); Staff passes `ariaLabel` via StyledSectionLayoutWrapper.
   const label = rest["aria-label"] ?? ariaLabel;
   return (
-    <StyledSectionLayout {...rest} component="section" id={id} aria-label={label}>
+    <StyledSectionLayout {...rest} as="section" id={id} aria-label={label}>
       {children}
     </StyledSectionLayout>
   );
