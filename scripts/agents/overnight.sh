@@ -132,6 +132,11 @@ case $PUSH_URL in
   https://*) ;;
   *) die "origin push URL is not HTTPS: pushes would not run as the bot" ;;
 esac
+# Make the mint independent of the caller's cwd (the build's helper and shim may run from the scratch
+# dir, outside any checkout): both values are non-secret paths/names. Env wins over the defaults.
+BOT_KEY_DIR=$(cfg bot.keyDir) || die "bot.keyDir missing"
+export BOT_KEY_PATH="${BOT_KEY_PATH:-$BOT_KEY_DIR/key.pem}"
+export BOT_REPO="${BOT_REPO:-$(printf '%s' "$PUSH_URL" | sed -E 's#^https://github\.com/##; s#\.git$##')}"
 node "$REPO_ROOT/scripts/agents/bot-token.mjs" >/dev/null || die "bot token mint failed (see bot-token message above)"
 
 mint() {
@@ -283,6 +288,7 @@ for w in "$AGENTS_HOME"/worktrees/*; do
   reap_worktree "$w" && say "removed leftover worktree $w" || say "leftover worktree kept (unpushed work): $w"
 done
 git -C "$REPO_ROOT" worktree prune
+rm -rf "$TMPDIR"/*-bin   # gh shim dirs a killed run left behind (recipes only, never a token)
 
 built=0
 for k in $TODO; do
@@ -324,7 +330,7 @@ EOF
   # `gh` shim for the build: mints a token for each call, so no token sits in the environment and
   # none can age out. Lives beside the scratch dir, outside it (the builder has --add-dir on scratch).
   SHIM="$TMPDIR/$slug-$stamp-bin"
-  mkdir -p "$SHIM"
+  mkdir -p "$SHIM" "$SHIM/gh-home"
   printf '%s\n' '#!/bin/sh' \
     '# Written by overnight.sh: run gh as the bot with a token minted now (installation tokens last 1 h).' \
     'GH_TOKEN=$(node "$AGENTS_BOT_TOKEN_SCRIPT") || exit 1' \
@@ -343,10 +349,15 @@ EOF
     export AGENTS_BOT_TOKEN_SCRIPT="$REPO_ROOT/scripts/agents/bot-token.mjs" AGENTS_GH_BIN="$GH_BIN"
     export PATH="$SHIM:$PATH"
     unset GH_TOKEN GITHUB_TOKEN
+    # Fail closed: a `gh` reached without the shim finds no stored login (empty config dir) and errors
+    # out instead of acting as the owner. The shim's gh still works from the GH_TOKEN it sets.
+    export GH_CONFIG_DIR="$SHIM/gh-home"
     export GIT_CONFIG_COUNT=3
     export GIT_CONFIG_KEY_0=credential.helper GIT_CONFIG_VALUE_0=
     export GIT_CONFIG_KEY_1=credential.helper
-    export GIT_CONFIG_VALUE_1='!f() { echo username=x-access-token; echo "password=$(node "$AGENTS_BOT_TOKEN_SCRIPT")"; }; f'
+    # git calls the helper with get|store|erase; only `get` needs a token, and a failed mint must fail
+    # the helper (not hand git an empty password).
+    export GIT_CONFIG_VALUE_1='!f() { [ "$1" = get ] || return 0; t=$(node "$AGENTS_BOT_TOKEN_SCRIPT") || exit 1; echo username=x-access-token; echo "password=$t"; }; f'
     export GIT_CONFIG_KEY_2=commit.gpgsign GIT_CONFIG_VALUE_2=false
     export GIT_TERMINAL_PROMPT=0
     export GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL"

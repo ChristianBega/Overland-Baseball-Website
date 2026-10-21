@@ -84,7 +84,7 @@ plutil -lint "$DEST" >/dev/null
 
 # Current AC idle-sleep setting, so the printed undo restores it (macOS default is 1 minute).
 AC_SLEEP=$(pmset -g custom 2>/dev/null | sed -n '/AC Power/,$p' | awk '$1 == "sleep" { print $2; exit }')
-AC_SLEEP=${AC_SLEEP:-1}
+AC_SLEEP=${AC_SLEEP:-unknown}
 
 cat <<EOF
 Wrote $DEST (runs $(printf '%02d:%02d' "$HOUR" "$MINUTE") nightly).
@@ -94,7 +94,7 @@ Next, run these yourself:
   launchctl bootstrap gui/\$(id -u) "$DEST"
   sudo pmset repeat wakeorpoweron MTWRFSU $WAKE
   sudo pmset -c sleep 0        # no idle sleep on AC: the Mac must stay awake from the $WAKE wake to the run
-                               # (currently $AC_SLEEP; undo with: sudo pmset -c sleep $AC_SLEEP)
+                               # (currently $AC_SLEEP; undo with: sudo pmset -c sleep <that value, macOS default 1>)
   pmset -g custom | sed -n '/AC Power/,\$p' | grep ' sleep '   # check: expect "sleep 0"
 
 Check / run now / remove:
