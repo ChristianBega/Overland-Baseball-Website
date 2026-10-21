@@ -45,3 +45,6 @@ SectionLayout.propTypes = {
 };
 
 export default SectionLayout;
+
+// throwaway: reference the missing export so Rollup cannot drop it
+console.log(rootShouldForwardProp);
