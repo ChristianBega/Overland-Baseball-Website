@@ -335,10 +335,12 @@ for k in $TODO; do
   SCRATCH="$TMPDIR/$slug-$stamp"
   TLOG="$LOG_DIR/$k.log"
   mkdir -p "$SCRATCH"
+  attempted=$((attempted + 1))
 
   if ! git -C "$REPO_ROOT" worktree add -q --detach "$WT" "origin/$BASE" 2>>"$SUMMARY"; then
     say "$k: FAIL worktree add"
     emit build_end ticket="$k" outcome=failed failure_class=worktree_add
+    run_class=worktree_add
     continue
   fi
   # Gitignored files the build needs (e.g. client/.env). Copied, never read.
@@ -349,11 +351,10 @@ $(cfg runner.envFiles || true)
 EOF
 
   # Fail fast if the bot cannot mint at all (bad key, no network); the build mints its own later.
-  mint >/dev/null || { say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; break; }
+  mint >/dev/null || { say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; run_class=token_mint; break; }
   MODEL=$(model_for "$k")
   PROMPT="do $k (unattended). Build model: ${MODEL:-agent default}. Scratch directory for PR body and other temp files: $SCRATCH"
   say "$k: build start (worktree $WT, model ${MODEL:-agent default}, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
-  attempted=$((attempted + 1))
   emit build_start ticket="$k" model="${MODEL:-agent default}" log="$TLOG" \
     caps:="{\"turns\":${MAX_TURNS:-null},\"wall_s\":${WALL_SEC:-null},\"usd\":${MAX_USD:-null}}"
 

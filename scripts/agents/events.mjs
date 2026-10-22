@@ -38,6 +38,7 @@ const SLEPT_THRESHOLD_S = 300;
 const AUTH_RE = /invalid username or token|bad credentials|http 401|401 unauthorized|authentication failed/i;
 const BUILD_RE = /npm (ci|run build)\b/;
 const VERIFY_RE = /verify\.mjs/;
+const PUSH_RE = /\bgit push\b|\bgh /;
 
 const CONFIG = join(dirname(fileURLToPath(import.meta.url)), "../../.claude/agents.config.json");
 
@@ -148,7 +149,7 @@ export function buildEndFields(log, { rc = null, elapsed_s = null, timed_out = f
     outcome = branch ? "branch_only" : "failed";
     const resultText = String(result?.result ?? "");
     failure_class =
-      errors.some((e) => AUTH_RE.test(e.text)) || AUTH_RE.test(resultText) ? "auth_push"
+      errors.some((e) => PUSH_RE.test(e.command) && AUTH_RE.test(e.text)) || AUTH_RE.test(resultText) ? "auth_push"
       : subtypeClass ? subtypeClass
       : rc != null && rc !== 0 ? "agent_error"
       : errors.some((e) => BUILD_RE.test(e.command)) ? "build_fail"
