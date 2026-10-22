@@ -1,12 +1,16 @@
 import { AppBar, styled, Toolbar } from "@mui/material";
 
-export const StyledToolbar = styled(Toolbar)(({ theme, currentTheme }) => ({
+export const StyledToolbar = styled(Toolbar, {
+  shouldForwardProp: (prop) => prop !== "currentTheme",
+})(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   color: theme.palette.text.primary,
 }));
 
-export const StyledAppBar = styled(AppBar)(({ theme, isTransparent }) => ({
+export const StyledAppBar = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== "isTransparent",
+})(({ theme, isTransparent }) => ({
   background: "radial-gradient(circle, #082463 0%, rgba(9,31,64,1) 100%)",
   backdropFilter: "blur(10px)",
   padding: "1rem",
