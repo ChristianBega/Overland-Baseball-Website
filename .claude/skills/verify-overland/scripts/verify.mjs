@@ -95,10 +95,6 @@ const KNOWN_OV61 = [
   // OV-104: NavigationListItems styled components leak style props to the DOM.
   /React does not recognize the `(navListType|currentUrl|url)` prop/,
   /non-boolean attribute `(navListType|currentUrl|url)`/,
-
-  // OV-106: SectionLayout, Hero and SectionHeader leak style props to the DOM.
-  /React does not recognize the `(marginZero|backgroundImage|stackProps)` prop/,
-  /non-boolean attribute `(marginZero|backgroundImage|stackProps)`/,
 ];
 
 function chromePath() {

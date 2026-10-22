@@ -1,7 +1,7 @@
 import { styled, Typography } from "@mui/material";
 import SectionLayout from "../../ui/components/SectionLayout";
 
-export const StyledSectionLayout = styled(SectionLayout)(({ theme, backgroundImage }) => ({
+export const StyledSectionLayout = styled(SectionLayout, { shouldForwardProp: (prop) => prop !== "backgroundImage" })(({ theme, backgroundImage }) => ({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",

@@ -43,18 +43,16 @@ export const StyledEventCardImageContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const StyledEventCardImage = styled(Box)(({ theme }) => ({
+export const StyledEventCardImage = styled(Box)({
+  display: "block",
   objectFit: "cover",
+  objectPosition: "center",
+  aspectRatio: "4 / 3",
   borderRadius: "20px",
   border: "1px solid #d7d8e0",
   width: "100%",
-  [theme.breakpoints.down("md")]: {
-    maxHeight: "375px",
-  },
-  [theme.breakpoints.up("md")]: {
-    minHeight: "243px",
-  },
-}));
+  height: "auto",
+});
 
 export const StyledEventCardBodyText = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),

@@ -99,11 +99,6 @@ export default function ContactUs() {
                 subtitle="Have A Question?"
                 color={theme.palette.secondary.main}
                 cta={!isMd && !isFormHeaderAndDown && <SocialIcons />}
-                stackProps={{
-                  direction: "column",
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
-                }}
               />
               <Typography typography="p" component="p">
                 Whether you're a player interested in our baseball program, a parent or student looking to volunteer, or a business wanting to support
