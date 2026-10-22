@@ -99,10 +99,6 @@ const KNOWN_OV61 = [
   // OV-105: footer BottomNavigation, app bar and Pagination leak style props to the DOM.
   /React does not recognize the `(showLabel|currentTheme|isTransparent)` prop/,
   /non-boolean attribute `(showLabel|currentTheme|isTransparent)`/,
-
-  // OV-106: SectionLayout, Hero and SectionHeader leak style props to the DOM.
-  /React does not recognize the `(marginZero|backgroundImage|stackProps)` prop/,
-  /non-boolean attribute `(marginZero|backgroundImage|stackProps)`/,
 ];
 
 function chromePath() {

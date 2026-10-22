@@ -16,7 +16,7 @@ import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 const Hero = () => {
   const { isXl } = useMediaQueries();
   return (
-    <StyledSectionLayout marginZero={true} id="hero" aria-label="Hero Section" component="section" backgroundImage={alemanHeroImage}>
+    <StyledSectionLayout marginZero={true} id="hero" aria-label="Hero Section" backgroundImage={alemanHeroImage}>
       <Navigation isTransparent={true} />
       {/* TODO: remove inline css to styled component */}
       <TextBlock
