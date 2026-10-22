@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 // MUI components
-import { BottomNavigation, Box, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
 
 // Components
 import logo from "../../../assets/overlandLogo_3.webp";
@@ -26,7 +26,14 @@ import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
 import { useTheme } from "@emotion/react";
 import { Link } from "react-router-dom";
 
-const StyledBottomNavigation = styled(BottomNavigation)(({ theme, currentTheme }) => ({
+// Plain div, not MUI BottomNavigation: BottomNavigation clones its children with
+// showLabel/selected/value/onChange, which leaked to the DOM through the Grid (OV-105).
+// display/justifyContent reproduce BottomNavigation's own root layout.
+const StyledFooterContainer = styled("div", {
+  shouldForwardProp: (prop) => prop !== "currentTheme",
+})(({ theme, currentTheme }) => ({
+  display: "flex",
+  justifyContent: "center",
   overflow: "hidden",
   padding: theme.spacing(2),
   color: theme.palette.text.secondary,
@@ -120,7 +127,7 @@ export default function FooterNavigation() {
   const { isMd, isSm } = useMediaQueries();
 
   return (
-    <StyledBottomNavigation currentTheme={currentTheme}>
+    <StyledFooterContainer currentTheme={currentTheme}>
       <Grid container rowSpacing={4} columnSpacing={4} sx={{ display: "flex", justifyContent: "center", zIndex: 100 }}>
         <Grid item xs={12}>
           <Stack direction={isSm ? "row" : "column"} spacing={2} alignItems="center" justifyContent="space-between">
@@ -167,6 +174,6 @@ export default function FooterNavigation() {
           </TextBlock>
         </Grid>
       </Grid>
-    </StyledBottomNavigation>
+    </StyledFooterContainer>
   );
 }

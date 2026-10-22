@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { Pagination, Box, Typography, Select, MenuItem, FormControl } from "@mui/material";
 import styled from "@emotion/styled";
 
-const PaginationContainer = styled(Box)(({ theme, showItemsPerPage, isTransparent }) => ({
+const PaginationContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "showItemsPerPage" && prop !== "isTransparent",
+})(({ theme, showItemsPerPage, isTransparent }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -19,13 +21,17 @@ const PaginationContainer = styled(Box)(({ theme, showItemsPerPage, isTransparen
   }),
 }));
 
-const ItemsPerPage = styled(Typography)(({ isTransparent }) => ({
+const ItemsPerPage = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== "isTransparent",
+})(({ isTransparent }) => ({
   color: isTransparent ? "#000" : "#fff",
   fontSize: "14px",
   marginRight: "8px",
 }));
 
-const StyledPagination = styled(Pagination)(({ isTransparent }) => ({
+const StyledPagination = styled(Pagination, {
+  shouldForwardProp: (prop) => prop !== "isTransparent",
+})(({ isTransparent }) => ({
   "& .MuiPaginationItem-root": {
     color: "#fff",
     "&.Mui-selected": {
