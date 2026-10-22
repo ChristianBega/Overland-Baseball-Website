@@ -42,8 +42,25 @@ say() {
   printf '%s %s\n' "$(date +%H:%M:%S)" "$*" | tee -a "$SUMMARY"
 }
 
+# emit <event> [key=value ...] [key:=<json> ...] — one JSON line in $AGENTS_LOG_DIR/events.jsonl
+# (scripts/agents/events.mjs: fields, failure_class enum). Never fatal: a bug or a full disk in the
+# events code costs the event, not the build or the run.
+EVENTS="$AGENTS_LOG_DIR/events.jsonl"
+RUN_ID="$(date -u +%Y-%m-%dT%H:%M:%SZ)-$$"
+# owner/name only: any credential in the URL is stripped, and the URL itself is never printed.
+EV_REPO=$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null |
+  sed -E 's#^[a-z+]+://([^@/]*@)?[^/]+/##; s#^[^@/]*@[^:]*:##; s#\.git$##')
+emit() {
+  AGENTS_EVENTS="$EVENTS" EV_NIGHT="$NIGHT" EV_RUN_ID="$RUN_ID" EV_REPO="$EV_REPO" EV_DRY_RUN="$DRY_RUN" \
+    node "$REPO_ROOT/scripts/agents/events.mjs" emit "$@" </dev/null >/dev/null || true
+}
+
+# die <failure_class> <message> [event fields ...]
 die() {
-  say "ABORT: $*"
+  class=$1 msg=$2
+  shift 2
+  say "ABORT: $msg"
+  emit run_abort failure_class="$class" reason="$msg" "$@"
   exit 1
 }
 
@@ -59,6 +76,7 @@ cfg() {
 # ---- 1. kill switch ---------------------------------------------------------------------------
 if [ -e "$AGENTS_HOME/PAUSE" ]; then
   say "paused ($AGENTS_HOME/PAUSE exists); nothing to do"
+  emit run_end outcome=idle failure_class=paused
   exit 0
 fi
 
@@ -68,11 +86,12 @@ if ! mkdir "$LOCK" 2>/dev/null; then
   old=$(cat "$LOCK/pid" 2>/dev/null)
   if [ -n "$old" ] && kill -0 "$old" 2>/dev/null; then
     say "another run is active (pid $old); exiting"
+    emit run_end outcome=idle failure_class=lock_held
     exit 0
   fi
   say "removing stale lock (pid ${old:-?})"
   rm -rf "$LOCK"
-  mkdir "$LOCK" || die "cannot take lock $LOCK"
+  mkdir "$LOCK" || die lock_held "cannot take lock $LOCK"
 fi
 echo $$ > "$LOCK/pid"
 cpid="" wpid=""
@@ -80,16 +99,17 @@ cpid="" wpid=""
 # kill -<pgid> needs job control (set -m); where the shell ignores it (dash without a tty), fall
 # back to the pid.
 trap '[ -n "$cpid" ] && { kill -TERM -"$cpid" 2>/dev/null || kill -TERM "$cpid" 2>/dev/null; }; [ -n "$wpid" ] && { pkill -P "$wpid"; kill "$wpid"; } 2>/dev/null; rm -rf "$LOCK"' EXIT
-trap 'exit 130' INT TERM
+trap 'emit run_abort failure_class=unknown reason=signal; exit 130' INT TERM
 
 say "=== run start (repo $REPO_NAME, dry-run $DRY_RUN)"
+emit run_start
 
 # ---- 3. preflight: all or nothing -------------------------------------------------------------
 for bin in node git gh claude; do
-  command -v "$bin" >/dev/null 2>&1 || die "$bin not on PATH ($PATH)"
+  command -v "$bin" >/dev/null 2>&1 || die preflight_tool_missing "$bin not on PATH ($PATH)"
 done
 GH_BIN=$(command -v gh)
-[ -f "$CONFIG" ] || die "no config at $CONFIG"
+[ -f "$CONFIG" ] || die preflight_config "no config at $CONFIG"
 
 # On battery the `pmset -c` sleep settings do not apply: the Mac deep-sleeps minutes into the run,
 # the network is gone in DarkWake and the build stalls for hours (nights 2 and 3). Refuse to start
@@ -97,19 +117,19 @@ GH_BIN=$(command -v gh)
 if [ "$(uname)" = Darwin ] && [ "${AGENTS_ALLOW_BATTERY:-0}" != 1 ]; then
   case $(pmset -g batt 2>/dev/null | head -n 1) in
     *"AC Power"*) ;;
-    *) die "on battery power: the Mac would sleep mid-run; plug in and re-run (AGENTS_ALLOW_BATTERY=1 overrides)" ;;
+    *) die on_battery "on battery power: the Mac would sleep mid-run; plug in and re-run (AGENTS_ALLOW_BATTERY=1 overrides)" ;;
   esac
 fi
 
-BASE=$(cfg repo.baseBranch) || die "repo.baseBranch missing"
-JIRA_KEY=$(cfg jira.projectKey) || die "jira.projectKey missing"
-CLOUD_ID=$(cfg jira.cloudId) || die "jira.cloudId missing"
-READY=$(cfg labels.jira.readyForBuild) || die "labels.jira.readyForBuild missing"
-BLOCKED=$(cfg labels.jira.blocked) || die "labels.jira.blocked missing"
+BASE=$(cfg repo.baseBranch) || die preflight_config "repo.baseBranch missing"
+JIRA_KEY=$(cfg jira.projectKey) || die preflight_config "jira.projectKey missing"
+CLOUD_ID=$(cfg jira.cloudId) || die preflight_config "jira.cloudId missing"
+READY=$(cfg labels.jira.readyForBuild) || die preflight_config "labels.jira.readyForBuild missing"
+BLOCKED=$(cfg labels.jira.blocked) || die preflight_config "labels.jira.blocked missing"
 SIZES=$(cfg runner.allowedSizes | sed 's/.*/"&"/' | paste -sd, -)
-[ -n "$SIZES" ] || die "runner.allowedSizes missing or empty"
-AGENT=$(cfg runner.builderAgent) || die "runner.builderAgent missing"
-MAX_TICKETS=$(cfg runner.maxTicketsPerNight) || die "runner.maxTicketsPerNight missing"
+[ -n "$SIZES" ] || die preflight_config "runner.allowedSizes missing or empty"
+AGENT=$(cfg runner.builderAgent) || die preflight_config "runner.builderAgent missing"
+MAX_TICKETS=$(cfg runner.maxTicketsPerNight) || die preflight_config "runner.maxTicketsPerNight missing"
 MAX_TURNS=$(cfg runner.maxTurns || echo 150)
 WALL_MIN=$(cfg runner.wallClockMinutes || echo 50)
 WALL_SEC=${AGENTS_WALL_CLOCK_SECONDS:-$((WALL_MIN * 60))}
@@ -118,26 +138,26 @@ PICK_MODEL=$(cfg runner.pickModel || echo sonnet)
 MODEL_PREFIX=$(cfg runner.modelLabelPrefix || echo "model:")
 # Headless runs skip the claude.ai account connectors unless the config opts in.
 [ "$(cfg runner.claudeAiConnectors || echo false)" = true ] || export ENABLE_CLAUDEAI_MCP_SERVERS=false
-COMMIT_NAME=$(cfg bot.commitName) || die "bot.commitName missing"
-COMMIT_EMAIL=$(cfg bot.commitEmail) || die "bot.commitEmail missing"
+COMMIT_NAME=$(cfg bot.commitName) || die preflight_config "bot.commitName missing"
+COMMIT_EMAIL=$(cfg bot.commitEmail) || die preflight_config "bot.commitEmail missing"
 VERIFY_CMD=$(cfg commands.verify || true)
 
-git -C "$REPO_ROOT" fetch -q origin "$BASE" || die "git fetch origin $BASE failed"
+git -C "$REPO_ROOT" fetch -q origin "$BASE" || die fetch_timeout "git fetch origin $BASE failed"
 # The bot identity rides on an HTTPS credential helper. Over SSH (or an insteadOf rewrite to SSH)
 # git would push with the owner's key, as the owner. A credential in the URL wins over the helper
 # too. The URL is never echoed (it may hold a credential).
-PUSH_URL=$(git -C "$REPO_ROOT" remote get-url --push origin) || die "no origin remote"
+PUSH_URL=$(git -C "$REPO_ROOT" remote get-url --push origin) || die push_url_unsafe "no origin remote"
 case $PUSH_URL in
-  https://*@*) die "origin push URL embeds a credential: pushes would not run as the bot" ;;
+  https://*@*) die push_url_unsafe "origin push URL embeds a credential: pushes would not run as the bot" ;;
   https://*) ;;
-  *) die "origin push URL is not HTTPS: pushes would not run as the bot" ;;
+  *) die push_url_unsafe "origin push URL is not HTTPS: pushes would not run as the bot" ;;
 esac
 # Make the mint independent of the caller's cwd (the build's helper and shim may run from the scratch
 # dir, outside any checkout): both values are non-secret paths/names. Env wins over the defaults.
-BOT_KEY_DIR=$(cfg bot.keyDir) || die "bot.keyDir missing"
+BOT_KEY_DIR=$(cfg bot.keyDir) || die preflight_config "bot.keyDir missing"
 export BOT_KEY_PATH="${BOT_KEY_PATH:-$BOT_KEY_DIR/key.pem}"
 export BOT_REPO="${BOT_REPO:-$(printf '%s' "$PUSH_URL" | sed -E 's#^https://github\.com/##; s#\.git$##')}"
-node "$REPO_ROOT/scripts/agents/bot-token.mjs" >/dev/null || die "bot token mint failed (see bot-token message above)"
+node "$REPO_ROOT/scripts/agents/bot-token.mjs" >/dev/null || die token_mint "bot token mint failed (see bot-token message above)"
 
 mint() {
   node "$REPO_ROOT/scripts/agents/bot-token.mjs"
@@ -152,7 +172,7 @@ Then reply with ONLY a JSON array of objects with each issue's key and labels, i
 say "pick: $JQL"
 PICK_OUT=$(cd "$REPO_ROOT" && claude -p --model "$PICK_MODEL" --max-turns 4 --output-format json \
   --permission-prompts none --allowedTools mcp__atlassian__searchJiraIssuesUsingJql \
-  -- "$PICK_PROMPT" 2>>"$LOG_DIR/pick.err") || die "pick: claude -p failed (Claude login? see $LOG_DIR/pick.err)"
+  -- "$PICK_PROMPT" 2>>"$LOG_DIR/pick.err") || die pick_claude_failed "pick: claude -p failed (Claude login? see $LOG_DIR/pick.err)"
 printf '%s\n' "$PICK_OUT" > "$LOG_DIR/pick.json"
 
 # One line per ticket: "<KEY> <label,label,...>". A bare key (no labels) is accepted too.
@@ -173,8 +193,9 @@ PICKED=$(printf '%s' "$PICK_OUT" | node -e '
       const labels = (Array.isArray(it?.labels) ? it.labels : []).filter(l => /^[A-Za-z0-9:._-]+$/.test(l));
       console.log(k + " " + labels.join(","));
     }
-  });' "$JIRA_KEY" 2>>"$SUMMARY") || die "pick: unusable result (raw in $LOG_DIR/pick.json)"
+  });' "$JIRA_KEY" 2>>"$SUMMARY") || die pick_unparsable "pick: unusable result (raw in $LOG_DIR/pick.json)" pick_json="$LOG_DIR/pick.json"
 KEYS=$(printf '%s\n' "$PICKED" | awk 'NF {print $1}')
+emit pick pick_json="$LOG_DIR/pick.json" picked="$PICKED"
 
 # model_for <key> — the build model: a <prefix><model> label (allowed models only) wins, else the
 # size map, else empty (the agent file default).
@@ -193,12 +214,13 @@ model_for() {
 
 if [ -z "$KEYS" ]; then
   say "pick: no ready tickets; done"
+  emit run_end outcome=idle failure_class=pick_empty
   exit 0
 fi
 say "pick: $(printf '%s' "$KEYS" | paste -sd' ' -)"
 
 # ---- 5. claim (no Jira write): an existing PR or remote branch means someone has it -----------
-T=$(mint) || die "bot token mint failed"
+T=$(mint) || die token_mint "bot token mint failed"
 claimed_by() {
   k=$1
   # A failed gh call counts as claimed: better to skip a ticket than to build a duplicate PR.
@@ -226,6 +248,7 @@ for k in $KEYS; do
   c=$(claimed_by "$k")
   if [ -n "$c" ]; then
     say "$k: skip (claimed: $c)"
+    emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="$c"
   else
     TODO="$TODO $k"
     n=$((n + 1))
@@ -234,12 +257,14 @@ done
 
 if [ -z "$TODO" ]; then
   say "nothing unclaimed; done"
+  emit run_end outcome=idle failure_class=claim_skip
   exit 0
 fi
 say "to build:$TODO"
 for k in $TODO; do say "$k: model $(model_for "$k" | sed "s/^$/agent default/")"; done
 if [ "$DRY_RUN" = 1 ]; then
   say "dry run: stopping before build"
+  emit run_end outcome=idle failure_class=none tickets="$TODO"
   exit 0
 fi
 
@@ -262,8 +287,8 @@ reap_worktree() {
 #   --disallowedTools <deny...> --allowedTools <allow...>
 # Deny beats allow, so the feature/* and fix/* push rules can never reach a protected branch, a
 # refspec, a deletion or a force push. Fail closed: no deny list, no build.
-DENY=$(cfg runner.disallowedTools) || die "runner.disallowedTools missing"
-PROTECTED=$(cfg repo.protectedBranches) || die "repo.protectedBranches missing"
+DENY=$(cfg runner.disallowedTools) || die preflight_config "runner.disallowedTools missing"
+PROTECTED=$(cfg repo.protectedBranches) || die preflight_config "repo.protectedBranches missing"
 set -- --disallowedTools
 while IFS= read -r tool; do
   [ -n "$tool" ] && set -- "$@" "$tool"
@@ -271,7 +296,7 @@ done <<EOF
 $DENY
 $(printf '%s\n' "$PROTECTED" | sed '/./s/.*/Bash(git push * &*)/')
 EOF
-[ $# -gt 1 ] || die "deny list is empty"
+[ $# -gt 1 ] || die preflight_config "deny list is empty"
 set -- "$@" --allowedTools
 n_deny=$#
 while IFS= read -r tool; do
@@ -279,7 +304,7 @@ while IFS= read -r tool; do
 done <<EOF
 $(cfg runner.allowedTools)
 EOF
-[ $# -gt "$n_deny" ] || die "runner.allowedTools is empty"
+[ $# -gt "$n_deny" ] || die preflight_config "runner.allowedTools is empty"
 
 export TMPDIR="$AGENTS_HOME/tmp"
 mkdir -p "$TMPDIR" "$AGENTS_HOME/worktrees"
@@ -290,9 +315,9 @@ done
 git -C "$REPO_ROOT" worktree prune
 rm -rf "$TMPDIR"/*-bin   # gh shim dirs a killed run left behind (recipes only, never a token)
 
-built=0
+built=0 attempted=0 run_class=none
 for k in $TODO; do
-  [ -e "$AGENTS_HOME/PAUSE" ] && { say "paused mid-run; stopping before $k"; break; }
+  [ -e "$AGENTS_HOME/PAUSE" ] && { say "paused mid-run; stopping before $k"; run_class=paused; break; }
 
   # A kept worktree from an earlier failed build (night 3: OV-112) still owns the ticket's local
   # branch, and the builder's `git switch -c <prefix>/<key>` would fail with no permitted recovery.
@@ -300,6 +325,7 @@ for k in $TODO; do
   stale=$(git -C "$REPO_ROOT" branch --list "*/$k" | sed 's/^[*+ ]*//' | head -n 1)
   if [ -n "$stale" ]; then
     say "$k: skip (local branch $stale already exists; remove the kept worktree and the branch, then re-run)"
+    emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="local branch $stale"
     continue
   fi
 
@@ -312,6 +338,7 @@ for k in $TODO; do
 
   if ! git -C "$REPO_ROOT" worktree add -q --detach "$WT" "origin/$BASE" 2>>"$SUMMARY"; then
     say "$k: FAIL worktree add"
+    emit build_end ticket="$k" outcome=failed failure_class=worktree_add
     continue
   fi
   # Gitignored files the build needs (e.g. client/.env). Copied, never read.
@@ -322,10 +349,13 @@ $(cfg runner.envFiles || true)
 EOF
 
   # Fail fast if the bot cannot mint at all (bad key, no network); the build mints its own later.
-  mint >/dev/null || { say "$k: FAIL bot token mint"; break; }
+  mint >/dev/null || { say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; break; }
   MODEL=$(model_for "$k")
   PROMPT="do $k (unattended). Build model: ${MODEL:-agent default}. Scratch directory for PR body and other temp files: $SCRATCH"
   say "$k: build start (worktree $WT, model ${MODEL:-agent default}, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
+  attempted=$((attempted + 1))
+  emit build_start ticket="$k" model="${MODEL:-agent default}" log="$TLOG" \
+    caps:="{\"turns\":${MAX_TURNS:-null},\"wall_s\":${WALL_SEC:-null},\"usd\":${MAX_USD:-null}}"
 
   # `gh` shim for the build: mints a token for each call, so no token sits in the environment and
   # none can age out. Lives beside the scratch dir, outside it (the builder has --add-dir on scratch).
@@ -419,9 +449,15 @@ EOF
     outcome="done"
   fi
   say "$k: $outcome; $stats elapsed=${elapsed}s; ${pr:-no PR found}; log $TLOG"
+  # Classified from the stream, not the exit code: a build with no PR is never a success here.
+  timed_out=false
+  [ -e "$TIMED_OUT" ] && timed_out=true
+  emit build_end ticket="$k" log="$TLOG" rc:="$rc" elapsed_s:="$elapsed" timed_out:="$timed_out" claimed="$pr"
   case $pr in "PR #"*|"branch "*) built=$((built + 1)) ;; esac
 
   reap_worktree "$WT" || say "$k: kept worktree $WT (unpushed work)"
 done
 
 say "=== run end: $built PR(s) for:$TODO"
+if [ "$attempted" -eq 0 ]; then run_outcome=idle; elif [ "$built" -gt 0 ]; then run_outcome=pr; else run_outcome=failed; fi
+emit run_end outcome="$run_outcome" failure_class="$run_class" built:="$built" attempted:="$attempted" tickets="$TODO"
