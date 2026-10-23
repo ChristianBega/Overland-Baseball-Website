@@ -285,11 +285,13 @@ function waitingOn(v, L, guardCheck) {
 function nightStatus(evs, views, L) {
   const real = evs.filter(isReal);
   const runner = real.filter((e) => (e.source || "runner") === "runner");
-  if (!runner.some((e) => e.event === "run_start" || e.event === "run_end")) return { status: "missed", why: ["no run_start/run_end"] };
+  if (!runner.some((e) => e.event === "run_start" || e.event === "run_end" || e.event === "run_abort")) return { status: "missed", why: ["no run_start/run_end/run_abort"] };
   const ends = runner.filter((e) => e.event === "run_end");
+  const aborts = runner.filter((e) => e.event === "run_abort");
   const builds = runner.filter((e) => e.event === "build_end");
-  if (!runner.some((e) => e.event === "run_start") || (!builds.length && ends.every((e) => e.outcome === "idle" && NEUTRAL_IDLE.has(e.failure_class)))) {
-    return { status: "idle", why: [ends.map((e) => e.failure_class).join(",") || "no run_start"] };
+  // A run_abort is never idle: it lands in why via its failure_class below.
+  if (!aborts.length && !builds.length && ends.length && ends.every((e) => e.outcome === "idle" && NEUTRAL_IDLE.has(e.failure_class))) {
+    return { status: "idle", why: [ends.map((e) => e.failure_class).join(",")] };
   }
   const why = [];
   for (const e of runner) if (e.failure_class && !CLEAN_CLASSES.has(e.failure_class)) why.push(`${e.event} ${e.ticket || ""} ${e.failure_class}`.replace(/\s+/g, " "));
