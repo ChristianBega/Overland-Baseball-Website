@@ -91,10 +91,6 @@ const EXTERNAL_OK = [
 const KNOWN_OV61 = [
   // OV-98: AnimatePresence children without keys (routes.jsx).
   /same key, ``/,
-
-  // OV-104: NavigationListItems styled components leak style props to the DOM.
-  /React does not recognize the `(navListType|currentUrl|url)` prop/,
-  /non-boolean attribute `(navListType|currentUrl|url)`/,
 ];
 
 function chromePath() {

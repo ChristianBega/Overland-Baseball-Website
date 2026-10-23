@@ -1,6 +1,10 @@
 import { Link, List, ListItem, styled, Typography } from "@mui/material";
 
-export const StyledList = styled(List)(({ theme, navListType }) => ({
+// A custom shouldForwardProp replaces MUI's default root filter, so keep excluding sx/as/theme/ownerState.
+const STYLE_ONLY_PROPS = ["navListType", "currentUrl", "url", "sx", "as", "theme", "ownerState"];
+const shouldForwardProp = (prop) => !STYLE_ONLY_PROPS.includes(prop);
+
+export const StyledList = styled(List, { shouldForwardProp })(({ theme, navListType }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -15,7 +19,7 @@ export const StyledList = styled(List)(({ theme, navListType }) => ({
   },
 }));
 
-export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl, url }) => ({
+export const StyledListItem = styled(ListItem, { shouldForwardProp })(({ theme, navListType, currentUrl, url }) => ({
   padding: ".5rem 1rem",
   borderRadius: "50px",
   marginBottom: "1rem",
@@ -81,7 +85,7 @@ export const StyledListItem = styled(ListItem)(({ theme, navListType, currentUrl
   }),
 }));
 
-export const StyledNavigationLink = styled(Link)(({ theme, currentUrl, url, navListType }) => ({
+export const StyledNavigationLink = styled(Link, { shouldForwardProp })(({ theme, currentUrl, url, navListType }) => ({
   ...(currentUrl === url && {
     textDecoration: "underline !important",
   }),
