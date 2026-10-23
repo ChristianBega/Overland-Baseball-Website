@@ -170,6 +170,8 @@ Firebase Auth handles authentication. Roles are stored in Firestore user profile
 
 Bots open pull requests against `development`. They never push to or merge into `development` or `main`. The owner merges.
 
+Morning review is one visit per PR: approve, then enable auto-merge (`gh pr review N --approve && gh pr merge N --auto --merge`). GitHub merges once the ruleset's approval and `build` / `qa` / `qa-guard` checks are satisfied. See [`docs/agent-workflow/morning-checklist.md`](docs/agent-workflow/morning-checklist.md).
+
 ## Skills
 
 Agent skills live in `.claude/skills/`. Each folder has a `SKILL.md` that defines what the skill does.
