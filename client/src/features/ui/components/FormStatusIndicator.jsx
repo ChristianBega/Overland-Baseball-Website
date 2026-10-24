@@ -2,16 +2,18 @@ import React from "react";
 // Mui
 import { Box, CircularProgress, Typography, Stack } from "@mui/material";
 // Icons
-import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { StyledFormStatusIndicatorContainer } from "./FormStatusIndicator.styles";
+// Components
+import ErrorMessage from "./ErrorMessage";
 
 const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, success }) => {
   // const isAuthFormError = error && statusMessage === "You must be logged in to use this form.";
+  const isErrorOnly = error && !loading;
   return (
     <>
       {(statusMessage || success || loading || error || success) && (
-        <StyledFormStatusIndicatorContainer>
+        <StyledFormStatusIndicatorContainer isErrorOnly={isErrorOnly}>
           {((statusCode && statusMessage) || (success && statusMessage)) && (
             <Stack direction="row" spacing={1}>
               <CheckCircleIcon />
@@ -25,14 +27,7 @@ const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, succes
               <CircularProgress />
             </Box>
           )}
-          {error && (
-            <Stack direction="row" spacing={1}>
-              <ErrorIcon />
-              <Typography variant="body1" color="error">
-                Error: {statusMessage}
-              </Typography>
-            </Stack>
-          )}
+          {error && <ErrorMessage message={statusMessage} />}
         </StyledFormStatusIndicatorContainer>
       )}
     </>

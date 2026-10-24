@@ -15,6 +15,7 @@ export { default as BentoLayout } from "./components/BentoLayout.";
 // export { default as DownArrow } from "./components/[Deprecated]Downarrow";
 export { default as CustomPagination } from "./components/Pagination";
 export { default as DataStateDisplay } from "./components/DataStateDisplay";
+export { default as ErrorMessage } from "./components/ErrorMessage";
 export { default as NoDataDisplay } from "./components/NoDataDisplay";
 export { default as SearchFilter } from "./components/SearchFilter";
 export { default as SectionLayout } from "./components/SectionLayout";
