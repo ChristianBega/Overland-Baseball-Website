@@ -21,7 +21,7 @@
 // failure_class is a closed list. Add a value here by PR, never free text; an unlisted value is
 // written as "unknown" with the raw value beside it. missed_run is reserved for the morning check.
 
-import { appendFileSync, existsSync, readFileSync, readdirSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync, readdirSync, realpathSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -258,12 +258,18 @@ function replay(dir) {
   }
 }
 
-const [cmd, ...rest] = process.argv.slice(2);
-try {
-  if (cmd === "emit" && rest[0]) emit(rest[0], rest.slice(1));
-  else if (cmd === "replay" && rest[0]) replay(rest[0]);
-  else throw new Error("usage: events.mjs emit <event> [k=v ...] | replay <dir>");
-} catch (e) {
-  process.stderr.write(`events: ${e.message}\n`);
-  if (cmd === "replay") process.exit(1);
+// CLI only when run directly, so report.mjs can import the enums without emitting anything.
+let direct = false;
+try { direct = realpathSync(process.argv[1] || "") === realpathSync(fileURLToPath(import.meta.url)); } catch {}
+
+const [cmd, ...rest] = direct ? process.argv.slice(2) : [];
+if (direct) {
+  try {
+    if (cmd === "emit" && rest[0]) emit(rest[0], rest.slice(1));
+    else if (cmd === "replay" && rest[0]) replay(rest[0]);
+    else throw new Error("usage: events.mjs emit <event> [k=v ...] | replay <dir>");
+  } catch (e) {
+    process.stderr.write(`events: ${e.message}\n`);
+    if (cmd === "replay") process.exit(1);
+  }
 }
