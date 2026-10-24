@@ -3,7 +3,7 @@
 // each PR the runner built or skipped, appends what changed, and prints a Markdown report.
 //
 //   node scripts/agents/report.mjs [--night YYYY-MM-DD] [--days 7] [--no-sweep] [--out <file>]
-//                                  [--events <events.jsonl>]
+//                                  [--events <events.jsonl>] [--morning]
 //
 // events.jsonl: --events, else $AGENTS_EVENTS, else $AGENTS_LOG_DIR/events.jsonl (same default dir
 // as overnight.sh). --night defaults to today (the runner's night is the local date at 01:00).
@@ -17,11 +17,19 @@
 //              and required-check conclusions). With --no-sweep or gh unavailable, the report
 //              falls back to the latest pr_state in the file.
 //
+// --morning (the 06:30 launchd job, launchd/install.sh) writes the report to <events dir>/<night>/
+// report.md instead of stdout and appends one source:"morning" morning_check event: runs_seen (runner
+// runs with a run_start/run_end/run_abort), failure_class missed_run when there were none (else
+// none), night_status and abort_classes. Its key is night + runs_seen + class, so a re-run with the
+// same result appends nothing. Without --night, a --morning run before $AGENTS_AT (the nightly slot,
+// HH:MM) reports yesterday: launchd runs a 06:30 job missed during sleep at the next wake, which can
+// be the 00:55 wake before tonight's run.
+//
 // It never fails the caller: missing data is stated in the report, and it always exits 0.
 
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -43,6 +51,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--no-sweep") o.sweep = false;
+    else if (a === "--morning") o.morning = true;
     else if (a === "--night") o.night = argv[++i];
     else if (a === "--days") o.days = Math.max(1, Number(argv[++i]) || 7);
     else if (a === "--out") o.out = argv[++i];
@@ -54,6 +63,15 @@ function parseArgs(argv) {
 function localDate(d = new Date()) {
   const p = (n) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+// The night a --morning run reports: today, or yesterday when it runs before the nightly slot.
+function morningNight(now = new Date()) {
+  const m = String(process.env.AGENTS_AT || "").match(/^(\d{1,2}):(\d{2})$/);
+  if (m && now.getHours() * 60 + now.getMinutes() < Number(m[1]) * 60 + Number(m[2])) {
+    return localDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 12));
+  }
+  return localDate(now);
 }
 
 function eventsPath(opt) {
@@ -305,11 +323,42 @@ function nightStatus(evs, views, L) {
   return { status: why.length ? "dirty" : "clean", why };
 }
 
+// ---------- morning check ----------
+
+// Write <events dir>/<night>/report.md and append the night's morning_check event (once per result).
+function morningCheck({ path, night, tonight, st, repo, text, keys }) {
+  const report = join(dirname(path), night, "report.md");
+  try {
+    mkdirSync(dirname(report), { recursive: true });
+    writeFileSync(report, text);
+  } catch (e) {
+    process.stderr.write(`report: could not write ${report} (${e.code || e.message})\n`);
+    process.stdout.write(text);
+  }
+  const runs = new Set(tonight.filter((e) => e.event === "run_start" || e.event === "run_end" || e.event === "run_abort")
+    .map((e) => e.run_id || `${e.event}@${e.ts}`));
+  const failure_class = runs.size ? "none" : "missed_run";
+  const key = `morning_check:${night}:${runs.size}:${failure_class}`;
+  if (keys.has(key)) return;
+  const ev = {
+    ts: new Date().toISOString().replace(/\.\d+Z$/, "Z"), night, run_id: null, repo: repo || null, source: "morning",
+    event: "morning_check", runs_seen: runs.size, failure_class, night_status: st.status,
+    abort_classes: [...new Set(tonight.filter((e) => e.event === "run_abort").map((e) => e.failure_class))],
+    report, key,
+  };
+  try {
+    mkdirSync(dirname(path), { recursive: true });
+    appendFileSync(path, JSON.stringify(ev) + "\n");
+  } catch (e) {
+    process.stderr.write(`report: could not append morning_check (${e.code || e.message})\n`);
+  }
+}
+
 // ---------- main ----------
 
 function main() {
   const opt = parseArgs(process.argv.slice(2));
-  const night = /^\d{4}-\d{2}-\d{2}$/.test(opt.night || "") ? opt.night : localDate();
+  const night = /^\d{4}-\d{2}-\d{2}$/.test(opt.night || "") ? opt.night : opt.morning ? morningNight() : localDate();
   const cfg = readConfig();
   const gl = cfg.labels?.github || {};
   const L = {
@@ -505,6 +554,10 @@ function main() {
   out.push("");
 
   const text = out.join("\n");
+  if (opt.morning) {
+    morningCheck({ path, night, tonight, st, repo, text, keys: new Set(all.map((e) => e.key).filter(Boolean)) });
+    return;
+  }
   if (opt.out) {
     try { writeFileSync(opt.out, text); } catch (e) { process.stderr.write(`report: could not write ${opt.out} (${e.code || e.message})\n`); process.stdout.write(text); }
   } else process.stdout.write(text);
