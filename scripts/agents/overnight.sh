@@ -50,9 +50,19 @@ RUN_ID="$(date -u +%Y-%m-%dT%H:%M:%SZ)-$$"
 # owner/name only: any credential in the URL is stripped, and the URL itself is never printed.
 EV_REPO=$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null |
   sed -E 's#^[a-z+]+://([^@/]*@)?[^/]+/##; s#^[^@/]*@[^:]*:##; s#\.git$##')
+# run_end and run_abort also post the run summary to Slack (notify_run).
 emit() {
   AGENTS_EVENTS="$EVENTS" EV_NIGHT="$NIGHT" EV_RUN_ID="$RUN_ID" EV_REPO="$EV_REPO" EV_DRY_RUN="$DRY_RUN" \
     node "$REPO_ROOT/scripts/agents/events.mjs" emit "$@" </dev/null >/dev/null || true
+  case $1 in run_end|run_abort) notify_run ;; esac
+}
+
+# notify_run — this run's summary to Slack (scripts/agents/notify.mjs; webhook from
+# $AGENTS_HOME/slack-webhook, never on a command line). Never fatal: no webhook file or a failed
+# post writes $LOG_DIR/notify-run.md instead, and the run's exit code is unchanged.
+notify_run() {
+  AGENTS_HOME="$AGENTS_HOME" AGENTS_LOG_DIR="$AGENTS_LOG_DIR" AGENTS_EVENTS="$EVENTS" EV_NIGHT="$NIGHT" EV_RUN_ID="$RUN_ID" \
+    node "$REPO_ROOT/scripts/agents/notify.mjs" run </dev/null >/dev/null || true
 }
 
 # die <failure_class> <message> [event fields ...]
