@@ -23,7 +23,8 @@
 // none), night_status and abort_classes. Its key is night + runs_seen + class, so a re-run with the
 // same result appends nothing. Without --night, a --morning run before $AGENTS_AT (the nightly slot,
 // HH:MM) reports yesterday: launchd runs a 06:30 job missed during sleep at the next wake, which can
-// be the 00:55 wake before tonight's run.
+// be the 00:55 wake before tonight's run. Last, it runs `notify.mjs morning <report.md>` (Slack,
+// non-fatal; see notify.mjs).
 //
 // It never fails the caller: missing data is stated in the report, and it always exits 0.
 
@@ -339,13 +340,19 @@ function morningCheck({ path, night, tonight, st, repo, text, keys }) {
     .map((e) => e.run_id || `${e.event}@${e.ts}`));
   const failure_class = runs.size ? "none" : "missed_run";
   const key = `morning_check:${night}:${runs.size}:${failure_class}`;
-  if (keys.has(key)) return;
-  const ev = {
+  if (!keys.has(key)) appendMorningCheck(path, {
     ts: new Date().toISOString().replace(/\.\d+Z$/, "Z"), night, run_id: null, repo: repo || null, source: "morning",
     event: "morning_check", runs_seen: runs.size, failure_class, night_status: st.status,
     abort_classes: [...new Set(tonight.filter((e) => e.event === "run_abort").map((e) => e.failure_class))],
     report, key,
-  };
+  });
+  // Slack after the event, so the message can lead with a missed-run alert. Never fatal.
+  const r = spawnSync(process.execPath, [join(ROOT, "scripts/agents/notify.mjs"), "morning", report],
+    { stdio: ["ignore", "ignore", "inherit"], timeout: 30000 });
+  if (r.error) process.stderr.write(`report: notify failed (${r.error.code || "error"})\n`);
+}
+
+function appendMorningCheck(path, ev) {
   try {
     mkdirSync(dirname(path), { recursive: true });
     appendFileSync(path, JSON.stringify(ev) + "\n");

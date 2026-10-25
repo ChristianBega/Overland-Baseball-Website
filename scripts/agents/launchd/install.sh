@@ -133,6 +133,9 @@ Check / run now / remove:
 
 Pause / resume:   touch "$AGENTS_HOME/PAUSE"   /   rm "$AGENTS_HOME/PAUSE"
 Logs:             $AGENTS_LOG_DIR/<date>/summary.log, <date>/report.md, launchd-morning.log
+Slack (optional): the incoming-webhook URL, one line, in "$AGENTS_HOME/slack-webhook" (chmod 600;
+                  never in this repo). The run and the morning check post to it; without it they
+                  write <date>/notify-run.md and notify-morning.md instead.
 
 Keep the laptop on AC power: on battery the sleep setting above does not apply, so overnight.sh
 refuses to start and logs why (AGENTS_ALLOW_BATTERY=1 overrides). Lid open, or closed with an
