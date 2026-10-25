@@ -24,7 +24,7 @@
 // same result appends nothing. Without --night, a --morning run before $AGENTS_AT (the nightly slot,
 // HH:MM) reports yesterday: launchd runs a 06:30 job missed during sleep at the next wake, which can
 // be the 00:55 wake before tonight's run. Last, it runs `notify.mjs morning <report.md>` (Slack,
-// non-fatal; see notify.mjs).
+// non-fatal; see notify.mjs) when it appended the event, or when the last post fell back to a file.
 //
 // It never fails the caller: missing data is stated in the report, and it always exits 0.
 
@@ -340,13 +340,16 @@ function morningCheck({ path, night, tonight, st, repo, text, keys }) {
     .map((e) => e.run_id || `${e.event}@${e.ts}`));
   const failure_class = runs.size ? "none" : "missed_run";
   const key = `morning_check:${night}:${runs.size}:${failure_class}`;
-  if (!keys.has(key)) appendMorningCheck(path, {
+  const fresh = !keys.has(key);
+  if (fresh) appendMorningCheck(path, {
     ts: new Date().toISOString().replace(/\.\d+Z$/, "Z"), night, run_id: null, repo: repo || null, source: "morning",
     event: "morning_check", runs_seen: runs.size, failure_class, night_status: st.status,
     abort_classes: [...new Set(tonight.filter((e) => e.event === "run_abort").map((e) => e.failure_class))],
     report, key,
   });
-  // Slack after the event, so the message can lead with a missed-run alert. Never fatal.
+  // Slack after the event, so the message can lead with a missed-run alert. Once per result, like
+  // the event: a re-run posts again only if the last post did not go out (notify-morning.md). Never fatal.
+  if (!fresh && !existsSync(join(dirname(report), "notify-morning.md"))) return;
   const r = spawnSync(process.execPath, [join(ROOT, "scripts/agents/notify.mjs"), "morning", report],
     { stdio: ["ignore", "ignore", "inherit"], timeout: 30000 });
   if (r.error) process.stderr.write(`report: notify failed (${r.error.code || "error"})\n`);

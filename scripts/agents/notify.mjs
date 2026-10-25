@@ -14,10 +14,11 @@
 // The webhook URL is one line in ${AGENTS_SLACK_WEBHOOK_FILE:-$AGENTS_HOME/slack-webhook}, chmod
 // 600 (a file others can read is refused). It is read here and only passed to fetch: never to argv,
 // env, a log or a file, and errors print only "slack post failed: HTTP <code>" or "... network error".
-// No webhook file, or a failed post: the message is written to <log dir>/<night>/notify-<kind>.md.
+// No webhook file, or a failed post: the message is written to <log dir>/<night>/notify-<kind>.md
+// (removed again by the next post that succeeds).
 // It never fails the caller: always exit 0. $AGENTS_NOTIFY_PREFIX (e.g. "[test]") prefixes the text.
 
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -126,7 +127,7 @@ function morningMessage(events, night, reportPath) {
   const missed = tonight.some((e) => e.event === "morning_check" && e.failure_class === "missed_run");
   const aborts = [...new Set(tonight.filter((e) => e.event === "run_abort" && (e.source || "runner") === "runner" && e.dry_run !== true)
     .map((e) => e.failure_class))];
-  if (missed) lines.push(`🚨 *No run recorded for night ${night}*: the 01:00 slot did not fire (Mac asleep or off?).`);
+  if (missed) lines.push(`🚨 *No run recorded for night ${night}*: the ${esc(env.AGENTS_AT || "01:00")} slot did not fire (Mac asleep or off?).`);
   if (aborts.length) lines.push(`⚠️ *Run aborted* (night ${night}): ${aborts.map((c) => `\`${esc(c)}\``).join(", ")}`);
 
   if (!existsSync(reportPath)) {
@@ -241,6 +242,9 @@ async function main() {
   if (err) {
     process.stderr.write(err + "\n");
     fallback(dir, kind, text, err);
+  } else {
+    // Posted: drop a fallback left by an earlier failed post (report.mjs --morning retries on it).
+    rmSync(join(dir, `notify-${kind}.md`), { force: true });
   }
 }
 
