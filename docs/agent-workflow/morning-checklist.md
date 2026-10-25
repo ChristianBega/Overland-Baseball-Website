@@ -14,6 +14,10 @@ approval. That holds for an admin too: the admin bypass covers only a manual "me
 
 ## One-visit flow
 
+Start from the night's report: `<log dir>/<date>/report.md`, written at 06:30 by the morning check (OV-130). Its
+"Waiting on you" list is the PRs below. No report means the morning check didn't run (Mac asleep or off); a report
+that says "No run recorded" means the 01:00 run never started.
+
 For each open bot PR:
 
 1. Read the Claude review comment (`Verdict:` line) and the diff. Skip the PR for now if you see a stop sign (below).

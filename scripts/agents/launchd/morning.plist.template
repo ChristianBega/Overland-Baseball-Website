@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Rendered by scripts/agents/launchd/install.sh (placeholders are listed there). The morning check:
+     update the runner checkout like the nightly job, then run report.mjs in morning mode, which writes
+     the night's report.md and a morning_check event. AGENTS_AT is the nightly slot: a check that runs
+     before it (a missed morning slot caught at the next wake) reports the previous night. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>__LABEL__</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/caffeinate</string>
+    <string>-is</string>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>__MORNING__</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__RUNNER__</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>__PATH__</string>
+    <key>AGENTS_HOME</key>
+    <string>__AGENTS_HOME__</string>
+    <key>AGENTS_LOG_DIR</key>
+    <string>__AGENTS_LOG_DIR__</string>
+    <key>AGENTS_AT</key>
+    <string>__AGENTS_AT__</string>
+  </dict>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>__HOUR__</integer>
+    <key>Minute</key>
+    <integer>__MINUTE__</integer>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>__AGENTS_LOG_DIR__/launchd-morning.log</string>
+  <key>StandardErrorPath</key>
+  <string>__AGENTS_LOG_DIR__/launchd-morning.log</string>
+</dict>
+</plist>
