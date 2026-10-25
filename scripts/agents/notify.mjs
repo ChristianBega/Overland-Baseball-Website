@@ -5,11 +5,13 @@
 //   node scripts/agents/notify.mjs run                 # overnight.sh, after run_end / run_abort
 //   node scripts/agents/notify.mjs morning [report.md] # report.mjs --morning, after report.md
 //
-// run      the run named by $EV_RUN_ID (else the night's latest) from events.jsonl: outcome, tickets,
-//          PRs, turns, cost, denials, and the early-exit reason. An aborted run leads with an alert.
-//          A dry run is never posted (the message only goes to the file below).
-// morning  report.md condensed for Slack (status, one line per ticket, waiting on you, streak). A
-//          night with no run leads with a no-run alert, an aborted one with the abort class.
+// run      one line for the run named by $EV_RUN_ID (else the night's latest) from events.jsonl:
+//          outcome (or the abort / idle class), PRs, cost, time. A dry run is never posted (the
+//          line only goes to the file below).
+// morning  Block Kit built from report.json (written by report.mjs next to report.md): a header,
+//          then colour-barred attachments with the status line (no run, aborted with a plain-English
+//          hint, idle, clean or dirty; cost, streak, missed runs), waiting on you, one line per ticket
+//          (PR, checks, verdict, cost), and the recent nights.
 //
 // The webhook URL is one line in ${AGENTS_SLACK_WEBHOOK_FILE:-$AGENTS_HOME/slack-webhook}, chmod
 // 600 (a file others can read is refused). It is read here and only passed to fetch: never to argv,
@@ -69,96 +71,169 @@ function readEvents(path) {
   return out;
 }
 
-// Slack mrkdwn: escape the three control characters, turn **bold** into *bold*.
+// Slack mrkdwn: escape the three control characters.
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-const md = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, "*$1*");
 const usd = (n) => (typeof n === "number" ? `$${n.toFixed(2)}` : "—");
 const prLink = (repo, n) => (repo ? `<https://github.com/${repo}/pull/${n}|#${n}>` : `#${n}`);
 
 // ---------- messages ----------
 
+// What an abort means for the owner, in a few words (the class stays in the run post).
+const ABORT_HINT = {
+  on_battery: "Mac was on battery: plug it in before tonight",
+  lock_held: "another run held the lock",
+  fetch_timeout: "git fetch failed (network, or the Mac slept)",
+  token_mint: "the bot token could not be minted",
+  pick_claude_failed: "the ticket pick failed: check the Claude login",
+  pick_unparsable: "the ticket pick returned an unusable result",
+  preflight_tool_missing: "a tool the runner needs is not on PATH",
+  preflight_config: "agents.config.json is missing a setting",
+  push_url_unsafe: "the origin push URL is unsafe for bot pushes",
+};
+const hhmm = (ts) => {
+  const d = new Date(ts);
+  return Number.isNaN(d.getTime()) ? "" : `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+};
+const dayName = (night) => new Date(`${night}T12:00:00`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+const shortDay = (night) => new Date(`${night}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+// claude-sonnet-5-5 → Sonnet; anything else as is.
+const modelName = (m) => {
+  const x = String(m || "?").match(/^claude-([a-z]+)/);
+  return x ? x[1][0].toUpperCase() + x[1].slice(1) : String(m || "?");
+};
+const CHECK_ICON = { success: "✅", skipped: "➖", failure: "❌", cancelled: "❌", timed_out: "❌", pending: "⏳", missing: "❔" };
+const NIGHT_ICON = { clean: "🟢", dirty: "🔴", idle: "⚪", missed: "⚫" };
+
+// One line: outcome · tickets/PRs · cost · time. A dry run is marked so (and never posted).
 function runMessage(events, night) {
   const runner = events.filter((e) => (e.source || "runner") === "runner" && e.night === night);
   const runId = env.EV_RUN_ID || [...runner].reverse().find((e) => e.run_id)?.run_id;
   const evs = runner.filter((e) => e.run_id === runId);
-  if (!evs.length) return { text: `⚠️ Overnight run (night ${night}): no events found for this run.`, dry: false };
+  if (!evs.length) return { text: `⚠️ Run · no events found (night ${night})`, dry: false };
   const repo = evs.find((e) => e.repo)?.repo || null;
   const dry = evs.some((e) => e.dry_run === true);
   const abort = evs.find((e) => e.event === "run_abort");
   const end = evs.find((e) => e.event === "run_end");
+  const last = abort || end;
   const builds = evs.filter((e) => e.event === "build_end");
-  const skips = evs.filter((e) => e.event === "claim_skip");
-  const lines = [];
-
-  if (dry && end) {
-    lines.push(`🧪 *Dry run* (night ${night}): ` + (end.tickets?.length ? `would build ${end.tickets.map(esc).join(", ")}` : esc(IDLE_WHY[end.failure_class] || end.failure_class)));
-  } else if (abort) {
-    lines.push(`⚠️ *Overnight run aborted* (night ${night}): \`${esc(abort.failure_class)}\``);
-    if (abort.reason) lines.push(esc(abort.reason));
-  } else if (end?.outcome === "idle") {
-    lines.push(`💤 *Overnight run idle* (night ${night}): ${esc(IDLE_WHY[end.failure_class] || end.failure_class)}`);
-  } else if (end) {
-    const icon = end.outcome === "pr" && builds.every((b) => b.outcome === "pr") ? "✅" : "❌";
-    lines.push(`${icon} *Overnight run* (night ${night}): ${end.built ?? 0} of ${end.attempted ?? builds.length} built` +
-      (end.failure_class && end.failure_class !== "none" ? `, stopped: \`${esc(end.failure_class)}\`` : ""));
-  } else {
-    lines.push(`⚠️ *Overnight run* (night ${night}): no run_end or run_abort yet.`);
-  }
-
-  for (const b of builds) {
-    const bits = [esc(b.ticket || "?"), esc(b.model || "?"), esc(b.outcome)];
-    if (b.pr != null) bits.push(prLink(repo, b.pr));
-    else if (b.branch) bits.push(`branch \`${esc(b.branch)}\``);
-    if (b.turns != null) bits.push(`${b.turns} turns`);
-    bits.push(usd(b.cost_usd));
-    if (b.denials) bits.push(`${b.denials} denials`);
-    if (b.failure_class && b.failure_class !== "none") bits.push(`\`${esc(b.failure_class)}\``);
-    if (b.slept) bits.push("slept");
-    lines.push(`• ${bits.join(" · ")}`);
-  }
-  for (const s of skips) lines.push(`• ${esc(s.ticket || "?")} skipped (${esc(s.reason || "claimed")})`);
-  if (end && typeof end.cost_usd_total === "number") lines.push(`Run cost ${usd(end.cost_usd_total)} (pick + builds).`);
-  return { text: lines.join("\n"), dry };
+  const prs = builds.filter((b) => b.pr != null).map((b) => prLink(repo, b.pr));
+  const bits = [];
+  if (dry) bits.push("🧪 Dry run", end?.tickets?.length ? `would build ${end.tickets.map(esc).join(", ")}` : esc(IDLE_WHY[last?.failure_class] || last?.failure_class || "no result"));
+  else if (abort) bits.push("⚠️ Run aborted", `\`${esc(abort.failure_class)}\``);
+  else if (end?.outcome === "idle") bits.push("💤 Run idle", esc(IDLE_WHY[end.failure_class] || end.failure_class));
+  else if (end) {
+    const ok = end.outcome === "pr" && builds.every((b) => b.outcome === "pr");
+    const n = end.built ?? prs.length;
+    bits.push(ok ? `✅ ${n} PR${n === 1 ? "" : "s"}` : `❌ ${n} of ${end.attempted ?? builds.length} built`);
+    if (!ok && end.failure_class && end.failure_class !== "none") bits.push(`\`${esc(end.failure_class)}\``);
+    if (prs.length) bits.push(prs.join(" "));
+    if (typeof end.cost_usd_total === "number") bits.push(usd(end.cost_usd_total));
+  } else bits.push("⚠️ Run", "no run_end or run_abort yet");
+  if (last?.ts && !dry) bits.push(hhmm(last.ts));
+  return { text: bits.filter(Boolean).join(" · "), dry };
 }
 
-function morningMessage(events, night, reportPath) {
-  const tonight = events.filter((e) => e.night === night);
-  const lines = [];
-  const missed = tonight.some((e) => e.event === "morning_check" && e.failure_class === "missed_run");
-  const aborts = [...new Set(tonight.filter((e) => e.event === "run_abort" && (e.source || "runner") === "runner" && e.dry_run !== true)
-    .map((e) => e.failure_class))];
-  if (missed) lines.push(`🚨 *No run recorded for night ${night}*: the ${esc(env.AGENTS_AT || "01:00")} slot did not fire (Mac asleep or off?).`);
-  if (aborts.length) lines.push(`⚠️ *Run aborted* (night ${night}): ${aborts.map((c) => `\`${esc(c)}\``).join(", ")}`);
+// The colour bar down the left of the morning report: where it starts and ends, and the night at a glance.
+const BAR = { clean: "#2EB67D", idle: "#9AA0A6", aborted: "#ECB22E", dirty: "#E01E5A", missed: "#E01E5A" };
+const GREEN = new Set(["success", "skipped"]);
 
-  if (!existsSync(reportPath)) {
-    lines.push(`🚨 *Morning report missing* for night ${night}: ${esc(reportPath)}`);
-    return lines.join("\n");
+// One ticket, one line: icon, ticket, PR + state, then model, checks, verdict, rounds, cost.
+function ticketLine(r, repo) {
+  const checks = Object.entries(r.checks || {});
+  const red = checks.filter(([, c]) => CHECK_ICON[c] === "❌");
+  const pending = checks.filter(([, c]) => !GREEN.has(c) && CHECK_ICON[c] !== "❌");
+  const icon = r.skipped ? "↪️" : r.pr == null || red.length ? "❌" : pending.length || !r.checks ? "⏳" : "✅";
+  const bits = [`${icon} *${esc(r.ticket || "?")}*` + (r.pr != null ? ` ${prLink(repo, r.pr)}${r.pr_state ? ` ${esc(r.pr_state)}` : ""}` : "")];
+  if (r.skipped) bits.push("skipped (already has a PR)");
+  else {
+    bits.push(esc(modelName(r.model)));
+    if (r.pr == null) bits.push(`no PR: \`${esc(r.failure_class || r.outcome)}\``);
   }
-  const report = readFileSync(reportPath, "utf8").split("\n");
-  lines.push(`☀️ *Morning report* (night ${night})`);
-  let section = "";
-  const waiting = [], trailing = [];
-  for (const l of report) {
-    if (l.startsWith("### ")) { section = l.slice(4); continue; }
-    if (section === "Last night") {
-      if (/^(Runs:|\*\*No run recorded)/.test(l)) lines.push(md(l));
-      else if (l.startsWith("- Idle run:")) lines.push(md(l.replace(/^- /, "• ")));
-      else if (l.startsWith("| ") && !/^\| Ticket \|/.test(l)) {
-        // | Ticket | Model | Outcome | Class | Turns | Cost | PR | Checks | Verdict | Rounds | Waiting on you |
-        const c = l.split("|").slice(1, -1).map((x) => x.trim());
-        const bits = [c[0], c[1], c[2], ...(c[5] && c[5] !== "—" ? [c[5]] : []), c[6], c[7], `verdict ${c[8]}`];
-        if (c[10] && c[10] !== "—") bits.push(`waiting: ${c[10]}`);
-        lines.push(`• ${bits.map(md).join(" · ")}`);
-      }
-    } else if (section === "Waiting on you") {
-      if (l.startsWith("- ")) waiting.push(`• ${md(l.slice(2))}`);
-    } else if (section.startsWith("Trailing window")) {
-      if (/^- (Clean-night streak|Missed runs|Nights):/.test(l)) trailing.push(md(l.slice(2).replace(/ \(idle nights.*\)\.$/, ".")));
-    } else if (/^\*\*GitHub sweep unavailable/.test(l)) lines.push(md(l));
+  if (r.checks) {
+    bits.push(red.length || pending.length
+      ? [...red, ...pending].map(([k, c]) => `${CHECK_ICON[c] || "❔"} ${esc(k)}`).join(" ")
+      : "checks passed");
   }
-  lines.push(waiting.length ? `*Waiting on you*\n${waiting.join("\n")}` : "*Waiting on you*: nothing.");
-  lines.push(...trailing);
-  return lines.join("\n");
+  if (r.verdict) bits.push(esc(r.verdict));
+  if (r.rounds) bits.push(`${r.rounds} fix round${r.rounds === 1 ? "" : "s"}`);
+  if (!r.skipped) bits.push(usd(r.cost));
+  if (r.slept) bits.push("😴 slept");
+  return bits.join(" · ");
+}
+
+// Block Kit from report.json (report.mjs --morning). A header, then everything else behind one
+// colour bar: the status line, waiting on you, one line per ticket, the recent nights.
+// `text` is the notification preview.
+function morningMessage(d, night, reportPath) {
+  const prefix = env.AGENTS_NOTIFY_PREFIX ? `${env.AGENTS_NOTIFY_PREFIX} ` : "";
+  const title = `${prefix}☀️ Morning report · ${dayName(night)}`;
+  const header = [{ type: "header", text: { type: "plain_text", text: title.slice(0, 150), emoji: true } }];
+  if (!d) {
+    const msg = `🚨 No report data: ${esc(reportPath.replace(/\.md$/, ".json").replace(homedir(), "~"))} is missing.`;
+    return { text: `${esc(title)}: ${msg}`, blocks: header,
+      attachments: [{ color: BAR.missed, blocks: [{ type: "section", text: { type: "mrkdwn", text: msg } }] }] };
+  }
+  // Two short attachments with the same bar, not one long one: Slack folds a long attachment
+  // behind "Show more". top = status + waiting on you; bottom = last night + recent nights.
+  const top = [], bottom = [];
+  let body = top;
+  const section = (t) => body.push({ type: "section", text: { type: "mrkdwn", text: t.slice(0, 3000) } });
+  const divider = () => body.push({ type: "divider" });
+
+  let lead, bar = BAR[d.status] || BAR.dirty;
+  if (d.status === "missed") lead = `🚨 *No run recorded*: the ${esc(env.AGENTS_AT || "01:00")} slot did not fire (Mac asleep or off?)`;
+  else if (d.aborts?.length) {
+    bar = BAR.aborted;
+    lead = `⚠️ *Run aborted*: ` + [...new Set(d.aborts.map((a) => a.failure_class))].map((c) => esc(ABORT_HINT[c] || c)).join("; ");
+  } else if (d.status === "idle") lead = `💤 *Idle*: ${esc((d.idle || []).map((c) => IDLE_WHY[c] || c).join("; ") || "nothing to build")}`;
+  else if (d.status === "clean") lead = "✅ *Clean night*";
+  else lead = `🔴 *Dirty night*: ${esc((d.why || []).join("; "))}`;
+  const missedN = (d.missed_nights || []).length;
+  const stats = [
+    ...(d.status === "missed" ? [] : [`cost ${usd(d.cost ?? 0)}`]),
+    `clean streak ${d.streak ?? "?"}`,
+    missedN ? `${missedN} missed run${missedN === 1 ? "" : "s"}` : "no missed runs",
+  ];
+  section(`${lead}\n${stats.join("  ·  ")}`);
+
+  const waiting = d.waiting || [];
+  divider();
+  section(waiting.length
+    ? `👉 *Waiting on you*\n${waiting.map((w) => `• ${prLink(d.repo, w.pr)}${w.ticket ? ` ${esc(w.ticket)}` : ""}: ${esc(w.items.join("; "))}`).join("\n")}`
+    : "👉 *Waiting on you*: nothing 🎉");
+
+  body = bottom;
+  const rows = d.rows || [];
+  if (rows.length) {
+    divider();
+    section(`*Last night*\n${rows.slice(0, 10).map((r) => ticketLine(r, d.repo)).join("\n")}` +
+      (rows.length > 10 ? `\n+${rows.length - 10} more in report.md` : ""));
+  }
+
+  const foot = [];
+  if (d.nights?.length) foot.push(d.nights.slice(-7).map((n) => `${shortDay(n.night)} ${NIGHT_ICON[n.status] || n.status}`).join("    "));
+  if (d.sweep_note) foot.push(`⚠️ ${esc(d.sweep_note)}`);
+  if (foot.length) {
+    divider();
+    body.push({ type: "context", elements: [{ type: "mrkdwn", text: foot.join("\n").slice(0, 3000) }] });
+  }
+
+  const text = `${esc(title)}: ${lead.replace(/\*/g, "")}` + (waiting.length ? ` · ${waiting.length} waiting on you` : "");
+  return { text, blocks: header, attachments: [top, bottom].filter((b) => b.length).map((blocks) => ({ color: bar, blocks })) };
+}
+
+// The fallback file: the same message as readable markdown.
+function asMarkdown({ text, blocks, attachments }) {
+  const links = (t) => t.replace(/<(https?:[^|>]+)\|([^>]+)>/g, "[$2]($1)");
+  if (!blocks) return links(text);
+  const out = [];
+  for (const b of [...blocks, ...(attachments || []).flatMap((a) => a.blocks)]) {
+    if (b.type === "header") out.push(`## ${b.text.text}`);
+    else if (b.type === "divider") out.push("---");
+    else if (b.type === "section") out.push(b.text.text);
+    else if (b.type === "context") out.push(b.elements.map((e) => e.text).join(" "));
+  }
+  return links(out.join("\n\n"));
 }
 
 // ---------- transport ----------
@@ -179,12 +254,12 @@ function webhook() {
   }
 }
 
-async function post(url, text) {
+async function post(url, { text, blocks, attachments }) {
   try {
     const r = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify(blocks ? { text, blocks, attachments } : { text }),
       signal: AbortSignal.timeout(10000),
     });
     await r.text().catch(() => {});
@@ -214,22 +289,25 @@ async function main() {
     process.stderr.write("usage: notify.mjs run | morning [report.md]\n");
     return;
   }
-  let night, eventsFile, dir, text, dry = false;
+  let dir, msg, dry = false;
   if (kind === "run") {
-    night = /^\d{4}-\d{2}-\d{2}$/.test(env.EV_NIGHT || "") ? env.EV_NIGHT : localDate();
-    eventsFile = env.AGENTS_EVENTS || join(logDir(), "events.jsonl");
+    const night = /^\d{4}-\d{2}-\d{2}$/.test(env.EV_NIGHT || "") ? env.EV_NIGHT : localDate();
+    const eventsFile = env.AGENTS_EVENTS || join(logDir(), "events.jsonl");
     dir = join(dirname(eventsFile), night);
-    ({ text, dry } = runMessage(readEvents(eventsFile), night));
+    const r = runMessage(readEvents(eventsFile), night);
+    dry = r.dry;
+    msg = { text: env.AGENTS_NOTIFY_PREFIX ? `${esc(env.AGENTS_NOTIFY_PREFIX)} ${r.text}` : r.text, blocks: null };
   } else {
-    // report.md lives at <events dir>/<night>/report.md (report.mjs --morning).
+    // report.md and report.json live at <events dir>/<night>/ (report.mjs --morning).
     const dn = file ? basename(dirname(file)) : null;
-    night = dn && /^\d{4}-\d{2}-\d{2}$/.test(dn) ? dn : morningNight();
+    const night = dn && /^\d{4}-\d{2}-\d{2}$/.test(dn) ? dn : morningNight();
     const report = file || join(logDir(), night, "report.md");
-    eventsFile = file ? join(dirname(dirname(report)), "events.jsonl") : env.AGENTS_EVENTS || join(logDir(), "events.jsonl");
     dir = dirname(report);
-    text = morningMessage(readEvents(eventsFile), night, report);
+    let digest = null;
+    try { digest = JSON.parse(readFileSync(join(dir, "report.json"), "utf8")); } catch {}
+    msg = morningMessage(digest, night, report);
   }
-  if (env.AGENTS_NOTIFY_PREFIX) text = `${esc(env.AGENTS_NOTIFY_PREFIX)} ${text}`;
+  const text = asMarkdown(msg);
 
   if (dry) { fallback(dir, kind, text, "dry run"); return; }
   const w = webhook();
@@ -238,7 +316,7 @@ async function main() {
     process.stderr.write(`notify: ${w.why}${f ? `; wrote ${f}` : ""}\n`);
     return;
   }
-  const err = await post(w.url, text);
+  const err = await post(w.url, msg);
   if (err) {
     process.stderr.write(err + "\n");
     fallback(dir, kind, text, err);

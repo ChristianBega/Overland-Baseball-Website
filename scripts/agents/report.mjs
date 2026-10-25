@@ -18,7 +18,7 @@
 //              falls back to the latest pr_state in the file.
 //
 // --morning (the 06:30 launchd job, launchd/install.sh) writes the report to <events dir>/<night>/
-// report.md instead of stdout and appends one source:"morning" morning_check event: runs_seen (runner
+// report.md instead of stdout (plus report.json, the same night as data for notify.mjs) and appends one source:"morning" morning_check event: runs_seen (runner
 // runs with a run_start/run_end/run_abort), failure_class missed_run when there were none (else
 // none), night_status and abort_classes. Its key is night + runs_seen + class, so a re-run with the
 // same result appends nothing. Without --night, a --morning run before $AGENTS_AT (the nightly slot,
@@ -326,12 +326,14 @@ function nightStatus(evs, views, L) {
 
 // ---------- morning check ----------
 
-// Write <events dir>/<night>/report.md and append the night's morning_check event (once per result).
-function morningCheck({ path, night, tonight, st, repo, text, keys }) {
+// Write <events dir>/<night>/report.md (+ report.json, the digest notify.mjs posts) and append the
+// night's morning_check event (once per result).
+function morningCheck({ path, night, tonight, st, repo, text, digest, keys }) {
   const report = join(dirname(path), night, "report.md");
   try {
     mkdirSync(dirname(report), { recursive: true });
     writeFileSync(report, text);
+    writeFileSync(join(dirname(report), "report.json"), JSON.stringify(digest, null, 2) + "\n");
   } catch (e) {
     process.stderr.write(`report: could not write ${report} (${e.code || e.message})\n`);
     process.stdout.write(text);
@@ -454,6 +456,9 @@ function main() {
   const out = [];
   const tonight = events.filter((e) => e.night === night && (e.source || "runner") === "runner");
   const st = nightStatus(tonight, views, L);
+  // The same night as data, for notify.mjs (report.json next to report.md; --morning only).
+  const digest = { night, generated: new Date().toISOString().replace(/\.\d+Z$/, "Z"), repo: repo || null,
+    status: st.status, why: st.why, sweep_note: sweepNote, notes, rows: [] };
   out.push(`## Morning report — night ${night}`, "");
   out.push(`Generated ${new Date().toISOString().replace(/\.\d+Z$/, "Z")} from \`${path}\`.`);
   if (sweepNote) out.push(`**${sweepNote}.**`);
@@ -469,6 +474,12 @@ function main() {
     out.push(`**No run recorded for ${night}** (no \`run_start\` or \`run_end\` in events.jsonl): the 01:00 slot did not fire, or the events file is missing.`, "");
   } else {
     const total = runEnds.reduce((s, e) => s + (typeof e.cost_usd_total === "number" ? e.cost_usd_total : 0), 0);
+    Object.assign(digest, {
+      runs: { started: runStarts.length, finished: runEnds.length },
+      aborts: aborts.map((a) => ({ failure_class: a.failure_class, reason: a.reason || null })),
+      idle: runEnds.filter((e) => e.outcome === "idle").map((e) => e.failure_class),
+      cost: r2(total),
+    });
     out.push(`Runs: ${runEnds.length} finished (${runStarts.length} started)` +
       (aborts.length ? `, ${aborts.length} aborted (${aborts.map((a) => `\`${a.failure_class}\`${a.reason ? ": " + a.reason : ""}`).join("; ")})` : "") +
       `. Run cost ${fmtCost(r2(total))} (pick + builds; CI n/a (OV-131)). Night: **${st.status}**${st.why.length && st.status !== "clean" ? ` (${st.why.join("; ")})` : ""}.`, "");
@@ -482,6 +493,8 @@ function main() {
         const checks = v ? Object.entries(v.checks).map(([k, c]) => `${k} ${c === "success" ? "✓" : c === "failure" ? "✗" : c}`).join(", ") : "unknown";
         const wait = v ? waitingOn(v, L, v.guard_check || "qa-guard") : [];
         const prCell = r.pr != null ? `#${r.pr}${v ? ` (${v.state})` : ""}` : "—";
+        digest.rows.push({ ...r, pr_state: v?.state || null, checks: v ? v.checks : null, verdict: v?.verdict || null,
+          rounds: v ? v.rounds.length : null, waiting: wait });
         out.push(`| ${r.ticket || "?"} | ${r.model || (r.skipped ? "(skipped)" : "?")} | ${r.outcome} | ${r.failure_class} | ${r.turns ?? "—"} | ${r.skipped ? "—" : fmtCost(r.cost)} | ${prCell} | ${checks} | ${v?.verdict || "—"} | ${v ? v.rounds.length : "—"} | ${wait.join("; ") || "—"} |`);
       }
       out.push("");
@@ -501,6 +514,7 @@ function main() {
   // Everything open from the window that still needs the owner.
   const waiting = [...views.values()].filter((v) => v.pr != null && v.state !== "merged" && v.state !== "closed")
     .map((v) => ({ v, w: waitingOn(v, L, v.guard_check || "qa-guard") })).filter((x) => x.w.length);
+  digest.waiting = waiting.map(({ v, w }) => ({ pr: v.pr, ticket: v.ticket || null, items: w }));
   out.push("### Waiting on you", "");
   if (waiting.length) for (const { v, w } of waiting) out.push(`- #${v.pr}${v.ticket ? ` ${v.ticket}` : ""}: ${w.join("; ")}`);
   else out.push(views.size || !tickets.size ? "Nothing." : "Unknown (no PR state).");
@@ -561,11 +575,13 @@ function main() {
   out.push(`- Nights: ${statuses.map((s) => `${s.n} ${s.status}`).join(", ") || "none"}.`);
   out.push(`- Clean-night streak: ${streak} (idle nights don't count; a missed or dirty night ends it).`);
   if (!firstTracked) out.push("- No tracked nights yet: every figure above is empty.");
+  Object.assign(digest, { nights: statuses.map((x) => ({ night: x.n, status: mcMissed.has(x.n) ? "missed" : x.status })),
+    missed_nights: missed, streak });
   out.push("");
 
   const text = out.join("\n");
   if (opt.morning) {
-    morningCheck({ path, night, tonight, st, repo, text, keys: new Set(all.map((e) => e.key).filter(Boolean)) });
+    morningCheck({ path, night, tonight, st, repo, text, digest, keys: new Set(all.map((e) => e.key).filter(Boolean)) });
     return;
   }
   if (opt.out) {
