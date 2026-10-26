@@ -9,7 +9,7 @@ export default function OverlandLogo() {
   return (
     <StyledLogoLink component={RouterLink} to="/">
       <StyledLogoContainer>
-        <StyledLogoImage component="img" src={Logo} />
+        <StyledLogoImage component="img" src={Logo} alt="Overland Baseball home" />
       </StyledLogoContainer>
     </StyledLogoLink>
   );

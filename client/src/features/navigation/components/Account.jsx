@@ -55,7 +55,7 @@ const Account = () => {
   return (
     <>
       {isAuthenticated ? (
-        <StyledAccountIconButton size="large" onClick={handleOpen}>
+        <StyledAccountIconButton size="large" onClick={handleOpen} aria-label="Open account menu">
           <AccountCircleIcon color="text.secondary2" />
         </StyledAccountIconButton>
       ) : (
