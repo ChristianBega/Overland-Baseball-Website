@@ -27,7 +27,7 @@ export default function LogoFooter({ textColor, noHover }) {
       }
     >
       <Stack alignItems="center" sx={{ width: "250px", margin: "0 auto" }}>
-        <Box component="img" sx={{ height: "85px", width: "135px", margin: "0 auto" }} src={logo}></Box>
+        <Box component="img" sx={{ height: "85px", width: "135px", margin: "0 auto" }} src={logo} alt=""></Box>
         <Typography
           textColor={textColor}
           component="p"
