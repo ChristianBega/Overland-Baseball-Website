@@ -35,8 +35,9 @@ Read/Grep when a hunk is not enough to judge. Skip generated and vendored files:
 2. **Do-not-touch** — any changed path or behaviour listed there is a Must fix.
 3. **Correctness bugs** — logic errors, broken imports/exports, wrong props, missing cleanup,
    unhandled loading/error states the sibling code handles.
-4. **Existing pattern** — compare with the nearest sibling and with `CLAUDE.md` +
-   `project_rules.cursorrules.json`. Flag a new pattern where a sibling already exists. No
+4. **Existing pattern** — compare with the nearest sibling, `CLAUDE.md` and `docs/conventions.md`;
+   cite the rule heading (`docs/conventions.md#<heading>`) in each convention comment. Flag a new
+   pattern where a sibling already exists. No
    TypeScript, no path aliases, one barrel `index.js` per feature, PropTypes on components.
 5. **Env vars** — client vars are `REACT_APP_*` read via `import.meta.env`, never `process.env`.
    Any `.env*` file in the diff is a Must fix.

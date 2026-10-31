@@ -37,8 +37,8 @@ Public-facing site for the Overland Trailblazers Baseball Team featuring game sc
 │   ├── public/           # Static assets, manifest, robots.txt
 │   ├── vite.config.js    # Vite configuration
 │   └── package.json      # Client dependencies
-├── package.json          # Root scripts (delegates to client/)
-└── project_rules.cursorrules.json  # Component docs & coding conventions
+├── docs/                 # conventions.md + agent workflow docs
+└── package.json          # Root scripts (delegates to client/)
 ```
 
 ## Prerequisites
