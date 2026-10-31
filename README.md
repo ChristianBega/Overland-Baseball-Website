@@ -37,7 +37,6 @@ Public-facing site for the Overland Trailblazers Baseball Team featuring game sc
 │   ├── public/           # Static assets, manifest, robots.txt
 │   ├── vite.config.js    # Vite configuration
 │   └── package.json      # Client dependencies
-├── server/               # Express server (Stripe stub — not actively used)
 ├── package.json          # Root scripts (delegates to client/)
 └── project_rules.cursorrules.json  # Component docs & coding conventions
 ```
@@ -186,8 +185,6 @@ Agent skills live in `.claude/skills/`. Each folder has a `SKILL.md` that define
 - **Env var access:** Use `import.meta.env.REACT_APP_*` — NOT `process.env`. This is a Vite project, not CRA.
 - **Strapi local fallback:** In dev mode, Strapi URL is hardcoded to `localhost:1337` in `strapiServices.js`. The `REACT_APP_STRAPI_URL` env var is only used in production builds.
 - **Build output:** Vite outputs to `client/build/` (not the Vite default of `dist/`), configured in `vite.config.js`.
-- **Netlify config:** `netlify.TOML` exists but references `client/public/` as build output — this is outdated. Deployment is via S3/GitHub Actions, not Netlify.
-- **Server directory:** The `server/` folder contains a minimal Express + Stripe stub. It is **not** part of the deployed site and is not actively used.
 - **CJS deprecation warning:** Vite 5 may show a CJS deprecation warning. This is cosmetic and will be resolved when upgrading to Vite 6 (requires adding `"type": "module"` to package.json).
 - **No test suite:** There is no test runner configured (`npm test` exits with an error). Tests are manual.
 - **`CI=false` in CI:** The GitHub Actions build sets `CI=false` to prevent warnings from being treated as errors during the build.

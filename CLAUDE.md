@@ -6,8 +6,7 @@ Loaded on every turn — keep it short. It points at detail; it does not restate
 
 - React 18 + **Vite 5** SPA in `client/` (not CRA). MUI v5, React Router v6, TanStack Query,
   Firebase Auth. Strapi v4 is the CMS.
-- Static hosting: the build is synced to S3 by `.github/workflows/workflow.yml`. No backend —
-  `server/` is a dead Express + Stripe stub, not deployed.
+- Static hosting: the build is synced to S3 by `.github/workflows/workflow.yml`. No backend.
 - **JavaScript + PropTypes only. Never introduce TypeScript** (no `.ts`/`.tsx`, no `tsconfig`).
 
 ## Commands
@@ -78,7 +77,6 @@ is the `verify-overland` skill (`node .claude/skills/verify-overland/scripts/ver
 - Build output is `client/build/`, **not** `dist/`.
 - In dev, Strapi is hardcoded to `http://localhost:1337` in
   `client/src/services/strapiServices.js`; `REACT_APP_STRAPI_URL` is used only in production builds.
-- `netlify.TOML` is dead — deploys go through S3 / GitHub Actions.
 - The deploy build sets `CI=false` so warnings don't fail it.
 - `routes.jsx` lazy-loads every page except `HomePage`. `ThemeShowcase` is a **named** export, so
   its lazy loader maps it: `import("./features/themeShowcase").then((m) => ({ default: m.ThemeShowcase }))`.
