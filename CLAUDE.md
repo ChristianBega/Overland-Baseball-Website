@@ -65,7 +65,7 @@ is the `verify-overland` skill (`node .claude/skills/verify-overland/scripts/ver
 
 | Need | Read |
 |---|---|
-| Component/hook API docs, styling conventions | `project_rules.cursorrules.json` |
+| Conventions (checkable rules, known exceptions) | `docs/conventions.md` |
 | Route → selector feature map | `.claude/skills/verify-overland/features/README.md` |
 | Verification harness contract | `.claude/skills/verify-overland/SKILL.md` |
 | Ticket spec shape | `.claude/skills/overland-planner/references/spec-template.md` |

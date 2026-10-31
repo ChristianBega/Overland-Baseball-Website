@@ -60,7 +60,7 @@ overrides:
 
 a. `getJiraIssue` the key. Read the description **and every comment**.
 b. Read `CLAUDE.md`, then the pointer docs it names that are relevant to the ticket's surfaces.
-c. Read `project_rules.cursorrules.json` for any component or hook you will touch.
+c. Read `docs/conventions.md` and the source of any component or hook you will touch.
 d. Find the existing pattern: `grep -rn` / `find` (via Bash) for the nearest sibling component, page, or hook and
    **name the file you are copying the shape of**. Never invent a new pattern when one exists.
 e. Confirm every path named in the ticket actually exists. Anything you cannot confirm becomes an
