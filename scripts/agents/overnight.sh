@@ -528,6 +528,10 @@ for k in $TODO; do
     continue
   fi
 
+  # Fail fast if the bot cannot mint at all (bad key, no network); the build mints its own later.
+  # Before the claim, so a failed mint never leaves an empty claim branch on origin.
+  mint >/dev/null || { say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; run_class=token_mint; break; }
+
   # The atomic claim. Lost: another machine or run created the branch since the check above.
   BR=$(branch_for "$k")
   if CLAIM_SHA=$(claim_commit "$k"); then c=$(claim "$BR" "$CLAIM_SHA"); else c="failed: claim commit"; fi
@@ -568,8 +572,6 @@ for k in $TODO; do
 $(cfg runner.envFiles || true)
 EOF
 
-  # Fail fast if the bot cannot mint at all (bad key, no network); the build mints its own later.
-  mint >/dev/null || { say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; run_class=token_mint; break; }
   MODEL=$(model_for "$k")
   PROMPT="do $k (unattended). Branch: $BR (already on origin, pointing at the claim commit you start on: run git switch -c $BR with no start point, then push onto it). Build model: ${MODEL:-agent default}. Scratch directory for PR body and other temp files: $SCRATCH"
   say "$k: build start (worktree $WT, branch $BR, model ${MODEL:-agent default}, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
