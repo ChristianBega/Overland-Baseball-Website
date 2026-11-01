@@ -20,6 +20,9 @@
 #   AGENTS_MAX_TICKETS  override runner.maxTicketsPerNight for this run
 #   AGENTS_DRY_RUN  1 = stop after the read-only claim check (no claim push, no build)
 #   AGENTS_WALL_CLOCK_SECONDS  override runner.wallClockMinutes (testing the watchdog)
+#   AGENTS_START_WINDOW        override runner.startWindow (HH:MM-HH:MM)
+#   AGENTS_RUN_DEADLINE_SECONDS   override runner.runDeadlineMinutes (testing the deadline)
+#   AGENTS_STEP_TIMEOUT_SECONDS   override runner.stepTimeoutSeconds (testing the step timeouts)
 #   AGENTS_ALLOW_BATTERY       1 = start even on battery power (macOS refuses by default: on battery
 #                              the Mac deep-sleeps mid-run and the network drops; night 2 and 3)
 #   BOT_KEY_PATH / BOT_APP_ID   passed through to bot-token.mjs
@@ -530,7 +533,7 @@ for k in $TODO; do
 
   # Fail fast if the bot cannot mint at all (bad key, no network); the build mints its own later.
   # Before the claim, so a failed mint never leaves an empty claim branch on origin.
-  mint >/dev/null || { say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; run_class=token_mint; break; }
+  mint >/dev/null || { attempted=$((attempted + 1)); say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; run_class=token_mint; break; }
 
   # The atomic claim. Lost: another machine or run created the branch since the check above.
   BR=$(branch_for "$k")
@@ -562,7 +565,7 @@ for k in $TODO; do
   if ! git -C "$REPO_ROOT" worktree add -q --detach "$WT" "$CLAIM_SHA" 2>>"$SUMMARY"; then
     say "$k: FAIL worktree add; claim branch $BR left empty on origin; delete it to let the ticket be built again"
     emit build_end ticket="$k" outcome=failed failure_class=worktree_add claim_branch="$BR" claim_empty:=true
-    run_class=worktree_add
+    run_class=worktree_add CUR_BR=""
     continue
   fi
   # Gitignored files the build needs (e.g. client/.env). Copied, never read.
