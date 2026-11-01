@@ -210,8 +210,14 @@ export AGENTS_BOT_TOKEN_SCRIPT="$REPO_ROOT/scripts/agents/bot-token.mjs"
 BOT_HELPER='!f() { [ "$1" = get ] || return 0; t=$(node "$AGENTS_BOT_TOKEN_SCRIPT") || exit 1; echo username=x-access-token; echo "password=$t"; }; f'
 
 # ---- 4. pick (read-only Jira, via a short claude -p call) -------------------------------------
-JQL="project = $JIRA_KEY AND labels = \"$READY\" AND labels not in (\"$BLOCKED\") AND labels in ($SIZES) AND statusCategory != Done ORDER BY created DESC"
-PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults 10, fields [\"summary\", \"labels\", \"issuetype\"] and this JQL:
+# Queue order is jira.orderBy (Rank ASC: the backlog order). The window is jira.pickMaxResults but
+# at least 3x the cap, so claimed and other-machine tickets near the top cannot starve the cap.
+ORDER_BY=$(cfg jira.orderBy || echo "Rank ASC")
+MAX_RESULTS=$(cfg jira.pickMaxResults || echo 10)
+[ "$MAX_RESULTS" -ge $((MAX_TICKETS * 3)) ] 2>/dev/null || MAX_RESULTS=$((MAX_TICKETS * 3))
+[ "$MAX_RESULTS" -le 100 ] || MAX_RESULTS=100
+JQL="project = $JIRA_KEY AND labels = \"$READY\" AND labels not in (\"$BLOCKED\") AND labels in ($SIZES) AND statusCategory != Done ORDER BY $ORDER_BY"
+PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults $MAX_RESULTS, fields [\"summary\", \"labels\", \"issuetype\"] and this JQL:
 $JQL
 Then reply with ONLY a JSON array of objects with each issue's key, labels and issue type name, in the order returned, e.g. [{\"key\": \"$JIRA_KEY-1\", \"labels\": [\"size-s\"], \"type\": \"Task\"}], or [] if there are none. No prose. If the tool fails or needs authentication, reply with ONLY: ERROR: <one-line reason>"
 
@@ -339,25 +345,37 @@ claimed_by() {
 # Every unclaimed candidate, in pick order: the build loop takes them until $MAX_TICKETS builds have
 # started, so a ticket lost to a claim race is replaced by the next one.
 TODO=""
-n=0
+n=0 n_ready=0 n_claimed=0 n_other=0
 for k in $KEYS; do
+  n_ready=$((n_ready + 1))
   scope=$(printf '%s\n' "$PICKED" | awk -v k="$k" '$1 == k {print $3}')
   case $scope in
-    other:*) say "$k: skip (for machine ${scope#other:}, not $MACHINE)"; continue ;;
+    other:*) say "$k: skip (for machine ${scope#other:}, not $MACHINE)"; n_other=$((n_other + 1)); continue ;;
   esac
   c=$(claimed_by "$k")
   if [ -n "$c" ]; then
     say "$k: skip (claimed: $c)"
     emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="$c"
+    n_claimed=$((n_claimed + 1))
   else
     TODO="$TODO $k"
     n=$((n + 1))
   fi
 done
+# "Beyond window": unclaimed tickets past the cap (tonight's spares). A full window (+) means Jira
+# may hold more that this pick never saw.
+beyond=$((n > MAX_TICKETS ? n - MAX_TICKETS : 0))
+[ "$n_ready" -ge "$MAX_RESULTS" ] && beyond="$beyond+"
+say "pick: $n_ready ready, $n_claimed claimed, $n_other other-machine, $beyond beyond window (cap $MAX_TICKETS, window $MAX_RESULTS)"
 
 if [ -z "$TODO" ]; then
-  say "nothing unclaimed; done"
-  emit run_end outcome=idle failure_class=claim_skip
+  if [ "$n_claimed" -eq 0 ]; then
+    say "no ready tickets for $MACHINE; done"
+    emit run_end outcome=idle failure_class=pick_empty
+  else
+    say "nothing unclaimed; done"
+    emit run_end outcome=idle failure_class=claim_skip
+  fi
   exit 0
 fi
 # The first $MAX_TICKETS are the plan; the rest only stand in for a claim race lost.

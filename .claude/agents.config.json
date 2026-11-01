@@ -9,7 +9,10 @@
   },
   "jira": {
     "projectKey": "OV",
-    "cloudId": "a98977c6-123f-4e4d-90f4-3f2b1084c402"
+    "cloudId": "a98977c6-123f-4e4d-90f4-3f2b1084c402",
+    "$orderByComment": "Pick order: backlog order is queue order (Rank ASC). pickMaxResults is the pick window; the runner raises it to 3x the per-run cap.",
+    "orderBy": "Rank ASC",
+    "pickMaxResults": 10
   },
   "bot": {
     "login": "overland-bot[bot]",
