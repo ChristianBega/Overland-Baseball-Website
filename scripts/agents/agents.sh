@@ -46,8 +46,9 @@ case ${1:-} in
     [ -e "$AGENTS_HOME/PAUSE" ] && echo "PAUSE:   yes ($AGENTS_HOME/PAUSE)" || echo "PAUSE:   no"
     pid=$(cat "$AGENTS_HOME/lock/pid" 2>/dev/null)
     if [ -z "$pid" ]; then echo "lock:    free"
-    elif kill -0 "$pid" 2>/dev/null; then echo "lock:    held by pid $pid (a run is active)"
-    else echo "lock:    stale (pid $pid is gone; the next run removes it)"
+    elif kill -0 "$pid" 2>/dev/null && ps -p "$pid" -o command= 2>/dev/null | grep -q 'overnight\.sh'; then
+      echo "lock:    held by pid $pid (a run is active)"
+    else echo "lock:    stale (pid $pid is not a running overnight.sh; the next run removes it)"
     fi
     node -e '
       const fs = require("fs");

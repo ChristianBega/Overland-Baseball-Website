@@ -151,7 +151,10 @@ if ! mkdir "$LOCK" 2>/dev/null; then
   old=$(cat "$LOCK/pid" 2>/dev/null)
   started=$(cat "$LOCK/started" 2>/dev/null)
   age=$(( $(date +%s) - ${started:-$(date +%s)} ))
-  if [ -n "$old" ] && kill -0 "$old" 2>/dev/null; then
+  # The lock survives a crash or reboot, so its pid may now belong to an unrelated process: only a
+  # live runner (overnight.sh) holds the lock or is signalled; any other pid means the lock is stale.
+  if [ -n "$old" ] && kill -0 "$old" 2>/dev/null &&
+     ps -p "$old" -o command= 2>/dev/null | grep -q 'overnight\.sh'; then
     if [ "$age" -le "$((DEADLINE_SEC + 300))" ]; then
       say "another run is active (pid $old); exiting"
       emit run_end outcome=idle failure_class=lock_held
