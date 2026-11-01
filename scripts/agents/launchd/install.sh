@@ -125,7 +125,9 @@ Next, run these yourself:
 
 Check / run now / remove:
   launchctl print gui/\$(id -u)/$LABEL | head -20
-  launchctl kickstart gui/\$(id -u)/$LABEL
+  AGENTS_HOME="$AGENTS_HOME" AGENTS_LOG_DIR="$AGENTS_LOG_DIR" sh "$RUNNER/scripts/agents/agents.sh" run
+  (launchctl kickstart gui/\$(id -u)/$LABEL follows the schedule rules (AGENTS_TRIGGER=schedule):
+  outside runner.startWindow or with autoRun false it exits idle. Use agents.sh run to run now.)
   launchctl bootout gui/\$(id -u)/$LABEL
   launchctl kickstart gui/\$(id -u)/$MORNING_LABEL   # then: cat $AGENTS_LOG_DIR/\$(date +%F)/report.md
   launchctl bootout gui/\$(id -u)/$MORNING_LABEL
