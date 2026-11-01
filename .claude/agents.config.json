@@ -3,7 +3,9 @@
   "repo": {
     "baseBranch": "development",
     "protectedBranches": ["development", "main"],
-    "branchPrefixes": ["feature/", "fix/", "chore/", "ci/"]
+    "branchPrefixes": ["feature/", "fix/", "chore/", "ci/"],
+    "$branchPrefixByIssueTypeComment": "The runner's claim branch (and the builder's branch) per Jira issue type; default for any other type. Each value must be in branchPrefixes.",
+    "branchPrefixByIssueType": { "Bug": "fix/", "default": "feature/" }
   },
   "jira": {
     "projectKey": "OV",

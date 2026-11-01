@@ -49,8 +49,12 @@ overrides:
   heredocs, no `$(...)`.
 - **A denied tool call is final.** Permissions are a fixed allowlist and anything else is refused.
   Do not work around a denial; note it under Open questions.
-- You start in a detached worktree at `origin/development`; step 2's `git switch -c` applies as
-  written. Pushes and `gh` already run as the bot.
+- The prompt names your branch (`Branch: feature/OV-NN` or `fix/OV-NN`). The runner has already
+  pushed it to origin, pointing at an empty claim commit on `origin/development`, so no other run
+  builds the ticket. Your worktree starts detached at that claim commit. In step 2, use exactly
+  that name and **no start point**: `git switch -c <branch>` (not `... origin/development`, which
+  would make your push a non-fast-forward that is refused). The claim commit is your empty first
+  commit; `git push -u origin <branch>` then works as written. Pushes and `gh` already run as the bot.
 - **Model.** The frontmatter `model` is the default for hand runs. Overnight, the runner picks the
   model per ticket (`runner.modelBySize` / a `model:*` Jira label in `.claude/agents.config.json`)
   and names it in the prompt; that choice wins. Record the model you ran on in the PR body.
@@ -74,6 +78,7 @@ f. Work out the PR labels from the ticket: the type label (`bug` if the Jira iss
 
 - Branch `feature/OV-NN` (or `fix/OV-NN` for a bug) off `development` explicitly:
   `git fetch origin development && git switch -c feature/OV-NN origin/development`.
+  Unattended runs (the prompt names a `Branch:`): `git switch -c <that branch>` only, as above.
 - Make an empty commit if needed (`git commit --allow-empty -m "chore: open OV-NN (OV-NN)"`), push
   your branch with `git push -u origin feature/OV-NN`, then:
   `gh pr create --draft --base development --label "<type>" --label "<area:*>" --title "<type>(<scope>): <summary> (OV-NN)" --body-file <plan>`.

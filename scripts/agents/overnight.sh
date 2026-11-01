@@ -180,13 +180,16 @@ COMMIT_EMAIL=$(cfg bot.commitEmail) || die preflight_config "bot.commitEmail mis
 VERIFY_CMD=$(cfg commands.verify || true)
 
 git -C "$REPO_ROOT" fetch -q origin "$BASE" || die fetch_timeout "git fetch origin $BASE failed"
+# The commit every claim branch and build worktree of this run starts from.
+BASE_SHA=$(git -C "$REPO_ROOT" rev-parse --verify -q "origin/$BASE^{commit}") || die fetch_timeout "no origin/$BASE after fetch"
 # The bot identity rides on an HTTPS credential helper. Over SSH (or an insteadOf rewrite to SSH)
 # git would push with the owner's key, as the owner. A credential in the URL wins over the helper
-# too. The URL is never echoed (it may hold a credential).
+# too. The URL is never echoed (it may hold a credential). A local path (a scratch bare remote in
+# tests) involves no identity at all.
 PUSH_URL=$(git -C "$REPO_ROOT" remote get-url --push origin) || die push_url_unsafe "no origin remote"
 case $PUSH_URL in
   https://*@*) die push_url_unsafe "origin push URL embeds a credential: pushes would not run as the bot" ;;
-  https://*) ;;
+  https://*|/*|file:///*) ;;
   *) die push_url_unsafe "origin push URL is not HTTPS: pushes would not run as the bot" ;;
 esac
 # Make the mint independent of the caller's cwd (the build's helper and shim may run from the scratch
@@ -200,6 +203,12 @@ mint() {
   node "$REPO_ROOT/scripts/agents/bot-token.mjs"
 }
 
+# The bot's git credential helper, as a recipe: it mints a token when git asks for one (`get`), and a
+# failed mint fails the helper rather than handing git an empty password. Used by the claim push
+# below and by every git call in the build.
+export AGENTS_BOT_TOKEN_SCRIPT="$REPO_ROOT/scripts/agents/bot-token.mjs"
+BOT_HELPER='!f() { [ "$1" = get ] || return 0; t=$(node "$AGENTS_BOT_TOKEN_SCRIPT") || exit 1; echo username=x-access-token; echo "password=$t"; }; f'
+
 # ---- 4. pick (read-only Jira, via a short claude -p call) -------------------------------------
 JQL="project = $JIRA_KEY AND labels = \"$READY\" AND labels not in (\"$BLOCKED\") AND labels in ($SIZES) AND statusCategory != Done ORDER BY created DESC"
 PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults 10, fields [\"summary\", \"labels\", \"issuetype\"] and this JQL:
@@ -212,12 +221,23 @@ PICK_OUT=$(cd "$REPO_ROOT" && claude -p --model "$PICK_MODEL" --max-turns 4 --ou
   -- "$PICK_PROMPT" 2>>"$LOG_DIR/pick.err") || die pick_claude_failed "pick: claude -p failed (Claude login? see $LOG_DIR/pick.err)"
 printf '%s\n' "$PICK_OUT" > "$LOG_DIR/pick.json"
 
-# One line per ticket: "<KEY> <label,label,...|-> <scope>". A bare key (no labels) is accepted too.
-# scope is this machine's claim on it from the <machinePrefix><name> labels (JQL cannot match a
-# label prefix): own (labelled for this machine), any (no machine label) or other:<name,...>.
+# One line per ticket: "<KEY> <label,label,...|-> <scope> <branch prefix>". A bare key (no labels)
+# is accepted too.
+#   scope   this machine's claim on it from the <machinePrefix><name> labels (JQL cannot match a
+#           label prefix): own (labelled for this machine), any (no machine label) or other:<name,...>
+#   prefix  of the ticket branch, by Jira issue type (repo.branchPrefixByIssueType; the builder's
+#           own rule: a Bug is fix/, anything else feature/)
 PICKED=$(printf '%s' "$PICK_OUT" | node -e '
   let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
-    const [key, machine, mprefix] = process.argv.slice(1);
+    const [key, machine, mprefix, config] = process.argv.slice(1);
+    const repo = require(config).repo || {};
+    const byType = repo.branchPrefixByIssueType || {};
+    const allowed = new Set(repo.branchPrefixes || []);
+    const prefixFor = (type) => {
+      const p = byType[type] ?? byType.default;
+      if (!allowed.has(p)) { console.error("repo.branchPrefixByIssueType gives " + p + " for " + (type || "no type") + ", not one of repo.branchPrefixes"); process.exit(1); }
+      return p;
+    };
     let r;
     try { r = JSON.parse(s); } catch { console.error("pick output is not JSON"); process.exit(1); }
     const text = String(r.result ?? "").trim();
@@ -232,9 +252,9 @@ PICKED=$(printf '%s' "$PICK_OUT" | node -e '
       const labels = (Array.isArray(it?.labels) ? it.labels : []).filter(l => /^[A-Za-z0-9:._-]+$/.test(l));
       const machines = labels.filter(l => l.startsWith(mprefix)).map(l => l.slice(mprefix.length));
       const scope = !machines.length ? "any" : machines.includes(machine) ? "own" : "other:" + machines.join(",");
-      console.log(k + " " + (labels.join(",") || "-") + " " + scope);
+      console.log(k + " " + (labels.join(",") || "-") + " " + scope + " " + prefixFor(typeof it?.type === "string" ? it.type : ""));
     }
-  });' "$JIRA_KEY" "$MACHINE" "$MACHINE_PREFIX" 2>>"$SUMMARY") || die pick_unparsable "pick: unusable result (raw in $LOG_DIR/pick.json)" pick_json="$LOG_DIR/pick.json"
+  });' "$JIRA_KEY" "$MACHINE" "$MACHINE_PREFIX" "$CONFIG" 2>>"$SUMMARY") || die pick_unparsable "pick: unusable result (raw in $LOG_DIR/pick.json)" pick_json="$LOG_DIR/pick.json"
 KEYS=$(printf '%s\n' "$PICKED" | awk 'NF {print $1}')
 emit pick pick_json="$LOG_DIR/pick.json" picked="$PICKED"
 
@@ -260,8 +280,42 @@ if [ -z "$KEYS" ]; then
 fi
 say "pick: $(printf '%s' "$KEYS" | paste -sd' ' -)"
 
-# ---- 5. claim (no Jira write): an existing PR or remote branch means someone has it -----------
+# ---- 5. claim (no Jira write) -------------------------------------------------------------------
+# Two layers. Here, read-only: an existing PR or remote branch means someone has the ticket. Then,
+# right before each build (step 6), the atomic claim: the bot creates the ticket branch on origin
+# with an empty lease, which fails if the branch already exists, so of two machines (or two runs)
+# only one wins. The branch points at a claim commit of its own (empty, on top of $BASE_SHA, naming
+# the machine and run): git skips the lease check for a ref that already points at the pushed
+# commit ("up to date"), so two claims of the same commit would both succeed. The build starts at
+# that commit and pushes onto the branch (a fast-forward).
 T=$(mint) || die token_mint "bot token mint failed"
+
+# branch_for <key> — the ticket branch: <prefix by issue type><key>, e.g. feature/OV-12.
+branch_for() {
+  printf '%s%s' "$(printf '%s\n' "$PICKED" | awk -v k="$1" '$1 == k {print $4}')" "$1"
+}
+
+# claim_commit <key> — prints a new empty commit on $BASE_SHA, authored by the bot, unique to this
+# machine and run.
+claim_commit() {
+  GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL" \
+    GIT_COMMITTER_NAME="$COMMIT_NAME" GIT_COMMITTER_EMAIL="$COMMIT_EMAIL" \
+    git -C "$REPO_ROOT" -c commit.gpgsign=false commit-tree "$BASE_SHA^{tree}" -p "$BASE_SHA" \
+      -m "chore: claim $1 ($1)" -m "Claimed by machine $MACHINE, run $RUN_ID."
+}
+
+# claim <branch> <sha> — create <branch> on origin at <sha> as the bot, only if it does not exist
+# (an empty --force-with-lease expectation). Prints "won", "lost" or "failed: <why>". The
+# builder's deny rules are unchanged: this is a runner step, never a builder tool call.
+claim() {
+  out=$(GIT_TERMINAL_PROMPT=0 git -C "$REPO_ROOT" -c credential.helper= -c "credential.helper=$BOT_HELPER" \
+    push --porcelain --force-with-lease="refs/heads/$1:" origin "$2:refs/heads/$1" 2>&1)
+  rc=$?
+  if [ "$rc" -eq 0 ]; then printf 'won'
+  elif printf '%s' "$out" | grep -qE '\[rejected\]|stale info|already exists'; then printf 'lost'
+  else printf 'failed: claim push exit %s' "$rc"
+  fi
+}
 claimed_by() {
   k=$1
   # A failed gh call counts as claimed: better to skip a ticket than to build a duplicate PR.
@@ -282,10 +336,11 @@ claimed_by() {
   printf '%s' "$hit"
 }
 
+# Every unclaimed candidate, in pick order: the build loop takes them until $MAX_TICKETS builds have
+# started, so a ticket lost to a claim race is replaced by the next one.
 TODO=""
 n=0
 for k in $KEYS; do
-  [ "$n" -ge "$MAX_TICKETS" ] && break
   scope=$(printf '%s\n' "$PICKED" | awk -v k="$k" '$1 == k {print $3}')
   case $scope in
     other:*) say "$k: skip (for machine ${scope#other:}, not $MACHINE)"; continue ;;
@@ -305,11 +360,13 @@ if [ -z "$TODO" ]; then
   emit run_end outcome=idle failure_class=claim_skip
   exit 0
 fi
-say "to build:$TODO"
-for k in $TODO; do say "$k: model $(model_for "$k" | sed "s/^$/agent default/")"; done
+# The first $MAX_TICKETS are the plan; the rest only stand in for a claim race lost.
+PLAN=$(printf '%s\n' $TODO | head -n "$MAX_TICKETS" | paste -sd' ' -)
+say "to build: $PLAN"
+for k in $PLAN; do say "$k: branch $(branch_for "$k"), model $(model_for "$k" | sed "s/^$/agent default/")"; done
 if [ "$DRY_RUN" = 1 ]; then
-  say "dry run: stopping before build"
-  emit run_end outcome=idle failure_class=none tickets="$TODO"
+  say "dry run: stopping before the claim push and the build"
+  emit run_end outcome=idle failure_class=none tickets="$PLAN"
   exit 0
 fi
 
@@ -320,7 +377,7 @@ reap_worktree() {
   if [ -z "$(git -C "$w" status --porcelain 2>/dev/null)" ] &&
      [ -z "$(git -C "$w" log --oneline '@{u}..' 2>/dev/null)" ] &&
      { git -C "$w" rev-parse -q --verify '@{u}' >/dev/null 2>&1 ||
-       [ -z "$(git -C "$w" log --oneline "origin/$BASE..HEAD" 2>/dev/null)" ]; }; then
+       [ -z "$(git -C "$w" log --oneline HEAD --not --remotes=origin 2>/dev/null)" ]; }; then
     git -C "$REPO_ROOT" worktree remove --force "$w" 2>/dev/null && rm -rf "$TMPDIR/$(basename "$w")"
     return 0
   fi
@@ -360,8 +417,9 @@ done
 git -C "$REPO_ROOT" worktree prune
 rm -rf "$TMPDIR"/*-bin   # gh shim dirs a killed run left behind (recipes only, never a token)
 
-built=0 attempted=0 run_class=none
+built=0 attempted=0 run_class=none RUN_KEYS=""
 for k in $TODO; do
+  [ "$attempted" -ge "$MAX_TICKETS" ] && break
   [ -e "$AGENTS_HOME/PAUSE" ] && { say "paused mid-run; stopping before $k"; run_class=paused; break; }
 
   # A kept worktree from an earlier failed build (night 3: OV-112) still owns the ticket's local
@@ -374,6 +432,22 @@ for k in $TODO; do
     continue
   fi
 
+  # The atomic claim. Lost: another machine or run created the branch since the check above.
+  BR=$(branch_for "$k")
+  if CLAIM_SHA=$(claim_commit "$k"); then c=$(claim "$BR" "$CLAIM_SHA"); else c="failed: claim commit"; fi
+  case $c in
+    won) say "$k: claimed $BR on origin" ;;
+    lost)
+      say "$k: skip (claim race lost: $BR already exists on origin)"
+      emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="claim race lost" branch="$BR"
+      continue ;;
+    *)
+      say "$k: skip ($c)"
+      emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="$c" branch="$BR"
+      continue ;;
+  esac
+  RUN_KEYS="$RUN_KEYS $k"
+
   slug=$(printf '%s' "$k" | tr 'A-Z' 'a-z')
   stamp=$(date +%H%M%S)
   WT="$AGENTS_HOME/worktrees/$slug-$stamp"
@@ -382,7 +456,10 @@ for k in $TODO; do
   mkdir -p "$SCRATCH"
   attempted=$((attempted + 1))
 
-  if ! git -C "$REPO_ROOT" worktree add -q --detach "$WT" "origin/$BASE" 2>>"$SUMMARY"; then
+  # Detached at the claim commit, not on the branch: the builder's `git switch -c <branch>` (no
+  # start point) then creates its local branch there, and `git push -u origin <branch>` is a
+  # fast-forward onto the claim.
+  if ! git -C "$REPO_ROOT" worktree add -q --detach "$WT" "$CLAIM_SHA" 2>>"$SUMMARY"; then
     say "$k: FAIL worktree add"
     emit build_end ticket="$k" outcome=failed failure_class=worktree_add
     run_class=worktree_add
@@ -398,9 +475,9 @@ EOF
   # Fail fast if the bot cannot mint at all (bad key, no network); the build mints its own later.
   mint >/dev/null || { say "$k: FAIL bot token mint"; emit build_end ticket="$k" outcome=failed failure_class=token_mint; run_class=token_mint; break; }
   MODEL=$(model_for "$k")
-  PROMPT="do $k (unattended). Build model: ${MODEL:-agent default}. Scratch directory for PR body and other temp files: $SCRATCH"
-  say "$k: build start (worktree $WT, model ${MODEL:-agent default}, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
-  emit build_start ticket="$k" model="${MODEL:-agent default}" log="$TLOG" \
+  PROMPT="do $k (unattended). Branch: $BR (already on origin, pointing at the claim commit you start on: run git switch -c $BR with no start point, then push onto it). Build model: ${MODEL:-agent default}. Scratch directory for PR body and other temp files: $SCRATCH"
+  say "$k: build start (worktree $WT, branch $BR, model ${MODEL:-agent default}, caps ${MAX_TURNS} turns / ${WALL_SEC} s / \$${MAX_USD})"
+  emit build_start ticket="$k" branch="$BR" model="${MODEL:-agent default}" log="$TLOG" \
     caps:="{\"turns\":${MAX_TURNS:-null},\"wall_s\":${WALL_SEC:-null},\"usd\":${MAX_USD:-null}}"
 
   # `gh` shim for the build: mints a token for each call, so no token sits in the environment and
@@ -422,7 +499,7 @@ EOF
   # per call, and the commits carry the bot's author/committer. No token value is exported.
   (
     cd "$WT" || exit 1
-    export AGENTS_BOT_TOKEN_SCRIPT="$REPO_ROOT/scripts/agents/bot-token.mjs" AGENTS_GH_BIN="$GH_BIN"
+    export AGENTS_GH_BIN="$GH_BIN"
     export PATH="$SHIM:$PATH"
     unset GH_TOKEN GITHUB_TOKEN
     # Fail closed: a `gh` reached without the shim finds no stored login (empty config dir) and errors
@@ -430,10 +507,7 @@ EOF
     export GH_CONFIG_DIR="$SHIM/gh-home"
     export GIT_CONFIG_COUNT=3
     export GIT_CONFIG_KEY_0=credential.helper GIT_CONFIG_VALUE_0=
-    export GIT_CONFIG_KEY_1=credential.helper
-    # git calls the helper with get|store|erase; only `get` needs a token, and a failed mint must fail
-    # the helper (not hand git an empty password).
-    export GIT_CONFIG_VALUE_1='!f() { [ "$1" = get ] || return 0; t=$(node "$AGENTS_BOT_TOKEN_SCRIPT") || exit 1; echo username=x-access-token; echo "password=$t"; }; f'
+    export GIT_CONFIG_KEY_1=credential.helper GIT_CONFIG_VALUE_1="$BOT_HELPER"
     export GIT_CONFIG_KEY_2=commit.gpgsign GIT_CONFIG_VALUE_2=false
     export GIT_TERMINAL_PROMPT=0
     export GIT_AUTHOR_NAME="$COMMIT_NAME" GIT_AUTHOR_EMAIL="$COMMIT_EMAIL"
@@ -486,6 +560,13 @@ EOF
   ' "$TLOG" 2>/dev/null || echo "unparsed")
 
   pr=$(claimed_by "$k")
+  # Our own claim branch, still at the claim commit, is not a result: the build pushed nothing.
+  # It stays on origin and keeps the ticket claimed until the owner deletes it (rebuilds: OV-122).
+  claim_empty=false
+  if [ "$pr" = "branch $BR" ] &&
+     [ "$(git -C "$REPO_ROOT" ls-remote origin "refs/heads/$BR" 2>/dev/null | awk '{print $1}')" = "$CLAIM_SHA" ]; then
+    pr="" claim_empty=true
+  fi
   if [ -e "$TIMED_OUT" ]; then
     outcome="TIMEOUT after ${WALL_SEC} s"
     [ -n "$VERIFY_CMD" ] && (cd "$WT" && $VERIFY_CMD cleanup >/dev/null 2>&1)
@@ -495,15 +576,17 @@ EOF
     outcome="done"
   fi
   say "$k: $outcome; $stats elapsed=${elapsed}s; ${pr:-no PR found}; log $TLOG"
+  [ "$claim_empty" = true ] && say "$k: claim branch $BR left empty on origin; delete it to let the ticket be built again"
   # Classified from the stream, not the exit code: a build with no PR is never a success here.
   timed_out=false
   [ -e "$TIMED_OUT" ] && timed_out=true
-  emit build_end ticket="$k" log="$TLOG" rc:="$rc" elapsed_s:="$elapsed" timed_out:="$timed_out" claimed="$pr"
+  emit build_end ticket="$k" log="$TLOG" rc:="$rc" elapsed_s:="$elapsed" timed_out:="$timed_out" claimed="$pr" \
+    claim_branch="$BR" claim_empty:="$claim_empty"
   case $pr in "PR #"*|"branch "*) built=$((built + 1)) ;; esac
 
   reap_worktree "$WT" || say "$k: kept worktree $WT (unpushed work)"
 done
 
-say "=== run end: $built PR(s) for:$TODO"
+say "=== run end: $built PR(s) for:$RUN_KEYS"
 if [ "$attempted" -eq 0 ]; then run_outcome=idle; elif [ "$built" -gt 0 ]; then run_outcome=pr; else run_outcome=failed; fi
-emit run_end outcome="$run_outcome" failure_class="$run_class" built:="$built" attempted:="$attempted" tickets="$TODO"
+emit run_end outcome="$run_outcome" failure_class="$run_class" built:="$built" attempted:="$attempted" tickets="$RUN_KEYS"
