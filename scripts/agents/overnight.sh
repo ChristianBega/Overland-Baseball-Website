@@ -16,7 +16,9 @@
 #                                                            ${XDG_STATE_HOME:-~/.local/state}/<repo>-agents elsewhere]
 #   AGENTS_TRIGGER  schedule (launchd / Task Scheduler) or manual [manual]. Only a scheduled run
 #                   honours autoRun
-#   AGENTS_DRY_RUN  1 = stop after the claim step
+#   AGENTS_KEYS     space-separated ticket keys: build only these (agents.sh run KEY ...)
+#   AGENTS_MAX_TICKETS  override runner.maxTicketsPerNight for this run
+#   AGENTS_DRY_RUN  1 = stop after the read-only claim check (no claim push, no build)
 #   AGENTS_WALL_CLOCK_SECONDS  override runner.wallClockMinutes (testing the watchdog)
 #   AGENTS_ALLOW_BATTERY       1 = start even on battery power (macOS refuses by default: on battery
 #                              the Mac deep-sleeps mid-run and the network drops; night 2 and 3)
@@ -165,7 +167,14 @@ BLOCKED=$(cfg labels.jira.blocked) || die preflight_config "labels.jira.blocked 
 SIZES=$(cfg runner.allowedSizes | sed 's/.*/"&"/' | paste -sd, -)
 [ -n "$SIZES" ] || die preflight_config "runner.allowedSizes missing or empty"
 AGENT=$(cfg runner.builderAgent) || die preflight_config "runner.builderAgent missing"
-MAX_TICKETS=$(cfg runner.maxTicketsPerNight) || die preflight_config "runner.maxTicketsPerNight missing"
+MAX_TICKETS=${AGENTS_MAX_TICKETS:-$(cfg runner.maxTicketsPerNight)} || die preflight_config "runner.maxTicketsPerNight missing"
+case $MAX_TICKETS in ''|*[!0-9]*) die preflight_config "ticket cap '$MAX_TICKETS' is not a number (AGENTS_MAX_TICKETS / runner.maxTicketsPerNight)" ;; esac
+# Named tickets (agents.sh run KEY ...): only these, still through every filter and the claim.
+KEY_FILTER=""
+for k in ${AGENTS_KEYS:-}; do
+  printf '%s' "$k" | grep -Eq "^$JIRA_KEY-[0-9]+\$" || die preflight_config "not a ticket key: '$k'"
+  KEY_FILTER="$KEY_FILTER${KEY_FILTER:+, }$k"
+done
 MAX_TURNS=$(cfg runner.maxTurns || echo 150)
 WALL_MIN=$(cfg runner.wallClockMinutes || echo 50)
 WALL_SEC=${AGENTS_WALL_CLOCK_SECONDS:-$((WALL_MIN * 60))}
@@ -216,7 +225,7 @@ ORDER_BY=$(cfg jira.orderBy || echo "Rank ASC")
 MAX_RESULTS=$(cfg jira.pickMaxResults || echo 10)
 [ "$MAX_RESULTS" -ge $((MAX_TICKETS * 3)) ] 2>/dev/null || MAX_RESULTS=$((MAX_TICKETS * 3))
 [ "$MAX_RESULTS" -le 100 ] || MAX_RESULTS=100
-JQL="project = $JIRA_KEY AND labels = \"$READY\" AND labels not in (\"$BLOCKED\") AND labels in ($SIZES) AND statusCategory != Done ORDER BY $ORDER_BY"
+JQL="project = $JIRA_KEY${KEY_FILTER:+ AND key in ($KEY_FILTER)} AND labels = \"$READY\" AND labels not in (\"$BLOCKED\") AND labels in ($SIZES) AND statusCategory != Done ORDER BY $ORDER_BY"
 PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults $MAX_RESULTS, fields [\"summary\", \"labels\", \"issuetype\"] and this JQL:
 $JQL
 Then reply with ONLY a JSON array of objects with each issue's key, labels and issue type name, in the order returned, e.g. [{\"key\": \"$JIRA_KEY-1\", \"labels\": [\"size-s\"], \"type\": \"Task\"}], or [] if there are none. No prose. If the tool fails or needs authentication, reply with ONLY: ERROR: <one-line reason>"
@@ -263,6 +272,10 @@ PICKED=$(printf '%s' "$PICK_OUT" | node -e '
   });' "$JIRA_KEY" "$MACHINE" "$MACHINE_PREFIX" "$CONFIG" 2>>"$SUMMARY") || die pick_unparsable "pick: unusable result (raw in $LOG_DIR/pick.json)" pick_json="$LOG_DIR/pick.json"
 KEYS=$(printf '%s\n' "$PICKED" | awk 'NF {print $1}')
 emit pick pick_json="$LOG_DIR/pick.json" picked="$PICKED"
+for k in ${AGENTS_KEYS:-}; do
+  printf '%s\n' "$KEYS" | grep -qx "$k" ||
+    say "$k: not picked (not $READY, $BLOCKED, outside runner.allowedSizes, done, or not found)"
+done
 
 # model_for <key> — the build model: a <prefix><model> label (allowed models only) wins, else the
 # size map, else empty (the agent file default).
@@ -605,6 +618,6 @@ EOF
   reap_worktree "$WT" || say "$k: kept worktree $WT (unpushed work)"
 done
 
-say "=== run end: $built PR(s) for:$RUN_KEYS"
+say "=== run end (machine $MACHINE, mode=$TRIGGER): $built PR(s) for:$RUN_KEYS"
 if [ "$attempted" -eq 0 ]; then run_outcome=idle; elif [ "$built" -gt 0 ]; then run_outcome=pr; else run_outcome=failed; fi
 emit run_end outcome="$run_outcome" failure_class="$run_class" built:="$built" attempted:="$attempted" tickets="$RUN_KEYS"
