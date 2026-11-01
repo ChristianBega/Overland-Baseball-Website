@@ -270,6 +270,7 @@ function nightRows(evs) {
     const prM = e.event === "claim_skip" ? String(e.reason || "").match(/PR #(\d+)/) : null;
     rows.push({
       ticket: e.ticket,
+      machine: e.machine ?? null,
       model: e.event === "build_end" ? e.model : null,
       outcome: e.outcome,
       failure_class: e.failure_class,
@@ -480,14 +481,17 @@ function main() {
       idle: runEnds.filter((e) => e.outcome === "idle").map((e) => e.failure_class),
       cost: r2(total),
     });
+    const machines = [...new Set(tonight.map((e) => e.machine).filter(Boolean))];
+    digest.machines = machines;
     out.push(`Runs: ${runEnds.length} finished (${runStarts.length} started)` +
+      (machines.length ? ` on ${machines.join(", ")}` : "") +
       (aborts.length ? `, ${aborts.length} aborted (${aborts.map((a) => `\`${a.failure_class}\`${a.reason ? ": " + a.reason : ""}`).join("; ")})` : "") +
       `. Run cost ${fmtCost(r2(total))} (pick + builds; CI n/a (OV-131)). Night: **${st.status}**${st.why.length && st.status !== "clean" ? ` (${st.why.join("; ")})` : ""}.`, "");
     for (const e of runEnds) if (e.outcome === "idle") out.push(`- Idle run: \`${e.failure_class}\``);
     const rows = nightRows(tonight);
     if (rows.length) {
-      out.push("| Ticket | Model | Outcome | Class | Turns | Cost | PR | Checks | Verdict | Rounds | Waiting on you |");
-      out.push("|---|---|---|---|---|---|---|---|---|---|---|");
+      out.push("| Ticket | Machine | Model | Outcome | Class | Turns | Cost | PR | Checks | Verdict | Rounds | Waiting on you |");
+      out.push("|---|---|---|---|---|---|---|---|---|---|---|---|");
       for (const r of rows) {
         const v = r.pr != null ? views.get(r.pr) : null;
         const checks = v ? Object.entries(v.checks).map(([k, c]) => `${k} ${c === "success" ? "✓" : c === "failure" ? "✗" : c}`).join(", ") : "unknown";
@@ -495,7 +499,7 @@ function main() {
         const prCell = r.pr != null ? `#${r.pr}${v ? ` (${v.state})` : ""}` : "—";
         digest.rows.push({ ...r, pr_state: v?.state || null, checks: v ? v.checks : null, verdict: v?.verdict || null,
           rounds: v ? v.rounds.length : null, waiting: wait });
-        out.push(`| ${r.ticket || "?"} | ${r.model || (r.skipped ? "(skipped)" : "?")} | ${r.outcome} | ${r.failure_class} | ${r.turns ?? "—"} | ${r.skipped ? "—" : fmtCost(r.cost)} | ${prCell} | ${checks} | ${v?.verdict || "—"} | ${v ? v.rounds.length : "—"} | ${wait.join("; ") || "—"} |`);
+        out.push(`| ${r.ticket || "?"} | ${r.machine || "—"} | ${r.model || (r.skipped ? "(skipped)" : "?")} | ${r.outcome} | ${r.failure_class} | ${r.turns ?? "—"} | ${r.skipped ? "—" : fmtCost(r.cost)} | ${prCell} | ${checks} | ${v?.verdict || "—"} | ${v ? v.rounds.length : "—"} | ${wait.join("; ") || "—"} |`);
       }
       out.push("");
       for (const r of rows) {

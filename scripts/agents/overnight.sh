@@ -38,6 +38,7 @@ else
   AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/$REPO_NAME-agents}
 fi
 DRY_RUN=${AGENTS_DRY_RUN:-0}
+MACHINE=""   # from machine.json (step 1b); empty on events before that
 
 NIGHT=$(date +%Y-%m-%d)
 LOG_DIR="$AGENTS_LOG_DIR/$NIGHT"
@@ -59,7 +60,7 @@ EV_REPO=$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null |
 # run_end and run_abort also post the run summary to Slack (notify_run).
 emit() {
   AGENTS_EVENTS="$EVENTS" EV_NIGHT="$NIGHT" EV_RUN_ID="$RUN_ID" EV_REPO="$EV_REPO" EV_DRY_RUN="$DRY_RUN" \
-    node "$REPO_ROOT/scripts/agents/events.mjs" emit "$@" </dev/null >/dev/null || true
+    EV_MACHINE="$MACHINE" node "$REPO_ROOT/scripts/agents/events.mjs" emit "$@" </dev/null >/dev/null || true
   case $1 in run_end|run_abort) notify_run ;; esac
 }
 
@@ -171,6 +172,7 @@ WALL_SEC=${AGENTS_WALL_CLOCK_SECONDS:-$((WALL_MIN * 60))}
 MAX_USD=$(cfg runner.maxBudgetUsd || echo 15)
 PICK_MODEL=$(cfg runner.pickModel || echo sonnet)
 MODEL_PREFIX=$(cfg runner.modelLabelPrefix || echo "model:")
+MACHINE_PREFIX=$(cfg labels.jira.machinePrefix || echo "machine:")
 # Headless runs skip the claude.ai account connectors unless the config opts in.
 [ "$(cfg runner.claudeAiConnectors || echo false)" = true ] || export ENABLE_CLAUDEAI_MCP_SERVERS=false
 COMMIT_NAME=$(cfg bot.commitName) || die preflight_config "bot.commitName missing"
@@ -200,9 +202,9 @@ mint() {
 
 # ---- 4. pick (read-only Jira, via a short claude -p call) -------------------------------------
 JQL="project = $JIRA_KEY AND labels = \"$READY\" AND labels not in (\"$BLOCKED\") AND labels in ($SIZES) AND statusCategory != Done ORDER BY created DESC"
-PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults 10, fields [\"summary\", \"labels\"] and this JQL:
+PICK_PROMPT="Call mcp__atlassian__searchJiraIssuesUsingJql once with cloudId \"$CLOUD_ID\", maxResults 10, fields [\"summary\", \"labels\", \"issuetype\"] and this JQL:
 $JQL
-Then reply with ONLY a JSON array of objects with each issue's key and labels, in the order returned, e.g. [{\"key\": \"$JIRA_KEY-1\", \"labels\": [\"size-s\"]}], or [] if there are none. No prose. If the tool fails or needs authentication, reply with ONLY: ERROR: <one-line reason>"
+Then reply with ONLY a JSON array of objects with each issue's key, labels and issue type name, in the order returned, e.g. [{\"key\": \"$JIRA_KEY-1\", \"labels\": [\"size-s\"], \"type\": \"Task\"}], or [] if there are none. No prose. If the tool fails or needs authentication, reply with ONLY: ERROR: <one-line reason>"
 
 say "pick: $JQL"
 PICK_OUT=$(cd "$REPO_ROOT" && claude -p --model "$PICK_MODEL" --max-turns 4 --output-format json \
@@ -210,10 +212,12 @@ PICK_OUT=$(cd "$REPO_ROOT" && claude -p --model "$PICK_MODEL" --max-turns 4 --ou
   -- "$PICK_PROMPT" 2>>"$LOG_DIR/pick.err") || die pick_claude_failed "pick: claude -p failed (Claude login? see $LOG_DIR/pick.err)"
 printf '%s\n' "$PICK_OUT" > "$LOG_DIR/pick.json"
 
-# One line per ticket: "<KEY> <label,label,...>". A bare key (no labels) is accepted too.
+# One line per ticket: "<KEY> <label,label,...|-> <scope>". A bare key (no labels) is accepted too.
+# scope is this machine's claim on it from the <machinePrefix><name> labels (JQL cannot match a
+# label prefix): own (labelled for this machine), any (no machine label) or other:<name,...>.
 PICKED=$(printf '%s' "$PICK_OUT" | node -e '
   let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
-    const key = process.argv[1];
+    const [key, machine, mprefix] = process.argv.slice(1);
     let r;
     try { r = JSON.parse(s); } catch { console.error("pick output is not JSON"); process.exit(1); }
     const text = String(r.result ?? "").trim();
@@ -226,9 +230,11 @@ PICKED=$(printf '%s' "$PICK_OUT" | node -e '
       const k = typeof it === "string" ? it : it?.key;
       if (!re.test(k)) { console.error("unexpected key: " + k); process.exit(1); }
       const labels = (Array.isArray(it?.labels) ? it.labels : []).filter(l => /^[A-Za-z0-9:._-]+$/.test(l));
-      console.log(k + " " + labels.join(","));
+      const machines = labels.filter(l => l.startsWith(mprefix)).map(l => l.slice(mprefix.length));
+      const scope = !machines.length ? "any" : machines.includes(machine) ? "own" : "other:" + machines.join(",");
+      console.log(k + " " + (labels.join(",") || "-") + " " + scope);
     }
-  });' "$JIRA_KEY" 2>>"$SUMMARY") || die pick_unparsable "pick: unusable result (raw in $LOG_DIR/pick.json)" pick_json="$LOG_DIR/pick.json"
+  });' "$JIRA_KEY" "$MACHINE" "$MACHINE_PREFIX" 2>>"$SUMMARY") || die pick_unparsable "pick: unusable result (raw in $LOG_DIR/pick.json)" pick_json="$LOG_DIR/pick.json"
 KEYS=$(printf '%s\n' "$PICKED" | awk 'NF {print $1}')
 emit pick pick_json="$LOG_DIR/pick.json" picked="$PICKED"
 
@@ -280,6 +286,10 @@ TODO=""
 n=0
 for k in $KEYS; do
   [ "$n" -ge "$MAX_TICKETS" ] && break
+  scope=$(printf '%s\n' "$PICKED" | awk -v k="$k" '$1 == k {print $3}')
+  case $scope in
+    other:*) say "$k: skip (for machine ${scope#other:}, not $MACHINE)"; continue ;;
+  esac
   c=$(claimed_by "$k")
   if [ -n "$c" ]; then
     say "$k: skip (claimed: $c)"

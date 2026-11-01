@@ -5,13 +5,14 @@
 //   node scripts/agents/events.mjs replay <night log dir>      # build_end lines for past logs, to stdout
 //
 // `emit` appends to $AGENTS_EVENTS and adds the common fields from the runner's env: ts (UTC),
-// night (EV_NIGHT), run_id (EV_RUN_ID), repo (EV_REPO), source "runner", dry_run (EV_DRY_RUN=1).
+// night (EV_NIGHT), run_id (EV_RUN_ID), repo (EV_REPO), machine (EV_MACHINE, the machine.json name;
+// absent before the profile is read), source "runner", dry_run (EV_DRY_RUN=1).
 // It never fails the caller: any error is one line on stderr and exit 0. summary.log stays the
 // human log; this file is for the morning report (OV-130) and anything else that counts nights.
 //
 // Derived fields:
 //   pick_json=<path>  adds the pick's model, cost_usd, turns, session_id from pick.json (then dropped)
-//   picked=<lines>    "<KEY> <label,label>" per line (the runner's $PICKED) -> tickets[], labels{}
+//   picked=<lines>    "<KEY> <label,label|-> ..." per line (the runner's $PICKED) -> tickets[], labels{}
 //   build_end + log=<stream log> (and no outcome=) -> parsed and classified from the stream, below
 //   run_end           adds cost_usd_total: pick + builds of this run_id, from events.jsonl
 //
@@ -86,7 +87,7 @@ function pickedFields(text) {
     const [k, l] = line.trim().split(/\s+/);
     if (!k) continue;
     tickets.push(k);
-    labels[k] = l ? l.split(",").filter(Boolean) : [];
+    labels[k] = l && l !== "-" ? l.split(",").filter(Boolean) : [];
   }
   return { tickets, labels };
 }
@@ -227,6 +228,7 @@ function emit(event, args) {
     night: env.EV_NIGHT || null,
     run_id: env.EV_RUN_ID || null,
     repo: env.EV_REPO || null,
+    ...(env.EV_MACHINE ? { machine: env.EV_MACHINE } : {}),
     source: "runner",
     event,
     ...(env.EV_DRY_RUN === "1" ? { dry_run: true } : {}),

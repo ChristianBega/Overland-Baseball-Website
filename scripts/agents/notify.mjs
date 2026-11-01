@@ -105,7 +105,7 @@ const modelName = (m) => {
 const CHECK_ICON = { success: "✅", skipped: "➖", failure: "❌", cancelled: "❌", timed_out: "❌", pending: "⏳", missing: "❔" };
 const NIGHT_ICON = { clean: "🟢", dirty: "🔴", idle: "⚪", missed: "⚫" };
 
-// One line: outcome · tickets/PRs · cost · time. A dry run is marked so (and never posted).
+// One line: outcome · tickets/PRs · cost · machine · time. A dry run is marked so (and never posted).
 function runMessage(events, night) {
   const runner = events.filter((e) => (e.source || "runner") === "runner" && e.night === night);
   const runId = env.EV_RUN_ID || [...runner].reverse().find((e) => e.run_id)?.run_id;
@@ -130,6 +130,8 @@ function runMessage(events, night) {
     if (prs.length) bits.push(prs.join(" "));
     if (typeof end.cost_usd_total === "number") bits.push(usd(end.cost_usd_total));
   } else bits.push("⚠️ Run", "no run_end or run_abort yet");
+  const machine = evs.find((e) => e.machine)?.machine;
+  if (machine) bits.push(esc(machine));
   if (last?.ts && !dry) bits.push(hhmm(last.ts));
   return { text: bits.filter(Boolean).join(" · "), dry };
 }

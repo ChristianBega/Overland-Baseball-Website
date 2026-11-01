@@ -27,7 +27,9 @@
     "jira": {
       "readyForBuild": "ready-for-build",
       "blocked": "blocked",
-      "sizes": ["size-s", "size-m", "size-l"]
+      "sizes": ["size-s", "size-m", "size-l"],
+      "$machinePrefixComment": "A ticket labelled <machinePrefix><name> is built only by the machine whose $AGENTS_HOME/machine.json has that name; a ticket with no such label goes to any machine.",
+      "machinePrefix": "machine:"
     }
   },
   "commands": {
