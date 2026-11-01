@@ -118,26 +118,91 @@ if [ "$TRIGGER" = schedule ] && [ "$AUTO_RUN" != true ]; then
   exit 0
 fi
 
+# A scheduled run only starts inside runner.startWindow ("HH:MM-HH:MM", may wrap midnight): a slot
+# missed in sleep would otherwise run at the next wake, in the middle of the owner's day.
+WINDOW=${AGENTS_START_WINDOW:-$(cfg runner.startWindow || true)}
+if [ "$TRIGGER" = schedule ] && [ -n "$WINDOW" ]; then
+  in_window=$(node -e '
+    const m = process.argv[1].match(/^(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})$/);
+    if (!m) { console.log("bad"); process.exit(0); }
+    const [a, b] = [m[1] * 60 + +m[2], m[3] * 60 + +m[4]];
+    const d = new Date(), now = d.getHours() * 60 + d.getMinutes();
+    console.log((a <= b ? now >= a && now < b : now >= a || now < b) ? "yes" : "no");
+  ' "$WINDOW")
+  [ "$in_window" = bad ] && die preflight_config "runner.startWindow '$WINDOW' is not HH:MM-HH:MM"
+  if [ "$in_window" = no ]; then
+    say "skipped: outside window $WINDOW (scheduled run at $(date +%H:%M)); agents.sh run starts one now"
+    emit run_end outcome=idle failure_class=outside_window
+    exit 0
+  fi
+fi
+
 # ---- 2. lock (one run at a time) --------------------------------------------------------------
+# The whole run has a deadline (runner.runDeadlineMinutes): a watchdog TERMs the run, whose traps
+# stop the build and release the lock. A live lock older than the deadline is a wedged run that
+# would otherwise cancel every following night: it is stopped and the lock taken.
+DEADLINE_MIN=$(cfg runner.runDeadlineMinutes || echo 300)
+DEADLINE_SEC=${AGENTS_RUN_DEADLINE_SECONDS:-$((DEADLINE_MIN * 60))}
 LOCK="$AGENTS_HOME/lock"
 if ! mkdir "$LOCK" 2>/dev/null; then
   old=$(cat "$LOCK/pid" 2>/dev/null)
+  started=$(cat "$LOCK/started" 2>/dev/null)
+  age=$(( $(date +%s) - ${started:-$(date +%s)} ))
   if [ -n "$old" ] && kill -0 "$old" 2>/dev/null; then
-    say "another run is active (pid $old); exiting"
-    emit run_end outcome=idle failure_class=lock_held
-    exit 0
+    if [ "$age" -le "$((DEADLINE_SEC + 300))" ]; then
+      say "another run is active (pid $old); exiting"
+      emit run_end outcome=idle failure_class=lock_held
+      exit 0
+    fi
+    say "lock held by pid $old for ${age} s, past the run deadline (${DEADLINE_SEC} s): stopping it"
+    kill -TERM "$old" 2>/dev/null
+    i=0
+    while kill -0 "$old" 2>/dev/null && [ "$i" -lt 30 ]; do sleep 1; i=$((i + 1)); done
+    kill -KILL "$old" 2>/dev/null
   fi
   say "removing stale lock (pid ${old:-?})"
   rm -rf "$LOCK"
   mkdir "$LOCK" || die lock_held "cannot take lock $LOCK"
 fi
 echo $$ > "$LOCK/pid"
-cpid="" wpid=""
+date +%s > "$LOCK/started"
+cpid="" wpid="" dpid="" CUR_BR=""
 # On exit (or kill), stop any build and watchdog still running, then release the lock.
 # kill -<pgid> needs job control (set -m); where the shell ignores it (dash without a tty), fall
 # back to the pid.
-trap '[ -n "$cpid" ] && { kill -TERM -"$cpid" 2>/dev/null || kill -TERM "$cpid" 2>/dev/null; }; [ -n "$wpid" ] && { pkill -P "$wpid"; kill "$wpid"; } 2>/dev/null; rm -rf "$LOCK"' EXIT
-trap 'emit run_abort failure_class=unknown reason=signal; exit 130' INT TERM
+trap '[ -n "$cpid" ] && { kill -TERM -"$cpid" 2>/dev/null || kill -TERM "$cpid" 2>/dev/null; }; for p in $wpid $dpid; do pkill -P "$p"; kill "$p"; done 2>/dev/null; rm -rf "$LOCK"' EXIT
+trap '[ -n "$CUR_BR" ] && say "claim branch $CUR_BR is on origin with no finished build: delete it if it is empty, so the ticket can be built again"; if [ -e "$LOCK/deadline" ]; then say "ABORT: run deadline (${DEADLINE_SEC} s) passed"; emit run_abort failure_class=run_deadline reason="run deadline ${DEADLINE_SEC} s"; else emit run_abort failure_class=unknown reason=signal; fi; exit 130' INT TERM
+( sleep "$DEADLINE_SEC"; : > "$LOCK/deadline"; kill -TERM $$ ) >/dev/null 2>&1 &
+dpid=$!
+
+# with_timeout <seconds> <step> <command ...> — run one network step with a deadline (stdout passes
+# through). On timeout the command is stopped, "TIMEOUT <step>" goes to the summary, and the
+# status is 124; the caller handles it like any other failure of that step.
+STEP_SEC=${AGENTS_STEP_TIMEOUT_SECONDS:-$(cfg runner.stepTimeoutSeconds || echo 180)}
+with_timeout() {
+  t_sec=$1 t_step=$2
+  shift 2
+  # Own process group (as the build): a timeout stops the command and its children (claude's MCP
+  # servers), which would otherwise keep a $(...) pipe open until they exit.
+  set -m
+  "$@" &
+  t_pid=$!
+  set +m
+  t_flag="$LOCK/timeout.$t_pid"
+  ( sleep "$t_sec"; kill -0 "$t_pid" 2>/dev/null || exit 0; : > "$t_flag"
+    kill -TERM -"$t_pid" || kill -TERM "$t_pid"; sleep 5; kill -KILL -"$t_pid" || kill -KILL "$t_pid" ) >/dev/null 2>&1 &
+  t_kpid=$!
+  wait "$t_pid"
+  t_rc=$?
+  pkill -P "$t_kpid" 2>/dev/null
+  kill "$t_kpid" 2>/dev/null
+  if [ -e "$t_flag" ]; then
+    rm -f "$t_flag"
+    printf '%s TIMEOUT %s after %s s\n' "$(date +%H:%M:%S)" "$t_step" "$t_sec" | tee -a "$SUMMARY" >&2
+    return 124
+  fi
+  return "$t_rc"
+}
 
 say "=== run start (repo $REPO_NAME, machine $MACHINE, mode=$TRIGGER, dry-run $DRY_RUN)"
 emit run_start mode="$TRIGGER"
@@ -188,7 +253,7 @@ COMMIT_NAME=$(cfg bot.commitName) || die preflight_config "bot.commitName missin
 COMMIT_EMAIL=$(cfg bot.commitEmail) || die preflight_config "bot.commitEmail missing"
 VERIFY_CMD=$(cfg commands.verify || true)
 
-git -C "$REPO_ROOT" fetch -q origin "$BASE" || die fetch_timeout "git fetch origin $BASE failed"
+with_timeout "$STEP_SEC" fetch git -C "$REPO_ROOT" fetch -q origin "$BASE" || die fetch_timeout "git fetch origin $BASE failed"
 # The commit every claim branch and build worktree of this run starts from.
 BASE_SHA=$(git -C "$REPO_ROOT" rev-parse --verify -q "origin/$BASE^{commit}") || die fetch_timeout "no origin/$BASE after fetch"
 # The bot identity rides on an HTTPS credential helper. Over SSH (or an insteadOf rewrite to SSH)
@@ -206,10 +271,10 @@ esac
 BOT_KEY_DIR=$(cfg bot.keyDir) || die preflight_config "bot.keyDir missing"
 export BOT_KEY_PATH="${BOT_KEY_PATH:-$BOT_KEY_DIR/key.pem}"
 export BOT_REPO="${BOT_REPO:-$(printf '%s' "$PUSH_URL" | sed -E 's#^https://github\.com/##; s#\.git$##')}"
-node "$REPO_ROOT/scripts/agents/bot-token.mjs" >/dev/null || die token_mint "bot token mint failed (see bot-token message above)"
+with_timeout "$STEP_SEC" mint node "$REPO_ROOT/scripts/agents/bot-token.mjs" >/dev/null || die token_mint "bot token mint failed (see bot-token message above)"
 
 mint() {
-  node "$REPO_ROOT/scripts/agents/bot-token.mjs"
+  with_timeout "$STEP_SEC" mint node "$REPO_ROOT/scripts/agents/bot-token.mjs"
 }
 
 # The bot's git credential helper, as a recipe: it mints a token when git asks for one (`get`), and a
@@ -231,9 +296,9 @@ $JQL
 Then reply with ONLY a JSON array of objects with each issue's key, labels and issue type name, in the order returned, e.g. [{\"key\": \"$JIRA_KEY-1\", \"labels\": [\"size-s\"], \"type\": \"Task\"}], or [] if there are none. No prose. If the tool fails or needs authentication, reply with ONLY: ERROR: <one-line reason>"
 
 say "pick: $JQL"
-PICK_OUT=$(cd "$REPO_ROOT" && claude -p --model "$PICK_MODEL" --max-turns 4 --output-format json \
+PICK_OUT=$(cd "$REPO_ROOT" && with_timeout "$STEP_SEC" pick claude -p --model "$PICK_MODEL" --max-turns 4 --output-format json \
   --permission-prompts none --allowedTools mcp__atlassian__searchJiraIssuesUsingJql \
-  -- "$PICK_PROMPT" 2>>"$LOG_DIR/pick.err") || die pick_claude_failed "pick: claude -p failed (Claude login? see $LOG_DIR/pick.err)"
+  -- "$PICK_PROMPT" 2>>"$LOG_DIR/pick.err") || die pick_claude_failed "pick: claude -p failed or timed out (Claude login? see $LOG_DIR/pick.err and TIMEOUT above)"
 printf '%s\n' "$PICK_OUT" > "$LOG_DIR/pick.json"
 
 # One line per ticket: "<KEY> <label,label,...|-> <scope> <branch prefix>". A bare key (no labels)
@@ -327,7 +392,7 @@ claim_commit() {
 # (an empty --force-with-lease expectation). Prints "won", "lost" or "failed: <why>". The
 # builder's deny rules are unchanged: this is a runner step, never a builder tool call.
 claim() {
-  out=$(GIT_TERMINAL_PROMPT=0 git -C "$REPO_ROOT" -c credential.helper= -c "credential.helper=$BOT_HELPER" \
+  out=$(export GIT_TERMINAL_PROMPT=0; with_timeout "$STEP_SEC" "claim push" git -C "$REPO_ROOT" -c credential.helper= -c "credential.helper=$BOT_HELPER" \
     push --porcelain --force-with-lease="refs/heads/$1:" origin "$2:refs/heads/$1" 2>&1)
   rc=$?
   if [ "$rc" -eq 0 ]; then printf 'won'
@@ -338,7 +403,7 @@ claim() {
 claimed_by() {
   k=$1
   # A failed gh call counts as claimed: better to skip a ticket than to build a duplicate PR.
-  json=$(GH_TOKEN=$T gh pr list --state all --search "$k" --limit 20 --json number,title,headRefName 2>/dev/null) ||
+  json=$(export GH_TOKEN="$T"; with_timeout "$STEP_SEC" "gh pr list" gh pr list --state all --search "$k" --limit 20 --json number,title,headRefName 2>/dev/null) ||
     { printf 'gh pr list failed'; return; }
   hit=$(printf '%s' "$json" |
     node -e '
@@ -348,7 +413,7 @@ claimed_by() {
         if (pr) console.log("PR #" + pr.number);
       });' "$k" 2>/dev/null) || hit="gh pr list unparsable"
   if [ -z "$hit" ]; then
-    heads=$(git -C "$REPO_ROOT" ls-remote --heads origin 2>/dev/null) || { printf 'git ls-remote failed'; return; }
+    heads=$(with_timeout "$STEP_SEC" ls-remote git -C "$REPO_ROOT" ls-remote --heads origin 2>/dev/null) || { printf 'git ls-remote failed'; return; }
     br=$(printf '%s\n' "$heads" | awk '{print $2}' | grep -E "/$k([^0-9]|\$)" | head -1)
     [ -n "$br" ] && hit="branch ${br#refs/heads/}"
   fi
@@ -467,7 +532,7 @@ for k in $TODO; do
   BR=$(branch_for "$k")
   if CLAIM_SHA=$(claim_commit "$k"); then c=$(claim "$BR" "$CLAIM_SHA"); else c="failed: claim commit"; fi
   case $c in
-    won) say "$k: claimed $BR on origin" ;;
+    won) say "$k: claimed $BR on origin"; CUR_BR=$BR ;;
     lost)
       say "$k: skip (claim race lost: $BR already exists on origin)"
       emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="claim race lost" branch="$BR"
@@ -491,8 +556,8 @@ for k in $TODO; do
   # start point) then creates its local branch there, and `git push -u origin <branch>` is a
   # fast-forward onto the claim.
   if ! git -C "$REPO_ROOT" worktree add -q --detach "$WT" "$CLAIM_SHA" 2>>"$SUMMARY"; then
-    say "$k: FAIL worktree add"
-    emit build_end ticket="$k" outcome=failed failure_class=worktree_add
+    say "$k: FAIL worktree add; claim branch $BR left empty on origin; delete it to let the ticket be built again"
+    emit build_end ticket="$k" outcome=failed failure_class=worktree_add claim_branch="$BR" claim_empty:=true
     run_class=worktree_add
     continue
   fi
@@ -595,7 +660,7 @@ EOF
   # It stays on origin and keeps the ticket claimed until the owner deletes it (rebuilds: OV-122).
   claim_empty=false
   if [ "$pr" = "branch $BR" ] &&
-     [ "$(git -C "$REPO_ROOT" ls-remote origin "refs/heads/$BR" 2>/dev/null | awk '{print $1}')" = "$CLAIM_SHA" ]; then
+     [ "$(with_timeout "$STEP_SEC" ls-remote git -C "$REPO_ROOT" ls-remote origin "refs/heads/$BR" 2>/dev/null | awk '{print $1}')" = "$CLAIM_SHA" ]; then
     pr="" claim_empty=true
   fi
   if [ -e "$TIMED_OUT" ]; then
@@ -613,6 +678,7 @@ EOF
   [ -e "$TIMED_OUT" ] && timed_out=true
   emit build_end ticket="$k" log="$TLOG" rc:="$rc" elapsed_s:="$elapsed" timed_out:="$timed_out" claimed="$pr" \
     claim_branch="$BR" claim_empty:="$claim_empty"
+  CUR_BR=""
   case $pr in "PR #"*|"branch "*) built=$((built + 1)) ;; esac
 
   reap_worktree "$WT" || say "$k: kept worktree $WT (unpushed work)"

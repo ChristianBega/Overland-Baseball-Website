@@ -34,6 +34,7 @@ process.removeAllListeners("warning");
 const IDLE_WHY = {
   paused: "paused (PAUSE file)",
   auto_run_off: "autoRun is off on this machine (agents.sh auto on)",
+  outside_window: "the scheduled run started outside runner.startWindow (the machine woke late?)",
   pick_empty: "no ready tickets",
   claim_skip: "every pick already has a PR or branch",
   lock_held: "another run held the lock",
@@ -83,6 +84,7 @@ const prLink = (repo, n) => (repo ? `<https://github.com/${repo}/pull/${n}|#${n}
 const ABORT_HINT = {
   on_battery: "Mac was on battery: plug it in before tonight",
   lock_held: "another run held the lock",
+  run_deadline: "the run passed runner.runDeadlineMinutes and was stopped",
   fetch_timeout: "git fetch failed (network, or the Mac slept)",
   token_mint: "the bot token could not be minted",
   pick_claude_failed: "the ticket pick failed: check the Claude login",
