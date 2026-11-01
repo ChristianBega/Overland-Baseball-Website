@@ -131,6 +131,12 @@ Check / run now / remove:
   launchctl bootout gui/\$(id -u)/$MORNING_LABEL
   pmset -g sched
 
+Machine profile (required; a run without it aborts):
+  printf '{ "name": "<machine>", "autoRun": true }\n' > "$AGENTS_HOME/machine.json"
+  AGENTS_HOME="$AGENTS_HOME" sh "$RUNNER/scripts/agents/agents.sh" status | auto on|off | run [KEY ...]
+  (autoRun false: the scheduled run exits idle; agents.sh run still builds now. A Jira label
+  machine:<name> sends a ticket to one machine; unlabelled tickets go to either.)
+
 Pause / resume:   touch "$AGENTS_HOME/PAUSE"   /   rm "$AGENTS_HOME/PAUSE"
 Logs:             $AGENTS_LOG_DIR/<date>/summary.log, <date>/report.md, launchd-morning.log
 Slack (optional): the incoming-webhook URL, one line, in "$AGENTS_HOME/slack-webhook" (chmod 600;

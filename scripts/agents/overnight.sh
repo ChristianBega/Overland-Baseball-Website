@@ -4,12 +4,18 @@
 #
 #   sh scripts/agents/overnight.sh            # normal run
 #   AGENTS_DRY_RUN=1 sh scripts/agents/overnight.sh   # pick + claim only, build nothing
+#   sh scripts/agents/agents.sh run|auto|status       # the owner's front door (agents.sh)
 #
 # Repo facts come from .claude/agents.config.json (jira, repo, bot, labels, commands, runner).
+# This machine's name and schedule switch come from $AGENTS_HOME/machine.json (outside the repo):
+#   { "name": "laptop", "autoRun": true }
+# A run without it aborts (preflight_config). autoRun false stops scheduled runs only.
 # Machine facts come from env vars (defaults in brackets):
 #   AGENTS_HOME     PAUSE file, lock, worktrees, scratch    [~/.agents/<repo dir name>]
 #   AGENTS_LOG_DIR  per-night logs                          [~/Library/Logs/<repo>-agents on macOS,
 #                                                            ${XDG_STATE_HOME:-~/.local/state}/<repo>-agents elsewhere]
+#   AGENTS_TRIGGER  schedule (launchd / Task Scheduler) or manual [manual]. Only a scheduled run
+#                   honours autoRun
 #   AGENTS_DRY_RUN  1 = stop after the claim step
 #   AGENTS_WALL_CLOCK_SECONDS  override runner.wallClockMinutes (testing the watchdog)
 #   AGENTS_ALLOW_BATTERY       1 = start even on battery power (macOS refuses by default: on battery
@@ -90,6 +96,25 @@ if [ -e "$AGENTS_HOME/PAUSE" ]; then
   exit 0
 fi
 
+# ---- 1b. machine profile and schedule switch ---------------------------------------------------
+TRIGGER=${AGENTS_TRIGGER:-manual}
+case $TRIGGER in schedule|manual) ;; *) die preflight_config "AGENTS_TRIGGER must be schedule or manual, not '$TRIGGER'" ;; esac
+PROFILE="$AGENTS_HOME/machine.json"
+prof=$(node -e '
+  const p = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
+  if (typeof p.name !== "string" || !/^[A-Za-z0-9._-]+$/.test(p.name)) throw new Error("bad name");
+  if (typeof p.autoRun !== "boolean") throw new Error("bad autoRun");
+  console.log(p.name + " " + p.autoRun);
+' "$PROFILE" 2>/dev/null) ||
+  die preflight_config "no valid machine profile at $PROFILE; create it: printf '{ \"name\": \"<machine>\", \"autoRun\": true }\\n' > \"$PROFILE\""
+MACHINE=${prof% *}
+AUTO_RUN=${prof#* }
+if [ "$TRIGGER" = schedule ] && [ "$AUTO_RUN" != true ]; then
+  say "autoRun is off on $MACHINE ($PROFILE); scheduled run skipped (sh scripts/agents/agents.sh auto on)"
+  emit run_end outcome=idle failure_class=auto_run_off
+  exit 0
+fi
+
 # ---- 2. lock (one run at a time) --------------------------------------------------------------
 LOCK="$AGENTS_HOME/lock"
 if ! mkdir "$LOCK" 2>/dev/null; then
@@ -111,8 +136,8 @@ cpid="" wpid=""
 trap '[ -n "$cpid" ] && { kill -TERM -"$cpid" 2>/dev/null || kill -TERM "$cpid" 2>/dev/null; }; [ -n "$wpid" ] && { pkill -P "$wpid"; kill "$wpid"; } 2>/dev/null; rm -rf "$LOCK"' EXIT
 trap 'emit run_abort failure_class=unknown reason=signal; exit 130' INT TERM
 
-say "=== run start (repo $REPO_NAME, dry-run $DRY_RUN)"
-emit run_start
+say "=== run start (repo $REPO_NAME, machine $MACHINE, mode=$TRIGGER, dry-run $DRY_RUN)"
+emit run_start mode="$TRIGGER"
 
 # ---- 3. preflight: all or nothing -------------------------------------------------------------
 for bin in node git gh claude; do

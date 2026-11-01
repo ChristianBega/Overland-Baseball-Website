@@ -43,7 +43,7 @@ const VERDICT_RE = /^Verdict: (ready|changes-requested|needs-human)\b/m;
 // Classes that don't break a clean night.
 const CLEAN_CLASSES = new Set(["none", "claim_skip"]);
 // Idle nights (nothing to do) are neutral for the streak.
-const NEUTRAL_IDLE = new Set(["paused", "pick_empty", "claim_skip", "lock_held"]);
+const NEUTRAL_IDLE = new Set(["paused", "auto_run_off", "pick_empty", "claim_skip", "lock_held"]);
 
 // ---------- args, config, events ----------
 

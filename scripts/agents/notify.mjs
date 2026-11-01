@@ -33,6 +33,7 @@ process.removeAllListeners("warning");
 
 const IDLE_WHY = {
   paused: "paused (PAUSE file)",
+  auto_run_off: "autoRun is off on this machine (agents.sh auto on)",
   pick_empty: "no ready tickets",
   claim_skip: "every pick already has a PR or branch",
   lock_held: "another run held the lock",
@@ -87,7 +88,7 @@ const ABORT_HINT = {
   pick_claude_failed: "the ticket pick failed: check the Claude login",
   pick_unparsable: "the ticket pick returned an unusable result",
   preflight_tool_missing: "a tool the runner needs is not on PATH",
-  preflight_config: "agents.config.json is missing a setting",
+  preflight_config: "agents.config.json is missing a setting, or $AGENTS_HOME/machine.json is missing",
   push_url_unsafe: "the origin push URL is unsafe for bot pushes",
 };
 const hhmm = (ts) => {
