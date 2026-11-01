@@ -33,6 +33,8 @@ process.removeAllListeners("warning");
 
 const IDLE_WHY = {
   paused: "paused (PAUSE file)",
+  auto_run_off: "autoRun is off on this machine (agents.sh auto on)",
+  outside_window: "the scheduled run started outside runner.startWindow (the machine woke late?)",
   pick_empty: "no ready tickets",
   claim_skip: "every pick already has a PR or branch",
   lock_held: "another run held the lock",
@@ -82,12 +84,13 @@ const prLink = (repo, n) => (repo ? `<https://github.com/${repo}/pull/${n}|#${n}
 const ABORT_HINT = {
   on_battery: "Mac was on battery: plug it in before tonight",
   lock_held: "another run held the lock",
+  run_deadline: "the run passed runner.runDeadlineMinutes and was stopped",
   fetch_timeout: "git fetch failed (network, or the Mac slept)",
   token_mint: "the bot token could not be minted",
   pick_claude_failed: "the ticket pick failed: check the Claude login",
   pick_unparsable: "the ticket pick returned an unusable result",
   preflight_tool_missing: "a tool the runner needs is not on PATH",
-  preflight_config: "agents.config.json is missing a setting",
+  preflight_config: "agents.config.json is missing a setting, or $AGENTS_HOME/machine.json is missing",
   push_url_unsafe: "the origin push URL is unsafe for bot pushes",
 };
 const hhmm = (ts) => {
@@ -104,7 +107,7 @@ const modelName = (m) => {
 const CHECK_ICON = { success: "✅", skipped: "➖", failure: "❌", cancelled: "❌", timed_out: "❌", pending: "⏳", missing: "❔" };
 const NIGHT_ICON = { clean: "🟢", dirty: "🔴", idle: "⚪", missed: "⚫" };
 
-// One line: outcome · tickets/PRs · cost · time. A dry run is marked so (and never posted).
+// One line: outcome · tickets/PRs · cost · machine · time. A dry run is marked so (and never posted).
 function runMessage(events, night) {
   const runner = events.filter((e) => (e.source || "runner") === "runner" && e.night === night);
   const runId = env.EV_RUN_ID || [...runner].reverse().find((e) => e.run_id)?.run_id;
@@ -129,6 +132,8 @@ function runMessage(events, night) {
     if (prs.length) bits.push(prs.join(" "));
     if (typeof end.cost_usd_total === "number") bits.push(usd(end.cost_usd_total));
   } else bits.push("⚠️ Run", "no run_end or run_abort yet");
+  const machine = evs.find((e) => e.machine)?.machine;
+  if (machine) bits.push(esc(machine));
   if (last?.ts && !dry) bits.push(hhmm(last.ts));
   return { text: bits.filter(Boolean).join(" · "), dry };
 }

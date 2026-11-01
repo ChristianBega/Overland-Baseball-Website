@@ -125,11 +125,20 @@ Next, run these yourself:
 
 Check / run now / remove:
   launchctl print gui/\$(id -u)/$LABEL | head -20
-  launchctl kickstart gui/\$(id -u)/$LABEL
+  AGENTS_HOME="$AGENTS_HOME" AGENTS_LOG_DIR="$AGENTS_LOG_DIR" sh "$RUNNER/scripts/agents/agents.sh" run
+  (launchctl kickstart gui/\$(id -u)/$LABEL follows the schedule rules (AGENTS_TRIGGER=schedule):
+  outside runner.startWindow or with autoRun false it exits idle. Use agents.sh run to run now.)
   launchctl bootout gui/\$(id -u)/$LABEL
   launchctl kickstart gui/\$(id -u)/$MORNING_LABEL   # then: cat $AGENTS_LOG_DIR/\$(date +%F)/report.md
   launchctl bootout gui/\$(id -u)/$MORNING_LABEL
   pmset -g sched
+
+Machine profile (required; a run without it aborts):
+  printf '{ "name": "<machine>", "autoRun": true }\n' > "$AGENTS_HOME/machine.json"
+  AGENTS_HOME="$AGENTS_HOME" sh "$RUNNER/scripts/agents/agents.sh" status | auto on|off | run [KEY ...]
+  (autoRun false: the scheduled run exits idle; agents.sh run still builds now. A Jira label
+  machine:<name> sends a ticket to one machine; unlabelled tickets go to either. A scheduled run
+  that starts outside runner.startWindow exits idle; agents.sh run ignores the window.)
 
 Pause / resume:   touch "$AGENTS_HOME/PAUSE"   /   rm "$AGENTS_HOME/PAUSE"
 Logs:             $AGENTS_LOG_DIR/<date>/summary.log, <date>/report.md, launchd-morning.log
