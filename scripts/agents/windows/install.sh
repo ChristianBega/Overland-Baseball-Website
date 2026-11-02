@@ -149,7 +149,8 @@ Inside WSL (Windows / WSL notes):
     then sudo apt install ./google-chrome-stable_current_amd64.deb). verify.mjs looks for
     /usr/bin/google-chrome; set CHROME_PATH to use another binary.
   - Node: the PATH above is pinned to the node, git, gh and claude found now (nvm is not loaded
-    by wsl.exe). Re-run this installer after switching Node versions.
+    by wsl.exe). The runner itself uses the .nvmrc major: machine.json "nodeBin" (a directory
+    holding node), else the newest nvm install of it. Re-run this installer after switching Node.
   - Secrets stay in WSL: the bot key ($(node -p 'require(process.argv[1]).bot.keyDir' "$CONFIG")/key.pem),
     $AGENTS_HOME/slack-webhook (chmod 600) and the runner.envFiles in this checkout.
 

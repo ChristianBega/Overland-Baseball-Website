@@ -2,7 +2,8 @@
 # that do not depend on the scheduler. Needs REPO_ROOT and AGENTS_HOME.
 #
 #   pin_path <system dirs>  P = the directories of node, git, gh and claude, then <system dirs>
-#                           (the scheduler starts with a bare PATH)
+#                           (the scheduler starts with a bare PATH); refuses a node that does not
+#                           run or is below the .nvmrc major
 #   runner_checkout         CONFIG, BASE, RUNNER: the runner's own detached worktree of this repo at
 #                           origin/<base>, created if missing
 #   runner_commands         SYNC, NIGHTLY, MORNING: the scheduled commands, for /bin/sh -c (below)
@@ -15,6 +16,14 @@ pin_path() {
     case ":$P:" in *":$d:"*) ;; *) P="$P${P:+:}$d" ;; esac
   done
   P="$P:$1"
+  # The pinned node must run and be at least the .nvmrc major (a broken Homebrew node once sat first).
+  nv=$(node -v 2>/dev/null) || { echo "install: node ($(command -v node)) does not run (node -v failed): put a working node first on PATH" >&2; exit 1; }
+  want=$(sed -n '1s/^v\{0,1\}\([0-9][0-9]*\).*/\1/p' "$REPO_ROOT/.nvmrc" 2>/dev/null)
+  have=${nv#v}
+  if [ -n "$want" ] && [ "${have%%.*}" -lt "$want" ]; then
+    echo "install: node $nv ($(command -v node)) is below .nvmrc $want: nvm use $want, then re-run" >&2
+    exit 1
+  fi
 }
 
 # The runner's own checkout: a detached worktree of this repo at origin/<base>.
