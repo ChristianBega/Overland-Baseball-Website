@@ -40,14 +40,10 @@ MINUTE=$(printf '%s' "${AT##*:}" | sed 's/^0\(.\)/\1/')
 M_HOUR=$(printf '%s' "${MORNING_AT%%:*}" | sed 's/^0\(.\)/\1/')
 M_MINUTE=$(printf '%s' "${MORNING_AT##*:}" | sed 's/^0\(.\)/\1/')
 
+. "$HERE/../install-common.sh"   # pin_path, runner_checkout, runner_commands (shared with windows/)
+
 # launchd starts with a bare PATH: pin the directories that hold the tools the runner needs.
-P=""
-for bin in node git gh claude; do
-  p=$(command -v "$bin") || { echo "install: $bin not on PATH" >&2; exit 1; }
-  d=$(dirname "$p")
-  case ":$P:" in *":$d:"*) ;; *) P="$P${P:+:}$d" ;; esac
-done
-P="$P:/usr/bin:/bin:/usr/sbin:/sbin"
+pin_path "/usr/bin:/bin:/usr/sbin:/sbin"
 
 # Wake 5 minutes before the run.
 WAKE_TOTAL=$(( (HOUR * 60 + MINUTE + 1440 - 5) % 1440 ))
@@ -57,32 +53,11 @@ DEST="$HOME/Library/LaunchAgents/$LABEL.plist"
 MORNING_DEST="$HOME/Library/LaunchAgents/$MORNING_LABEL.plist"
 mkdir -p "$HOME/Library/LaunchAgents" "$AGENTS_HOME" "$AGENTS_LOG_DIR"
 
-# The runner's own checkout: a detached worktree of this repo at origin/<base>.
-CONFIG="$REPO_ROOT/.claude/agents.config.json"
-BASE=$(node -p 'require(process.argv[1]).repo.baseBranch' "$CONFIG")
-RUNNER="$AGENTS_HOME/runner"
-git -C "$REPO_ROOT" fetch -q origin "$BASE"
-git -C "$REPO_ROOT" worktree prune # forget a runner dir that was deleted by hand
-if [ ! -e "$RUNNER/.git" ]; then
-  git -C "$REPO_ROOT" worktree add -q --detach "$RUNNER" "origin/$BASE"
-fi
-
-# The nightly command, run by /bin/sh -c. Move the runner checkout to the latest origin/<base>
-# (skipped only while a live run holds the lock; a crashed run's stale lock does not block it),
-# refresh the env files, then start overnight.sh. The update
-# finishes before overnight.sh is read, so a script is never rewritten while it runs. A failed
-# checkout (local edits in the runner dir) stops the night rather than running stale code.
-# The morning check syncs the same way, then runs report.mjs --morning (no env files needed).
-q() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }
-SYNC="cd $(q "$RUNNER") || exit 1; if ! kill -0 \"\$(cat $(q "$AGENTS_HOME/lock/pid") 2>/dev/null)\" 2>/dev/null; then git fetch -q origin $(q "$BASE"); git checkout -q --detach $(q "origin/$BASE") || exit 1; fi;"
-NIGHTLY=$SYNC
-for f in $(node -p '(require(process.argv[1]).runner.envFiles || []).join(" ")' "$CONFIG"); do
-  NIGHTLY="$NIGHTLY cp $(q "$REPO_ROOT/$f") $(q "$RUNNER/$f") 2>/dev/null;"
-done
-NIGHTLY="$NIGHTLY exec /bin/sh scripts/agents/overnight.sh"
+runner_checkout
+runner_commands
 xml() { printf '%s' "$1" | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
 NIGHTLY=$(xml "$NIGHTLY")
-MORNING=$(xml "$SYNC exec node scripts/agents/report.mjs --morning")
+MORNING=$(xml "$MORNING")
 
 esc() { printf '%s' "$1" | sed -e 's/[&|\\]/\\&/g'; }
 sed -e "s|__LABEL__|$(esc "$LABEL")|g" \

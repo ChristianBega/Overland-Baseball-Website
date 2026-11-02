@@ -37,11 +37,8 @@ REPO_ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 CONFIG="$REPO_ROOT/.claude/agents.config.json"
 REPO_NAME=$(basename "$REPO_ROOT")
 AGENTS_HOME=${AGENTS_HOME:-$HOME/.agents/$REPO_NAME}
-if [ "$(uname)" = Darwin ]; then
-  AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$HOME/Library/Logs/$REPO_NAME-agents}
-else
-  AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/$REPO_NAME-agents}
-fi
+. "$REPO_ROOT/scripts/agents/platform.sh"   # PLATFORM (darwin | wsl | linux), DEFAULT_LOG_DIR
+AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$DEFAULT_LOG_DIR}
 DRY_RUN=${AGENTS_DRY_RUN:-0}
 MACHINE=""   # from machine.json (step 1b); empty on events before that
 
@@ -210,8 +207,8 @@ with_timeout() {
   return "$t_rc"
 }
 
-say "=== run start (repo $REPO_NAME, machine $MACHINE, mode=$TRIGGER, dry-run $DRY_RUN)"
-emit run_start mode="$TRIGGER"
+say "=== run start (repo $REPO_NAME, machine $MACHINE, platform $PLATFORM, mode=$TRIGGER, dry-run $DRY_RUN)"
+emit run_start mode="$TRIGGER" platform="$PLATFORM"
 
 # ---- 3. preflight: all or nothing -------------------------------------------------------------
 for bin in node git gh claude; do
@@ -223,7 +220,7 @@ GH_BIN=$(command -v gh)
 # On battery the `pmset -c` sleep settings do not apply: the Mac deep-sleeps minutes into the run,
 # the network is gone in DarkWake and the build stalls for hours (nights 2 and 3). Refuse to start
 # rather than stall; the summary line says why.
-if [ "$(uname)" = Darwin ] && [ "${AGENTS_ALLOW_BATTERY:-0}" != 1 ]; then
+if [ "$PLATFORM" = darwin ] && [ "${AGENTS_ALLOW_BATTERY:-0}" != 1 ]; then
   case $(pmset -g batt 2>/dev/null | head -n 1) in
     *"AC Power"*) ;;
     *) die on_battery "on battery power: the Mac would sleep mid-run; plug in and re-run (AGENTS_ALLOW_BATTERY=1 overrides)" ;;
