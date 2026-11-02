@@ -3,11 +3,16 @@
   "repo": {
     "baseBranch": "development",
     "protectedBranches": ["development", "main"],
-    "branchPrefixes": ["feature/", "fix/", "chore/", "ci/"]
+    "branchPrefixes": ["feature/", "fix/", "chore/", "ci/"],
+    "$branchPrefixByIssueTypeComment": "The runner's claim branch (and the builder's branch) per Jira issue type; default for any other type. Each value must be in branchPrefixes.",
+    "branchPrefixByIssueType": { "Bug": "fix/", "default": "feature/" }
   },
   "jira": {
     "projectKey": "OV",
-    "cloudId": "a98977c6-123f-4e4d-90f4-3f2b1084c402"
+    "cloudId": "a98977c6-123f-4e4d-90f4-3f2b1084c402",
+    "$orderByComment": "Pick order: backlog order is queue order (Rank ASC). pickMaxResults is the pick window; the runner raises it to 3x the per-run cap.",
+    "orderBy": "Rank ASC",
+    "pickMaxResults": 10
   },
   "bot": {
     "login": "overland-bot[bot]",
@@ -27,7 +32,9 @@
     "jira": {
       "readyForBuild": "ready-for-build",
       "blocked": "blocked",
-      "sizes": ["size-s", "size-m", "size-l"]
+      "sizes": ["size-s", "size-m", "size-l"],
+      "$machinePrefixComment": "A ticket labelled <machinePrefix><name> is built only by the machine whose $AGENTS_HOME/machine.json has that name; a ticket with no such label goes to any machine.",
+      "machinePrefix": "machine:"
     }
   },
   "commands": {
@@ -47,6 +54,10 @@
     "$comment": "After 2-3 clean nights: maxTicketsPerNight 5, allowedSizes add size-l.",
     "maxTurns": 150,
     "wallClockMinutes": 50,
+    "$scheduleComment": "startWindow: a scheduled run (launchd / Task Scheduler) starting outside it exits idle (outside_window); agents.sh run ignores it. runDeadlineMinutes: the whole run is stopped after this, and a lock older than it is stale. stepTimeoutSeconds: fetch, pick, mint, gh pr list, ls-remote and the claim push each.",
+    "startWindow": "00:30-06:30",
+    "runDeadlineMinutes": 300,
+    "stepTimeoutSeconds": 180,
     "maxBudgetUsd": 15,
     "pickModel": "sonnet",
     "$modelComment": "Build model per ticket: a Jira label <modelLabelPrefix><model> wins (only models listed in modelBySize values or allowedModels), else modelBySize by the ticket size label, else the agent file default.",

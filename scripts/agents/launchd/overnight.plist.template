@@ -3,7 +3,8 @@
 <!-- Rendered by scripts/agents/launchd/install.sh. Placeholders: __LABEL__ __RUNNER__ __NIGHTLY__
      __PATH__ __AGENTS_HOME__ __AGENTS_LOG_DIR__ __HOUR__ __MINUTE__. __NIGHTLY__ updates the runner
      checkout and then starts overnight.sh (see install.sh). caffeinate keeps the Mac awake for the
-     whole run after the pmset wake (otherwise it drops back to sleep within minutes). -->
+     whole run after the pmset wake (otherwise it drops back to sleep within minutes).
+     AGENTS_TRIGGER=schedule makes overnight.sh honour machine.json autoRun and runner.startWindow. -->
 <plist version="1.0">
 <dict>
   <key>Label</key>
@@ -26,6 +27,8 @@
     <string>__AGENTS_HOME__</string>
     <key>AGENTS_LOG_DIR</key>
     <string>__AGENTS_LOG_DIR__</string>
+    <key>AGENTS_TRIGGER</key>
+    <string>schedule</string>
   </dict>
   <key>StartCalendarInterval</key>
   <dict>
