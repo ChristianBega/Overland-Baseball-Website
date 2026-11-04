@@ -32,9 +32,9 @@ import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
-import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { FAILURE_CLASSES } from "./events.mjs";
+import { logDir } from "./platform.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const CONFIG = join(ROOT, ".claude/agents.config.json");
@@ -78,12 +78,7 @@ function morningNight(now = new Date()) {
 function eventsPath(opt) {
   if (opt.events) return opt.events;
   if (process.env.AGENTS_EVENTS) return process.env.AGENTS_EVENTS;
-  const name = basename(ROOT);
-  const dir = process.env.AGENTS_LOG_DIR
-    || (process.platform === "darwin"
-      ? join(homedir(), "Library/Logs", `${name}-agents`)
-      : join(process.env.XDG_STATE_HOME || join(homedir(), ".local/state"), `${name}-agents`));
-  return join(dir, "events.jsonl");
+  return join(logDir(basename(ROOT)), "events.jsonl");
 }
 
 function readEvents(path) {

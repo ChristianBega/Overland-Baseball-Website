@@ -24,6 +24,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } 
 import { basename, dirname, join } from "node:path";
 import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
+import { logDir as platformLogDir } from "./platform.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const NAME = basename(ROOT);
@@ -57,10 +58,7 @@ function morningNight(now = new Date()) {
 }
 
 function logDir() {
-  return env.AGENTS_LOG_DIR
-    || (process.platform === "darwin"
-      ? join(homedir(), "Library/Logs", `${NAME}-agents`)
-      : join(env.XDG_STATE_HOME || join(homedir(), ".local/state"), `${NAME}-agents`));
+  return platformLogDir(NAME, env);
 }
 
 function readEvents(path) {

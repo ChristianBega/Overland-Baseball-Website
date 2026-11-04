@@ -8,8 +8,9 @@
 #
 # Repo facts come from .claude/agents.config.json (jira, repo, bot, labels, commands, runner).
 # This machine's name and schedule switch come from $AGENTS_HOME/machine.json (outside the repo):
-#   { "name": "laptop", "autoRun": true }
-# A run without it aborts (preflight_config). autoRun false stops scheduled runs only.
+#   { "name": "laptop", "autoRun": true }            (optional "nodeBin": "<dir holding node>")
+# A run without it aborts (preflight_config). autoRun false stops scheduled runs only. Node is the
+# .nvmrc major: nodeBin, else the newest nvm install of it, first on PATH (step 0 checks it).
 # Machine facts come from env vars (defaults in brackets):
 #   AGENTS_HOME     PAUSE file, lock, worktrees, scratch    [~/.agents/<repo dir name>]
 #   AGENTS_LOG_DIR  per-night logs                          [~/Library/Logs/<repo>-agents on macOS,
@@ -37,11 +38,21 @@ REPO_ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 CONFIG="$REPO_ROOT/.claude/agents.config.json"
 REPO_NAME=$(basename "$REPO_ROOT")
 AGENTS_HOME=${AGENTS_HOME:-$HOME/.agents/$REPO_NAME}
-if [ "$(uname)" = Darwin ]; then
-  AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$HOME/Library/Logs/$REPO_NAME-agents}
-else
-  AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/$REPO_NAME-agents}
+. "$REPO_ROOT/scripts/agents/platform.sh"   # PLATFORM (darwin | wsl | linux), DEFAULT_LOG_DIR
+AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$DEFAULT_LOG_DIR}
+
+# Node: the major version in .nvmrc, first on PATH for the run and for the build. A broken or old
+# node earlier on PATH (a stale Homebrew node, night 3) fails the build's npm and verify steps in
+# ways the run cannot see. The pinned bin is machine.json "nodeBin", else the newest nvm install of
+# that major. The build's Bash tool gets it through CLAUDE_ENV_FILE as well: its shell can rebuild
+# PATH from the owner's profile. Checked in step 0 below.
+NODE_MAJOR=$(sed -n '1s/^v\{0,1\}\([0-9][0-9]*\).*/\1/p' "$REPO_ROOT/.nvmrc" 2>/dev/null)
+NODE_BIN=$(sed -n 's/.*"nodeBin"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$AGENTS_HOME/machine.json" 2>/dev/null | head -n 1)
+if [ -z "$NODE_BIN" ] && [ -n "$NODE_MAJOR" ]; then
+  NODE_BIN=$(for d in "${NVM_DIR:-$HOME/.nvm}"/versions/node/v"$NODE_MAJOR".*/bin; do [ -x "$d/node" ] && printf '%s\n' "$d"; done |
+    awk -F/ '{ v = $(NF - 1); sub(/^v/, "", v); split(v, n, "."); printf "%06d%06d %s\n", n[2], n[3], $0 }' | sort | tail -n 1 | cut -d" " -f2-)
 fi
+[ -n "$NODE_BIN" ] && PATH="$NODE_BIN:$PATH" && export PATH
 DRY_RUN=${AGENTS_DRY_RUN:-0}
 MACHINE=""   # from machine.json (step 1b); empty on events before that
 
@@ -94,6 +105,13 @@ cfg() {
     console.log(Array.isArray(v) ? v.join("\n") : typeof v === "object" ? JSON.stringify(v) : String(v));
   ' "$CONFIG" "$1"
 }
+
+# ---- 0. node -----------------------------------------------------------------------------------
+NODE_V=$(node -v 2>/dev/null) || die preflight_tool_missing "node ($(command -v node || echo "not on PATH")) does not run (node -v failed): nvm install ${NODE_MAJOR:-<version>} or set nodeBin in $AGENTS_HOME/machine.json"
+nv=${NODE_V#v}
+if [ -n "$NODE_MAJOR" ] && [ "${nv%%.*}" -lt "$NODE_MAJOR" ] 2>/dev/null; then
+  die preflight_tool_missing "node $NODE_V ($(command -v node)) is below .nvmrc $NODE_MAJOR: nvm install $NODE_MAJOR or set nodeBin in $AGENTS_HOME/machine.json"
+fi
 
 # ---- 1. kill switch ---------------------------------------------------------------------------
 if [ -e "$AGENTS_HOME/PAUSE" ]; then
@@ -210,8 +228,8 @@ with_timeout() {
   return "$t_rc"
 }
 
-say "=== run start (repo $REPO_NAME, machine $MACHINE, mode=$TRIGGER, dry-run $DRY_RUN)"
-emit run_start mode="$TRIGGER"
+say "=== run start (repo $REPO_NAME, machine $MACHINE, platform $PLATFORM, node $NODE_V, mode=$TRIGGER, dry-run $DRY_RUN)"
+emit run_start mode="$TRIGGER" platform="$PLATFORM" node="$NODE_V"
 
 # ---- 3. preflight: all or nothing -------------------------------------------------------------
 for bin in node git gh claude; do
@@ -223,7 +241,7 @@ GH_BIN=$(command -v gh)
 # On battery the `pmset -c` sleep settings do not apply: the Mac deep-sleeps minutes into the run,
 # the network is gone in DarkWake and the build stalls for hours (nights 2 and 3). Refuse to start
 # rather than stall; the summary line says why.
-if [ "$(uname)" = Darwin ] && [ "${AGENTS_ALLOW_BATTERY:-0}" != 1 ]; then
+if [ "$PLATFORM" = darwin ] && [ "${AGENTS_ALLOW_BATTERY:-0}" != 1 ]; then
   case $(pmset -g batt 2>/dev/null | head -n 1) in
     *"AC Power"*) ;;
     *) die on_battery "on battery power: the Mac would sleep mid-run; plug in and re-run (AGENTS_ALLOW_BATTERY=1 overrides)" ;;
@@ -594,6 +612,9 @@ EOF
     'export GH_TOKEN' \
     'exec "$AGENTS_GH_BIN" "$@"' > "$SHIM/gh"
   chmod 755 "$SHIM/gh"
+  # Sourced before each of the builder's Bash commands: the pinned node first, whatever its shell
+  # does to PATH (the owner's profile can put a broken node ahead of it).
+  [ -n "$NODE_BIN" ] && printf 'export PATH=%s:"$PATH"\n' "'$NODE_BIN'" > "$SHIM/node-env.sh"
 
   # Job control on, so the build gets its own process group and the watchdog can kill claude plus
   # anything it started (dev server, browser) in one go.
@@ -609,6 +630,7 @@ EOF
     # Fail closed: a `gh` reached without the shim finds no stored login (empty config dir) and errors
     # out instead of acting as the owner. The shim's gh still works from the GH_TOKEN it sets.
     export GH_CONFIG_DIR="$SHIM/gh-home"
+    [ -f "$SHIM/node-env.sh" ] && export CLAUDE_ENV_FILE="$SHIM/node-env.sh"
     export GIT_CONFIG_COUNT=3
     export GIT_CONFIG_KEY_0=credential.helper GIT_CONFIG_VALUE_0=
     export GIT_CONFIG_KEY_1=credential.helper GIT_CONFIG_VALUE_1="$BOT_HELPER"

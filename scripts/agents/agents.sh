@@ -18,11 +18,8 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 REPO_ROOT=$(cd "$HERE/../.." && pwd)
 REPO_NAME=$(basename "$REPO_ROOT")
 AGENTS_HOME=${AGENTS_HOME:-$HOME/.agents/$REPO_NAME}
-if [ "$(uname)" = Darwin ]; then
-  AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$HOME/Library/Logs/$REPO_NAME-agents}
-else
-  AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/$REPO_NAME-agents}
-fi
+. "$HERE/platform.sh"   # PLATFORM, DEFAULT_LOG_DIR
+AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$DEFAULT_LOG_DIR}
 PROFILE="$AGENTS_HOME/machine.json"
 
 usage() {
