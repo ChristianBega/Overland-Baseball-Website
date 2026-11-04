@@ -30,7 +30,7 @@ export const FAILURE_CLASSES = [
   "none", "missed_run", "paused", "auto_run_off", "outside_window", "run_deadline", "lock_held",
   "on_battery", "preflight_tool_missing",
   "preflight_config", "fetch_timeout", "push_url_unsafe", "token_mint", "pick_claude_failed",
-  "pick_unparsable", "pick_empty", "claim_skip", "worktree_add", "auth_push", "build_fail",
+  "pick_unparsable", "pick_empty", "claim_skip", "claim_failed", "worktree_add", "auth_push", "build_fail",
   "verify_fail", "max_turns", "max_budget", "agent_error", "timeout", "no_pr", "sleep_stall", "unknown",
 ];
 export const OUTCOMES = ["pr", "branch_only", "failed", "timeout", "skipped", "idle"];

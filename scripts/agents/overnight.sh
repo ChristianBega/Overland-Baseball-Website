@@ -49,9 +49,12 @@ AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$DEFAULT_LOG_DIR}
 NODE_MAJOR=$(sed -n '1s/^v\{0,1\}\([0-9][0-9]*\).*/\1/p' "$REPO_ROOT/.nvmrc" 2>/dev/null)
 NODE_BIN=$(sed -n 's/.*"nodeBin"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$AGENTS_HOME/machine.json" 2>/dev/null | head -n 1)
 if [ -z "$NODE_BIN" ] && [ -n "$NODE_MAJOR" ]; then
-  NODE_BIN=$(for d in "${NVM_DIR:-$HOME/.nvm}"/versions/node/v"$NODE_MAJOR".*/bin; do [ -x "$d/node" ] && printf '%s\n' "$d"; done |
+  NODE_BIN=$(for d in "${NVM_DIR:-$HOME/.nvm}"/versions/node/v"$NODE_MAJOR".*/bin; do "$d/node" -v >/dev/null 2>&1 && printf '%s\n' "$d"; done |
     awk -F/ '{ v = $(NF - 1); sub(/^v/, "", v); split(v, n, "."); printf "%06d%06d %s\n", n[2], n[3], $0 }' | sort | tail -n 1 | cut -d" " -f2-)
 fi
+# A nodeBin that has no working node is refused in step 0, not skipped for whatever is next on PATH.
+NODE_PIN_BAD=""
+[ -n "$NODE_BIN" ] && ! "$NODE_BIN/node" -v >/dev/null 2>&1 && NODE_PIN_BAD=$NODE_BIN
 [ -n "$NODE_BIN" ] && PATH="$NODE_BIN:$PATH" && export PATH
 DRY_RUN=${AGENTS_DRY_RUN:-0}
 MACHINE=""   # from machine.json (step 1b); empty on events before that
@@ -97,6 +100,9 @@ die() {
   exit 1
 }
 
+# q <string> — the string as one single-quoted shell word (as in install-common.sh).
+q() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }
+
 # cfg <dotted.path> — prints a config value; arrays print one item per line.
 cfg() {
   node -e '
@@ -106,11 +112,39 @@ cfg() {
   ' "$CONFIG" "$1"
 }
 
+# node_abort <message> — step 0's abort. emit and notify_run are node scripts, and with a broken
+# or old node they fail silently, so the run_abort line and the Slack post are written from sh.
+# Same fields, webhook file and notify-run.md fallback as events.mjs / notify.mjs.
+node_abort() {
+  say "ABORT: $1"
+  jq_s() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+  m=$(sed -n 's/.*"name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$AGENTS_HOME/machine.json" 2>/dev/null | head -n 1)
+  mf="" df=""
+  [ -n "$m" ] && mf="\"machine\":\"$(jq_s "$m")\","
+  [ "$DRY_RUN" = 1 ] && df='"dry_run":true,'
+  printf '{"ts":"%s","night":"%s","run_id":"%s","repo":"%s",%s"source":"runner","event":"run_abort",%s"failure_class":"preflight_tool_missing","reason":"%s"}\n' \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$NIGHT" "$RUN_ID" "$(jq_s "$EV_REPO")" "$mf" "$df" "$(jq_s "$1")" >> "$EVENTS" 2>/dev/null
+  text="⚠️ Run aborted · \`preflight_tool_missing\` · node does not run or is too old${m:+ · $m} · $(date +%H:%M)"
+  f=${AGENTS_SLACK_WEBHOOK_FILE:-$AGENTS_HOME/slack-webhook}
+  url=$(head -n 1 "$f" 2>/dev/null | tr -d '\r[:space:]')
+  why=""
+  if [ "$DRY_RUN" = 1 ]; then why="dry run"
+  elif [ -z "$url" ]; then why="no webhook file ($f)"
+  elif ! command -v curl >/dev/null 2>&1; then why="curl not on PATH"
+  # The URL goes to curl on stdin (-K -), never on a command line.
+  elif ! printf 'url = "%s"\n' "$url" | curl -sS -f -m 10 -K - -H 'content-type: application/json' \
+         --data "{\"text\":\"$(jq_s "$text")\"}" >/dev/null 2>&1; then why="slack post failed (curl)"
+  fi
+  [ -n "$why" ] && printf '<!-- not posted: %s -->\n%s\n' "$why" "$text" > "$LOG_DIR/notify-run.md"
+  exit 1
+}
+
 # ---- 0. node -----------------------------------------------------------------------------------
-NODE_V=$(node -v 2>/dev/null) || die preflight_tool_missing "node ($(command -v node || echo "not on PATH")) does not run (node -v failed): nvm install ${NODE_MAJOR:-<version>} or set nodeBin in $AGENTS_HOME/machine.json"
+[ -n "$NODE_PIN_BAD" ] && node_abort "nodeBin $NODE_PIN_BAD has no working node (node -v failed): fix nodeBin in $AGENTS_HOME/machine.json"
+NODE_V=$(node -v 2>/dev/null) || node_abort "node ($(command -v node || echo "not on PATH")) does not run (node -v failed): nvm install ${NODE_MAJOR:-<version>} or set nodeBin in $AGENTS_HOME/machine.json"
 nv=${NODE_V#v}
 if [ -n "$NODE_MAJOR" ] && [ "${nv%%.*}" -lt "$NODE_MAJOR" ] 2>/dev/null; then
-  die preflight_tool_missing "node $NODE_V ($(command -v node)) is below .nvmrc $NODE_MAJOR: nvm install $NODE_MAJOR or set nodeBin in $AGENTS_HOME/machine.json"
+  node_abort "node $NODE_V ($(command -v node)) is below .nvmrc $NODE_MAJOR: nvm install $NODE_MAJOR or set nodeBin in $AGENTS_HOME/machine.json"
 fi
 
 # ---- 1. kill switch ---------------------------------------------------------------------------
@@ -179,10 +213,17 @@ if ! mkdir "$LOCK" 2>/dev/null; then
       exit 0
     fi
     say "lock held by pid $old for ${age} s, past the run deadline (${DEADLINE_SEC} s): stopping it"
+    ocpid=$(cat "$LOCK/cpid" 2>/dev/null)
     kill -TERM "$old" 2>/dev/null
     i=0
     while kill -0 "$old" 2>/dev/null && [ "$i" -lt 30 ]; do sleep 1; i=$((i + 1)); done
     kill -KILL "$old" 2>/dev/null
+    # KILL skips the old run's EXIT trap, and TERM can leave a browser or dev server behind: stop
+    # the old build's whole process group as well.
+    case $ocpid in
+      '' | *[!0-9]*) ;;
+      *) kill -TERM -"$ocpid" 2>/dev/null && { sleep 2; kill -KILL -"$ocpid" 2>/dev/null; say "stopped the old build (process group $ocpid)"; } ;;
+    esac
   fi
   say "removing stale lock (pid ${old:-?})"
   rm -rf "$LOCK"
@@ -566,8 +607,10 @@ for k in $TODO; do
       emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="claim race lost" branch="$BR"
       continue ;;
     *)
-      say "$k: skip ($c)"
-      emit claim_skip ticket="$k" outcome=skipped failure_class=claim_skip reason="$c" branch="$BR"
+      # Not a lost race (auth, branch protection, timeout): a failed attempt, named in the run line.
+      attempted=$((attempted + 1)) run_class=claim_failed
+      say "$k: FAIL claim ($c)"
+      emit claim_skip ticket="$k" outcome=failed failure_class=claim_failed reason="$c" branch="$BR"
       continue ;;
   esac
   RUN_KEYS="$RUN_KEYS $k"
@@ -614,7 +657,7 @@ EOF
   chmod 755 "$SHIM/gh"
   # Sourced before each of the builder's Bash commands: the pinned node first, whatever its shell
   # does to PATH (the owner's profile can put a broken node ahead of it).
-  [ -n "$NODE_BIN" ] && printf 'export PATH=%s:"$PATH"\n' "'$NODE_BIN'" > "$SHIM/node-env.sh"
+  [ -n "$NODE_BIN" ] && printf 'export PATH=%s:"$PATH"\n' "$(q "$NODE_BIN")" > "$SHIM/node-env.sh"
 
   # Job control on, so the build gets its own process group and the watchdog can kill claude plus
   # anything it started (dev server, browser) in one go.
@@ -645,6 +688,7 @@ EOF
   ) < /dev/null > "$TLOG" 2>&1 &
   cpid=$!
   set +m
+  echo "$cpid" > "$LOCK/cpid"   # for a stale-lock takeover: the build's process group
   t0=$(date +%s)
 
   TIMED_OUT="$SCRATCH/.timed-out"
@@ -665,6 +709,7 @@ EOF
   # that ignored TERM (browser, vite under npm).
   [ -e "$TIMED_OUT" ] && { kill -KILL -"$cpid" 2>/dev/null || kill -KILL "$cpid" 2>/dev/null; }
   cpid=""
+  rm -f "$LOCK/cpid"
   pkill -P "$wpid" 2>/dev/null
   kill "$wpid" 2>/dev/null
   wpid=""
@@ -688,9 +733,9 @@ EOF
   pr=$(claimed_by "$k")
   # Our own claim branch, still at the claim commit, is not a result: the build pushed nothing.
   # It stays on origin and keeps the ticket claimed until the owner deletes it (rebuilds: OV-122).
+  # Checked on the branch itself: claimed_by may name another branch for the key that sorts first.
   claim_empty=false
-  if [ "$pr" = "branch $BR" ] &&
-     [ "$(with_timeout "$STEP_SEC" ls-remote git -C "$REPO_ROOT" ls-remote origin "refs/heads/$BR" 2>/dev/null | awk '{print $1}')" = "$CLAIM_SHA" ]; then
+  if [ "$(with_timeout "$STEP_SEC" ls-remote git -C "$REPO_ROOT" ls-remote origin "refs/heads/$BR" 2>/dev/null | awk '{print $1}')" = "$CLAIM_SHA" ]; then
     pr="" claim_empty=true
   fi
   if [ -e "$TIMED_OUT" ]; then
