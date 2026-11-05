@@ -13,9 +13,11 @@ on:
     types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
     branches: [development]
 
-concurrency:
-  group: qa-guard-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+# No concurrency group (OV-161). A bot PR opened with labels fires opened + labeled + labeled within a
+# second; with cancel-in-progress the newest run could be cancelled before it created a job, leaving
+# the required check on "Expected". Each run is about 4 s and reads labels and files live, so every
+# event runs to the end instead. Label events are not skipped: a skipped job reports a passing
+# `qa-guard`, so an unrelated label would turn a red guard green.
 
 permissions:
   contents: read
