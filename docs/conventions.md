@@ -89,7 +89,8 @@ and its nearest existing caller.
   calendar) are legacy.
 - The Boosters, Documents, PasswordReset, 404 and ThemeShowcase pages don't follow
   Page shape.
-- `features/roster/components/StaffItem.jsx` and `features/ui/components/Socials..jsx` render images
-  without `alt`; neither is used by any page.
+- `features/roster/components/StaffItem.jsx` (unused) and the `mobile`/default variants of
+  `features/ui/components/Socials..jsx` (only the image-free `footer` variant is rendered) render
+  images without `alt`.
 - `features/navigation/components/FooterNavigation copy.jsx` (the rendered footer, exported as
   `FooterNavigation`) renders its logo without `alt`.
