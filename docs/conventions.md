@@ -91,3 +91,5 @@ and its nearest existing caller.
   Page shape.
 - `features/roster/components/StaffItem.jsx` and `features/ui/components/Socials..jsx` render images
   without `alt`; neither is used by any page.
+- `features/navigation/components/FooterNavigation copy.jsx` (the rendered footer, exported as
+  `FooterNavigation`) renders its logo without `alt`.
