@@ -1,11 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
 
 /**
- * Custom hook for client-side rate limiting
- * @param {string} identifier - Unique identifier (email, userId, etc.)
- * @param {number} maxAttempts - Maximum attempts allowed
- * @param {number} windowMs - Time window in milliseconds (default: 1 hour)
- * @returns {object} - { canSubmit, remainingAttempts, timeUntilReset, checkRateLimit, recordAttempt }
+ * Custom hook for client-side rate limiting (attempts stored in localStorage under "form_rate_limit")
+ * @param {string} identifier - Unique identifier (email, userId, etc.); a falsy value is never limited
+ * @param {number} [maxAttempts=3] - Maximum attempts allowed
+ * @param {number} [windowMs=3600000] - Time window in milliseconds (default: 1 hour)
+ * @returns {object} - { canSubmit, remainingAttempts, timeUntilReset, formattedTimeUntilReset, checkRateLimit, recordAttempt }
+ *   `timeUntilReset` is ms or null; `formattedTimeUntilReset` is e.g. "1h 5m" / "12m" or null.
  */
 const useLocalRateLimiting = (identifier, maxAttempts = 3, windowMs = 60 * 60 * 1000) => {
   const [canSubmit, setCanSubmit] = useState(true);

@@ -1,6 +1,8 @@
+/** Shared table styled pieces (containers, header row, rows, cells). Domain table styling stays in the feature folder. */
 // MUI components
 import { styled } from "@mui/material";
 import { Box, TableRow } from "@mui/material";
+import PropTypes from "prop-types";
 
 // Reusable table container for split-table layouts
 export const StyledTableContainer = styled(Box)(({ theme }) => ({
@@ -115,3 +117,24 @@ export const StyledTableCellWithWidth = styled(StyledTableCell)(({ minWidth }) =
   minWidth: minWidth || "auto",
   whiteSpace: "nowrap", // Prevent text wrapping in cells with fixed widths
 }));
+
+StyledTableHeader.propTypes = {
+  // Split tables round only the outer corners of each half.
+  isSplitTable: PropTypes.bool,
+  // Which half of a split table this header belongs to.
+  tableSection: PropTypes.oneOf(["fixed", "scrollable"]),
+};
+
+StyledTableRow.propTypes = {
+  isEven: PropTypes.bool,
+};
+
+StyledTableCell.propTypes = {
+  // Row index and row count; the last row gets a lighter bottom border.
+  index: PropTypes.number,
+  length: PropTypes.number,
+};
+
+StyledTableCellWithWidth.propTypes = {
+  minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};

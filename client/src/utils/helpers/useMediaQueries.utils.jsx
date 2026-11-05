@@ -1,6 +1,15 @@
 import { useTheme } from "@emotion/react";
 import { useMediaQuery } from "@mui/material";
 
+/**
+ * Responsive breakpoint flags from the theme. Use this instead of importing `useMediaQuery` in a feature file.
+ * Every flag defaults to `true` before the first match (`defaultMatches: true`).
+ *
+ * @returns {{isXs: boolean, isMobileLg: boolean, isSm: boolean, isTablet: boolean, isMd: boolean,
+ *   isLaptop: boolean, isLg: boolean, isXl: boolean, isSmDown: boolean, isMdDown: boolean,
+ *   isLgDown: boolean, isEventCalendarDown: boolean, isFormHeaderAndDown: boolean}}
+ *   `is<Bp>` = viewport is at or above the breakpoint (`up`); `is<Bp>Down` / `is<Bp>AndDown` = below it (`down`).
+ */
 const useMediaQueries = () => {
   const theme = useTheme();
 

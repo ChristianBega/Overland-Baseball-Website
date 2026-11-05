@@ -1,4 +1,6 @@
+/** Typography that truncates long text to `maxChars` with an optional Read more/less toggle. */
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Typography, Button } from "@mui/material";
 import { useTheme } from "@emotion/react";
 
@@ -76,6 +78,17 @@ const TextTruncate = ({
       )}
     </Typography>
   );
+};
+
+TextTruncate.propTypes = {
+  text: PropTypes.string,
+  maxChars: PropTypes.number,
+  variant: PropTypes.string,
+  component: PropTypes.elementType,
+  sx: PropTypes.object,
+  readMoreText: PropTypes.string,
+  readLessText: PropTypes.string,
+  showButton: PropTypes.bool,
 };
 
 export default TextTruncate;

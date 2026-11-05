@@ -1,4 +1,6 @@
+/** Form status line: spinner while loading, success message, or error message. Use under every form. */
 import React from "react";
+import PropTypes from "prop-types";
 // Mui
 import { Box, CircularProgress, Typography, Stack } from "@mui/material";
 // Icons
@@ -37,6 +39,16 @@ const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, succes
       )}
     </>
   );
+};
+
+FormStatusIndicator.propTypes = {
+  // Text shown for success and error states.
+  statusMessage: PropTypes.string,
+  // HTTP status of the response; with `statusMessage` it shows the success line.
+  statusCode: PropTypes.number,
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+  success: PropTypes.bool,
 };
 
 export default FormStatusIndicator;

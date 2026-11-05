@@ -1,3 +1,4 @@
+/** Page section wrapper (renders <section>) with responsive top margin. Pass `id` and `aria-label` (preferred); `ariaLabel` is legacy, don't add new uses. */
 import React from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material";
