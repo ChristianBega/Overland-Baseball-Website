@@ -90,6 +90,7 @@ const ABORT_HINT = {
   preflight_tool_missing: "a tool the runner needs is not on PATH",
   preflight_config: "agents.config.json is missing a setting, or $AGENTS_HOME/machine.json is missing",
   push_url_unsafe: "the origin push URL is unsafe for bot pushes",
+  claim_failed: "a claim push failed (auth, branch protection or a timeout): see summary.log",
 };
 const hhmm = (ts) => {
   const d = new Date(ts);
