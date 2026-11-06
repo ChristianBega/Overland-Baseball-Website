@@ -1,4 +1,6 @@
+/** Styled Box that wraps every form; render it with `component="form"` and `onSubmit`. */
 import { Box, styled } from "@mui/material";
+import PropTypes from "prop-types";
 
 export const StyledForm = styled(Box)(({ theme }) => ({
   maxWidth: "800px",
@@ -14,3 +16,9 @@ export const StyledForm = styled(Box)(({ theme }) => ({
     borderRadius: "16px",
   },
 }));
+
+StyledForm.propTypes = {
+  component: PropTypes.elementType,
+  onSubmit: PropTypes.func,
+  children: PropTypes.node,
+};

@@ -1,3 +1,4 @@
+/** Row of social-media icon links (Facebook, Instagram, Twitter, email by default); pass `icons` to override. */
 // MUI Components
 import { IconButton, Stack, useTheme } from "@mui/material";
 import { Email, Facebook, Instagram, Twitter } from "@mui/icons-material";
@@ -45,7 +46,10 @@ SocialIcons.propTypes = {
   ),
   spacing: PropTypes.number,
   size: PropTypes.oneOf(["small", "medium", "large"]),
+  // "secondary.main"-style palette path or a plain CSS color.
   color: PropTypes.string,
+  // Passed through to each IconButton (StaffCard uses "circle").
+  variant: PropTypes.string,
 };
 
 export default SocialIcons;

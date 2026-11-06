@@ -11,12 +11,12 @@ import NoDataDisplay from "./NoDataDisplay";
  *
  * @component
  * @example
- * // Basic usage with React Query
- * const { data: games, isLoading, isError, error, refetch } = useQuery(...);
+ * // Basic usage with useStrapiCollection (see features/home/components/Schedule.jsx)
+ * const { data: games, loading, error, refetch } = useStrapiCollection("schedules");
  *
  * <DataStateDisplay
- *   isLoading={isLoading}
- *   isError={isError}
+ *   isLoading={loading}
+ *   isError={!!error}
  *   error={error}
  *   isEmpty={!games || games.length === 0}
  *   onRetry={refetch}
