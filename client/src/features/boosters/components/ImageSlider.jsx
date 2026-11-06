@@ -10,7 +10,7 @@ export default function BoosterImageSlider({ isMobile, boosterData }) {
       sx={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center", paddingBlock: { xs: 0, md: 8 } }}
     >
       {isMobile && <Typography typography="h2">{boosterData.title}</Typography>}
-      <Box component="img" src={boosterData.image} sx={{ height: "100%", width: "100%", minHeight: "300px" }}></Box>
+      <Box component="img" src={boosterData.image} alt="" sx={{ height: "100%", width: "100%", minHeight: "300px" }}></Box>
     </Grid>
   );
 }

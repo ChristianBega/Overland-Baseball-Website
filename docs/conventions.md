@@ -60,6 +60,13 @@ lives only in `features/ui/components/DataTable.jsx`; domain table styling stays
 folder. A `styled()` component that takes a custom prop declares `shouldForwardProp` (copy
 `features/ui/components/Pagination.jsx`).
 
+### Images
+
+Every `<img>`, `component="img"` and `CardMedia` sets `alt`. Content images use data-driven text (copy
+`features/roster/components/PlayerCard.jsx` or `features/home/components/EventCard.jsx`). Decorative
+images, and images whose meaning is already in adjacent text, use `alt=""` (see
+`features/navigation/components/FooterLogo.jsx`).
+
 ### Deprecated code
 
 Never import a file whose name starts with `[Deprecated]` (any case) from a non-deprecated file. Don't
@@ -80,5 +87,10 @@ and its nearest existing caller.
   `shouldForwardProp`.
 - Hex colors in existing files (`Pagination.jsx`, `shared.styles.js`, `DataTable.jsx`, the events
   calendar) are legacy.
-- The Boosters, Sponsors, Documents, PasswordReset, 404 and ThemeShowcase pages don't follow
+- The Boosters, Documents, PasswordReset, 404 and ThemeShowcase pages don't follow
   Page shape.
+- `features/roster/components/StaffItem.jsx` (unused) and the `mobile`/default variants of
+  `features/ui/components/Socials..jsx` (only the image-free `footer` variant is rendered) render
+  images without `alt`.
+- `features/navigation/components/FooterNavigation copy.jsx` (the rendered footer, exported as
+  `FooterNavigation`) renders its logo without `alt`.
