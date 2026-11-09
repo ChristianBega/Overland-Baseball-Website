@@ -48,7 +48,7 @@ const PlayerEventView = () => {
           isEmpty={!playerEvents || playerEvents.length === 0}
           onRetry={refetch}
           loadingMessage="Loading player events..."
-          errorTitle="Unable to Load Player Events"
+          errorTitle="We couldn't load the player events"
           emptyProps={{
             title: "No Player Events Available",
             message: "Check back soon for upcoming player events!",

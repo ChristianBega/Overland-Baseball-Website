@@ -87,7 +87,7 @@ const Staff = ({ currentTeam = "varsity" }) => {
             isEmpty={!staff || staff.length === 0}
             onRetry={refetch}
             loadingMessage="Loading staff..."
-            errorTitle={"Unable to Load Staff"}
+            errorTitle={"We couldn't load the staff"}
             emptyProps={{
               title: `No ${currentTeam.charAt(0).toUpperCase() + currentTeam.slice(1)} Staff Available`,
               message: `No ${currentTeam.charAt(0).toUpperCase() + currentTeam.slice(1)} staff are available at the moment.`,
