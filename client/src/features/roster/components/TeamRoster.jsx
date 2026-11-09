@@ -70,7 +70,7 @@ const TeamRosterContent = () => {
           isEmpty={!players || players.length === 0}
           onRetry={refetch}
           loadingMessage="Loading roster..."
-          errorTitle="Unable to Load Roster"
+          errorTitle="We couldn't load the roster"
           emptyProps={{
             title: "Roster Coming Soon",
             message: "Team roster will be posted soon!",

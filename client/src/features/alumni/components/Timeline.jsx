@@ -55,7 +55,7 @@ export default function TimeLine() {
         isEmpty={!data || data.length === 0}
         onRetry={refetch}
         loadingMessage="Loading alumni..."
-        errorTitle="Unable to Load Alumni"
+        errorTitle="We couldn't load the alumni"
         emptyProps={{
           title: "No Alumni Available",
           message: "No alumni are available at the moment.",

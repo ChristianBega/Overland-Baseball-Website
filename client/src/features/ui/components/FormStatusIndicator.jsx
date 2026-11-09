@@ -1,20 +1,22 @@
-/** Form status line: spinner while loading, success message, or error message. Use under every form. */
+/** Form status line: spinner while loading, success message, or an inline error `Notice`. Use under every form. */
 import React from "react";
 import PropTypes from "prop-types";
 // Mui
 import { Box, CircularProgress, Typography, Stack } from "@mui/material";
 // Icons
-import ErrorIcon from "@mui/icons-material/Error";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { StyledFormStatusIndicatorContainer } from "./FormStatusIndicator.styles";
+import Notice from "./Notice";
 
 const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, success }) => {
   // const isAuthFormError = error && statusMessage === "You must be logged in to use this form.";
+  const showSuccess = !error && ((statusCode && statusMessage) || (success && statusMessage));
   return (
     <>
-      {(statusMessage || success || loading || error || success) && (
+      {error && <Notice variant="error" layout="inline" title={statusMessage || "Something went wrong"} sx={{ mb: "2rem" }} />}
+      {(loading || (!error && (statusMessage || success))) && (
         <StyledFormStatusIndicatorContainer>
-          {((statusCode && statusMessage) || (success && statusMessage)) && (
+          {showSuccess && (
             <Stack direction="row" spacing={1}>
               <CheckCircleIcon />
               <Typography variant="body1" color="success">
@@ -26,14 +28,6 @@ const FormStatusIndicator = ({ statusMessage, statusCode, loading, error, succes
             <Box display="flex" justifyContent="center" alignItems="center" height="100%">
               <CircularProgress />
             </Box>
-          )}
-          {error && (
-            <Stack direction="row" spacing={1}>
-              <ErrorIcon />
-              <Typography variant="body1" color="error">
-                Error: {statusMessage}
-              </Typography>
-            </Stack>
           )}
         </StyledFormStatusIndicatorContainer>
       )}
