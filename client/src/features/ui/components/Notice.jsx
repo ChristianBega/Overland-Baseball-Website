@@ -117,7 +117,6 @@ const Notice = ({ variant = "error", layout = "stacked", icon, title, message, a
       <Divider sx={{ mb: 1 }} />
       <Button
         variant="text"
-        size="small"
         onClick={() => setDetailsOpen((open) => !open)}
         aria-expanded={detailsOpen}
         aria-controls={detailsId}
@@ -130,7 +129,12 @@ const Notice = ({ variant = "error", layout = "stacked", icon, title, message, a
           />
         }
         sx={{
+          minHeight: 44,
+          px: 1.5,
+          borderRadius: "8px",
           color: "text.grey",
+          fontSize: "0.875rem",
+          whiteSpace: "nowrap",
           textTransform: "none",
           fontWeight: 500,
           letterSpacing: 0,
