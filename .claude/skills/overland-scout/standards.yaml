@@ -1,0 +1,2126 @@
+# standards.yaml: generated from the Google Docs in 'Industry Standard Web App Playbook v2' (content at v2.1, 2026-11-13).
+# The docs are the human source of truth. Regenerate after any doc change, then run the drift check in 03 Check ID Index.
+version: 2.1
+generated: 2026-11-13
+rules:
+  applies_if: "A standard applies when any listed questionnaire key is yes. 'always' means no key is needed."
+  stage: "From the Maturity Roadmap (stage_source: roadmap). Otherwise Error -> launch, Warn or Review -> growth (stage_source: rule)."
+  ids: "L<layer>.<kebab-slug>. Permanent: never renamed, renumbered or reused. Retire in 03 Check ID Index."
+  threshold: "'Pass/fail as stated' means the standard text is the test."
+  severity_by_stage: "Optional. When present it overrides severity per maturity stage (launch, growth, scale); severity stays the plain enum shown at the standard's own stage."
+standards:
+  - id: L0.gated-changes
+    layer: 0
+    title: "Production changes go through a reviewed path with required automated checks."
+    scope: S
+    threshold: "No unreviewed changes reach production"
+    severity: Error
+    verify: "Inspect the change path (branch protection, deploy permissions or CMS publishing roles): the checks below must pass before release."
+    verifiable_by: infra-access
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L0.change-preview
+    layer: 0
+    title: "Every proposed change can be viewed in an isolated preview before release."
+    scope: S
+    threshold: "Preview link attached to each proposed change"
+    severity: Warn
+    verify: "Sample recent changes and confirm each has a working preview link."
+    verifiable_by: infra-access
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L0.ci-checks
+    layer: 0
+    title: "Every proposed change runs static analysis, automated tests and a production build."
+    scope: S
+    threshold: "All pass"
+    severity: Error
+    verify: "Pipeline results show all four steps ran and passed on recent changes."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L0.lab-audit-per-route
+    layer: 0
+    title: "A Lighthouse lab audit runs on every changed route."
+    scope: P
+    threshold: "Score floors set in Layers 5 and 6; at least 3 runs per URL"
+    severity: Error
+    verify: "Pipeline results show the audit ran on each changed route and fails the build below the floors."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L0.a11y-scan-per-route
+    layer: 0
+    title: "axe accessibility checks run on every changed route."
+    scope: P
+    threshold: "Zero serious or critical violations"
+    severity: Error
+    verify: "Pipeline results show the scan ran on each changed route and fails the build on serious or critical violations."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L0.link-check
+    layer: 0
+    title: "A link checker runs on the built site."
+    scope: S
+    threshold: "Zero internal 4xx or 5xx links"
+    severity: Error
+    verify: "Pipeline results show a link check on the built output or preview."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L0.secret-scan
+    layer: 0
+    title: "A secret scanner runs before commit and in CI."
+    scope: S
+    threshold: "Zero findings"
+    severity: Error
+    verify: "A pre-commit hook and a pipeline step both run the scanner."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L0.dependency-audit
+    layer: 0
+    title: "A dependency audit runs in CI."
+    scope: S
+    threshold: "Zero high or critical vulnerabilities"
+    severity: Error
+    verify: "Pipeline results show the audit and fail on high or critical results."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L0.bundle-size-diff
+    layer: 0
+    title: "A bundle size check compares each build to the current production build."
+    scope: S
+    threshold: "House default: fail on more than 10% growth in route JavaScript"
+    severity: Warn
+    verify: "Pipeline results show a size comparison against production on each change."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: scale
+    stage_source: roadmap
+    house_default: true
+  - id: L0.tested-rollback
+    layer: 0
+    title: "A documented rollback path exists and has been tested."
+    scope: S
+    threshold: "Rollback in under 15 minutes (house default)"
+    severity: Error
+    verify: "A dated record of the last rollback drill, with the time taken."
+    verifiable_by: person
+    fix_lives_in: [cloud-infra, repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: true
+  - id: L0.scheduled-site-checks
+    layer: 0
+    title: "Site-level checks run on a schedule as well as on deploy: DNS and email authentication, security headers, a full crawl, a sitewide accessibility sweep."
+    scope: S
+    threshold: "At least weekly; regressions open a ticket"
+    severity: Warn
+    verify: "The schedule exists and recent runs opened tickets for regressions."
+    verifiable_by: tool
+    fix_lives_in: [repo, cloud-infra]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L1.design-tokens
+    layer: 1
+    title: "A design system defines tokens for color, type scale and spacing, plus documented components."
+    scope: S
+    threshold: "No hard-coded colors or font sizes outside the tokens"
+    severity: Warn
+    verify: "Search styles for color and font-size values outside the token set."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L1.consistent-nav
+    layer: 1
+    title: "Navigation and footer are consistent on every page."
+    scope: S
+    threshold: "The same navigation and footer structure on every page, from one shared source"
+    severity: Error
+    verify: "Compare navigation and footer markup across a sample of pages from every template."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L1.consistent-help
+    layer: 1
+    title: "Help and contact links appear in the same place on every page (WCAG 3.2.6, Consistent Help)."
+    scope: S
+    threshold: "Same relative position on all pages"
+    severity: Error
+    verify: "Assert help and contact links sit in the same relative position on every template."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L1.responsive-320
+    layer: 1
+    title: "Layouts are responsive at mobile, tablet and desktop widths."
+    scope: T
+    threshold: "No horizontal scroll at 320 px width"
+    severity: Error
+    verify: "Render each template at 320 px wide and assert no horizontal scroll."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L1.one-primary-cta
+    layer: 1
+    title: "Each page has one primary call to action."
+    scope: P
+    threshold: "One visually dominant CTA"
+    severity: Review
+    verify: "Review against the UX laws rubric, with sign-off from a person."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L1.clear-audience-next-step
+    layer: 1
+    title: "The copy states who the page is for and what to do next."
+    scope: P
+    threshold: "Clear in the first screen"
+    severity: Review
+    verify: "Review the first screen of each page, with sign-off from a person."
+    verifiable_by: person
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L1.skeleton-reserves-space
+    layer: 1
+    title: "Async content shows a loading skeleton that reserves its space."
+    scope: C
+    threshold: "No layout shift when content loads"
+    severity: Warn
+    verify: "Load each data-driven view on a throttled connection and assert no layout shift when content arrives."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L1.empty-error-states
+    layer: 1
+    title: "Every data-driven component has an empty state and an error state."
+    scope: C
+    threshold: "Both designed and implemented"
+    severity: Warn
+    verify: "Review each data-driven component with empty data and with a failed request."
+    verifiable_by: person
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L1.debounce-search
+    layer: 1
+    title: "Search and filter inputs are debounced."
+    scope: C
+    threshold: "House default: 200 to 300 ms"
+    severity: Warn
+    verify: "A test or code review shows one request per pause in typing, not one per keystroke."
+    verifiable_by: person
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: true
+  - id: L2.rendering-strategy
+    layer: 2
+    title: "Each route type has a documented rendering strategy: public content is pre-rendered or cached at the edge, and personalized views are rendered per request."
+    scope: S
+    threshold: "Documented per route type"
+    severity: Review
+    verify: "A person reviews the documented strategy against the routes that exist."
+    verifiable_by: person
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L2.content-in-initial-html
+    layer: 2
+    title: "Primary content and links are present in the initial HTML response, without JavaScript."
+    scope: P
+    threshold: "H1 and main content in the raw HTML response"
+    severity: Error
+    verify: "Fetch each route without running JavaScript and assert the H1 and main content are present."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L2.immutable-static-assets
+    layer: 2
+    title: "Versioned static assets are served with long-lived immutable caching."
+    scope: S
+    threshold: "Cache-Control: public, max-age=31536000, immutable"
+    severity: Error
+    verify: "Assert the Cache-Control header on a sample of versioned assets."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L2.html-cache-control
+    layer: 2
+    title: "HTML caching rules are explicit."
+    scope: S
+    threshold: "A Cache-Control header on every HTML response"
+    severity: Warn
+    verify: "Assert a Cache-Control header on each HTML response."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L2.text-compression
+    layer: 2
+    title: "Text responses are compressed."
+    scope: S
+    threshold: "Brotli or gzip on HTML, CSS, JS and JSON"
+    severity: Error
+    verify: "Assert Content-Encoding on each text response type, including API JSON."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L2.canonical-host-redirect
+    layer: 2
+    title: "HTTP redirects to HTTPS, and one canonical host is chosen (www or apex)."
+    scope: S
+    threshold: "A single 301 hop from any variant"
+    severity: Error
+    verify: "Request the http and non-canonical host variants and assert exactly one 301 to the canonical HTTPS URL."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L2.clean-slugs
+    layer: 2
+    title: "URL slugs are clean, lowercase and hyphen-separated."
+    scope: T
+    threshold: "No underscores, uppercase letters or query strings for content pages"
+    severity: Error
+    verify: "Lint routes and generated links for uppercase letters and underscores."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L2.real-404
+    layer: 2
+    title: "Unknown routes render a custom 404 page with a real 404 status."
+    scope: S
+    threshold: "HTTP 404, not 200"
+    severity: Error
+    verify: "Request a random unknown path and assert status 404."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L3.robots-txt
+    layer: 3
+    title: "robots.txt exists, parses, and has an explicit group for each crawler family we make a decision about."
+    scope: S
+    threshold: "No accidental Disallow: / on production"
+    severity: Error
+    verify: "Parse robots.txt and assert the intended user-agent groups and rules."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, cloud-infra]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L3.sitemap
+    layer: 3
+    title: "sitemap.xml is generated automatically from the site's source of truth and is referenced in robots.txt."
+    scope: S
+    threshold: "Lists only canonical, indexable URLs that return 200"
+    severity: Error
+    verify: "Crawl the sitemap and assert each URL returns 200, is canonical and is indexable."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L3.webmaster-verified
+    layer: 3
+    title: "Google Search Console and Bing Webmaster Tools are verified, and the sitemap is submitted to both."
+    scope: S
+    threshold: "Verified"
+    severity: Warn
+    verify: "Check both consoles for verified ownership and a submitted sitemap."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L3.nonprod-noindex
+    layer: 3
+    title: "Staging and preview environments are noindexed. Production is not."
+    scope: S
+    threshold: "Environment-specific"
+    severity: Error
+    verify: "Fetch staging and production and assert noindex only on non-production."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo, cms]
+    applies_if: [has_staging_env]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L3.no-stray-noindex
+    layer: 3
+    title: "No stray noindex on pages meant to be indexed."
+    scope: P
+    threshold: "Zero noindex on sitemap URLs"
+    severity: Error
+    verify: "Crawl the sitemap and assert no noindex in meta tags or headers."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L3.self-canonical
+    layer: 3
+    title: "Every indexable page has a self-referencing canonical URL."
+    scope: P
+    threshold: "Canonical equals the page's own URL"
+    severity: Error
+    verify: "Crawl the sitemap and assert each canonical equals the page URL."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L3.no-broken-links
+    layer: 3
+    title: "No broken internal links."
+    scope: P
+    threshold: "Zero internal 4xx or 5xx"
+    severity: Error
+    verify: "Run a link checker across the site."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L3.no-orphan-pages
+    layer: 3
+    title: "Every page is reachable through at least one internal link."
+    scope: P
+    threshold: "Zero orphan pages"
+    severity: Warn
+    verify: "Compare crawled pages against the sitemap to find orphans."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L3.descriptive-anchors
+    layer: 3
+    title: "Link anchor text describes the destination."
+    scope: P
+    threshold: "No \"click here\" or \"read more\" alone"
+    severity: Warn
+    verify: "Crawl links and flag generic anchor text."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L3.ai-crawler-policy
+    layer: 3
+    title: "An AI crawler policy is decided and recorded (see below)."
+    scope: S
+    threshold: "Documented decision per bot family"
+    severity: Review
+    verify: "A person confirms a recorded decision per bot family and that robots.txt matches it."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L4.favicon
+    layer: 4
+    title: "A favicon set in a format Google Search supports."
+    scope: S
+    threshold: "Present and reachable"
+    severity: Error
+    verify: "Fetch the favicon URLs and assert 200 and a supported format."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L4.site-structured-data
+    layer: 4
+    title: "Site-wide Organization (or a more specific type) and WebSite JSON-LD."
+    scope: S
+    threshold: "Valid against schema.org"
+    severity: Error
+    verify: "Validate the site-wide JSON-LD with a schema.org validator."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L4.default-social-image
+    layer: 4
+    title: "Default Open Graph and Twitter card image."
+    scope: S
+    threshold: "House default: 1200 by 630 px"
+    severity: Error
+    verify: "Assert the default social image exists, returns 200 and has the expected size."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: true
+  - id: L4.metadata-defaults
+    layer: 4
+    title: "Every page type has default title and description values, so no page ships without them."
+    scope: T
+    threshold: "Defaults defined for every template"
+    severity: Error
+    verify: "Render one page per template with empty metadata fields and assert a title and description still appear."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L4.structured-data-per-type
+    layer: 4
+    title: "Each content type with a matching schema.org type emits it, for example Event for events, Article or BlogPosting for posts and BreadcrumbList for nested pages. Never emit Person markup for minors."
+    scope: T
+    threshold: "Valid and matching visible content"
+    severity: Warn
+    verify: "Validate one page per content type with a schema.org validator and Google's Rich Results Test."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L4.unique-title
+    layer: 4
+    title: "A unique title tag."
+    scope: P
+    threshold: "House default: under about 60 characters, primary keyword first; unique across the site"
+    severity: Error
+    verify: "Parse every sitemap URL and assert unique titles within the length range."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: true
+  - id: L4.unique-description
+    layer: 4
+    title: "A unique meta description."
+    scope: P
+    threshold: "House default: about 150 to 160 characters; unique across the site"
+    severity: Error
+    verify: "Parse every sitemap URL and assert unique descriptions within the length range."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: true
+  - id: L4.one-h1
+    layer: 4
+    title: "Exactly one H1. Heading order is covered by L6.heading-order."
+    scope: P
+    threshold: "House default: one H1"
+    severity: Error
+    verify: "Parse every sitemap URL and assert exactly one H1."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: true
+  - id: L4.og-tags
+    layer: 4
+    title: "og:title, og:type, og:image and og:url are present; og:description is recommended."
+    scope: P
+    threshold: "Image URL returns 200"
+    severity: Error
+    verify: "Assert the four required tags on every sitemap URL and that og:image returns 200."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L4.html-lang
+    layer: 4
+    title: "The html element has a lang attribute."
+    scope: P
+    threshold: "Present"
+    severity: Error
+    verify: "Assert a lang attribute on every page."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L4.structured-data-matches-content
+    layer: 4
+    title: "Structured data matches what is visible on the page."
+    scope: P
+    threshold: "No markup for content that is not shown"
+    severity: Review
+    verify: "A person compares markup with the visible page for each content type."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L5.field-lcp
+    layer: 5
+    title: "LCP (Largest Contentful Paint) (Loading)"
+    scope: P
+    threshold: "At or under 2.5 s"
+    severity: Warn
+    verify: "Field data (CrUX) at the 75th percentile, through PageSpeed Insights or Search Console."
+    verifiable_by: tool
+    fix_lives_in: [repo, cloud-infra, cms, third-party]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L5.field-inp
+    layer: 5
+    title: "INP (Interaction to Next Paint) (Responsiveness. Replaced FID on March 12, 2024.)"
+    scope: P
+    threshold: "At or under 200 ms"
+    severity: Warn
+    verify: "Field data (CrUX) at the 75th percentile, through PageSpeed Insights or Search Console."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L5.field-cls
+    layer: 5
+    title: "CLS (Cumulative Layout Shift) (Visual stability)"
+    scope: P
+    threshold: "At or under 0.1"
+    severity: Warn
+    verify: "Field data (CrUX) at the 75th percentile, through PageSpeed Insights or Search Console."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L5.lab-perf-score
+    layer: 5
+    title: "Lighthouse mobile performance score"
+    scope: P
+    threshold: "At least 0.90 (0.80 at launch-ready stage)"
+    severity: Warn
+    verify: "Lab audit on each changed route, at least 3 runs per URL. Severity by stage: launch Warn, growth Error, scale Error."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, cloud-infra]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: true
+    threshold_by_stage: {launch: ">= 0.80", growth: ">= 0.90", scale: ">= 0.90"}
+    severity_by_stage: {launch: Warn, growth: Error, scale: Error}
+  - id: L5.lab-lcp
+    layer: 5
+    title: "Lab LCP"
+    scope: P
+    threshold: "At or under 2500 ms"
+    severity: Error
+    verify: "Lab audit on key templates, at least 3 runs per URL."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, cloud-infra]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: true
+  - id: L5.lab-cls
+    layer: 5
+    title: "Lab CLS"
+    scope: P
+    threshold: "At or under 0.1"
+    severity: Error
+    verify: "Lab audit on key templates, at least 3 runs per URL."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: true
+  - id: L5.lab-tbt
+    layer: 5
+    title: "Total Blocking Time"
+    scope: P
+    threshold: "At or under 300 ms"
+    severity: Warn
+    verify: "Lab audit on each changed route."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: true
+  - id: L5.script-weight
+    layer: 5
+    title: "Script weight per page"
+    scope: P
+    threshold: "At or under 300 KB compressed, adjusted to the project baseline"
+    severity: Warn
+    verify: "Measure compressed script bytes per page against the budget."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: scale
+    stage_source: roadmap
+    house_default: true
+  - id: L5.image-weight
+    layer: 5
+    title: "Image weight per page"
+    scope: P
+    threshold: "At or under 200 KB above the fold, adjusted to the project baseline"
+    severity: Warn
+    verify: "Measure above-the-fold image bytes per page against the budget."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: true
+  - id: L5.route-code-splitting
+    layer: 5
+    title: "Each route loads only the code it needs."
+    scope: T
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Compare the scripts each route loads against what it uses, with a bundle analyzer."
+    verifiable_by: tool
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L5.lazy-below-fold
+    layer: 5
+    title: "Below-the-fold images and components are lazy-loaded. The LCP image is not."
+    scope: P
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Assert loading behavior on images per page, and that the LCP element is not lazy-loaded."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L5.minified-assets
+    layer: 5
+    title: "JavaScript and CSS are minified in production builds."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Lab audit for unminified JavaScript and CSS."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L5.defer-noncritical-scripts
+    layer: 5
+    title: "Non-critical and third-party scripts are deferred or loaded async."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Lab audit for render-blocking resources."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L5.no-unused-deps
+    layer: 5
+    title: "Unused dependencies are removed."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Warn
+    verify: "Run an unused-dependency check, or review installed plugins."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L5.efficient-rerender
+    layer: 5
+    title: "UI updates do not repeat expensive work."
+    scope: C
+    threshold: "Pass/fail as stated"
+    severity: Review
+    verify: "Code review or a profiler trace of key interactions."
+    verifiable_by: person
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L5.modern-responsive-images
+    layer: 5
+    title: "Images use AVIF or WebP, responsive srcset, and explicit width and height."
+    scope: P
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Assert image format, srcset and dimensions on every page."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L5.preload-critical
+    layer: 5
+    title: "The LCP image and critical fonts are preloaded."
+    scope: P
+    threshold: "Pass/fail as stated"
+    severity: Warn
+    verify: "Lab audit for preload of the LCP image and critical fonts."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L5.indexed-query-columns
+    layer: 5
+    title: "Database columns used in filters and sorts are indexed."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Review the query plan for new queries, and watch the slow-query log."
+    verifiable_by: infra-access
+    fix_lives_in: [repo, cloud-infra]
+    applies_if: [has_database]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L5.no-n-plus-one
+    layer: 5
+    title: "No N+1 queries. Related data is fetched deliberately."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Code review of data access, or query counts per request in logs."
+    verifiable_by: person
+    fix_lives_in: [repo]
+    applies_if: [has_database]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L5.db-connection-pooling
+    layer: 5
+    title: "Database connections are pooled."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Check the database client or proxy configuration."
+    verifiable_by: infra-access
+    fix_lives_in: [repo, cloud-infra]
+    applies_if: [has_database]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L5.paginate-large-lists
+    layer: 5
+    title: "Large lists are paginated."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Request each list endpoint and view and assert a bounded page size."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L5.cache-expensive-responses
+    layer: 5
+    title: "Expensive queries and public API responses are cached at the edge, as pre-rendered pages or on the server."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Warn
+    verify: "Assert cache headers or cache hits on public API and content responses."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo, cms]
+    applies_if: [has_database, has_public_api]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L6.visible-focus
+    layer: 6
+    title: "Visible focus states on every interactive element."
+    scope: C
+    threshold: "Present and not obscured"
+    severity: Error
+    verify: "Keyboard tab-through of each template: every focused element shows an indicator that sticky headers, banners and widgets do not fully hide."
+    verifiable_by: person
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L6.color-contrast
+    layer: 6
+    title: "Color contrast meets the WCAG AA ratios."
+    scope: C
+    threshold: "4.5:1 for body text; 3:1 for large text and UI components"
+    severity: Error
+    verify: "Automated scan of rendered pages; check design-token color pairs against the ratios."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L6.form-labels
+    layer: 6
+    title: "Every form control has a label."
+    scope: C
+    threshold: "Programmatic label on all inputs"
+    severity: Error
+    verify: "Automated scan: every input has a programmatic label."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L6.icon-button-name
+    layer: 6
+    title: "Icon-only buttons have an accessible name."
+    scope: C
+    threshold: "A non-empty programmatic name on every icon-only control"
+    severity: Error
+    verify: "Automated scan: no control without an accessible name; spot-check with a screen reader."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L6.target-size
+    layer: 6
+    title: "Target size."
+    scope: C
+    threshold: "At least 24 by 24 CSS px, or spaced so a 24 px circle on each target does not overlap another target"
+    severity: Error
+    verify: "Automated scan for targets under 24 by 24 CSS px without enough spacing."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L6.image-alt
+    layer: 6
+    title: "Meaningful images have alt text; decorative images have empty alt."
+    scope: P
+    threshold: "All images"
+    severity: Error
+    verify: "Automated scan for missing alt; a person checks that alt text is meaningful."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L6.landmarks-skip-link
+    layer: 6
+    title: "Landmark regions and a skip-to-content link."
+    scope: P
+    threshold: "header, nav, main, footer and a skip link to main present"
+    severity: Error
+    verify: "Parse rendered HTML for the landmarks and a skip link that moves focus to main."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L6.heading-order
+    layer: 6
+    title: "Logical heading order."
+    scope: P
+    threshold: "House default: no skipped levels"
+    severity: Error
+    verify: "Parse rendered headings and assert no skipped levels."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: true
+  - id: L6.keyboard-operable
+    layer: 6
+    title: "Full keyboard navigation with no keyboard traps."
+    scope: P
+    threshold: "Every action reachable by keyboard"
+    severity: Error
+    verify: "Scripted keyboard tab-through test for each new template: every action reachable, no traps."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L6.reduced-motion
+    layer: 6
+    title: "Animations respect prefers-reduced-motion."
+    scope: P
+    threshold: "Reduced or disabled when set"
+    severity: Warn
+    verify: "Render with the reduced-motion preference emulated and assert animations are reduced or off."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L6.accessibility-statement
+    layer: 6
+    title: "An accessibility statement page."
+    scope: S
+    threshold: "Linked in the footer"
+    severity: Warn
+    verify: "Assert the statement page returns 200 and is linked from the footer."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L6.lab-a11y-score
+    layer: 6
+    title: "Lab accessibility audit on each changed route."
+    scope: P
+    threshold: "Lighthouse accessibility score of 1.0 (house default)"
+    severity: Error
+    verify: "Lab audit on each changed route, at least 3 runs per URL."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: true
+  - id: L6.wcag21-aa-conformance
+    layer: 6
+    title: "Government sites conform to WCAG 2.1 AA (ADA Title II, and state laws such as Colorado HB21-1110)."
+    scope: S
+    threshold: "A dated WCAG 2.1 AA audit with no open failures, published with an accessibility contact"
+    severity: Error
+    verify: "A qualified person audits key templates and flows against WCAG 2.1 AA, records the date and any open failures, and the accessibility statement links the result."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [government_entity]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L6.media-captions
+    layer: 6
+    title: "Prerecorded video has captions and prerecorded audio has a transcript (WCAG 1.2.1, 1.2.2)."
+    scope: P
+    threshold: "All published video and audio"
+    severity: Error
+    verify: "Check each hosted or embedded video for a caption track and each audio file for a transcript."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L6.accessible-documents
+    layer: 6
+    title: "Posted PDFs and other documents are accessible, or have an accessible HTML equivalent."
+    scope: P
+    threshold: "Tagged, in reading order, with alt text and a title"
+    severity: Warn
+    verify: "Run a PDF accessibility checker on linked documents, or confirm an HTML equivalent is linked."
+    verifiable_by: tool
+    fix_lives_in: [cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L7.https-no-mixed-content
+    layer: 7
+    title: "HTTPS everywhere."
+    scope: S
+    threshold: "No mixed content"
+    severity: Error
+    verify: "Crawl pages and assert no http subresources."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L7.hsts
+    layer: 7
+    title: "Strict-Transport-Security header."
+    scope: S
+    threshold: "max-age of at least six months"
+    severity: Error
+    verify: "Assert the header and max-age on HTML responses."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L7.csp
+    layer: 7
+    title: "Content-Security-Policy."
+    scope: S
+    threshold: "No unsafe-inline for scripts"
+    severity: Warn
+    verify: "Assert the header and parse script-src for unsafe-inline. Severity by stage: launch Warn, growth Error, scale Error."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+    severity_by_stage: {launch: Warn, growth: Error, scale: Error}
+  - id: L7.baseline-security-headers
+    layer: 7
+    title: "X-Content-Type-Options, Referrer-Policy and frame-ancestors (or X-Frame-Options)."
+    scope: S
+    threshold: "Present"
+    severity: Error
+    verify: "Assert each header on HTML responses."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.secure-cookies
+    layer: 7
+    title: "Cookies are Secure, HttpOnly where possible, and SameSite."
+    scope: S
+    threshold: "All session cookies"
+    severity: Error
+    verify: "Log in and inspect session cookie attributes."
+    verifiable_by: tool
+    fix_lives_in: [repo, third-party]
+    applies_if: [has_admin_login]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.cors-allowlist
+    layer: 7
+    title: "CORS is limited to known origins."
+    scope: S
+    threshold: "No wildcard on authenticated APIs"
+    severity: Error
+    verify: "Send requests from an unknown origin and assert no permissive CORS headers."
+    verifiable_by: tool
+    fix_lives_in: [repo, cloud-infra, cms]
+    applies_if: [has_public_api]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.rate-limiting
+    layer: 7
+    title: "Rate limiting on forms, login and public APIs."
+    scope: S
+    threshold: "Configured"
+    severity: Warn
+    verify: "Send a burst of requests and assert throttling."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo, third-party]
+    applies_if: [always]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L7.observatory-grade
+    layer: 7
+    title: "Security header grade."
+    scope: S
+    threshold: "MDN HTTP Observatory A or better (house default)"
+    severity: Warn
+    verify: "Scan with the MDN HTTP Observatory."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: true
+  - id: L7.asvs-self-assessment
+    layer: 7
+    title: "A self-assessment against OWASP ASVS Level 1."
+    scope: S
+    threshold: "Completed"
+    severity: Review
+    verify: "A person completes and records the self-assessment."
+    verifiable_by: person
+    fix_lives_in: [repo, cloud-infra]
+    applies_if: [always]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L7.no-exposed-secrets
+    layer: 7
+    title: "No secrets in frontend bundles or the repository. API keys, signing secrets and cloud credentials stay server-side."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Secret scanner on the repository; search built bundles for key-like patterns."
+    verifiable_by: tool
+    fix_lives_in: [repo, cloud-infra]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L7.public-api-field-allowlist
+    layer: 7
+    title: "Unauthenticated endpoints return only published entries and only the fields meant for public display. Personal data such as birth dates, contact emails or physical details is never returned to unauthenticated requests."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Automated tests call public endpoints without authentication and assert sensitive fields are absent."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [has_public_api, minors_data]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L7.server-input-validation
+    layer: 7
+    title: "Input is validated on the server, not only in the browser."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Submit invalid input directly to each endpoint, bypassing the browser, and assert rejection."
+    verifiable_by: tool
+    fix_lives_in: [repo, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.parameterized-queries
+    layer: 7
+    title: "All data-store queries are parameterized; none are built by joining input into query strings."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Code review or static analysis of data access."
+    verifiable_by: person
+    fix_lives_in: [repo]
+    applies_if: [has_database]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.pinned-dependencies
+    layer: 7
+    title: "Dependencies are pinned through a lockfile and audited."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Assert a lockfile exists and the dependency audit passes."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.generic-errors
+    layer: 7
+    title: "Errors return generic messages and never stack traces."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Trigger errors on each endpoint and assert no stack traces in responses."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, cloud-infra]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.admin-strong-auth
+    layer: 7
+    title: "Admin panels use strong authentication and, where possible, SSO or IP restrictions."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Check admin login settings for multi-factor, SSO or IP limits."
+    verifiable_by: infra-access
+    fix_lives_in: [cms, third-party, cloud-infra]
+    applies_if: [has_admin_login]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L7.security-event-logging
+    layer: 7
+    title: "Security-relevant events are logged and can alert."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Warn
+    verify: "Trigger a failed login and confirm a log entry and alert."
+    verifiable_by: infra-access
+    fix_lives_in: [cloud-infra, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L8.privacy-policy
+    layer: 8
+    title: "Privacy policy, linked in the footer."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Assert the page returns 200 and is linked from the footer."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [collects_personal_data, uses_analytics]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+    applies_when: "Any personal data is collected, including analytics"
+  - id: L8.terms-of-service
+    layer: 8
+    title: "Terms of service."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Assert the page returns 200 and is linked from the footer."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+    applies_when: "Always"
+  - id: L8.consent-before-cookies
+    layer: 8
+    title: "Cookie policy and a consent banner that blocks non-essential cookies until consent."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Load the site with no consent and assert no non-essential cookies or requests."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [uses_nonessential_cookies]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+    applies_when: "Non-essential cookies or tracking are used"
+  - id: L8.refund-policy
+    layer: 8
+    title: "Refund policy."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Assert the page returns 200 and is linked where purchases happen."
+    verifiable_by: tool
+    fix_lives_in: [cms]
+    applies_if: [sells_online]
+    stage: launch
+    stage_source: rule
+    house_default: false
+    applies_when: "Anything is sold, including registrations or fundraisers"
+  - id: L8.business-contact
+    layer: 8
+    title: "Business name and contact details."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Assert business name and contact details appear on the site."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+    applies_when: "Always"
+  - id: L8.data-rights-request
+    layer: 8
+    title: "A path for data access and deletion requests."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "A person submits a test request and confirms it reaches someone."
+    verifiable_by: person
+    fix_lives_in: [cms, repo]
+    applies_if: [eu_uk_visitors, california_ccpa]
+    stage: launch
+    stage_source: rule
+    house_default: false
+    applies_when: "GDPR, CCPA or similar law applies"
+  - id: L8.coppa-compliance
+    layer: 8
+    title: "COPPA: verifiable parental consent, separate consent for disclosure to third parties, a written data-retention policy and a written security program."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "A qualified professional reviews consent flows and the written policies."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [children_under_13]
+    stage: launch
+    stage_source: rule
+    house_default: false
+    applies_when: "The site is directed to children under 13 or knowingly collects their data"
+  - id: L8.minor-publication-consent
+    layer: 8
+    title: "Data about minors (names, photos, physical stats) is published only with a documented basis, such as FERPA directory information or a signed media release, and parent or guardian opt-outs are honored."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "A person confirms each published minor has a recorded basis and that opt-outs are removed promptly."
+    verifiable_by: person
+    fix_lives_in: [cms]
+    applies_if: [minors_data]
+    stage: launch
+    stage_source: rule
+    house_default: false
+    applies_when: "The site publishes data about minors"
+  - id: L8.gdpr-compliance
+    layer: 8
+    title: "GDPR and UK GDPR: a lawful basis, consent before non-essential cookies, and data subject rights."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "A qualified professional reviews the lawful basis, consent flow and rights process."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [eu_uk_visitors]
+    stage: launch
+    stage_source: rule
+    house_default: false
+    applies_when: "Visitors in the EU, EEA or UK"
+  - id: L8.ccpa-compliance
+    layer: 8
+    title: "CCPA/CPRA: disclosures and opt-out rights."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "A qualified professional reviews disclosures and the opt-out path."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [california_ccpa]
+    stage: launch
+    stage_source: rule
+    house_default: false
+    applies_when: "The business meets California thresholds"
+  - id: L8.consent-mode-v2
+    layer: 8
+    title: "Google Consent Mode v2 with all four signals: ad_storage, analytics_storage, ad_user_data and ad_personalization."
+    scope: S
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Load the site with no consent and assert all four signals default to denied."
+    verifiable_by: tool
+    fix_lives_in: [repo, third-party]
+    applies_if: [google_ads_eea_uk]
+    stage: launch
+    stage_source: rule
+    house_default: false
+    applies_when: "Google advertising or measurement for EEA or UK users"
+  - id: L8.unticked-consent
+    layer: 8
+    title: "Consent checkboxes on forms are unticked by default and say what the user is agreeing to."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Render each form and assert consent boxes are unticked and labeled."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L8.data-minimization
+    layer: 8
+    title: "Forms collect only what is needed for the stated purpose."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Review
+    verify: "A person reviews each form's fields against its purpose."
+    verifiable_by: person
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [collects_personal_data, minors_data]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L8.third-party-inventory
+    layer: 8
+    title: "Third-party SDKs, pixels and embeds are inventoried and disclosed."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Diff third-party domains requested on each change against the inventory."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [third_party_pixels, uses_analytics]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L8.licensed-assets
+    layer: 8
+    title: "Fonts, images and other assets are licensed for this use."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Review
+    verify: "A person checks licenses for fonts and images."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L8.no-deceptive-practices
+    layer: 8
+    title: "No dark patterns, hidden fees or unsupported claims."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Review
+    verify: "A person reviews pages and flows for dark patterns, hidden fees and unsupported claims."
+    verifiable_by: person
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L8.genuine-reviews
+    layer: 8
+    title: "Reviews and testimonials are genuine, with any material connection disclosed."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Review
+    verify: "A person checks each review's source and disclosure."
+    verifiable_by: person
+    fix_lives_in: [cms]
+    applies_if: [displays_reviews]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L9.single-tag-manager
+    layer: 9
+    title: "A single tag-management layer loads all third-party tags."
+    scope: S
+    threshold: "No tags hard-coded outside it"
+    severity: Error
+    verify: "Scan page source for tags loaded outside the tag manager."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [uses_analytics, third_party_pixels]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L9.internal-traffic-filtered
+    layer: 9
+    title: "The analytics property filters out internal and developer traffic."
+    scope: S
+    threshold: "Filters active"
+    severity: Error
+    verify: "Check the analytics property's data filters."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party]
+    applies_if: [uses_analytics]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L9.search-data-linked
+    layer: 9
+    title: "Analytics is linked to search performance data where the tools support it."
+    scope: S
+    threshold: "Linked"
+    severity: Warn
+    verify: "Check the link in the analytics property settings."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party]
+    applies_if: [uses_analytics]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L9.consent-aware-tags
+    layer: 9
+    title: "Tags respect consent state."
+    scope: S
+    threshold: "No analytics or ad tags before consent where consent is required"
+    severity: Error
+    verify: "Load the site with no consent and assert no analytics or ad requests."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [uses_analytics, third_party_pixels]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L9.event-taxonomy
+    layer: 9
+    title: "A documented event taxonomy: event names, parameters and which are key events."
+    scope: S
+    threshold: "Written and current"
+    severity: Error
+    verify: "A person compares the written taxonomy with events seen in the tool."
+    verifiable_by: person
+    fix_lives_in: [repo, third-party]
+    applies_if: [uses_analytics]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L9.cta-events
+    layer: 9
+    title: "Every CTA and form submission sends a named event with standard parameters."
+    scope: F
+    threshold: "All CTAs and forms"
+    severity: Error
+    verify: "Accept consent, trigger each CTA and form, and assert the expected events."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [uses_analytics]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L9.utm-convention
+    layer: 9
+    title: "UTM convention followed on all campaign links."
+    scope: S
+    threshold: "See below"
+    severity: Error
+    verify: "Lint campaign links for lowercase values and allowed utm_medium values."
+    verifiable_by: tool
+    fix_lives_in: [third-party, cms]
+    applies_if: [uses_analytics]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L10.form-validation
+    layer: 10
+    title: "Validation runs on the client and again on the server."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Submit each form valid, invalid and with the browser bypassed, and assert the outcome."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L10.accessible-form-errors
+    layer: 10
+    title: "Error messages are accessible: tied to their field and announced to screen readers."
+    scope: C
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Submit invalid input and assert errors are linked to fields and announced."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L10.form-spam-protection
+    layer: 10
+    title: "Spam protection: a honeypot and rate limiting, or a challenge service."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Submit with the honeypot filled and in a burst, and assert rejection."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L10.list-consent-checkbox
+    layer: 10
+    title: "A consent checkbox where the form adds people to a list or shares their data."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Render each list or sharing form and assert the consent checkbox."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L10.form-success-state
+    layer: 10
+    title: "A clear success state after submission."
+    scope: C
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Submit each form and assert a visible success state."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L10.submission-delivery-alert
+    layer: 10
+    title: "Submissions reach the CRM or inbox, and delivery failures alert someone."
+    scope: F
+    threshold: "Pass/fail as stated"
+    severity: Error
+    verify: "Submit a test entry and confirm it arrives; force a failure and confirm the alert."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party, repo]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L10.no-exposed-email
+    layer: 10
+    title: "Public pages use contact forms rather than exposed email addresses, to reduce harvesting."
+    scope: P
+    threshold: "Pass/fail as stated"
+    severity: Warn
+    verify: "Crawl pages for plain-text email addresses."
+    verifiable_by: tool
+    fix_lives_in: [cms, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L10.spf
+    layer: 10
+    title: "SPF record for every sending service."
+    scope: S
+    threshold: "Passes and stays under 10 DNS lookups"
+    severity: Error
+    verify: "Scheduled DNS check of the SPF record and lookup count."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [sends_email]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L10.dkim
+    layer: 10
+    title: "DKIM signing."
+    scope: S
+    threshold: "Passes and aligns with the From domain"
+    severity: Error
+    verify: "Scheduled DNS check that the DKIM selector resolves; test message passes."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [sends_email]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L10.dmarc
+    layer: 10
+    title: "DMARC record with aggregate reporting (rua)."
+    scope: S
+    threshold: "p=none at launch, quarantine at growth, reject at scale"
+    severity: Error
+    verify: "Scheduled DNS check of _dmarc and its policy; review aggregate reports monthly."
+    verifiable_by: tool
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [sends_email]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+    threshold_by_stage: {launch: "p=none", growth: "p=quarantine", scale: "p=reject"}
+  - id: L10.bulk-sender-rules
+    layer: 10
+    title: "Bulk-sender rules: SPF and DKIM pass, DMARC aligned with the From domain, RFC 8058 one-click unsubscribe for marketing mail, and a low spam rate."
+    scope: S
+    threshold: "Unsubscribe honored within 2 days; spam rate under 0.3%"
+    severity: Error
+    verify: "Check the provider's postmaster data and send a test unsubscribe."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party]
+    applies_if: [bulk_sender]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L10.can-spam
+    layer: 10
+    title: "CAN-SPAM: accurate headers, honest subject lines, ad identification where applicable, a valid physical postal address and a clear opt-out."
+    scope: S
+    threshold: "Opt-out honored within 10 business days"
+    severity: Error
+    verify: "A person reviews a sample of commercial messages and tests the opt-out."
+    verifiable_by: person
+    fix_lives_in: [third-party]
+    applies_if: [sends_marketing_email]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L11.domain-renewal-lock
+    layer: 11
+    title: "Domain auto-renew and registrar lock are on."
+    scope: S
+    threshold: "Both enabled"
+    severity: Error
+    verify: "Check registrar settings."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L11.dns-documented
+    layer: 11
+    title: "DNS records are documented, as code where possible."
+    scope: S
+    threshold: "Current record list exists"
+    severity: Warn
+    verify: "Compare live DNS records with the documented list."
+    verifiable_by: infra-access
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L11.separate-env-secrets
+    layer: 11
+    title: "Staging and production are separate environments with separate secrets."
+    scope: S
+    threshold: "No shared credentials"
+    severity: Error
+    verify: "Compare secret stores for staging and production."
+    verifiable_by: infra-access
+    fix_lives_in: [cloud-infra]
+    applies_if: [has_staging_env]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L11.tested-backups
+    layer: 11
+    title: "Automated database backups, with a tested restore."
+    scope: S
+    threshold: "Daily backups; restore drill each quarter"
+    severity: Error
+    verify: "Check the backup schedule and the dated restore drill log."
+    verifiable_by: infra-access
+    fix_lives_in: [cloud-infra, third-party]
+    applies_if: [has_database]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L11.media-backups
+    layer: 11
+    title: "Media storage has versioning or backups."
+    scope: S
+    threshold: "Enabled"
+    severity: Warn
+    verify: "Check versioning or backup settings on media storage."
+    verifiable_by: infra-access
+    fix_lives_in: [cloud-infra, cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L11.uptime-monitoring
+    layer: 11
+    title: "Uptime monitoring on the homepage and every critical endpoint."
+    scope: S
+    threshold: "Checks every 1 to 5 minutes, alerts routed to a person"
+    severity: Error
+    verify: "Check monitor settings and send a test alert."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L11.error-tracking
+    layer: 11
+    title: "Error tracking on the frontend and backend."
+    scope: S
+    threshold: "Configured with alerts"
+    severity: Error
+    verify: "Trigger a test error and confirm it is captured and alerts."
+    verifiable_by: infra-access
+    fix_lives_in: [repo, third-party]
+    applies_if: [always]
+    stage: launch
+    stage_source: roadmap
+    house_default: false
+  - id: L11.structured-logging
+    layer: 11
+    title: "Structured logs with alerting on security and failure events."
+    scope: S
+    threshold: "Configured"
+    severity: Warn
+    verify: "Trigger a failure event and confirm a structured log entry and alert."
+    verifiable_by: infra-access
+    fix_lives_in: [cloud-infra, repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L11.tls-expiry-alert
+    layer: 11
+    title: "TLS certificate expiry is monitored."
+    scope: S
+    threshold: "Alert at least 14 days before expiry"
+    severity: Error
+    verify: "Check the certificate monitor's alert threshold."
+    verifiable_by: infra-access
+    fix_lives_in: [third-party, cloud-infra]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L11.automated-dependency-updates
+    layer: 11
+    title: "Dependency updates are automated."
+    scope: S
+    threshold: "An update bot proposes dependency updates on a schedule"
+    severity: Warn
+    verify: "Check for recent automated update proposals."
+    verifiable_by: tool
+    fix_lives_in: [repo, third-party]
+    applies_if: [always]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L11.runbook
+    layer: 11
+    title: "A runbook covers deploys, rollback and incident response."
+    scope: S
+    threshold: "Written and reviewed each quarter"
+    severity: Warn
+    verify: "A person checks the runbook's last review date."
+    verifiable_by: person
+    fix_lives_in: [repo]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L11.scale-on-evidence
+    layer: 11
+    title: "Horizontal scaling or a load balancer only when metrics show it is needed."
+    scope: S
+    threshold: "Based on measured load"
+    severity: Review
+    verify: "A person reviews traffic metrics before any scaling change."
+    verifiable_by: person
+    fix_lives_in: [cloud-infra]
+    applies_if: [always]
+    stage: scale
+    stage_source: roadmap
+    house_default: false
+  - id: L12.keyword-map
+    layer: 12
+    title: "A keyword-to-page map gives each URL one primary search intent."
+    scope: S
+    threshold: "No two pages target the same primary keyword"
+    severity: Error
+    verify: "Check the keyword map for duplicate primary keywords."
+    verifiable_by: person
+    fix_lives_in: [cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L12.content-calendar
+    layer: 12
+    title: "A content calendar exists."
+    scope: S
+    threshold: "Maintained"
+    severity: Warn
+    verify: "A person checks the calendar is current."
+    verifiable_by: person
+    fix_lives_in: [cms]
+    applies_if: [publishes_articles]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L12.article-template
+    layer: 12
+    title: "Article-type content uses a template with author, publish date and Article or BlogPosting structured data."
+    scope: T
+    threshold: "All posts use it"
+    severity: Error
+    verify: "Validate one article per template for author, date and structured data."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [publishes_articles]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L12.internal-linking
+    layer: 12
+    title: "Internal linking rules: each post links to at least two relevant pages, and hub pages link out to their posts."
+    scope: S
+    threshold: "Applied to every post"
+    severity: Warn
+    verify: "Count internal links per post and from hub pages."
+    verifiable_by: tool
+    fix_lives_in: [cms]
+    applies_if: [publishes_articles]
+    stage: growth
+    stage_source: roadmap
+    house_default: false
+  - id: L12.original-content
+    layer: 12
+    title: "Content is original, with first-hand detail the reader cannot get elsewhere."
+    scope: P
+    threshold: "Reviewed before publishing"
+    severity: Review
+    verify: "Review each post against Google's people-first content questions."
+    verifiable_by: person
+    fix_lives_in: [cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L12.image-alt-filenames
+    layer: 12
+    title: "Images have descriptive alt text and filenames."
+    scope: P
+    threshold: "All post images"
+    severity: Error
+    verify: "Scan post images for missing alt text and generic filenames."
+    verifiable_by: tool
+    fix_lives_in: [cms]
+    applies_if: [always]
+    stage: launch
+    stage_source: rule
+    house_default: false
+  - id: L12.updated-date
+    layer: 12
+    title: "Time-sensitive content shows an updated date."
+    scope: P
+    threshold: "Present where relevant"
+    severity: Warn
+    verify: "Check time-sensitive posts for an updated date."
+    verifiable_by: tool
+    fix_lives_in: [repo, cms]
+    applies_if: [publishes_articles]
+    stage: growth
+    stage_source: rule
+    house_default: false
+  - id: L12.ai-content-review
+    layer: 12
+    title: "AI-drafted content is edited by a person and adds original value."
+    scope: P
+    threshold: "Human review before publishing"
+    severity: Review
+    verify: "A person confirms review before publishing."
+    verifiable_by: person
+    fix_lives_in: [cms]
+    applies_if: [always]
+    stage: growth
+    stage_source: rule
+    house_default: false
+covered_by:  # doc rows without their own ID; the scout checks them under the canonical ID
+  - row: "Layer 1 dark patterns row"
+    id: L8.no-deceptive-practices
+  - row: "Layer 5 input debounce row"
+    id: L1.debounce-search
+  - row: "Layer 5 loading skeleton row"
+    id: L1.skeleton-reserves-space
+  - row: "Layer 5 API payload compression row"
+    id: L2.text-compression
+  - row: "Layer 5 load balancer row"
+    id: L11.scale-on-evidence
+  - row: "Layer 8 accessibility statement row"
+    id: L6.accessibility-statement
+  - row: "Layer 4 heading order (merged into L4.one-h1)"
+    id: L6.heading-order
+not_a_standard:
+  - row: "Layer 3 llms.txt is optional (Review, not a gate)"
+# Drift checklist (docs read back 2026-11-11 vs this file; index vs yaml rechecked 2026-11-12 (L7.csp), 2026-11-13 (v2.1) and 2026-11-14 (L5.lab-perf-score)):
+#   layer | doc rows with IDs | routing rows | yaml entries | covered rows | match
+#   L0    |               11 |           11 |           11 |            0 | yes
+#   L1    |                9 |            9 |            9 |            1 | yes
+#   L2    |                8 |            8 |            8 |            0 | yes
+#   L3    |               10 |           10 |           10 |            0 | yes
+#   L4    |               11 |           11 |           11 |            0 | yes
+#   L5    |               22 |           22 |           22 |            4 | yes
+#   L6    |               15 |           15 |           15 |            0 | yes
+#   L7    |               17 |           17 |           17 |            0 | yes
+#   L8    |               17 |           17 |           17 |            1 | yes
+#   L9    |                7 |            7 |            7 |            0 | yes
+#   L10   |               12 |           12 |           12 |            0 | yes
+#   L11   |               12 |           12 |           12 |            0 | yes
+#   L12   |                8 |            8 |            8 |            0 | yes
+#   total |              159 |          159 |          159 |            6 |

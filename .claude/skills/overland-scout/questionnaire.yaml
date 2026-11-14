@@ -1,0 +1,155 @@
+# questionnaire.yaml: generated from '01 Applicability Questionnaire' (content at v2.1, 2026-11-13).
+# Keys are permanent: add new keys, never rename one. A standard's applies_if lists these keys.
+version: 2.1
+generated: 2026-11-13
+keys:
+  - key: children_under_13
+    group: "Audience and data"
+    question: "Is the site directed to children under 13, or do we knowingly collect personal data from them?"
+    if_yes: "COPPA applies: verifiable parental consent, separate consent for third-party disclosure, a written data-retention policy and a written security program."
+    layers: [8]
+    switches_on: [L8.coppa-compliance]
+  - key: minors_data
+    group: "Audience and data"
+    question: "Does the site publish data about minors (names, photos, birth dates, physical stats, contact details)?"
+    if_yes: "Apply data minimization. Restrict API fields to what is needed for display. Publish minors' data only with a documented basis, such as FERPA directory information or a media release, and honor opt-outs from parents or guardians."
+    layers: [7, 8]
+    switches_on: [L7.public-api-field-allowlist, L8.data-minimization, L8.minor-publication-consent]
+  - key: collects_personal_data
+    group: "Audience and data"
+    question: "Do we collect any personal data through forms, accounts or tracking?"
+    if_yes: "A privacy policy is required, and forms collect only what is needed. A data access and deletion request path is required where GDPR, CCPA or a similar law applies."
+    layers: [8]
+    switches_on: [L8.data-minimization, L8.privacy-policy]
+  - key: eu_uk_visitors
+    group: "Audience and data"
+    question: "Do we have visitors or customers in the EU, EEA or UK?"
+    if_yes: "GDPR and UK GDPR apply. A consent banner is required before non-essential cookies."
+    layers: [8, 9]
+    switches_on: [L8.data-rights-request, L8.gdpr-compliance]
+  - key: california_ccpa
+    group: "Audience and data"
+    question: "Do we have visitors in California, and does the business meet CCPA thresholds?"
+    if_yes: "CCPA/CPRA disclosures and opt-out rights apply. Government entities are exempt."
+    layers: [8]
+    switches_on: [L8.ccpa-compliance, L8.data-rights-request]
+  - key: sells_online
+    group: "Commerce"
+    question: "Do we sell products or services, including fundraisers, camps or registrations?"
+    if_yes: "Add a refund policy, clear total pricing with no hidden fees, and business contact details."
+    layers: [8]
+    switches_on: [L8.refund-policy]
+  - key: sells_to_eu_consumers
+    group: "Commerce"
+    question: "Do we sell to consumers in the EU?"
+    if_yes: "The European Accessibility Act applies to consumer e-commerce services, unless the business is a microenterprise providing services."
+    layers: [6, 8]
+    switches_on: []
+  - key: displays_reviews
+    group: "Commerce"
+    question: "Do we display reviews or testimonials?"
+    if_yes: "The FTC rule on consumer reviews applies: no fake, AI-generated or undisclosed insider reviews, and no review suppression."
+    layers: [8]
+    switches_on: [L8.genuine-reviews]
+  - key: takes_payments
+    group: "Commerce"
+    question: "Do we take payments on the site?"
+    if_yes: "Use a hosted payment provider and keep card data off our servers."
+    layers: [7, 10]
+    switches_on: []
+  - key: sends_email
+    group: "Email"
+    question: "Do we send any email from our domain, including form notifications?"
+    if_yes: "Set up SPF, DKIM and DMARC."
+    layers: [10]
+    switches_on: [L10.dkim, L10.dmarc, L10.spf]
+  - key: sends_marketing_email
+    group: "Email"
+    question: "Do we send commercial or marketing email?"
+    if_yes: "CAN-SPAM applies: accurate headers, honest subject lines, a physical postal address and a working opt-out honored within 10 business days."
+    layers: [10]
+    switches_on: [L10.can-spam]
+  - key: bulk_sender
+    group: "Email"
+    question: "Do we send around 5,000 or more messages a day to Gmail or Yahoo addresses?"
+    if_yes: "Bulk-sender rules apply: DMARC, one-click unsubscribe honored within 2 days, and a spam rate under 0.3%."
+    layers: [10]
+    switches_on: [L10.bulk-sender-rules]
+  - key: google_ads_eea_uk
+    group: "Advertising and measurement"
+    question: "Do we run Google Ads or Google measurement for EEA or UK users?"
+    if_yes: "Implement Google Consent Mode v2 with all four signals."
+    layers: [8, 9]
+    switches_on: [L8.consent-mode-v2]
+  - key: third_party_pixels
+    group: "Advertising and measurement"
+    question: "Do we use third-party pixels or SDKs?"
+    if_yes: "Keep an inventory, disclose them in the privacy policy and gate them behind consent where required."
+    layers: [8, 9]
+    switches_on: [L8.third-party-inventory, L9.consent-aware-tags, L9.single-tag-manager]
+  - key: government_entity
+    group: "Accessibility exposure"
+    question: "Are we a state or local government entity, or building for one?"
+    if_yes: "The ADA Title II rule requires WCAG 2.1 AA: by April 26, 2027 for entities serving 50,000 or more people, April 26, 2028 for smaller ones. State laws can apply sooner (Colorado: since July 1, 2025). Switches on L6.wcag21-aa-conformance."
+    layers: [6]
+    switches_on: [L6.wcag21-aa-conformance]
+  - key: us_public_business
+    group: "Accessibility exposure"
+    question: "Are we a US business open to the public?"
+    if_yes: "ADA Title III litigation risk applies. Target WCAG 2.2 AA."
+    layers: [6]
+    switches_on: []
+  - key: wants_ai_search
+    group: "Discoverability"
+    question: "Do we want the site to appear in AI search and assistant answers?"
+    if_yes: "Allow AI search and user-fetch crawlers in robots.txt."
+    layers: [3]
+    switches_on: []
+  - key: allows_ai_training
+    group: "Discoverability"
+    question: "Do we want to allow our content to be used for AI model training?"
+    if_yes: "Make a deliberate decision per training crawler and record it."
+    layers: [3]
+    switches_on: []
+  - key: has_database
+    group: "Stack and features"
+    question: "Does the project run its own database, beyond a hosted CMS or third-party service?"
+    if_yes: "Database standards apply: indexed query columns, no N+1 queries, connection pooling and tested backups."
+    layers: [5, 11]
+    switches_on: [L11.tested-backups, L5.cache-expensive-responses, L5.db-connection-pooling, L5.indexed-query-columns, L5.no-n-plus-one, L7.parameterized-queries]
+  - key: has_public_api
+    group: "Stack and features"
+    question: "Does the project expose its own API endpoints to browsers or other systems?"
+    if_yes: "Public field allowlist, CORS limits, rate limiting, compressed payloads and endpoint uptime checks apply."
+    layers: [5, 7, 11]
+    switches_on: [L5.cache-expensive-responses, L7.cors-allowlist, L7.public-api-field-allowlist]
+  - key: has_admin_login
+    group: "Stack and features"
+    question: "Does the project have an admin panel or any user login?"
+    if_yes: "Strong admin authentication and secure session cookies apply."
+    layers: [7]
+    switches_on: [L7.admin-strong-auth, L7.secure-cookies]
+  - key: uses_analytics
+    group: "Stack and features"
+    question: "Do we run analytics or a tag manager?"
+    if_yes: "The measurement standards apply."
+    layers: [9]
+    switches_on: [L8.privacy-policy, L8.third-party-inventory, L9.consent-aware-tags, L9.cta-events, L9.event-taxonomy, L9.internal-traffic-filtered, L9.search-data-linked, L9.single-tag-manager, L9.utm-convention]
+  - key: uses_nonessential_cookies
+    group: "Stack and features"
+    question: "Do we set non-essential cookies or similar tracking, including through embeds?"
+    if_yes: "A cookie policy and a consent banner that blocks them until consent are required."
+    layers: [8, 9]
+    switches_on: [L8.consent-before-cookies]
+  - key: publishes_articles
+    group: "Stack and features"
+    question: "Do we publish articles, posts or other dated content?"
+    if_yes: "The article template, content calendar and updated-date standards apply."
+    layers: [4, 12]
+    switches_on: [L12.article-template, L12.content-calendar, L12.internal-linking, L12.updated-date]
+  - key: has_staging_env
+    group: "Stack and features"
+    question: "Do we run a staging or preview environment separate from production?"
+    if_yes: "Non-production environments are noindexed and use separate secrets."
+    layers: [3, 11]
+    switches_on: [L11.separate-env-secrets, L3.nonprod-noindex]
