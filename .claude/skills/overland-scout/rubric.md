@@ -1,9 +1,8 @@
 # Scout rubric
 
 The checks the scout scores a surface against. This file says how to pick and read them; the checks themselves
-are in `standards.yaml`. No `SKILL.md` yet: the scout's instructions arrive with the `scout-spec.md` edit
-(`docs/agent-workflow/scout-spec.md`, Phase 6 of the scout plan). Until then §3.2 of the spec is superseded by this
-folder.
+are in `standards.yaml`. The scout's design spec is a local owner doc, not in the repo; the scout's instructions
+(`SKILL.md`) arrive with the first hand-run pilot.
 
 ## Files
 
@@ -33,8 +32,8 @@ Private inputs, never committed:
 4. Apply the overrides file last. An override row changes routing or severity for that ID only.
 5. Route by `verifiable_by` and `fix_lives_in`. `fix_lives_in` lists every place a fix can land; the overrides
    file narrows it for this project. The scout proposes builder tickets only for gaps a tool can verify and the
-   repo can fix. Gaps that need infrastructure or owner access become owner-action tickets labeled `area:infra`,
-   never `ready-for-build`.
+   repo can fix. Gaps that need infrastructure or owner access are `needs-planning` findings recorded in the
+   scout's private state, not tickets. The owner tickets one when ready (`area:infra`, never `ready-for-build`).
 
 `covered_by` lists playbook rows that are checked under another ID: score the target ID, not the row.
 `not_a_standard` lists items that are deliberately not checks.

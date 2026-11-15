@@ -29,3 +29,6 @@ PROMPT.md
 
 # planner drafts (never commit)
 planner-drafts/
+
+# scout design spec (local only: names open security and privacy gaps)
+docs/agent-workflow/scout-spec.md
