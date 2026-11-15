@@ -29,3 +29,21 @@ PROMPT.md
 
 # planner drafts (never commit)
 planner-drafts/
+
+# archived agent-workflow working docs (local only)
+docs/agent-workflow/archive/
+docs/agent-workflow/audit-2026-10-21/
+
+# always-on bot working docs (local only, referenced by path from AI chats)
+docs/Always-On Agent Workflow Roadmap.md
+docs/agent-workflow/always-on-mvp.md
+docs/agent-workflow/fable-session-2026-10-21.md
+docs/agent-workflow/handoff-mvp-sessions-4-6.md
+docs/agent-workflow/handoff-ov-130-phase-d.md
+docs/agent-workflow/ov-130-132-phase-0.md
+docs/agent-workflow/PLAN.md
+docs/agent-workflow/rulesets/
+docs/playbooks/
+
+# scout design spec (local only: names open security and privacy gaps)
+docs/agent-workflow/scout-spec.md

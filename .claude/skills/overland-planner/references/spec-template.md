@@ -27,6 +27,7 @@ Mark anything you could not confirm as `unverified`.
 - `package.json` and `package-lock.json`, root and `client/`
 - `.env` and any `.env.*`
 - `.claude/skills/overland-planner/`
+- `.claude/skills/overland-scout/`
 - (add any path specific to this ticket; see "Do-not-touch and shifting warnings" below)
 
 ## Acceptance criteria
