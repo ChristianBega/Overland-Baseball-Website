@@ -9,6 +9,7 @@ import { StyledSectionLayoutWrapper } from "../../ui/components/SectionLayout.st
 // Hooks
 import { useStrapiCollection } from "../../../hooks/useStrapiCollection";
 import { DataStateDisplay } from "../../ui";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
 
 export default function Schedule() {
   const theme = useTheme();
@@ -48,7 +49,9 @@ export default function Schedule() {
           isEmpty={!sortedData || sortedData.length === 0}
           onRetry={refetch}
           loadingMessage="Loading schedule..."
-          errorTitle="Unable to Load Schedule"
+          errorTitle="We couldn't load the schedule"
+          errorIcon={<EventBusyIcon />}
+          errorMessage="Check your connection, then try again. Your schedule hasn't gone anywhere."
           emptyProps={{
             title: "No Games Available",
             message: "Check back soon for updates!",
