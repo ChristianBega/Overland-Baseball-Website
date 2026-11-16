@@ -2,7 +2,7 @@
 
 The checks the scout scores a surface against. This file says how to pick and read them; the checks themselves
 are in `standards.yaml`. The scout's design spec is a local owner doc, not in the repo; the scout's instructions
-(`SKILL.md`) arrive with the first hand-run pilot.
+are in `SKILL.md`.
 
 ## Files
 
@@ -11,6 +11,7 @@ are in `standards.yaml`. The scout's design spec is a local owner doc, not in th
 | `standards.yaml` | Every standard, one entry per permanent check ID (`L<layer>.<slug>`): threshold, severity, how to verify, who can verify, where a fix lives, which questionnaire keys switch it on, stage | No. Generated from the playbook docs |
 | `questionnaire.yaml` | The applicability questions (keys only, no answers) and which IDs each key switches on | No. Generated from the playbook docs |
 | `rubric.md` | This file | Yes |
+| `SKILL.md` | The scout's run loop, verdicts and ticket shape | Yes |
 
 Source of truth is the owner's "Industry Standard Web App Playbook" (Google Docs, not in the repo). A change goes
 into the docs first, then into both YAMLs with targeted edits, then the drift check in the playbook's
