@@ -1,13 +1,18 @@
 #!/bin/sh
 # The owner's commands for the overnight runner on this machine.
 #
-#   sh scripts/agents/agents.sh status            # machine profile, PAUSE, lock, last run
+#   sh scripts/agents/agents.sh status            # machine profile, PAUSE, AGENTS_PAUSED, lock, last run
+#   sh scripts/agents/agents.sh pause|resume      # master kill switch: repo variable AGENTS_PAUSED true|false
 #   sh scripts/agents/agents.sh auto on|off       # scheduled runs on/off (machine.json autoRun)
 #   sh scripts/agents/agents.sh run [KEY ...]     # a run now: the normal pick, or only these tickets
 #
-# `run` ignores autoRun and runner.startWindow; PAUSE and the lock still apply, and named tickets
-# must still be ready-for-build and unclaimed. AGENTS_MAX_TICKETS caps the run; AGENTS_DRY_RUN=1
-# stops before the build. Use the runner checkout's copy ($AGENTS_HOME/runner/scripts/agents/agents.sh)
+# pause/resume set AGENTS_PAUSED with your own `gh` login (GH_TOKEN / GITHUB_TOKEN ignored): every
+# machine's runs stop before the next ticket, and nothing starts. The bot can only read it. The local
+# $AGENTS_HOME/PAUSE file is still a per-machine stop on top of it.
+#
+# `run` ignores autoRun and runner.startWindow; PAUSE, AGENTS_PAUSED and the lock still apply, and
+# named tickets must still be ready-for-build and unclaimed. AGENTS_MAX_TICKETS caps the run;
+# AGENTS_DRY_RUN=1 stops before the build. Use the runner checkout's copy ($AGENTS_HOME/runner/scripts/agents/agents.sh)
 # so a run uses the merged runner, not work in progress.
 #
 # Env as overnight.sh: AGENTS_HOME [~/.agents/<repo dir name>], AGENTS_LOG_DIR.
@@ -21,9 +26,12 @@ AGENTS_HOME=${AGENTS_HOME:-$HOME/.agents/$REPO_NAME}
 . "$HERE/platform.sh"   # PLATFORM, DEFAULT_LOG_DIR
 AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$DEFAULT_LOG_DIR}
 PROFILE="$AGENTS_HOME/machine.json"
+# owner/name of origin, as overnight.sh (any credential in the URL is stripped).
+REPO=$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null |
+  sed -E 's#^[a-z+]+://([^@/]*@)?[^/]+/##; s#^[^@/]*@[^:]*:##; s#\.git$##')
 
 usage() {
-  echo "usage: agents.sh status | auto on|off | run [KEY ...]" >&2
+  echo "usage: agents.sh status | pause | resume | auto on|off | run [KEY ...]" >&2
   exit 2
 }
 
@@ -41,6 +49,12 @@ case ${1:-} in
       echo "profile: missing ($PROFILE)"
     fi
     [ -e "$AGENTS_HOME/PAUSE" ] && echo "PAUSE:   yes ($AGENTS_HOME/PAUSE)" || echo "PAUSE:   no"
+    v=$(env -u GH_TOKEN -u GITHUB_TOKEN gh variable get AGENTS_PAUSED -R "$REPO" 2>/dev/null) || v=""
+    case $v in
+      true) echo "AGENTS_PAUSED: true (runs are paused; agents.sh resume)" ;;
+      false) echo "AGENTS_PAUSED: false" ;;
+      *) echo "AGENTS_PAUSED: unreadable${v:+ (\"$v\")} for $REPO (runs treat this as paused)" ;;
+    esac
     pid=$(cat "$AGENTS_HOME/lock/pid" 2>/dev/null)
     if [ -z "$pid" ]; then echo "lock:    free"
     elif kill -0 "$pid" 2>/dev/null && ps -p "$pid" -o command= 2>/dev/null | grep -q 'overnight\.sh'; then
@@ -60,6 +74,13 @@ case ${1:-} in
         last.dry_run && "dry run", last.reason].filter(Boolean);
       console.log("last run: " + bits.join(" · "));
     ' "$AGENTS_LOG_DIR/events.jsonl"
+    ;;
+  pause | resume)
+    [ "$1" = pause ] && v=true || v=false
+    [ -n "$REPO" ] || { echo "agents: no origin remote in $REPO_ROOT" >&2; exit 1; }
+    env -u GH_TOKEN -u GITHUB_TOKEN gh variable set AGENTS_PAUSED --body "$v" -R "$REPO" ||
+      { echo "agents: could not set AGENTS_PAUSED on $REPO (gh auth status?)" >&2; exit 1; }
+    echo "AGENTS_PAUSED=$v on $REPO"
     ;;
   auto)
     case ${2:-} in on) v=true ;; off) v=false ;; *) usage ;; esac

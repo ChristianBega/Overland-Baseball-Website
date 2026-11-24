@@ -28,7 +28,12 @@
 #                              the Mac deep-sleeps mid-run and the network drops; night 2 and 3)
 #   BOT_KEY_PATH / BOT_APP_ID   passed through to bot-token.mjs
 #
-# Kill switch: `touch $AGENTS_HOME/PAUSE`. The bot token is never written to a log, a file or a
+# Kill switches, either one stops the run (at the start and before each ticket):
+#   master   the repo Actions variable AGENTS_PAUSED (`sh scripts/agents/agents.sh pause|resume`), read
+#            as the bot (Variables: read-only; agents cannot set it). Only "false" runs: true, missing
+#            or unreadable (no token, no gh, network) is paused (fail closed).
+#   local    `touch $AGENTS_HOME/PAUSE`: this machine only.
+# The bot token is never written to a log, a file or a
 # command line: the build's git credential helper and its `gh` shim mint a fresh one on every call,
 # so a build that outlives the 1 h token lifetime (sleep, slow network) still pushes and opens its PR.
 
@@ -268,6 +273,44 @@ with_timeout() {
   fi
   return "$t_rc"
 }
+
+# agents_paused — the master kill switch: the repo variable AGENTS_PAUSED, read as the bot with a token
+# minted for this call (in a subshell, never exported to the run). Prints "true", "false" or
+# "unreadable: <why>"; anything but "false" means paused.
+agents_paused() {
+  [ -n "$EV_REPO" ] || { printf 'unreadable: no origin repo'; return; }
+  command -v gh >/dev/null 2>&1 || { printf 'unreadable: gh not on PATH'; return; }
+  p_val=$(
+    BOT_KEY_PATH="${BOT_KEY_PATH:-$(cfg bot.keyDir)/key.pem}" || exit 2
+    export BOT_KEY_PATH BOT_REPO="${BOT_REPO:-$EV_REPO}"
+    GH_TOKEN=$(with_timeout "$STEP_SEC" mint node "$REPO_ROOT/scripts/agents/bot-token.mjs") || exit 3
+    export GH_TOKEN
+    with_timeout "$STEP_SEC" "gh api AGENTS_PAUSED" gh api "repos/$EV_REPO/actions/variables/AGENTS_PAUSED" --jq .value 2>/dev/null || exit 4
+  )
+  case $?:$p_val in
+    0:true | 0:false) printf '%s' "$p_val" ;;
+    0:*) printf 'unreadable: value "%s"' "$p_val" ;;
+    2:*) printf 'unreadable: bot.keyDir missing' ;;
+    3:*) printf 'unreadable: bot token mint failed' ;;
+    *) printf 'unreadable: gh api failed (variable missing, no access or network)' ;;
+  esac
+}
+
+# paused_why <agents_paused output> — the say line's reason.
+paused_why() {
+  case $1 in
+    true) printf 'AGENTS_PAUSED is true' ;;
+    *) printf 'AGENTS_PAUSED %s, treated as paused' "$1" ;;
+  esac
+}
+
+# ---- 2b. master kill switch -------------------------------------------------------------------
+PAUSED=$(agents_paused)
+if [ "$PAUSED" != false ]; then
+  say "paused ($(paused_why "$PAUSED")); nothing to do (sh scripts/agents/agents.sh resume)"
+  emit run_end outcome=idle failure_class=paused reason="$(paused_why "$PAUSED")"
+  exit 0
+fi
 
 say "=== run start (repo $REPO_NAME, machine $MACHINE, platform $PLATFORM, node $NODE_V, mode=$TRIGGER, dry-run $DRY_RUN)"
 emit run_start mode="$TRIGGER" platform="$PLATFORM" node="$NODE_V"
@@ -582,6 +625,8 @@ built=0 attempted=0 run_class=none RUN_KEYS=""
 for k in $TODO; do
   [ "$attempted" -ge "$MAX_TICKETS" ] && break
   [ -e "$AGENTS_HOME/PAUSE" ] && { say "paused mid-run; stopping before $k"; run_class=paused; break; }
+  PAUSED=$(agents_paused)
+  [ "$PAUSED" = false ] || { say "paused mid-run ($(paused_why "$PAUSED")); stopping before $k"; run_class=paused; break; }
 
   # A kept worktree from an earlier failed build (night 3: OV-112) still owns the ticket's local
   # branch, and the builder's `git switch -c <prefix>/<key>` would fail with no permitted recovery.
