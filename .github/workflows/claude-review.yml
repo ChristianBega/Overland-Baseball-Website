@@ -30,9 +30,12 @@ env:
 jobs:
   review:
     # public repo: fork PRs get no secrets, so skip them
+    # Master kill switch (OV-178): runs only when the repo variable AGENTS_PAUSED is exactly 'false';
+    # true or missing skips it (fail closed). sh scripts/agents/agents.sh pause|resume.
     if: github.event.pull_request.head.repo.full_name == github.repository &&
         github.event.pull_request.draft == false &&
-        !contains(github.event.pull_request.labels.*.name, 'needs-human')
+        !contains(github.event.pull_request.labels.*.name, 'needs-human') &&
+        vars.AGENTS_PAUSED == 'false'
     # pinned: ubuntu-latest moves to Ubuntu 26 on 2026-10-19 (OV-68)
     runs-on: ubuntu-24.04
     timeout-minutes: 50   # wait (30) + review
@@ -140,7 +143,8 @@ jobs:
     needs: review
     if: (needs.review.outputs.verdict == 'changes-requested' || needs.review.outputs.ci == 'failure') &&
         needs.review.outputs.verdict != 'needs-human' &&
-        github.event.pull_request.user.login == 'overland-bot[bot]'
+        github.event.pull_request.user.login == 'overland-bot[bot]' &&
+        vars.AGENTS_PAUSED == 'false'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     concurrency:
