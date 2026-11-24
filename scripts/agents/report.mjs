@@ -26,6 +26,10 @@
 // be the 00:55 wake before tonight's run. Last, it runs `notify.mjs morning <report.md>` (Slack,
 // non-fatal; see notify.mjs) when it appended the event, or when the last post fell back to a file.
 //
+// The first line is "⏸ PAUSED (...)" when the master kill switch, the repo variable AGENTS_PAUSED, is
+// true or cannot be read (read with the caller's login, also under --no-sweep; unreadable counts as
+// paused, as in overnight.sh). The report still runs in full below it.
+//
 // It never fails the caller: missing data is stated in the report, and it always exits 0.
 
 import { createHash } from "node:crypto";
@@ -122,6 +126,20 @@ function repoFromGit() {
   const r = spawnSync("git", ["-C", ROOT, "remote", "get-url", "origin"], { encoding: "utf8", timeout: 5000 });
   if (r.status !== 0) return null;
   return r.stdout.trim().replace(/^[a-z+]+:\/\/([^@/]*@)?[^/]+\//, "").replace(/^[^@/]*@[^:]*:/, "").replace(/\.git$/, "") || null;
+}
+
+// The master kill switch (overnight.sh agents_paused): null when AGENTS_PAUSED is "false", else the
+// report's first line. Fail closed: a missing or unreadable variable is paused.
+function pausedLine(repo) {
+  let v;
+  try {
+    if (!repo) throw new Error("repo unknown");
+    v = String(ghGet(`repos/${repo}/actions/variables/AGENTS_PAUSED`, ".value")[0]);
+  } catch (e) {
+    return `⏸ PAUSED (AGENTS_PAUSED unreadable: ${e.message}; runs treat this as paused)`;
+  }
+  if (v === "false") return null;
+  return v === "true" ? "⏸ PAUSED (AGENTS_PAUSED is true; agents.sh resume)" : `⏸ PAUSED (AGENTS_PAUSED is "${v}", not true/false; runs treat this as paused)`;
 }
 
 // ---------- sweep ----------
@@ -455,6 +473,8 @@ function main() {
   // The same night as data, for notify.mjs (report.json next to report.md; --morning only).
   const digest = { night, generated: new Date().toISOString().replace(/\.\d+Z$/, "Z"), repo: repo || null,
     status: st.status, why: st.why, sweep_note: sweepNote, notes, rows: [] };
+  const paused = pausedLine(repo);
+  if (paused) out.push(paused, "");
   out.push(`## Morning report — night ${night}`, "");
   out.push(`Generated ${new Date().toISOString().replace(/\.\d+Z$/, "Z")} from \`${path}\`.`);
   if (sweepNote) out.push(`**${sweepNote}.**`);
