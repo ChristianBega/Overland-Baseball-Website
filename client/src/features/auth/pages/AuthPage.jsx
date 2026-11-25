@@ -9,19 +9,23 @@ import SignInForm from "../components/SignInForm";
 import PasswordResetPage from "../pages/PasswordResetPage";
 import SectionLayout from "../../../features/ui/components/SectionLayout";
 import { Navigation } from "../../navigation";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 
 const authPageContent = {
   "/authentication/sign-in": {
+    title: "Sign In | Overland Baseball",
     heading: "Welcome Back",
     paragraph: "Sign in to your account below",
     form: <SignInForm />,
   },
   "/authentication/sign-up": {
+    title: "Sign Up | Overland Baseball",
     heading: "Welcome Blazers",
     paragraph: "Register for an account below",
     form: <SignUpForm />,
   },
   "/authentication/password-reset": {
+    title: "Reset Password | Overland Baseball",
     heading: "Reset Your Password",
     paragraph: "Enter your email to reset your password",
     form: <PasswordResetPage />,
@@ -30,7 +34,8 @@ const authPageContent = {
 
 const AuthenticationPage = () => {
   const location = useLocation();
-  const { heading, paragraph, form } = authPageContent[location.pathname] || {};
+  const { title, heading, paragraph, form } = authPageContent[location.pathname] || {};
+  useDocumentTitle(title || "Overland Baseball");
 
   return (
     <>

@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Typography, Container } from "@mui/material";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 
 const Error404Page = () => {
+  useDocumentTitle("Page Not Found | Overland Baseball");
   const navigate = useNavigate();
 
   const handleBackToHome = () => {

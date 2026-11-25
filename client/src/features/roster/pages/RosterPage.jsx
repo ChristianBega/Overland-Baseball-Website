@@ -7,8 +7,10 @@ import { Navigation } from "../../navigation";
 import TeamRoster from "../components/TeamRoster.jsx";
 import Staff from "../components/Staff.jsx";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 
 export default function RosterPage() {
+  useDocumentTitle("Roster | Overland Baseball");
   const { isLg } = useMediaQueries();
 
   return (

@@ -5,10 +5,12 @@ import EventsView from "../components/EventView";
 import PlayerEventView from "../components/PlayerEventView";
 
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 import Fundraisers from "../components/Fundraisers";
 import { Navigation } from "../../navigation";
 
 export default function EventsPage() {
+  useDocumentTitle("Events | Overland Baseball");
   const { isLg } = useMediaQueries();
 
   return (
