@@ -146,9 +146,11 @@ diary_push() {
   set +m
   ( sleep "$DIARY_TIMEOUT_SEC"; kill -TERM -"$d_pid" || kill -TERM "$d_pid" ) >/dev/null 2>&1 &
   d_wpid=$!
-  wait "$d_pid"
+  # Both jobs are reaped with stderr off: a job killed by a signal otherwise makes the shell print
+  # "Terminated" and the job's whole source to stderr (launchd.log).
+  wait "$d_pid" 2>/dev/null
   pkill -P "$d_wpid" 2>/dev/null
-  kill "$d_wpid" 2>/dev/null
+  { kill "$d_wpid"; wait "$d_wpid"; } 2>/dev/null
   if [ -s "$d_status" ]; then d_msg=$(cat "$d_status"); else d_msg="failed at timeout (${DIARY_TIMEOUT_SEC} s)"; fi
   rm -f "$d_status"
   case $d_msg in
