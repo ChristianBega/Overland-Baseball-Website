@@ -37,6 +37,13 @@
       "machinePrefix": "machine:"
     }
   },
+  "diary": {
+    "$comment": "OV-196, temporary until Phase 3. At run end overnight.sh writes the night's events.jsonl lines to <dir>/<night>.jsonl in a local clone of repo and pushes once to branch, as the owner (never the bot). clone is relative to $AGENTS_HOME unless absolute or ~/; AGENTS_DIARY_DIR overrides it. Only the Mac writes dir; the cloud report writes report/ (OV-197).",
+    "repo": "ChristianBega/overland-agents-state",
+    "branch": "main",
+    "clone": "diary",
+    "dir": "mac"
+  },
   "commands": {
     "install": "cd client && npm ci",
     "build": "cd client && npm run build",
