@@ -27,6 +27,7 @@
 #   AGENTS_ALLOW_BATTERY       1 = start even on battery power (macOS refuses by default: on battery
 #                              the Mac deep-sleeps mid-run and the network drops; night 2 and 3)
 #   BOT_KEY_PATH / BOT_APP_ID   passed through to bot-token.mjs
+#   AGENTS_DIARY_DIR  override the diary clone path (config diary.clone; testing a failed push)
 #
 # Kill switches, either one stops the run (at the start and before each ticket):
 #   master   the repo Actions variable AGENTS_PAUSED (`sh scripts/agents/agents.sh pause|resume`), read
@@ -81,11 +82,76 @@ RUN_ID="$(date -u +%Y-%m-%dT%H:%M:%SZ)-$$"
 # owner/name only: any credential in the URL is stripped, and the URL itself is never printed.
 EV_REPO=$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null |
   sed -E 's#^[a-z+]+://([^@/]*@)?[^/]+/##; s#^[^@/]*@[^:]*:##; s#\.git$##')
-# run_end and run_abort also post the run summary to Slack (notify_run).
+# run_end and run_abort also post the run summary to Slack (notify_run) and push this night's
+# events to the diary repo (diary_push).
 emit() {
   AGENTS_EVENTS="$EVENTS" EV_NIGHT="$NIGHT" EV_RUN_ID="$RUN_ID" EV_REPO="$EV_REPO" EV_DRY_RUN="$DRY_RUN" \
     EV_MACHINE="$MACHINE" node "$REPO_ROOT/scripts/agents/events.mjs" emit "$@" </dev/null >/dev/null || true
-  case $1 in run_end|run_abort) notify_run ;; esac
+  case $1 in run_end|run_abort) notify_run; diary_push "$1" ;; esac
+}
+
+# diary_push <event> — OV-196, temporary (Phase 3: the cloud builder writes the diary itself). This
+# night's lines of events.jsonl go to <diary.dir>/<night>.jsonl in the local clone of diary.repo,
+# committed and pushed once, so the cloud report (OV-197, which writes report/) can read them.
+# The file is rebuilt from the whole night each time: a second run that night rewrites it, and a
+# push that failed is carried by the next run's pull --rebase.
+# Runs as the owner: the owner's git login and identity, never the bot's helper or a token (the
+# build's credential setup lives in its own subshell, below, and is cleared here anyway).
+# Never fatal and never retried: one pass of pull --rebase, commit, push under a watchdog, then one
+# summary line; git's output goes to $LOG_DIR/diary.log. Needs no node beyond reading the config.
+DIARY_TIMEOUT_SEC=60
+diary_push() {
+  d_clone=$(cfg diary.clone 2>/dev/null) || { say "diary: skipped (diary.clone not readable from config)"; return 0; }
+  d_repo=$(cfg diary.repo 2>/dev/null) || d_repo=""
+  d_branch=$(cfg diary.branch 2>/dev/null) || d_branch=main
+  d_dir=$(cfg diary.dir 2>/dev/null) || d_dir=mac
+  case $d_clone in /*) ;; "~/"*) d_clone="$HOME/${d_clone#"~/"}" ;; *) d_clone="$AGENTS_HOME/$d_clone" ;; esac
+  d_clone=${AGENTS_DIARY_DIR:-$d_clone}
+  if [ ! -d "$d_clone/.git" ]; then
+    say "diary: skipped, no clone at $d_clone (git clone https://github.com/$d_repo.git $(q "$d_clone"))"
+    return 0
+  fi
+  d_status="$LOG_DIR/.diary-status"
+  rm -f "$d_status"
+  set -m
+  (
+    # The owner's git, whatever the caller exported: no bot helper, token or identity, no prompt.
+    unset GH_TOKEN GITHUB_TOKEN GIT_CONFIG_COUNT GIT_CONFIG_PARAMETERS GIT_ASKPASS SSH_ASKPASS \
+      GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
+    export GIT_TERMINAL_PROMPT=0
+    echo "== $(date +%H:%M:%S) $1 (run $RUN_ID)"
+    fail() { echo "failed at $1" > "$d_status"; exit 1; }
+    cd "$d_clone" || fail "cd"
+    # Night events go only to the configured repo (the URL itself is never printed).
+    case $(git remote get-url origin 2>/dev/null) in
+      *"/$d_repo" | *"/$d_repo.git" | *":$d_repo" | *":$d_repo.git") ;;
+      *) fail "origin check (clone origin is not $d_repo)" ;;
+    esac
+    git checkout -q "$d_branch" || fail "checkout $d_branch"
+    git pull -q --rebase --autostash origin "$d_branch" || { git rebase --abort 2>/dev/null; fail "pull"; }
+    mkdir -p "$d_dir" || fail "mkdir $d_dir"
+    grep -F "\"night\":\"$NIGHT\"" "$EVENTS" > "$d_dir/.$NIGHT.jsonl.tmp"
+    [ $? -le 1 ] && mv "$d_dir/.$NIGHT.jsonl.tmp" "$d_dir/$NIGHT.jsonl" || fail "write"
+    n=$(wc -l < "$d_dir/$NIGHT.jsonl" | tr -d ' ')
+    git add -- "$d_dir/$NIGHT.jsonl" || fail "add"
+    git diff --cached --quiet || git commit -q -m "$d_dir: $NIGHT $1 (run $RUN_ID)" || fail "commit"
+    git push -q origin "HEAD:$d_branch" || fail "push"
+    echo "pushed $d_dir/$NIGHT.jsonl ($n events)" > "$d_status"
+  ) </dev/null >>"$LOG_DIR/diary.log" 2>&1 &
+  d_pid=$!
+  set +m
+  ( sleep "$DIARY_TIMEOUT_SEC"; kill -TERM -"$d_pid" || kill -TERM "$d_pid" ) >/dev/null 2>&1 &
+  d_wpid=$!
+  wait "$d_pid"
+  pkill -P "$d_wpid" 2>/dev/null
+  kill "$d_wpid" 2>/dev/null
+  if [ -s "$d_status" ]; then d_msg=$(cat "$d_status"); else d_msg="failed at timeout (${DIARY_TIMEOUT_SEC} s)"; fi
+  rm -f "$d_status"
+  case $d_msg in
+    pushed*) say "diary: $d_msg" ;;
+    *) say "diary: push $d_msg; continuing (git output in $LOG_DIR/diary.log)" ;;
+  esac
+  return 0
 }
 
 # notify_run — this run's summary to Slack (scripts/agents/notify.mjs; webhook from
@@ -141,6 +207,8 @@ node_abort() {
          --data "{\"text\":\"$(jq_s "$text")\"}" >/dev/null 2>&1; then why="slack post failed (curl)"
   fi
   [ -n "$why" ] && printf '<!-- not posted: %s -->\n%s\n' "$why" "$text" > "$LOG_DIR/notify-run.md"
+  # Reading diary.* needs node: an old node can, a broken one skips with one line.
+  diary_push run_abort
   exit 1
 }
 
