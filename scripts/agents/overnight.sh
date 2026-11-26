@@ -122,11 +122,15 @@ diary_push() {
     echo "== $(date +%H:%M:%S) $1 (run $RUN_ID)"
     fail() { echo "failed at $1" > "$d_status"; exit 1; }
     cd "$d_clone" || fail "cd"
-    # Night events go only to the configured repo (the URL itself is never printed).
+    # Night events go only to the configured repo on github.com (the URL itself is never printed).
     case $(git remote get-url origin 2>/dev/null) in
-      *"/$d_repo" | *"/$d_repo.git" | *":$d_repo" | *":$d_repo.git") ;;
-      *) fail "origin check (clone origin is not $d_repo)" ;;
+      *[/@]"github.com"[/:]"$d_repo" | *[/@]"github.com"[/:]"$d_repo.git") ;;
+      *) fail "origin check (clone origin is not github.com/$d_repo)" ;;
     esac
+    # A watchdog kill mid-pull or mid-commit can leave a rebase or index.lock behind that would fail
+    # every later push. Cleared only when older than 2 min (the watchdog is 60 s), so never a live one.
+    [ -n "$(find .git/index.lock -mmin +2 2>/dev/null)" ] && rm -f .git/index.lock
+    [ -n "$(find .git/rebase-merge .git/rebase-apply -maxdepth 0 -mmin +2 2>/dev/null)" ] && git rebase --abort
     git checkout -q "$d_branch" || fail "checkout $d_branch"
     git pull -q --rebase --autostash origin "$d_branch" || { git rebase --abort 2>/dev/null; fail "pull"; }
     mkdir -p "$d_dir" || fail "mkdir $d_dir"
