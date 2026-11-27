@@ -29,7 +29,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 REPO_ROOT=$(cd "$HERE/../.." && pwd)
 REPO_NAME=$(basename "$REPO_ROOT")
 AGENTS_HOME=${AGENTS_HOME:-$HOME/.agents/$REPO_NAME}
-. "$HERE/platform.sh"   # PLATFORM, DEFAULT_LOG_DIR
+. "$HERE/platform.sh"   # PLATFORM, DEFAULT_LOG_DIR, cfg (reads $CONFIG, set below)
 AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$DEFAULT_LOG_DIR}
 PROFILE="$AGENTS_HOME/machine.json"
 # owner/name of origin, as overnight.sh (any credential in the URL is stripped).
@@ -37,14 +37,6 @@ REPO=$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null |
   sed -E 's#^[a-z+]+://([^@/]*@)?[^/]+/##; s#^[^@/]*@[^:]*:##; s#\.git$##')
 
 CONFIG="$REPO_ROOT/.claude/agents.config.json"
-# cfg <dotted.path> — a config value (as overnight.sh cfg).
-cfg() {
-  node -e '
-    const v = process.argv[2].split(".").reduce((o, k) => (o == null ? o : o[k]), require(process.argv[1]));
-    if (v == null) process.exit(1);
-    console.log(String(v));
-  ' "$CONFIG" "$1"
-}
 SWITCH_COPY=control/AGENTS_PAUSED.json
 
 # switch_copy_push <true|false> <set_by> — write the copy and push it to diary.branch, from a fresh
@@ -107,12 +99,17 @@ case ${1:-} in
       echo "profile: missing ($PROFILE)"
     fi
     [ -e "$AGENTS_HOME/PAUSE" ] && echo "PAUSE:   yes ($AGENTS_HOME/PAUSE)" || echo "PAUSE:   no"
-    v=$(env -u GH_TOKEN -u GITHUB_TOKEN gh variable get AGENTS_PAUSED -R "$REPO" 2>/dev/null) || v=""
-    case $v in
-      true) echo "AGENTS_PAUSED: true (runs are paused; agents.sh resume)" ;;
-      false) echo "AGENTS_PAUSED: false" ;;
-      *) echo "AGENTS_PAUSED: unreadable${v:+ (\"$v\")} for $REPO (runs treat this as paused)" ;;
-    esac
+    v=""
+    if [ -z "$REPO" ]; then
+      echo "AGENTS_PAUSED: unreadable (no origin remote in $REPO_ROOT; runs treat this as paused)"
+    else
+      v=$(env -u GH_TOKEN -u GITHUB_TOKEN gh variable get AGENTS_PAUSED -R "$REPO" 2>/dev/null) || v=""
+      case $v in
+        true) echo "AGENTS_PAUSED: true (runs are paused; agents.sh resume)" ;;
+        false) echo "AGENTS_PAUSED: false" ;;
+        *) echo "AGENTS_PAUSED: unreadable${v:+ (\"$v\")} for $REPO (runs treat this as paused)" ;;
+      esac
+    fi
     switch_copy_line "$v"
     pid=$(cat "$AGENTS_HOME/lock/pid" 2>/dev/null)
     if [ -z "$pid" ]; then echo "lock:    free"
