@@ -425,7 +425,18 @@ function morningCheck({ path, night, tonight, st, repo, text, digest, keys }) {
   if (!fresh && !existsSync(join(dirname(report), "notify-morning.md"))) return;
   const r = spawnSync(process.execPath, [join(ROOT, "scripts/agents/notify.mjs"), "morning", report],
     { stdio: ["ignore", "ignore", "inherit"], timeout: 30000 });
-  if (r.error) process.stderr.write(`report: notify failed (${r.error.code || "error"})\n`);
+  // notify.mjs always exits 0 and writes notify-morning.md itself when a post fails. If it was
+  // killed (timeout) or crashed before that, write the file here, so the next run retries the post
+  // and cloud-report.sh reports "NOT posted" (a killed notify may have posted: a rare double post
+  // beats a silent miss).
+  const why = r.error ? r.error.code || "error" : r.signal ? `killed by ${r.signal}` : r.status !== 0 ? `exit ${r.status}` : null;
+  if (!why) return;
+  process.stderr.write(`report: notify failed (${why})\n`);
+  const fb = join(dirname(report), "notify-morning.md");
+  if (!existsSync(fb)) {
+    try { writeFileSync(fb, `<!-- not posted: notify failed (${why}) -->\n${text}\n`); }
+    catch (e) { process.stderr.write(`report: could not write ${fb} (${e.code || e.message})\n`); }
+  }
 }
 
 function appendMorningCheck(path, ev) {

@@ -215,15 +215,17 @@ else
   fi
   git ${ident[@]+"${ident[@]}"} commit -q -m "report: $NIGHT morning (cloud)" -- "$REPORT_DIR" >&2 || fail "commit"
   # Guard (the repo's push hook does not run in the cloud): push only report/ to diary.branch.
+  # Every commit ahead of origin is checked, not the net diff, so a change undone later still counts.
   only_report() {
-    local bad
-    bad=$(git diff --name-only "origin/$D_BRANCH..HEAD" | grep -v "^$REPORT_DIR/" | head -n 3)
+    local names bad
+    names=$(git log --format= --name-only "origin/$D_BRANCH..HEAD") || { say "refusing to push: cannot list commits ahead of origin"; return 1; }
+    bad=$(printf '%s\n' "$names" | grep -v -e "^$REPORT_DIR/" -e '^$' | sort -u | head -n 3 | tr '\n' ' ')
     [ -z "$bad" ] || { say "refusing to push: commits ahead of origin touch $bad"; return 1; }
   }
   only_report || fail "push guard (non-report/ changes)"
   if ! with_timeout git push -q origin "HEAD:$D_BRANCH" >&2; then
     say "push rejected or failed; one pull --rebase and retry"
-    with_timeout git pull -q --rebase origin "$D_BRANCH" >&2 || { git rebase --abort 2>/dev/null; fail "pull before retry"; }
+    with_timeout git pull -q --rebase --autostash origin "$D_BRANCH" >&2 || { git rebase --abort 2>/dev/null; fail "pull before retry"; }
     only_report || fail "push guard (non-report/ changes)"
     with_timeout git push -q origin "HEAD:$D_BRANCH" >&2 || fail "push"
   fi
