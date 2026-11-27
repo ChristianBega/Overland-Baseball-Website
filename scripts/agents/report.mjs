@@ -38,6 +38,10 @@
 // true or cannot be read (read with the caller's login, also under --no-sweep; unreadable counts as
 // paused, as in overnight.sh). The report still runs in full below it. report.json carries the same
 // line as `paused` (null when not paused), and notify.mjs puts it first in the Slack post.
+// In the cloud the variable is never readable (the Claude GitHub proxy blocks every Actions API
+// path), so with --diary an unreadable variable falls back to the diary's control/AGENTS_PAUSED.json,
+// which agents.sh pause|resume writes and overnight.sh's tripwire corrects (OV-198). A missing or
+// invalid copy is still paused.
 //
 // It never fails the caller: missing data is stated in the report, and it exits 0. The one
 // exception is an unreadable --diary (missing, empty, or not a git clone): it writes and posts nothing
@@ -185,18 +189,52 @@ function repoFromGit() {
   return r.stdout.trim().replace(/^[a-z+]+:\/\/([^@/]*@)?[^/]+\//, "").replace(/^[^@/]*@[^:]*:/, "").replace(/\.git$/, "") || null;
 }
 
-// The master kill switch (overnight.sh agents_paused): null when AGENTS_PAUSED is "false", else the
-// report's first line. Fail closed: a missing or unreadable variable is paused.
-function pausedLine(repo) {
+// The kill switch copy in the diary (OV-198): cloud sessions cannot read AGENTS_PAUSED (the Claude
+// GitHub proxy blocks every Actions API path), so agents.sh pause|resume also writes the value here,
+// and overnight.sh's tripwire rewrites it when it differs from the real variable.
+const SWITCH_COPY = "control/AGENTS_PAUSED.json";
+
+// { value, by, at }, or { missing: why } (no file, or not valid JSON).
+function readSwitchCopy(dir) {
+  const f = join(dir, SWITCH_COPY);
+  if (!existsSync(f)) return { missing: `the diary has no ${SWITCH_COPY}` };
+  try {
+    const j = JSON.parse(readFileSync(f, "utf8"));
+    return { value: String(j.value), by: j.set_by || "?", at: j.set_at || null };
+  } catch {
+    return { missing: `the diary's ${SWITCH_COPY} is not valid JSON` };
+  }
+}
+
+function localTime(ts) {
+  const d = new Date(ts || "");
+  if (Number.isNaN(d.getTime())) return "an unknown time";
+  const p = (n) => String(n).padStart(2, "0");
+  return `${localDate(d)} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+// The master kill switch (overnight.sh agents_paused): { line, note }. line is null when
+// AGENTS_PAUSED is "false", else the report's first line. Fail closed: a missing or unreadable
+// variable is paused. With --diary (the cloud report), an unreadable variable falls back to the
+// diary copy; the copy says when and by what it was set, and a missing or odd copy is paused.
+function pausedLine(repo, diary) {
   let v;
   try {
     if (!repo) throw new Error("repo unknown");
     v = String(ghGet(`repos/${repo}/actions/variables/AGENTS_PAUSED`, ".value")[0]);
   } catch (e) {
-    return `⏸ PAUSED (AGENTS_PAUSED unreadable: ${e.message}; runs treat this as paused)`;
+    if (diary === undefined) return { line: `⏸ PAUSED (AGENTS_PAUSED unreadable: ${e.message}; runs treat this as paused)`, note: null };
+    const c = readSwitchCopy(diary);
+    if (c.missing) {
+      return { line: `⏸ PAUSED (AGENTS_PAUSED is not readable here (${e.message}) and ${c.missing}; agents.sh pause|resume writes it)`, note: null };
+    }
+    const from = `diary copy, set by ${c.by} at ${localTime(c.at)}`;
+    if (c.value === "false") return { line: null, note: `Kill switch: off (${from}; AGENTS_PAUSED itself is not readable here: ${e.message})` };
+    if (c.value === "true") return { line: `⏸ PAUSED (AGENTS_PAUSED is true, ${from}; agents.sh resume)`, note: null };
+    return { line: `⏸ PAUSED (the diary copy of AGENTS_PAUSED is "${c.value}", not true/false; treated as paused)`, note: null };
   }
-  if (v === "false") return null;
-  return v === "true" ? "⏸ PAUSED (AGENTS_PAUSED is true; agents.sh resume)" : `⏸ PAUSED (AGENTS_PAUSED is "${v}", not true/false; runs treat this as paused)`;
+  if (v === "false") return { line: null, note: null };
+  return { line: v === "true" ? "⏸ PAUSED (AGENTS_PAUSED is true; agents.sh resume)" : `⏸ PAUSED (AGENTS_PAUSED is "${v}", not true/false; runs treat this as paused)`, note: null };
 }
 
 // ---------- sweep ----------
@@ -565,7 +603,13 @@ function main() {
   // The same night as data, for notify.mjs (report.json next to report.md; --morning only).
   const digest = { night, generated: new Date().toISOString().replace(/\.\d+Z$/, "Z"), repo: repo || null,
     status: st.status, why: st.why, sweep_note: sweepNote, notes, rows: [] };
-  const paused = pausedLine(repo);
+  const sw = pausedLine(repo, diary ? opt.diary : undefined);
+  const paused = sw.line;
+  if (sw.note) notes.push(sw.note);
+  // The runner's tripwire found the copy stale tonight and fixed it (overnight.sh diary_push).
+  for (const e of tonight.filter((x) => x.event === "switch_copy")) {
+    notes.push(`kill switch copy was ${e.copy}, the real AGENTS_PAUSED was ${e.real} at ${localTime(e.ts)}; the runner fixed the copy (use agents.sh pause|resume, not github.com)`);
+  }
   digest.paused = paused;
   if (paused) out.push(paused, "");
   out.push(`## Morning report — night ${night}`, "");

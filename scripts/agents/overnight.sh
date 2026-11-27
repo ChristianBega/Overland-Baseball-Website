@@ -98,13 +98,21 @@ emit() {
 # Runs as the owner: the owner's git login and identity, never the bot's helper or a token (the
 # build's credential setup lives in its own subshell, below, and is cleared here anyway).
 # Never fatal and never retried: one pass of pull --rebase, commit, push under a watchdog, then one
-# summary line; git's output goes to $LOG_DIR/diary.log. Needs no node beyond reading the config.
+# summary line; git's output goes to $LOG_DIR/diary.log.
+# Kill switch tripwire (OV-198): cloud sessions cannot read the repo variable AGENTS_PAUSED (the
+# Claude GitHub proxy blocks every Actions API path), so the cloud reads a copy in the diary,
+# <diary.control>/AGENTS_PAUSED.json, written by agents.sh pause|resume. This run read the real value
+# ($PAUSED, with the bot token). When it is true or false and the pulled copy differs or is missing,
+# the copy is rewritten in the same commit and a switch_copy event records both values (the event
+# lands in this night's file, so the morning report shows it). An unreadable real value leaves the
+# copy alone.
 DIARY_TIMEOUT_SEC=60
 diary_push() {
   d_clone=$(cfg diary.clone 2>/dev/null) || { say "diary: skipped (diary.clone not readable from config)"; return 0; }
   d_repo=$(cfg diary.repo 2>/dev/null) || d_repo=""
   d_branch=$(cfg diary.branch 2>/dev/null) || d_branch=main
   d_dir=$(cfg diary.dir 2>/dev/null) || d_dir=mac
+  d_control=control   # the kill switch copy folder (OV-198); not in agents.config.json
   case $d_clone in /*) ;; "~/"*) d_clone="$HOME/${d_clone#"~/"}" ;; *) d_clone="$AGENTS_HOME/$d_clone" ;; esac
   d_clone=${AGENTS_DIARY_DIR:-$d_clone}
   if [ ! -d "$d_clone/.git" ]; then
@@ -133,6 +141,22 @@ diary_push() {
     [ -n "$(find .git/rebase-merge .git/rebase-apply -maxdepth 0 -mmin +2 2>/dev/null)" ] && git rebase --abort
     git checkout -q "$d_branch" || fail "checkout $d_branch"
     git pull -q --rebase --autostash origin "$d_branch" || { git rebase --abort 2>/dev/null; fail "pull"; }
+    d_fix=""
+    case ${PAUSED:-} in
+      true | false)
+        d_copy="$d_control/AGENTS_PAUSED.json"
+        d_cur=$(node -e 'try { const j = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); process.stdout.write(String(j.value)); } catch { process.stdout.write("missing"); }' "$d_copy")
+        if [ "$d_cur" != "$PAUSED" ]; then
+          mkdir -p "$d_control" || fail "mkdir $d_control"
+          node -e 'const [f, value, by, repo] = process.argv.slice(1);
+            require("fs").writeFileSync(f, JSON.stringify({ value, set_at: new Date().toISOString().replace(/\.\d+Z$/, "Z"), set_by: by, repo }) + "\n");' \
+            "$d_copy" "$PAUSED" "overnight.sh tripwire (run $RUN_ID)" "$EV_REPO" || fail "write $d_copy"
+          emit switch_copy copy="$d_cur" real="$PAUSED" reason="kill switch copy was $d_cur, real AGENTS_PAUSED is $PAUSED; copy fixed"
+          git add -- "$d_copy" || fail "add $d_copy"
+          d_fix="; switch copy fixed ($d_cur -> $PAUSED)"
+        fi
+        ;;
+    esac
     mkdir -p "$d_dir" || fail "mkdir $d_dir"
     grep -F "\"night\":\"$NIGHT\"" "$EVENTS" > "$d_dir/.$NIGHT.jsonl.tmp"
     [ $? -le 1 ] && mv "$d_dir/.$NIGHT.jsonl.tmp" "$d_dir/$NIGHT.jsonl" || fail "write"
@@ -140,7 +164,7 @@ diary_push() {
     git add -- "$d_dir/$NIGHT.jsonl" || fail "add"
     git diff --cached --quiet || git commit -q -m "$d_dir: $NIGHT $1 (run $RUN_ID)" || fail "commit"
     git push -q origin "HEAD:$d_branch" || fail "push"
-    echo "pushed $d_dir/$NIGHT.jsonl ($n events)" > "$d_status"
+    echo "pushed $d_dir/$NIGHT.jsonl ($n events)$d_fix" > "$d_status"
   ) </dev/null >>"$LOG_DIR/diary.log" 2>&1 &
   d_pid=$!
   set +m
