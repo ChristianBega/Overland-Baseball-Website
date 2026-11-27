@@ -21,6 +21,12 @@ also writes `<log dir>/<date>/report.md`. Its "Waiting on you" list is the PRs b
 report failed (see the task's run in claude.ai/code); a report that says "No run recorded" means the 01:00 run never
 started or its diary push failed.
 
+The kill switch: pause and resume with `sh scripts/agents/agents.sh pause|resume`, not on github.com. Cloud sessions
+cannot read the `AGENTS_PAUSED` variable (the Claude GitHub proxy blocks GitHub Actions paths), so `agents.sh` also
+writes a copy to `control/AGENTS_PAUSED.json` in the diary, and the cloud report reads that. If the variable is changed
+on github.com, the copy is stale until the next 01:00 run, whose tripwire fixes it and notes it in the report.
+`agents.sh status` shows whether the copy matches.
+
 For each open bot PR:
 
 1. Read the Claude review comment (`Verdict:` line) and the diff. Skip the PR for now if you see a stop sign (below).
