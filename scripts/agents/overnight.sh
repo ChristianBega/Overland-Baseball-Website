@@ -101,11 +101,14 @@ emit() {
 # summary line; git's output goes to $LOG_DIR/diary.log.
 # Kill switch tripwire (OV-198): cloud sessions cannot read the repo variable AGENTS_PAUSED (the
 # Claude GitHub proxy blocks every Actions API path), so the cloud reads a copy in the diary,
-# <diary.control>/AGENTS_PAUSED.json, written by agents.sh pause|resume. This run read the real value
-# ($PAUSED, with the bot token). When it is true or false and the pulled copy differs or is missing,
-# the copy is rewritten in the same commit and a switch_copy event records both values (the event
-# lands in this night's file, so the morning report shows it). An unreadable real value leaves the
-# copy alone.
+# control/AGENTS_PAUSED.json, written by agents.sh pause|resume. The real value is read fresh here
+# (agents_paused, the bot token; never this run's older $PAUSED, which can be hours old and would
+# undo a pause made during the run). When it is true or false and the pulled copy differs or is
+# missing, the copy is rewritten in the same commit and a switch_copy event records both values (the
+# event lands in this night's file, so the morning report shows it). An unreadable real value, or a
+# copy agents.sh wrote after this run started, is left alone. The pull lets the remote side win a
+# conflict: only the copy can conflict (mac/ is the Mac's, report/ the cloud's), and the check after
+# the pull rewrites it anyway, so a tripwire commit that never got pushed cannot block later pushes.
 DIARY_TIMEOUT_SEC=60
 diary_push() {
   d_clone=$(cfg diary.clone 2>/dev/null) || { say "diary: skipped (diary.clone not readable from config)"; return 0; }
@@ -119,6 +122,9 @@ diary_push() {
     say "diary: skipped, no clone at $d_clone (git clone https://github.com/$d_repo.git $(q "$d_clone"))"
     return 0
   fi
+  # Before step 2 (an early abort) there is no step timeout or lock dir for agents_paused yet.
+  d_real=""
+  if [ -n "${STEP_SEC:-}" ] && [ -d "${LOCK:-/nonexistent}" ]; then d_real=$(agents_paused); fi
   d_status="$LOG_DIR/.diary-status"
   rm -f "$d_status"
   set -m
@@ -140,20 +146,31 @@ diary_push() {
     [ -n "$(find .git/index.lock -mmin +2 2>/dev/null)" ] && rm -f .git/index.lock
     [ -n "$(find .git/rebase-merge .git/rebase-apply -maxdepth 0 -mmin +2 2>/dev/null)" ] && git rebase --abort
     git checkout -q "$d_branch" || fail "checkout $d_branch"
-    git pull -q --rebase --autostash origin "$d_branch" || { git rebase --abort 2>/dev/null; fail "pull"; }
+    # -X ours: in a rebase "ours" is the upstream (origin) side; see the tripwire note above.
+    git pull -q --rebase -X ours --autostash origin "$d_branch" || { git rebase --abort 2>/dev/null; fail "pull"; }
     d_fix=""
-    case ${PAUSED:-} in
+    case $d_real in
       true | false)
         d_copy="$d_control/AGENTS_PAUSED.json"
-        d_cur=$(node -e 'try { const j = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); process.stdout.write(String(j.value)); } catch { process.stdout.write("missing"); }' "$d_copy")
-        if [ "$d_cur" != "$PAUSED" ]; then
+        # "<value> <newer>": newer=1 when agents.sh wrote the copy after this run started ($RUN_ID
+        # begins with the run's start time in UTC).
+        d_read=$(node -e 'const [f, start] = process.argv.slice(1);
+          try {
+            const j = JSON.parse(require("fs").readFileSync(f, "utf8"));
+            const newer = /^agents\.sh/.test(String(j.set_by || "")) && String(j.set_at || "") >= start;
+            process.stdout.write(`${String(j.value).replace(/\s/g, "_")} ${newer ? 1 : 0}`);
+          } catch { process.stdout.write("missing 0"); }' "$d_copy" "${RUN_ID%%Z-*}Z")
+        d_cur=${d_read% *}
+        if [ "${d_read##* }" = 1 ] && [ "$d_cur" != "$d_real" ]; then
+          echo "switch copy ($d_cur) is newer than this run and differs from the read ($d_real); left alone"
+        elif [ "$d_cur" != "$d_real" ]; then
           mkdir -p "$d_control" || fail "mkdir $d_control"
           node -e 'const [f, value, by, repo] = process.argv.slice(1);
             require("fs").writeFileSync(f, JSON.stringify({ value, set_at: new Date().toISOString().replace(/\.\d+Z$/, "Z"), set_by: by, repo }) + "\n");' \
-            "$d_copy" "$PAUSED" "overnight.sh tripwire (run $RUN_ID)" "$EV_REPO" || fail "write $d_copy"
-          emit switch_copy copy="$d_cur" real="$PAUSED" reason="kill switch copy was $d_cur, real AGENTS_PAUSED is $PAUSED; copy fixed"
+            "$d_copy" "$d_real" "overnight.sh tripwire (run $RUN_ID)" "$EV_REPO" || fail "write $d_copy"
+          emit switch_copy copy="$d_cur" real="$d_real" reason="kill switch copy was $d_cur, real AGENTS_PAUSED is $d_real; copy fixed"
           git add -- "$d_copy" || fail "add $d_copy"
-          d_fix="; switch copy fixed ($d_cur -> $PAUSED)"
+          d_fix="; switch copy fixed ($d_cur -> $d_real)"
         fi
         ;;
     esac
