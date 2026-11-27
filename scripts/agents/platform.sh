@@ -27,8 +27,9 @@ else
 fi
 
 # cfg <dotted.path> — a value from $CONFIG (.claude/agents.config.json); arrays print one item per
-# line, objects as JSON; exit 1 when it is missing. One copy for overnight.sh and agents.sh;
-# cloud-report.sh keeps its own (it does not source this file).
+# line, objects as JSON; exit 1 when it is missing. Used by overnight.sh and agents.sh (which reads
+# only string keys); windows/install.sh also sources this file but does not call it. cloud-report.sh
+# keeps its own copy (it does not source this file).
 cfg() {
   node -e '
     const v = process.argv[2].split(".").reduce((o, k) => (o == null ? o : o[k]), require(process.argv[1]));
