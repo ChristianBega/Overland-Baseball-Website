@@ -221,7 +221,10 @@ function pausedLine(repo, diary) {
   let v;
   try {
     if (!repo) throw new Error("repo unknown");
-    v = String(ghGet(`repos/${repo}/actions/variables/AGENTS_PAUSED`, ".value")[0]);
+    const out = ghGet(`repos/${repo}/actions/variables/AGENTS_PAUSED`, ".value");
+    // gh can exit 0 with no output: that is unreadable (and falls back to the copy), not "undefined".
+    if (!out.length) throw new Error("gh returned no value");
+    v = String(out[0]);
   } catch (e) {
     if (diary === undefined) return { line: `⏸ PAUSED (AGENTS_PAUSED unreadable: ${e.message}; runs treat this as paused)`, note: null };
     const c = readSwitchCopy(diary);

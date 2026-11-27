@@ -44,7 +44,7 @@ REPO_ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 CONFIG="$REPO_ROOT/.claude/agents.config.json"
 REPO_NAME=$(basename "$REPO_ROOT")
 AGENTS_HOME=${AGENTS_HOME:-$HOME/.agents/$REPO_NAME}
-. "$REPO_ROOT/scripts/agents/platform.sh"   # PLATFORM (darwin | wsl | linux), DEFAULT_LOG_DIR
+. "$REPO_ROOT/scripts/agents/platform.sh"   # PLATFORM (darwin | wsl | linux), DEFAULT_LOG_DIR, cfg
 AGENTS_LOG_DIR=${AGENTS_LOG_DIR:-$DEFAULT_LOG_DIR}
 
 # Node: the major version in .nvmrc, first on PATH for the run and for the build. A broken or old
@@ -64,6 +64,9 @@ NODE_PIN_BAD=""
 [ -n "$NODE_BIN" ] && PATH="$NODE_BIN:$PATH" && export PATH
 DRY_RUN=${AGENTS_DRY_RUN:-0}
 MACHINE=""   # from machine.json (step 1b); empty on events before that
+# 1 once agents_paused can run (STEP_SEC, with_timeout and the lock dir exist, step 2); 0 again when
+# the run is stopping (INT/TERM trap). diary_push reads the switch only while it is 1.
+CAN_READ_SWITCH=0
 
 NIGHT=$(date +%Y-%m-%d)
 LOG_DIR="$AGENTS_LOG_DIR/$NIGHT"
@@ -122,9 +125,11 @@ diary_push() {
     say "diary: skipped, no clone at $d_clone (git clone https://github.com/$d_repo.git $(q "$d_clone"))"
     return 0
   fi
-  # Before step 2 (an early abort) there is no step timeout or lock dir for agents_paused yet.
+  # Not before step 2 (an early abort: no step timeout or lock dir for agents_paused yet), and not
+  # while the run is stopping (deadline or signal), where the read could hold up the exit for up to
+  # 2 x STEP_SEC; the next run's tripwire checks the copy instead.
   d_real=""
-  if [ -n "${STEP_SEC:-}" ] && [ -d "${LOCK:-/nonexistent}" ]; then d_real=$(agents_paused); fi
+  [ "$CAN_READ_SWITCH" = 1 ] && d_real=$(agents_paused)
   d_status="$LOG_DIR/.diary-status"
   rm -f "$d_status"
   set -m
@@ -153,7 +158,11 @@ diary_push() {
       true | false)
         d_copy="$d_control/AGENTS_PAUSED.json"
         # "<value> <newer>": newer=1 when agents.sh wrote the copy after this run started ($RUN_ID
-        # begins with the run's start time in UTC).
+        # begins with the run's start time in UTC). Clock skew: set_at is from the clock of the
+        # machine that ran agents.sh, the start time from this one. If that clock is behind, a copy
+        # written during the run can look older and is rewritten with d_real, which was read just
+        # before this pull, so the copy is at most one read out of date until the next run or the
+        # next agents.sh pause|resume.
         d_read=$(node -e 'const [f, start] = process.argv.slice(1);
           try {
             const j = JSON.parse(require("fs").readFileSync(f, "utf8"));
@@ -168,6 +177,9 @@ diary_push() {
           node -e 'const [f, value, by, repo] = process.argv.slice(1);
             require("fs").writeFileSync(f, JSON.stringify({ value, set_at: new Date().toISOString().replace(/\.\d+Z$/, "Z"), set_by: by, repo }) + "\n");' \
             "$d_copy" "$d_real" "overnight.sh tripwire (run $RUN_ID)" "$EV_REPO" || fail "write $d_copy"
+          # Emitted from inside run_end's (or run_abort's) diary push, so it comes after run_end in
+          # events.jsonl. It is written before the night's file is rebuilt below, so it is still in
+          # this push and in the morning report.
           emit switch_copy copy="$d_cur" real="$d_real" reason="kill switch copy was $d_cur, real AGENTS_PAUSED is $d_real; copy fixed"
           git add -- "$d_copy" || fail "add $d_copy"
           d_fix="; switch copy fixed ($d_cur -> $d_real)"
@@ -220,15 +232,6 @@ die() {
 
 # q <string> — the string as one single-quoted shell word (as in install-common.sh).
 q() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }
-
-# cfg <dotted.path> — prints a config value; arrays print one item per line.
-cfg() {
-  node -e '
-    const v = process.argv[2].split(".").reduce((o, k) => (o == null ? o : o[k]), require(process.argv[1]));
-    if (v == null) process.exit(1);
-    console.log(Array.isArray(v) ? v.join("\n") : typeof v === "object" ? JSON.stringify(v) : String(v));
-  ' "$CONFIG" "$1"
-}
 
 # node_abort <message> — step 0's abort. emit and notify_run are node scripts, and with a broken
 # or old node they fail silently, so the run_abort line and the Slack post are written from sh.
@@ -356,7 +359,7 @@ cpid="" wpid="" dpid="" CUR_BR=""
 # kill -<pgid> needs job control (set -m); where the shell ignores it (dash without a tty), fall
 # back to the pid.
 trap '[ -n "$cpid" ] && { kill -TERM -"$cpid" 2>/dev/null || kill -TERM "$cpid" 2>/dev/null; }; for p in $wpid $dpid; do pkill -P "$p"; kill "$p"; done 2>/dev/null; rm -rf "$LOCK"' EXIT
-trap '[ -n "$CUR_BR" ] && say "claim branch $CUR_BR is on origin with no finished build: delete it if it is empty, so the ticket can be built again"; if [ -e "$LOCK/deadline" ]; then say "ABORT: run deadline (${DEADLINE_SEC} s) passed"; emit run_abort failure_class=run_deadline reason="run deadline ${DEADLINE_SEC} s"; else emit run_abort failure_class=unknown reason=signal; fi; exit 130' INT TERM
+trap 'CAN_READ_SWITCH=0; [ -n "$CUR_BR" ] && say "claim branch $CUR_BR is on origin with no finished build: delete it if it is empty, so the ticket can be built again"; if [ -e "$LOCK/deadline" ]; then say "ABORT: run deadline (${DEADLINE_SEC} s) passed"; emit run_abort failure_class=run_deadline reason="run deadline ${DEADLINE_SEC} s"; else emit run_abort failure_class=unknown reason=signal; fi; exit 130' INT TERM
 ( sleep "$DEADLINE_SEC"; : > "$LOCK/deadline"; kill -TERM $$ ) >/dev/null 2>&1 &
 dpid=$!
 
@@ -377,10 +380,13 @@ with_timeout() {
   ( sleep "$t_sec"; kill -0 "$t_pid" 2>/dev/null || exit 0; : > "$t_flag"
     kill -TERM -"$t_pid" || kill -TERM "$t_pid"; sleep 5; kill -KILL -"$t_pid" || kill -KILL "$t_pid" ) >/dev/null 2>&1 &
   t_kpid=$!
-  wait "$t_pid"
+  # Both jobs are reaped with the shell's stderr off (as diary_push): a job killed by a signal
+  # otherwise makes the shell print "Terminated" and the job's source to launchd.log. The command's
+  # own stderr is not affected.
+  wait "$t_pid" 2>/dev/null
   t_rc=$?
   pkill -P "$t_kpid" 2>/dev/null
-  kill "$t_kpid" 2>/dev/null
+  { kill "$t_kpid"; wait "$t_kpid"; } 2>/dev/null
   if [ -e "$t_flag" ]; then
     rm -f "$t_flag"
     printf '%s TIMEOUT %s after %s s\n' "$(date +%H:%M:%S)" "$t_step" "$t_sec" | tee -a "$SUMMARY" >&2
@@ -398,15 +404,21 @@ agents_paused() {
   p_val=$(
     BOT_KEY_PATH="${BOT_KEY_PATH:-$(cfg bot.keyDir)/key.pem}" || exit 2
     export BOT_KEY_PATH BOT_REPO="${BOT_REPO:-$EV_REPO}"
-    GH_TOKEN=$(with_timeout "$STEP_SEC" mint node "$REPO_ROOT/scripts/agents/bot-token.mjs") || exit 3
+    # A timeout (with_timeout's 124) gets its own exit code: its TIMEOUT line is in the summary, but
+    # not on stderr (gh's error output is dropped below), so the reason has to say so.
+    GH_TOKEN=$(with_timeout "$STEP_SEC" mint node "$REPO_ROOT/scripts/agents/bot-token.mjs") ||
+      { [ $? -eq 124 ] && exit 5; exit 3; }
     export GH_TOKEN
-    with_timeout "$STEP_SEC" "gh api AGENTS_PAUSED" gh api "repos/$EV_REPO/actions/variables/AGENTS_PAUSED" --jq .value 2>/dev/null || exit 4
+    with_timeout "$STEP_SEC" "gh api AGENTS_PAUSED" gh api "repos/$EV_REPO/actions/variables/AGENTS_PAUSED" --jq .value 2>/dev/null ||
+      { [ $? -eq 124 ] && exit 6; exit 4; }
   )
   case $?:$p_val in
     0:true | 0:false) printf '%s' "$p_val" ;;
     0:*) printf 'unreadable: value "%s"' "$p_val" ;;
     2:*) printf 'unreadable: bot.keyDir missing' ;;
     3:*) printf 'unreadable: bot token mint failed' ;;
+    5:*) printf 'unreadable: bot token mint timed out (%s s)' "$STEP_SEC" ;;
+    6:*) printf 'unreadable: gh api timed out (%s s)' "$STEP_SEC" ;;
     *) printf 'unreadable: gh api failed (variable missing, no access or network)' ;;
   esac
 }
@@ -418,6 +430,8 @@ paused_why() {
     *) printf 'AGENTS_PAUSED %s, treated as paused' "$1" ;;
   esac
 }
+
+CAN_READ_SWITCH=1   # from here on, diary_push reads the switch fresh (see where it is set to 0)
 
 # ---- 2b. master kill switch -------------------------------------------------------------------
 PAUSED=$(agents_paused)
