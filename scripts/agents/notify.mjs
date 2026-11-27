@@ -11,7 +11,8 @@
 // morning  Block Kit built from report.json (written by report.mjs next to report.md): a header,
 //          then colour-barred attachments with the status line (no run, aborted with a plain-English
 //          hint, idle, clean or dirty; cost, streak, missed runs), waiting on you, one line per ticket
-//          (PR, checks, verdict, cost), and the recent nights.
+//          (PR, checks, verdict, cost), and the recent nights. When report.json has `paused` (the
+//          AGENTS_PAUSED kill switch), the header starts "⏸ PAUSED" and the reason is the first line.
 //
 // The webhook URL is one line in ${AGENTS_SLACK_WEBHOOK_FILE:-$AGENTS_HOME/slack-webhook}, chmod
 // 600 (a file others can read is refused). It is read here and only passed to fetch: never to argv,
@@ -73,6 +74,7 @@ function readEvents(path) {
 
 // Slack mrkdwn: escape the three control characters.
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const cut = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 const usd = (n) => (typeof n === "number" ? `$${n.toFixed(2)}` : "—");
 const prLink = (repo, n) => (repo ? `<https://github.com/${repo}/pull/${n}|#${n}>` : `#${n}`);
 
@@ -170,7 +172,14 @@ function ticketLine(r, repo) {
 // `text` is the notification preview.
 function morningMessage(d, night, reportPath) {
   const prefix = env.AGENTS_NOTIFY_PREFIX ? `${env.AGENTS_NOTIFY_PREFIX} ` : "";
-  const title = `${prefix}☀️ Morning report · ${dayName(night)}`;
+  // report.json `paused` (the kill switch is on or unreadable) leads the header, the first section
+  // and the notification preview (OV-197). The unreadable form carries error text, so mrkdwn
+  // characters that would break the bold are dropped (an inner-word _ as in AGENTS_PAUSED stays:
+  // Slack ignores it) and it is cut to 200 characters.
+  const paused = d?.paused
+    ? cut(String(d.paused).replace(/[*~`]|(?<!\w)_|_(?!\w)/g, "").replace(/\s+/g, " ").trim(), 200)
+    : null;
+  const title = `${prefix}${paused ? "⏸ PAUSED · " : ""}☀️ Morning report · ${dayName(night)}`;
   const header = [{ type: "header", text: { type: "plain_text", text: title.slice(0, 150), emoji: true } }];
   if (!d) {
     const msg = `🚨 No report data: ${esc(reportPath.replace(/\.md$/, ".json").replace(homedir(), "~"))} is missing.`;
@@ -198,7 +207,7 @@ function morningMessage(d, night, reportPath) {
     `clean streak ${d.streak ?? "?"}`,
     missedN ? `${missedN} missed run${missedN === 1 ? "" : "s"}` : "no missed runs",
   ];
-  section(`${lead}\n${stats.join("  ·  ")}`);
+  section(`${paused ? `*${esc(paused)}*\n` : ""}${lead}\n${stats.join("  ·  ")}`);
 
   const waiting = d.waiting || [];
   divider();
@@ -222,7 +231,7 @@ function morningMessage(d, night, reportPath) {
     body.push({ type: "context", elements: [{ type: "mrkdwn", text: foot.join("\n").slice(0, 3000) }] });
   }
 
-  const text = `${esc(title)}: ${lead.replace(/\*/g, "")}` + (waiting.length ? ` · ${waiting.length} waiting on you` : "");
+  const text = `${esc(title)}: ${paused ? `${esc(paused.replace(/^⏸ PAUSED\s*/, ""))} · ` : ""}${lead.replace(/\*/g, "")}` + (waiting.length ? ` · ${waiting.length} waiting on you` : "");
   return { text, blocks: header, attachments: [top, bottom].filter((b) => b.length).map((blocks) => ({ color: bar, blocks })) };
 }
 
