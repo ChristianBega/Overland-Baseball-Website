@@ -3,10 +3,18 @@
 // each PR the runner built or skipped, appends what changed, and prints a Markdown report.
 //
 //   node scripts/agents/report.mjs [--night YYYY-MM-DD] [--days 7] [--no-sweep] [--out <file>]
-//                                  [--events <events.jsonl>] [--morning]
+//                                  [--events <events.jsonl> | --diary <dir>] [--morning]
 //
 // events.jsonl: --events, else $AGENTS_EVENTS, else $AGENTS_LOG_DIR/events.jsonl (same default dir
 // as overnight.sh). --night defaults to today (the runner's night is the local date at 01:00).
+//
+// --diary <dir> (OV-197, the cloud report) reads a clone of the diary repo instead of one file:
+// runner events from every <dir>/<folder>/*.jsonl except report/ (mac/ today, written by
+// overnight.sh diary_push), and the report's own lines (sweep, morning_check) only from
+// <dir>/report/*.jsonl. A mac/ file can also hold the Mac's own report lines; they are ignored, so
+// the Mac's 06:30 report and the cloud report never dedupe against each other. New lines go to
+// <dir>/report/<night>.jsonl (never mac/), and --morning writes <dir>/report/<night>/report.md +
+// report.json. Committing and pushing report/ is the caller's job (cloud-report.sh, OV-198).
 //
 // The sweep only reads GitHub, through `gh` and the caller's own login, behind ghGet(), which
 // refuses any write flag. It appends source:"sweep" events with a `key`; a key already in the file
@@ -28,13 +36,14 @@
 //
 // The first line is "⏸ PAUSED (...)" when the master kill switch, the repo variable AGENTS_PAUSED, is
 // true or cannot be read (read with the caller's login, also under --no-sweep; unreadable counts as
-// paused, as in overnight.sh). The report still runs in full below it.
+// paused, as in overnight.sh). The report still runs in full below it. report.json carries the same
+// line as `paused` (null when not paused), and notify.mjs puts it first in the Slack post.
 //
 // It never fails the caller: missing data is stated in the report, and it always exits 0.
 
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { FAILURE_CLASSES } from "./events.mjs";
@@ -61,6 +70,7 @@ function parseArgs(argv) {
     else if (a === "--days") o.days = Math.max(1, Number(argv[++i]) || 7);
     else if (a === "--out") o.out = argv[++i];
     else if (a === "--events") o.events = argv[++i];
+    else if (a === "--diary") o.diary = argv[++i];
   }
   return o;
 }
@@ -85,16 +95,55 @@ function eventsPath(opt) {
   return join(logDir(basename(ROOT)), "events.jsonl");
 }
 
+function parseLines(text, out) {
+  let bad = 0;
+  for (const l of text.split("\n")) {
+    if (!l.trim()) continue;
+    try { out.push(JSON.parse(l)); } catch { bad++; }
+  }
+  return bad;
+}
+
 function readEvents(path) {
   if (!existsSync(path)) return { events: [], note: `events file not found: ${path}` };
   const events = [];
-  let bad = 0;
-  for (const l of readFileSync(path, "utf8").split("\n")) {
-    if (!l.trim()) continue;
-    try { events.push(JSON.parse(l)); } catch { bad++; }
-  }
+  const bad = parseLines(readFileSync(path, "utf8"), events);
   const note = events.length ? (bad ? `${bad} unparsable line(s) skipped` : null) : `events file is empty: ${path}`;
   return { events, note };
+}
+
+// The diary folder the report owns (see --diary above); every other folder holds runner events.
+const REPORT_DIR = "report";
+const isRunner = (e) => (e.source || "runner") === "runner";
+
+// --diary: runner lines from every folder but report/, then report/'s own lines. Files in name
+// (night) order, so the last pr_state per PR is the newest. `path` is where new lines go.
+function readDiary(dir, night) {
+  const path = join(dir, REPORT_DIR, `${night}.jsonl`);
+  let folders;
+  try {
+    folders = readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith("."))
+      .map((d) => d.name).sort();
+  } catch (e) {
+    return { events: [], path, label: `diary \`${dir}\``, notes: [`diary not readable: ${dir} (${e.code || e.message})`] };
+  }
+  const runner = [], own = [];
+  let files = 0, bad = 0;
+  for (const f of [...folders.filter((f) => f !== REPORT_DIR), ...folders.filter((f) => f === REPORT_DIR)]) {
+    let names;
+    try { names = readdirSync(join(dir, f)).filter((n) => n.endsWith(".jsonl") && !n.startsWith(".")).sort(); } catch { continue; }
+    for (const n of names) {
+      const evs = [];
+      try { bad += parseLines(readFileSync(join(dir, f, n), "utf8"), evs); } catch { continue; }
+      files++;
+      if (f === REPORT_DIR) own.push(...evs);
+      else runner.push(...evs.filter(isRunner));
+    }
+  }
+  const notes = [];
+  if (!runner.length) notes.push(`no runner events in diary ${dir}`);
+  if (bad) notes.push(`${bad} unparsable line(s) skipped`);
+  return { events: [...runner, ...own], path, label: `diary \`${dir}\` (${files} file(s))`, notes };
 }
 
 function readConfig() {
@@ -393,11 +442,22 @@ function main() {
     rounds: gl.reviewRounds || [],
   };
   const keyRe = new RegExp(`^${cfg.jira?.projectKey || "[A-Z][A-Z0-9]+"}-\\d+$`);
-  const path = eventsPath(opt);
-  const { events: all, note: readNote } = readEvents(path);
-  const events = all.filter(isReal);
+  // path: the file new sweep and morning_check lines are appended to.
+  let path, all, source;
   const notes = [];
-  if (readNote) notes.push(readNote);
+  if (opt.diary) {
+    const d = readDiary(opt.diary, night);
+    ({ path, events: all, label: source } = d);
+    notes.push(...d.notes);
+  } else {
+    path = eventsPath(opt);
+    source = `\`${path}\``;
+    const r = readEvents(path);
+    all = r.events;
+    if (r.note) notes.push(r.note);
+  }
+  const events = all.filter(isReal);
+  const evName = opt.diary ? "the diary" : "events.jsonl";
   const dryCount = all.length - events.length;
   if (dryCount) notes.push(`${dryCount} dry-run event(s) ignored`);
 
@@ -453,8 +513,13 @@ function main() {
         const prNight = events.find((e) => (e.pr === n || String(e.reason || "").includes(`PR #${n}`)) && e.night)?.night || null;
         for (const ev of sweepEvents(v, { ...base, night: prNight })) if (!keys.has(ev.key)) { keys.add(ev.key); fresh.push(ev); }
       }
-      if (fresh.length && existsSync(path)) {
-        try { appendFileSync(path, fresh.map((e) => JSON.stringify(e)).join("\n") + "\n"); appended = fresh.length; }
+      // Without --diary, never create events.jsonl (a wrong path stays visible as "not found").
+      if (fresh.length && (opt.diary || existsSync(path))) {
+        try {
+          if (opt.diary) mkdirSync(dirname(path), { recursive: true });
+          appendFileSync(path, fresh.map((e) => JSON.stringify(e)).join("\n") + "\n");
+          appended = fresh.length;
+        }
         catch (e) { notes.push(`could not append sweep events (${e.code || e.message})`); }
       }
     } catch (e) {
@@ -463,8 +528,8 @@ function main() {
   }
   let fromFile = 0;
   for (const [n, s] of lastState) if (!views.has(n)) { views.set(n, s); fromFile++; }
-  if (sweepNote && fromFile) sweepNote += `; PR state below is from the last sweep in events.jsonl`;
-  else if (sweepNote && tickets.size) sweepNote += "; no earlier sweep in events.jsonl, so PR state is unknown";
+  if (sweepNote && fromFile) sweepNote += `; PR state below is from the last sweep in ${evName}`;
+  else if (sweepNote && tickets.size) sweepNote += `; no earlier sweep in ${evName}, so PR state is unknown`;
 
   // ---------- render ----------
   const out = [];
@@ -474,9 +539,10 @@ function main() {
   const digest = { night, generated: new Date().toISOString().replace(/\.\d+Z$/, "Z"), repo: repo || null,
     status: st.status, why: st.why, sweep_note: sweepNote, notes, rows: [] };
   const paused = pausedLine(repo);
+  digest.paused = paused;
   if (paused) out.push(paused, "");
   out.push(`## Morning report — night ${night}`, "");
-  out.push(`Generated ${new Date().toISOString().replace(/\.\d+Z$/, "Z")} from \`${path}\`.`);
+  out.push(`Generated ${new Date().toISOString().replace(/\.\d+Z$/, "Z")} from ${source}.`);
   if (sweepNote) out.push(`**${sweepNote}.**`);
   else if (tickets.size) out.push(`GitHub sweep: ${views.size - fromFile} PR(s) checked, ${appended} new sweep event(s) appended.`);
   for (const n of notes) out.push(`- Note: ${n}`);
@@ -487,7 +553,7 @@ function main() {
   const runEnds = tonight.filter((e) => e.event === "run_end");
   const aborts = tonight.filter((e) => e.event === "run_abort");
   if (st.status === "missed") {
-    out.push(`**No run recorded for ${night}** (no \`run_start\` or \`run_end\` in events.jsonl): the 01:00 slot did not fire, or the events file is missing.`, "");
+    out.push(`**No run recorded for ${night}** (no \`run_start\` or \`run_end\` in ${evName}): the 01:00 slot did not fire, or the events are missing.`, "");
   } else {
     const total = runEnds.reduce((s, e) => s + (typeof e.cost_usd_total === "number" ? e.cost_usd_total : 0), 0);
     Object.assign(digest, {

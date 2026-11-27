@@ -11,7 +11,8 @@
 // morning  Block Kit built from report.json (written by report.mjs next to report.md): a header,
 //          then colour-barred attachments with the status line (no run, aborted with a plain-English
 //          hint, idle, clean or dirty; cost, streak, missed runs), waiting on you, one line per ticket
-//          (PR, checks, verdict, cost), and the recent nights.
+//          (PR, checks, verdict, cost), and the recent nights. When report.json has `paused` (the
+//          AGENTS_PAUSED kill switch), the header starts "⏸ PAUSED" and the reason is the first line.
 //
 // The webhook URL is one line in ${AGENTS_SLACK_WEBHOOK_FILE:-$AGENTS_HOME/slack-webhook}, chmod
 // 600 (a file others can read is refused). It is read here and only passed to fetch: never to argv,
@@ -170,7 +171,10 @@ function ticketLine(r, repo) {
 // `text` is the notification preview.
 function morningMessage(d, night, reportPath) {
   const prefix = env.AGENTS_NOTIFY_PREFIX ? `${env.AGENTS_NOTIFY_PREFIX} ` : "";
-  const title = `${prefix}☀️ Morning report · ${dayName(night)}`;
+  // report.json `paused` (the kill switch is on or unreadable) leads the header, the first section
+  // and the notification preview (OV-197).
+  const paused = d?.paused ? String(d.paused) : null;
+  const title = `${prefix}${paused ? "⏸ PAUSED · " : ""}☀️ Morning report · ${dayName(night)}`;
   const header = [{ type: "header", text: { type: "plain_text", text: title.slice(0, 150), emoji: true } }];
   if (!d) {
     const msg = `🚨 No report data: ${esc(reportPath.replace(/\.md$/, ".json").replace(homedir(), "~"))} is missing.`;
@@ -198,7 +202,7 @@ function morningMessage(d, night, reportPath) {
     `clean streak ${d.streak ?? "?"}`,
     missedN ? `${missedN} missed run${missedN === 1 ? "" : "s"}` : "no missed runs",
   ];
-  section(`${lead}\n${stats.join("  ·  ")}`);
+  section(`${paused ? `*${esc(paused)}*\n` : ""}${lead}\n${stats.join("  ·  ")}`);
 
   const waiting = d.waiting || [];
   divider();
@@ -222,7 +226,7 @@ function morningMessage(d, night, reportPath) {
     body.push({ type: "context", elements: [{ type: "mrkdwn", text: foot.join("\n").slice(0, 3000) }] });
   }
 
-  const text = `${esc(title)}: ${lead.replace(/\*/g, "")}` + (waiting.length ? ` · ${waiting.length} waiting on you` : "");
+  const text = `${esc(title)}: ${paused ? `${esc(paused.replace(/^⏸ PAUSED\s*/, ""))} · ` : ""}${lead.replace(/\*/g, "")}` + (waiting.length ? ` · ${waiting.length} waiting on you` : "");
   return { text, blocks: header, attachments: [top, bottom].filter((b) => b.length).map((blocks) => ({ color: bar, blocks })) };
 }
 
