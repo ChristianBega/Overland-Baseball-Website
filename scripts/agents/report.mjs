@@ -40,8 +40,8 @@
 // line as `paused` (null when not paused), and notify.mjs puts it first in the Slack post.
 //
 // It never fails the caller: missing data is stated in the report, and it exits 0. The one
-// exception is an unreadable --diary (missing, or not a git clone): it writes and posts nothing and
-// exits 2, so a cloud caller fails loudly instead of committing an empty report.
+// exception is an unreadable --diary (missing, empty, or not a git clone): it writes and posts nothing
+// and exits 2, so a cloud caller fails loudly instead of committing an empty report.
 
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -72,7 +72,8 @@ function parseArgs(argv) {
     else if (a === "--days") o.days = Math.max(1, Number(argv[++i]) || 7);
     else if (a === "--out") o.out = argv[++i];
     else if (a === "--events") o.events = argv[++i];
-    else if (a === "--diary") o.diary = argv[++i];
+    // An empty or missing value stays a string, so it is an unreadable diary (exit 2), not events.jsonl mode.
+    else if (a === "--diary") o.diary = argv[++i] ?? "";
   }
   return o;
 }
@@ -118,13 +119,14 @@ function readEvents(path) {
 const REPORT_DIR = "report";
 const isRunner = (e) => (e.source || "runner") === "runner";
 
-// --diary: runner lines from every folder but report/, then report/'s own lines. Files in name
-// (night) order, so the last pr_state per PR is the newest: this relies on report/ holding only
-// <night>.jsonl files (a new kind of .jsonl there needs a name that also sorts by night).
+// --diary: runner lines from every folder but report/, then report/'s own lines, files in name
+// (night) order. The pr_state fallback picks the newest by ts, so it does not rely on this order.
 // `path` is where new lines go. A dir that is not a git clone is `unreadable` (main writes nothing).
 function readDiary(dir, night) {
   const path = join(dir, REPORT_DIR, `${night}.jsonl`);
   const unreadable = (why) => ({ events: [], path, label: `diary \`${dir}\``, unreadable: true, notes: [`diary not readable: ${dir} (${why})`] });
+  // join("", ".git") is ./.git: an empty --diary would read the caller's own checkout as the diary.
+  if (!dir) return unreadable("no --diary value");
   if (!existsSync(join(dir, ".git"))) return unreadable(existsSync(dir) ? "not a git clone" : "ENOENT");
   let folders;
   try {
@@ -451,7 +453,8 @@ function main() {
   // path: the file new sweep and morning_check lines are appended to.
   let path, all, source, diaryBad = false;
   const notes = [];
-  if (opt.diary) {
+  const diary = opt.diary !== undefined;
+  if (diary) {
     const d = readDiary(opt.diary, night);
     ({ path, events: all, label: source } = d);
     diaryBad = d.unreadable === true;
@@ -464,7 +467,7 @@ function main() {
     if (r.note) notes.push(r.note);
   }
   const events = all.filter(isReal);
-  const evName = opt.diary ? "the diary" : "events.jsonl";
+  const evName = diary ? "the diary" : "events.jsonl";
   const dryCount = all.length - events.length;
   if (dryCount) notes.push(`${dryCount} dry-run event(s) ignored`);
 
@@ -485,9 +488,14 @@ function main() {
   }
   for (const [pr, t] of tickets) if (t && !keyRe.test(t)) tickets.set(pr, null);
 
-  // Last sweep state per PR from the file (the fallback).
+  // Last sweep state per PR from the file (the fallback): the newest by ts (ISO strings sort as
+  // times), so it does not depend on file or line order; a tie goes to the later line.
   const lastState = new Map();
-  for (const e of events) if (e.event === "pr_state" && tickets.has(e.pr)) lastState.set(e.pr, e);
+  for (const e of events) {
+    if (e.event !== "pr_state" || !tickets.has(e.pr)) continue;
+    const prev = lastState.get(e.pr);
+    if (!prev || String(e.ts || "") >= String(prev.ts || "")) lastState.set(e.pr, e);
+  }
 
   const views = new Map();
   let sweepNote = null, appended = 0;
@@ -522,9 +530,9 @@ function main() {
       }
       // Never create events.jsonl, or a report/ folder outside a diary clone (a wrong path stays
       // visible as "not found" / "not readable").
-      if (fresh.length && (opt.diary ? !diaryBad : existsSync(path))) {
+      if (fresh.length && (diary ? !diaryBad : existsSync(path))) {
         try {
-          if (opt.diary) mkdirSync(dirname(path), { recursive: true });
+          if (diary) mkdirSync(dirname(path), { recursive: true });
           appendFileSync(path, fresh.map((e) => JSON.stringify(e)).join("\n") + "\n");
           appended = fresh.length;
         }

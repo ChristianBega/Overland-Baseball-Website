@@ -14,9 +14,12 @@ approval. That holds for an admin too: the admin bypass covers only a manual "me
 
 ## One-visit flow
 
-Start from the night's report: `<log dir>/<date>/report.md`, written at 06:30 by the morning check (OV-130). Its
-"Waiting on you" list is the PRs below. No report means the morning check didn't run (Mac asleep or off); a report
-that says "No run recorded" means the 01:00 run never started.
+Start from the night's report: the Slack morning post, or `report/<date>/report.md` in the private diary repo
+`ChristianBega/overland-agents-state`, written at 07:47 by the cloud report (`scripts/agents/cloud-report.sh`, a Claude
+Code cloud scheduled task; OV-198). Until the Mac's 06:30 morning check (`com.overland.morning`) is turned off, the Mac
+also writes `<log dir>/<date>/report.md`. Its "Waiting on you" list is the PRs below. No 07:47 post means the cloud
+report failed (see the task's run in claude.ai/code); a report that says "No run recorded" means the 01:00 run never
+started or its diary push failed.
 
 For each open bot PR:
 
