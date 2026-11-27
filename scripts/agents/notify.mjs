@@ -74,6 +74,7 @@ function readEvents(path) {
 
 // Slack mrkdwn: escape the three control characters.
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const cut = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 const usd = (n) => (typeof n === "number" ? `$${n.toFixed(2)}` : "—");
 const prLink = (repo, n) => (repo ? `<https://github.com/${repo}/pull/${n}|#${n}>` : `#${n}`);
 
@@ -172,8 +173,12 @@ function ticketLine(r, repo) {
 function morningMessage(d, night, reportPath) {
   const prefix = env.AGENTS_NOTIFY_PREFIX ? `${env.AGENTS_NOTIFY_PREFIX} ` : "";
   // report.json `paused` (the kill switch is on or unreadable) leads the header, the first section
-  // and the notification preview (OV-197).
-  const paused = d?.paused ? String(d.paused) : null;
+  // and the notification preview (OV-197). The unreadable form carries error text, so mrkdwn
+  // characters that would break the bold are dropped (an inner-word _ as in AGENTS_PAUSED stays:
+  // Slack ignores it) and it is cut to 200 characters.
+  const paused = d?.paused
+    ? cut(String(d.paused).replace(/[*~`]|(?<!\w)_|_(?!\w)/g, "").replace(/\s+/g, " ").trim(), 200)
+    : null;
   const title = `${prefix}${paused ? "⏸ PAUSED · " : ""}☀️ Morning report · ${dayName(night)}`;
   const header = [{ type: "header", text: { type: "plain_text", text: title.slice(0, 150), emoji: true } }];
   if (!d) {

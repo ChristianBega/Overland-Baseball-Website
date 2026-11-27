@@ -39,7 +39,9 @@
 // paused, as in overnight.sh). The report still runs in full below it. report.json carries the same
 // line as `paused` (null when not paused), and notify.mjs puts it first in the Slack post.
 //
-// It never fails the caller: missing data is stated in the report, and it always exits 0.
+// It never fails the caller: missing data is stated in the report, and it exits 0. The one
+// exception is an unreadable --diary (missing, or not a git clone): it writes and posts nothing and
+// exits 2, so a cloud caller fails loudly instead of committing an empty report.
 
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -117,15 +119,19 @@ const REPORT_DIR = "report";
 const isRunner = (e) => (e.source || "runner") === "runner";
 
 // --diary: runner lines from every folder but report/, then report/'s own lines. Files in name
-// (night) order, so the last pr_state per PR is the newest. `path` is where new lines go.
+// (night) order, so the last pr_state per PR is the newest: this relies on report/ holding only
+// <night>.jsonl files (a new kind of .jsonl there needs a name that also sorts by night).
+// `path` is where new lines go. A dir that is not a git clone is `unreadable` (main writes nothing).
 function readDiary(dir, night) {
   const path = join(dir, REPORT_DIR, `${night}.jsonl`);
+  const unreadable = (why) => ({ events: [], path, label: `diary \`${dir}\``, unreadable: true, notes: [`diary not readable: ${dir} (${why})`] });
+  if (!existsSync(join(dir, ".git"))) return unreadable(existsSync(dir) ? "not a git clone" : "ENOENT");
   let folders;
   try {
     folders = readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith("."))
       .map((d) => d.name).sort();
   } catch (e) {
-    return { events: [], path, label: `diary \`${dir}\``, notes: [`diary not readable: ${dir} (${e.code || e.message})`] };
+    return unreadable(e.code || e.message);
   }
   const runner = [], own = [];
   let files = 0, bad = 0;
@@ -366,7 +372,7 @@ function waitingOn(v, L, guardCheck) {
 // A night's status for the streak: "missed", "idle", "clean" or "dirty" (with reasons).
 function nightStatus(evs, views, L) {
   const real = evs.filter(isReal);
-  const runner = real.filter((e) => (e.source || "runner") === "runner");
+  const runner = real.filter(isRunner);
   if (!runner.some((e) => e.event === "run_start" || e.event === "run_end" || e.event === "run_abort")) return { status: "missed", why: ["no run_start/run_end/run_abort"] };
   const ends = runner.filter((e) => e.event === "run_end");
   const aborts = runner.filter((e) => e.event === "run_abort");
@@ -443,11 +449,12 @@ function main() {
   };
   const keyRe = new RegExp(`^${cfg.jira?.projectKey || "[A-Z][A-Z0-9]+"}-\\d+$`);
   // path: the file new sweep and morning_check lines are appended to.
-  let path, all, source;
+  let path, all, source, diaryBad = false;
   const notes = [];
   if (opt.diary) {
     const d = readDiary(opt.diary, night);
     ({ path, events: all, label: source } = d);
+    diaryBad = d.unreadable === true;
     notes.push(...d.notes);
   } else {
     path = eventsPath(opt);
@@ -513,8 +520,9 @@ function main() {
         const prNight = events.find((e) => (e.pr === n || String(e.reason || "").includes(`PR #${n}`)) && e.night)?.night || null;
         for (const ev of sweepEvents(v, { ...base, night: prNight })) if (!keys.has(ev.key)) { keys.add(ev.key); fresh.push(ev); }
       }
-      // Without --diary, never create events.jsonl (a wrong path stays visible as "not found").
-      if (fresh.length && (opt.diary || existsSync(path))) {
+      // Never create events.jsonl, or a report/ folder outside a diary clone (a wrong path stays
+      // visible as "not found" / "not readable").
+      if (fresh.length && (opt.diary ? !diaryBad : existsSync(path))) {
         try {
           if (opt.diary) mkdirSync(dirname(path), { recursive: true });
           appendFileSync(path, fresh.map((e) => JSON.stringify(e)).join("\n") + "\n");
@@ -533,7 +541,7 @@ function main() {
 
   // ---------- render ----------
   const out = [];
-  const tonight = events.filter((e) => e.night === night && (e.source || "runner") === "runner");
+  const tonight = events.filter((e) => e.night === night && isRunner(e));
   const st = nightStatus(tonight, views, L);
   // The same night as data, for notify.mjs (report.json next to report.md; --morning only).
   const digest = { night, generated: new Date().toISOString().replace(/\.\d+Z$/, "Z"), repo: repo || null,
@@ -609,8 +617,8 @@ function main() {
   out.push(`### Trailing window: ${windowFrom} → ${night}` + (windowFrom > from ? ` (events start ${firstTracked}; ${opt.days}-day window clipped)` : ""), "");
   const nights = [];
   for (let d = windowFrom; d && d <= night; d = addDays(d, 1)) nights.push(d);
-  const byNight = new Map(nights.map((n) => [n, events.filter((e) => e.night === n && (e.source || "runner") === "runner")]));
-  const builds = events.filter((e) => inWindow(e.night) && e.event === "build_end" && (e.source || "runner") === "runner");
+  const byNight = new Map(nights.map((n) => [n, events.filter((e) => e.night === n && isRunner(e))]));
+  const builds = events.filter((e) => inWindow(e.night) && e.event === "build_end" && isRunner(e));
   const allRows = nights.flatMap((n) => nightRows(byNight.get(n)).filter((r) => !r.skipped));
 
   const perTicket = new Map(), perModel = new Map();
@@ -623,7 +631,7 @@ function main() {
   const ok = builds.filter((b) => b.outcome === "pr").length;
   const hist = {};
   for (const e of events) {
-    if (!inWindow(e.night) || (e.source || "runner") !== "runner" || !e.failure_class || e.failure_class === "none") continue;
+    if (!inWindow(e.night) || !isRunner(e) || !e.failure_class || e.failure_class === "none") continue;
     if (e.event === "build_end" || e.event === "run_abort" || (e.event === "run_end" && e.outcome === "idle")) {
       const k = FAILURE_CLASSES.includes(e.failure_class) ? e.failure_class : "unknown";
       hist[k] = (hist[k] || 0) + 1;
@@ -665,6 +673,14 @@ function main() {
   out.push("");
 
   const text = out.join("\n");
+  // An unreadable --diary writes nothing (no report/, no morning_check, no Slack post): the report
+  // goes to stdout and the exit code is 2, so cloud-report.sh (OV-198) fails loudly.
+  if (diaryBad) {
+    process.stderr.write(`report: ${notes[0]}; nothing written or posted\n`);
+    process.stdout.write(text);
+    process.exitCode = 2;
+    return;
+  }
   if (opt.morning) {
     morningCheck({ path, night, tonight, st, repo, text, digest, keys: new Set(all.map((e) => e.key).filter(Boolean)) });
     return;
@@ -679,4 +695,4 @@ try {
 } catch (e) {
   process.stdout.write(`## Morning report\n\n**Report failed: ${String(e.message).split("\n")[0]}.**\n`);
 }
-process.exit(0);
+process.exit(process.exitCode ?? 0);
