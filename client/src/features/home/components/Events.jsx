@@ -46,7 +46,7 @@ const Events = () => {
           isEmpty={!data || data.length === 0}
           onRetry={refetch}
           loadingMessage="Loading events..."
-          errorTitle="Unable to Load Events"
+          errorTitle="We couldn't load the events"
           emptyProps={{
             title: "No Featured Events",
             message: "Explore all upcoming events below!",

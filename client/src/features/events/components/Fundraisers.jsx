@@ -24,7 +24,7 @@ export default function Fundraisers() {
           isEmpty={!fundraiserEvents || fundraiserEvents.length === 0}
           onRetry={refetch}
           loadingMessage="Loading fundraisers..."
-          errorTitle="Unable to Load Fundraisers"
+          errorTitle="We couldn't load the fundraisers"
           emptyProps={{
             title: "No Fundraisers Available",
             message: "Check back soon for fundraising opportunities!",

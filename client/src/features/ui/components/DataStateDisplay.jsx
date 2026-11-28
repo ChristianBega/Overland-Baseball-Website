@@ -1,10 +1,12 @@
 // MUI components
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import PropTypes from "prop-types";
 
 // Components
 import TextBlock from "./TextBlock";
 import NoDataDisplay from "./NoDataDisplay";
+import Notice from "./Notice";
 
 /**
  * DataStateDisplay - Handles all data fetching states (loading, error, empty, success)
@@ -39,6 +41,8 @@ const DataStateDisplay = ({
   emptyProps = {},
   loadingMessage = "Loading...",
   errorTitle = "Something Went Wrong",
+  errorIcon,
+  errorMessage = "Check your connection, then try again.",
   children,
   sx = {},
 }) => {
@@ -73,92 +77,18 @@ const DataStateDisplay = ({
 
   // Error State
   if (isError) {
+    const details = typeof error === "string" ? error : error?.message;
     return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          py: 8,
-          px: 2,
-          ...sx,
-        }}
-      >
-        <TextBlock
-          direction="column"
-          spacing={3}
-          sx={{
-            textAlign: "center",
-            maxWidth: "500px",
-          }}
-        >
-          {/* Error Icon */}
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Box
-              component="svg"
-              sx={{
-                width: 64,
-                height: 64,
-                color: "error.main",
-              }}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </Box>
-          </Box>
-
-          {/* Error Title */}
-          <Typography
-            variant="h5"
-            component="h3"
-            sx={{
-              fontWeight: 600,
-              color: "text.primary",
-            }}
-          >
-            {errorTitle}
-          </Typography>
-
-          {/* Error Message */}
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.secondary",
-              opacity: 0.8,
-            }}
-          >
-            {error?.message || "Unable to load data. Please try again."}
-          </Typography>
-
-          {/* Retry Button */}
-          {onRetry && (
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              onClick={onRetry}
-              sx={{
-                mt: 2,
-                px: 4,
-                py: 1.5,
-                textTransform: "none",
-                fontWeight: 600,
-                fontSize: "1rem",
-              }}
-            >
-              Try Again
-            </Button>
-          )}
-        </TextBlock>
-      </Box>
+      <Notice
+        variant="error"
+        layout="stacked"
+        icon={errorIcon}
+        title={errorTitle}
+        message={errorMessage}
+        action={onRetry ? { label: "Try again", onClick: onRetry, startIcon: <RefreshIcon /> } : undefined}
+        details={details || undefined}
+        sx={sx}
+      />
     );
   }
 
@@ -192,6 +122,10 @@ DataStateDisplay.propTypes = {
   }),
   loadingMessage: PropTypes.string,
   errorTitle: PropTypes.string,
+  // Error badge icon; defaults to ErrorOutline.
+  errorIcon: PropTypes.node,
+  // One friendly line under the error title. The raw error goes behind "Technical details".
+  errorMessage: PropTypes.string,
 
   // Content
   children: PropTypes.node,

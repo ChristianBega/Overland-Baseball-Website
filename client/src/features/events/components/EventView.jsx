@@ -41,7 +41,7 @@ export default function Events() {
           isEmpty={combinedData.length === 0}
           onRetry={handleRetry}
           loadingMessage="Loading calendar..."
-          errorTitle="Unable to Load Calendar"
+          errorTitle="We couldn't load the calendar"
           emptyProps={{
             title: "No Events Scheduled",
             message: "Check back soon for the season schedule!",
