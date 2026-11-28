@@ -8,8 +8,10 @@ import Schedule from "../components/Schedule";
 import ContactUs from "../components/ContactUs";
 // import Sponsors from "../../../components/sponsors/sponsors.component";
 import useMediaQueries from "../../../utils/helpers/useMediaQueries.utils";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 
 const HomePage = () => {
+  useDocumentTitle("Overland Baseball | Overland Trailblazers, Aurora CO");
   const { isLg } = useMediaQueries();
   return (
     <>

@@ -1,8 +1,10 @@
 import React from "react";
 import { Container, Typography } from "@mui/material";
 import { Navigation } from "../../navigation";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 
 export default function SponsorsPage() {
+  useDocumentTitle("Sponsors | Overland Baseball");
   return (
     <>
       <Navigation />

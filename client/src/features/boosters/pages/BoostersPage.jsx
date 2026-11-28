@@ -11,6 +11,7 @@ import ImageThree from "../../../assets/unformated/tim-mossholder-vdhNO4mGQ14-un
 // import CashAppQRcode from "../components/boosters/cashAppQRcode.component";
 import BoosterImageSlider from "../components/ImageSlider";
 import TextComponent from "../../ui/components/TextComponent";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 
 const boostersDataMissionStatement = {
   id: "missionStatement",
@@ -35,6 +36,7 @@ const boostersDataVolunteer = {
 };
 
 export default function BoostersPage() {
+  useDocumentTitle("Boosters | Overland Baseball");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 

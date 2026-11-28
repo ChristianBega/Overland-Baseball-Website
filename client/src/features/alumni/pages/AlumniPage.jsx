@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { containerVariants } from "../../../utils/animations/transitions";
 import { Container } from "@mui/material";
 import { Navigation } from "../../navigation";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 export default function AlumniPage() {
+  useDocumentTitle("Alumni | Overland Baseball");
   return (
     <>
       <Navigation />
